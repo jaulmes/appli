@@ -1,0 +1,382 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\Client;
+use App\Models\Compte;
+use App\Models\Produit;
+use App\Models\Transaction;
+use App\Models\Installation;
+use App\Models\Vente;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Darryldecode\Cart\Cart;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
+use PhpOffice\PhpSpreadsheet\Calculation\MathTrig\Sum;
+
+class PanierController extends Controller
+{
+
+    /**
+     * afficher les produit
+     */
+    public function afficheProduit(Request $request){
+        $query = $request->input('q');
+        
+        // Si une recherche est entrée, filtrer les produits
+        if ($query) {
+            $produits = Produit::where('name', 'LIKE', "%{$query}%")
+                                ->get();
+        } else {
+            // Sinon, récupérer tous les produits
+            $produits = Produit::all();
+        }
+        
+        $comptes = Compte::all();
+        $quantite=\Cart::getContent()->count();
+
+
+        return view('panier.index', compact('produits', 'quantite', 'comptes'));
+    }
+
+    //rechercher un produit
+    public function search(Request $request){
+        $query = $request->input('q');
+        
+        $produits = Produit::where('name', 'like', "%$query%")
+                ->orWhere('description', 'like', "%$query%" )
+                ->paginate(6);
+                
+        $comptes = Compte::all();
+        $quantite=\Cart::getContent()->count();
+                
+        return view('panier.search', compact('produits', 'comptes', 'quantite'));
+    }
+
+    //afficher les detail d'un article 
+    public function detailProduit(Request $request, $id){
+
+        $produits = Produit::Where('id', $id)->first();
+
+        //verifier que le produit est disponible
+        $stock = $produits->stock <= 0 ? 'indisponible' : 'disponible';
+
+        return view('panier.showArticle', [
+            "produits" => $produits,
+            "stock" => $stock
+        ]);
+    }
+
+    public function ajouterAuPanier(Request $request){
+
+        //recuperer le produit ajoute dans le panier 
+        $produits = Produit::find($request->id);
+
+
+        $cart = \Cart::getContent();
+
+        $itemNames=[];
+        // Parcours le panier pour trouver le nombre de fois que le produit est ajouté au panier
+        foreach ($cart as $item) {
+            $itemNames[]=$item->name;
+            
+            
+        }
+        //dd($itemNames);
+        $occurences=array_count_values($itemNames);
+        
+        //$quantite=2;
+        foreach($occurences as $itemNames=>$count){
+
+            if($count>1){
+                return redirect()->route('panier.index')->with('erreur', 'produit deja ete ajoute au panier');
+            }
+            else{
+                
+            }
+        }
+
+
+        //ajouter le produit au panier
+         $panier = \Cart::add($request->id, $request->name, $request->price, 1,array())
+                    ->associate($produits);
+
+        return redirect()->route('panier.index')->with('message', 'produit ajoute au panier');
+    }
+
+    public function retirerProduit($id, Request $request){
+        
+        \Cart::remove($request->id);
+
+        return redirect()->back();
+    }
+
+    //afficher le panier de l'utilisateur
+    public function index(){
+        $panier = \Cart::getContent();
+        return view('panier.monPanier', compact('panier'));
+    }
+
+
+
+    public function update( Request $request, $id){
+        
+
+        $data = $request->json()->all();
+ 
+        if($data['quantity'] > $data['stock']){
+            Session::flash('erreur', 'la quantite de ce produit est insufisante');
+            return response()->json(['erreur'=> 'produit insufisant']);
+        }
+        \Cart::update($id, [
+            'quantity' => $data['quantity']
+        ]);
+        Session::flash('succes', 'la quantite a bien ete mis a jour');
+        return response()->json(['Success'=> 'panier mis a jour avec succes']);
+
+    }
+
+    public function delete($id){
+        \Cart::remove($id);
+        return redirect()->back();
+    }
+
+    public function validerVente(Request $request){
+        $montantTotal = \Cart::getTotal();
+
+        //j'enregistre le client lies a la vente
+        $clients = new Client();
+        $clients->nom = $request->input('nom');
+        $clients->numero = $request->input('numero');
+
+        $comptes = Compte::find( $request->modePaiement);
+        
+
+        $dateHeure = now();
+
+        $moi = now()->month;
+        $annee = $dateHeure->format('y');
+        $jour = $dateHeure->format('d');
+
+
+        //enregistrement transaction
+        $transactions = new Transaction();
+        
+        $transactions->date = $dateHeure->format('d/m/y');
+        $transactions->moi = $moi;
+        $transactions->heure = $dateHeure->format('H:i:s');
+        $transactions->nomClient =$clients->nom;
+        $transactions->numeroClient = $clients->numero;
+        $transactions->type = 'Vente';
+        $transactions->compte_id = $comptes->id;
+        $transactions->impot = $request->impot;
+        $transactions->montantVerse = $request->input('montantVerse');
+        $transactions->user_id = Auth::user()->id;
+        $produits = \Cart::getContent();
+        
+        $article= [];
+        $prixAchat = 0;
+        foreach($produits as $row) {
+    	
+    	    $sommePrixAchat = $row->associatedModel->prix_achat;
+    	    
+    	    $prixAchat = $prixAchat + $sommePrixAchat;
+    	    
+    	    $article[] =  $row->associatedModel->name;
+
+        }
+        $transactions->prixAchat = $prixAchat;
+        $transactions->produit = json_encode($article);
+        
+
+        $comptes->montant = $comptes->montant + $transactions->montantVerse;
+
+        
+        $ventes = new Vente();
+        $ventes->dateEncour = now()->format('m-Y');
+        $ventes->nomClient = $request->input('nom');
+        $ventes->numeroClient = $request->input('numero');
+        $ventes->montantTotal = $montantTotal;
+        $ventes->montantVerse = $request->input('montantVerse');
+        $ventes->reduction = $request->input('reduction');
+        $ventes->compte_id = $comptes->id;
+        $ventes->impot = $request->input('impot');
+        $ventes->qteTotal = \Cart::getContent()->count();
+        $ventes->date = date('d-m-Y');
+        $ventes->user_id = Auth::user()->id;
+        if($ventes->montantTotal > $transactions->montantVerse){
+            $ventes->statut = "non termine";
+        }
+        else{
+            $ventes->statut = "termine";
+        }
+
+        //compter le nombre de vente pour incrementer le numero de la facture
+        $numero =Vente::where('date', $ventes->date )->get()->count() + 1;
+        $name = Auth::user()->name;
+        $numeroFacture = substr($name, 0, 3).'_'.$annee.'_'.$moi.'_'.$numero;
+        
+        $panier = \Cart::getContent();
+        
+        $totalPrixAchat = 0;
+        //mettre a jour le stock
+        foreach($panier as $produit){
+            $articles = Produit::find($produit->id);
+            $prixAchat = $articles->prix_achat;
+            $totalPrixAchat = $totalPrixAchat + $prixAchat;
+        }
+        $ventes->totalAchat = $totalPrixAchat;
+        
+        
+
+        $comptes->save();
+        $ventes->save();
+        $transactions->save();
+        $clients->save();
+        
+        // //mettre a jour le stock
+        foreach(\Cart::getContent() as $item){
+            $articles = Produit::find($item->id);
+            $produit = \Cart::get($articles->id);
+            $articles->stock = $articles->stock - $produit->quantity;
+            $articles->save();
+        }
+
+        
+        // //vrai facture
+        $pdf = Pdf::loadView('panier.factures',[
+            'ventes' =>$ventes,
+            'clients' =>$clients,
+            'numeroFacture'=>$numeroFacture
+        ]);
+        
+
+        \Cart::clear();       //a decommenter
+        return $pdf->stream();
+    }
+    
+    public function validerInstallation(Request $request){
+        //recuperer le montant total du panier
+        $montantTotal = \Cart::getTotal();
+        
+        //recuperer les produits du panier
+        $produits = \Cart::getContent();
+        
+        //creer un objet transaction
+        $transactions = new Transaction();
+        
+        
+        //j'enregistre le client lies a la vente
+        $clients = new Client();
+        $clients->nom = $request->input('nom');
+        $clients->numero = $request->input('numero');
+
+        //recuperer le mode de paiement
+        $comptes = Compte::find( $request->modePaiement);
+
+        
+        $dateHeure = now();
+
+        $moi = now()->month;
+        $annee = $dateHeure->format('y');
+        $jour = $dateHeure->format('d');
+
+        $article= [];
+        $prixAchat = 0;
+        foreach($produits as $row) {
+    	
+    	    $sommePrixAchat = $row->associatedModel->prix_achat;
+    	    
+    	    $prixAchat = $prixAchat + $sommePrixAchat;
+    	    
+    	    $article[] =  $row->associatedModel->name;
+
+        }
+        $transactions->prixAchat = $prixAchat;
+        $transactions->produit = json_encode($article);
+        
+        $comptes->montant = $comptes->montant + $transactions->montantVerse;
+
+        //enregistrer l'installation
+        $installations = new Installation();
+        $installations->nomClient = $request->input('nom');
+        $installations->numeroClient = $request->input('numero');
+        $installations->montantTotal = $montantTotal;
+        $installations->montantVerse = $request->input('montantVerse');
+        $installations->agentOperant = $request->input('agentOperant');
+        $installations->reduction = $request->input('reduction');
+        $installations->commission = $request->input('commission');
+        $installations->mainOeuvre = $request->input('mainOeuvre');
+        $installations->compte_id = $comptes->id;
+        $installations->impot = $request->input('impot');
+        $installations->qteTotal = \Cart::getContent()->count();
+        $installations->user_id = Auth::user()->id;
+        if($installations->montantTotal > $installations->montantVerse + $installations->reduction){
+            $installations->statut = "non termine";
+        }
+        else{
+            $installations->statut = "termine";
+        }
+
+
+        //enregistrement transaction
+        $transactions->date = $dateHeure->format('d/m/y');
+        $transactions->moi = $moi;
+        $transactions->heure = $dateHeure->format('H:i:s');
+        $transactions->nomClient =$clients->nom;
+        $transactions->numeroClient = $clients->numero;
+        $transactions->type = 'installation';
+        $transactions->compte_id = $comptes->id;
+        $transactions->impot = $request->impot;
+        $transactions->montantVerse = $request->input('montantVerse');
+        $transactions->user_id = Auth::user()->id;
+        $produits = \Cart::getContent();
+        
+
+        //compter le nombre de vente pour incrementer le numero de la facture
+        $numero =Installation::where('created_at', $installations->created_at )->get()->count() + 1;
+        $name = Auth::user()->name;
+        $numeroFacture = substr($name, 0, 3).'_'.$annee.'_'.$moi.'_'.$numero;
+        
+        
+        $totalPrixAchat = 0;
+        //mettre a jour le stock
+        foreach($produits as $produit){
+            $articles = Produit::find($produit->id);
+            $prixAchat = $articles->prix_achat;
+            $totalPrixAchat = $totalPrixAchat + $prixAchat;
+        }
+        $installations->totalAchat = $totalPrixAchat;
+        
+        
+        dd($installations);
+        $comptes->save();
+        $installations->save();
+        $transactions->save();
+        $clients->save();
+        
+        // //mettre a jour le stock
+        foreach(\Cart::getContent() as $item){
+            $articles = Produit::find($item->id);
+            $produit = \Cart::get($articles->id);
+            $articles->stock = $articles->stock - $produit->quantity;
+            $articles->save();
+        }
+
+        
+        // //vrai facture
+        $pdf = Pdf::loadView('panier.factures',[
+            'ventes' =>$ventes,
+            'clients' =>$clients,
+            'numeroFacture'=>$numeroFacture
+        ]);
+        
+
+        \Cart::clear();       //a decommenter
+    }
+
+    public function afficheFacture(){
+        return view('panier.factures');
+    }
+}
