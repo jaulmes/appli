@@ -7,7 +7,7 @@
         <div class="col">
             <div style="margin-left: 15em; height: 4em">
                 <form action="{{ route('panier.index') }}" method="get">
-                    <input type="text" placeholder="chercher un produit..." name="q" />
+                    <input type="text" placeholder="chercher un produit..." name="q" onchange="this.form.submit()" />
                     <button type="submit"><i class="fas fa-search"></i></button>
                 </form>
             </div>
@@ -140,7 +140,7 @@
                                                     </div>
                                                     <div class="form-group">
                                                         <label for="reduction">Reduction</label>
-                                                        <input class="form-control" type="number" name="Reduction" id="reduction" required>
+                                                        <input class="form-control" type="number" name="reduction" id="reduction" required>
                                                     </div>
 
                                                 </div>

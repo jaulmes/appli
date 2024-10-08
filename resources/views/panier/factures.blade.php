@@ -69,14 +69,14 @@
 <body>
     <div class="title">
        <h1 style=" font-size:xxx-large; margin-bottom: -0.5em">
-            S <img src="{{ asset('logo.jpg')}}" alt="" style="width: 35px; height: 30px"> LERGY_SOLUTIONS <br>
+            S <img src="{{ public_path('logo.jpg')}}" alt="" style="width: 35px; height: 30px"> LERGY_SOLUTIONS <br>
        </h1> 
         <p ><h4 style="margin-left: 11em; margin-top: -12em">SARL</h4></p>
     </div>
     <div class="sous-title" style="display:flex; flex-direction:row; margin-bottom: 3em; margin-top: -4.5em">
         <p>
                     <div class="img1" >
-            <img src="{{asset('img3.jpg')}}" alt="" style="position: relative; height: 6em">
+            <img src="{{public_path('img3.jpg')}}" alt="" style="position: relative; height: 6em">
         </div>
         <div class="desc" style="margin-top: -10em; margin-left: 10em">
             <h3>
@@ -90,7 +90,7 @@
             </h3>
         </div>
         <div class="img2" style="margin-left:35em; margin-top: -15em" >
-            <img src="{{asset('img7.jpg')}}" alt="" style="position: relative; height: 6em">
+            <img src="{{public_path('img7.jpg')}}" alt="" style="position: relative; height: 6em">
         </div>
             
         </p>
@@ -109,13 +109,13 @@
                 <strong style="margin-left: 38em;">date: {{ $ventes->date}}</strong>
             </p>
             <div style="display: flex;">
-                <div>
+                <div style="margin-bottom: -7em;">
                     <strong >Agent opérant : @auth {{ Auth::User()->name}}  @endauth</strong> <br > 
                     <strong >TEL : @auth {{ Auth::User()->numero}}  @endauth</strong>
                 </div>
-                <div style="margin-left: 48em; margin-top:-5em">
-                    <strong ><h3>client : {{$clients->nom}}</h3></strong> <br>
-                    <strong ><h3>TEL: {{$clients->numero}}</h3></strong>
+                <div style="margin-left: 47em;">
+                <h3><strong >client : {{$clients->nom}}</strong></h3> <br>
+                    <strong >TEL: {{$clients->numero}}</strong>
                 </div>
             </div>
 
@@ -153,16 +153,22 @@
                     <td>{{$produit->price * $produit->quantity}}</td>
                 </tr>
                 @endforeach
-                <tr>
+                <tr style="font-weight: bold;">
                     <td colspan="3" style="text-align: right;"><strong>Total</strong></td>
                     <td><strong>{{ $total }}</strong></td>
                 </tr>
             </table>
         </div>
         <div class="footer" style="text-align:center">
+            @if($reduction > 0)
+                <div class="total"> 
+                    <span style="margin-bottom: 3em; Z-index: 5; background-color:grey; color: black !important"> la reduction sur votre facture est de : <strong>{{ $reduction}} Francs CFA</strong> </span>
+                </div>
+            @endif
             <div class="total"> 
-                <strong style="margin-bottom: 3em; Z-index: 5; background-color:grey; color: black !important"> Arrêtée la présente facture à la somme de : <strong>{{ $ventes->montantVerse}} Francs CFA</strong> </strong>
+                <span style="margin-bottom: 3em; Z-index: 5; background-color:grey; color: black !important"> Net A Payer <strong style="background-color: green;"> <u>{{ $netAPayer}} Francs CFA</u> </strong> </span>
             </div>
+            
             <div style="margin-left: 20em; margin-top: 4em">Signature Client </div>
             <div style=" margin-left: -35em">Signature Vendeur</div>
         </div>

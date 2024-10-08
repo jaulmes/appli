@@ -36,7 +36,6 @@ class PanierController extends Controller
         $comptes = Compte::all();
         $quantite=\Cart::getContent()->count();
 
-
         return view('panier.index', compact('produits', 'quantite', 'comptes'));
     }
 
@@ -51,7 +50,11 @@ class PanierController extends Controller
         $comptes = Compte::all();
         $quantite=\Cart::getContent()->count();
                 
-        return view('panier.search', compact('produits', 'comptes', 'quantite'));
+        return response()->json([
+            'produits'=>$produits,
+            'comptes'=>$comptes,
+            'quantite'=>$quantite
+        ]);
     }
 
     //afficher les detail d'un article 
@@ -229,7 +232,6 @@ class PanierController extends Controller
         $ventes->totalAchat = $totalPrixAchat;
         
         
-
         $comptes->save();
         $ventes->save();
         $transactions->save();
@@ -243,12 +245,16 @@ class PanierController extends Controller
             $articles->save();
         }
 
-        
-        // //vrai facture
+        $reduction = $ventes->reduction;
+        //net a payer
+        $netAPayer = $ventes->montantTotal -  $reduction;
+        // // //vrai facture
         $pdf = Pdf::loadView('panier.factures',[
+            'reduction' => $reduction,
             'ventes' =>$ventes,
             'clients' =>$clients,
-            'numeroFacture'=>$numeroFacture
+            'numeroFacture'=>$numeroFacture,
+            'netAPayer' => $netAPayer,
         ]);
         
 

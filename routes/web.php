@@ -83,7 +83,7 @@ Route::middleware('auth')->group(function () {
     //afficher les produits 
     Route::get('panier/index', [PanierController::class, 'afficheProduit'])->name('panier.index');
     //rechercher un produit
-    Route::get('/produit/search', [PanierController::class, 'search'])->name('produit.search');
+    Route::get('/panier/search', [PanierController::class, 'search'])->name('panier.search');
     //detail du produit
     Route::get('panier/produit_detail/{id}', [PanierController::class, 'detailProduit'])->name('produit.detail');
     Route::get('panier/retirer/{id}', [PanierController::class, 'retirerProduit'])->name('produit.retirer');
