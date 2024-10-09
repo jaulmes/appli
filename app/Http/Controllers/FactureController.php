@@ -14,11 +14,12 @@ class FactureController extends Controller
     }
 
     public function afficherFactureVente($id){
-        $factures = facture::find($id);
+        $factures = facture::with('ventes.produits')->find($id);
+
         $ventes = $factures->ventes;
         $netAPayer = $ventes->montantTotal - $ventes->reduction;
 
-        // chrger les donnee sur la facture pour avoyer sur une vue qui sera converti en pdf
+        // chrger les donnee sur la facture pour envoyer sur une vue qui sera converti en pdf
         $pdf = Pdf::loadView('factures.afficherFactureVentes',[
             'ventes' =>$ventes,
             'netAPayer' => $netAPayer,

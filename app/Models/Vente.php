@@ -13,6 +13,7 @@ class Vente extends Model
         'nomClient',
         'numeroClient',
         'montantTotal',
+        'NetAPayer',
         'montantVerse',
         'reduction',
         'statut',
@@ -35,7 +36,8 @@ class Vente extends Model
 
     public function produits()
     {
-        return $this->belongsToMany(Produit::class);
+        return $this->belongsToMany(Produit::class, 'produit_vente')
+                            ->withPivot('quantity');
     }
 
     public function factures()

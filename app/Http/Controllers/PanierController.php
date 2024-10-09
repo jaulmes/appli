@@ -207,7 +207,8 @@ class PanierController extends Controller
         $ventes->numeroClient = $request->input('numero');
         $ventes->montantVerse = $request->input('montantVerse');
         $ventes->reduction = $request->input('reduction');
-        $ventes->montantTotal = $montantTotal - $ventes->reduction;
+        $ventes->montantTotal = $montantTotal;
+        $ventes->NetAPayer = $montantTotal - $ventes->reduction;
         $ventes->compte_id = $comptes->id;
         $ventes->impot = $request->input('impot');
         $ventes->qteTotal = \Cart::getContent()->count();
