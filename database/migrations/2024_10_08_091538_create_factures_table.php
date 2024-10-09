@@ -13,6 +13,13 @@ return new class extends Migration
     {
         Schema::create('factures', function (Blueprint $table) {
             $table->id();
+            $table->string('numeroFacture');
+            $table->unsignedBigInteger('vente_id');
+
+            $table->foreign('vente_id')->references('id')
+                                        ->on('ventes')
+                                        ->onDelete('cascade')
+                                        ->onUpdate('cascade');
             $table->timestamps();
         });
     }

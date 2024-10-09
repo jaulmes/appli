@@ -32,8 +32,14 @@ class Vente extends Model
     {
         return $this->belongsTo(Compte::class);
     }
+
     public function produits()
     {
         return $this->belongsToMany(Produit::class);
+    }
+
+    public function factures()
+    {
+        return $this->hasOne(facture::class);
     }
 }

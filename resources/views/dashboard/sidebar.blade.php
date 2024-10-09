@@ -57,6 +57,21 @@
               </a>
             </li>
             
+            <!--factures-->
+            <li class="nav-item">
+              <a href="#factures" class="nav-link {{Request::is('factures')? 'active' : ''}}">
+                <i class="bi bi-receipt"></i>
+                <p>Factures</p>
+              </a>
+              <ul class="nav nav-treeview">
+                <li class="nav-item">
+                  <a href="{{route('factures.ventes')}}" class="nav-link {{Request::is('factures/ventes*')? 'active' : ''}}">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Factures des ventes</p>
+                  </a>
+                </li>
+              </ul>
+            </li>
                       <!--produit-->
           @can('VOIR_PRODUIT')
           <li class="nav-item">

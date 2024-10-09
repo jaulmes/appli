@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Client;
 use App\Models\Compte;
+use App\Models\facture;
 use App\Models\Produit;
 use App\Models\Transaction;
 use App\Models\Installation;
@@ -234,6 +235,8 @@ class PanierController extends Controller
             $totalPrixAchat = $totalPrixAchat + $prixAchat;
         }
         $ventes->totalAchat = $totalPrixAchat;
+
+
         
         
         $comptes->save();
@@ -249,10 +252,14 @@ class PanierController extends Controller
 
             ]);
         }
+        
+        //creer une facture pour enregistrer dans le systeme
+        $factures = new facture();
+        $factures->numeroFacture = $numeroFacture;
+        $factures->vente_id = $ventes->id;
+        $factures->save();
                 
-                
-
-        // //mettre a jour le stock
+        // mettre a jour le stock
         foreach(\Cart::getContent() as $item){
             $articles = Produit::find($item->id);
             $produit = \Cart::get($articles->id);
@@ -262,7 +269,8 @@ class PanierController extends Controller
         $reduction = $ventes->reduction;
         //net a payer
         $netAPayer = $ventes->montantTotal -  $reduction;
-        // // //vrai facture
+
+        // chrger les donnee sur la facture pour avoyer sur une vue qui sera converti en pdf
         $pdf = Pdf::loadView('panier.factures',[
             'reduction' => $reduction,
             'ventes' =>$ventes,
@@ -271,9 +279,8 @@ class PanierController extends Controller
             'netAPayer' => $netAPayer,
         ]);
         
-
-        \Cart::clear();       //a decommenter
-        return $pdf->stream();
+        \Cart::clear();       
+        return $pdf->stream($numeroFacture);
     }
     
     public function validerInstallation(Request $request){

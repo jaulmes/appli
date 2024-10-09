@@ -4,7 +4,7 @@
 
 <div class="card">
     <div class="card-header">
-        <h3 class="card-title">Listes des ventes</h3>
+        <h3 class="card-title">Liste des factures des ventes</h3>
     </div>
 
     <div class="container-xl px-4 mt-n4">
@@ -27,7 +27,7 @@
         <div class="col-12">
             <div class="card" style="margin-top: 2em">
                 <div class="card-header">
-                    <h3 class="card-title "><strong>Liste des Ventes</strong></h3>
+                    <h3 class="card-title "><strong>Liste des factures des ventes</strong></h3>
                     <div class="card-tools">
                         <div class="input-group input-group-sm" style="width: 150px;">
                             <input type="text" name="table_search" class="form-control float-right" placeholder="Search">
@@ -41,20 +41,25 @@
                 </div>
 
                 <div class="card-body table-responsive p-0" style="height: 400px;">
-                    <table class="table table-head-fixed text-nowrap">
+                    <table class="table table-head-fixed text-nowrap table-hover">
                         <thead>
                             <tr>
+                                <th>Numero de la facture</th>
                                 <th>Date</th>
                                 <th>Nom du client</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach($ventes as $vente)
+                            @foreach($factures as $facture)
                             <tr>
-                                <td>{{$vente->nomClient}}</td>
-                                <td>{{$vente->numeroClient}}</td>
-                                <td>{{$vente->qteTotal}}</td>
+                                <td>{{$facture->numeroFacture}}</td>
+                                <td>{{$facture->ventes->date}}</td>
+                                <td>{{$facture->ventes->nomClient}}</td>
+                                <td>
+                                    <a href="{{ route('factures.ventes.telecharger', $facture->id) }}" ><button><i class="bi bi-download"></i></button></a>
+                                    <a href="{{ route('factures.ventes.afficher', $facture->id) }}"><button><i class="bi bi-eye"></i></button></a>
+                                </td>
                             </tr>
                             @endforeach
                         </tbody>

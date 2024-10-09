@@ -6,6 +6,7 @@ use App\Http\Controllers\PrivilageController;
 use App\Http\Controllers\ChargeController;
 use App\Http\Controllers\ComptabiliteController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\FactureController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\produitController;
 use App\Http\Controllers\ProfileController;
@@ -99,16 +100,25 @@ Route::middleware('auth')->group(function () {
     //retirer un produit du panier
     Route::delete('panier/delete/{id}', [PanierController::class, 'delete'])->name('panier.delete');
     
-    
-    
     Route::get('detruire', function(){
         \Cart::clear();
         return redirect()->back();
     });
     
+    //afficher la facture apres avoir realise un achat ou une vente. la route c'est facture sans "s"
     Route::get('facture', [PanierController::class, 'afficheFacture'])->name('panier.facture');
     Route::post('panier/enregistrer', [PanierController::class, 'validerVente'])->name('panier.enregistrer');
     Route::post('panier/installation', [PanierController::class, 'validerInstallation'])->name('panier.installation');
+
+    /**
+     * facture
+     */
+    //afficher les facture enregistre dans le systeme
+    Route::get('factures/ventes', [FactureController::class, 'factureVente'])->name('factures.ventes');
+    //telecharger la facture
+    Route::get('factures/ventes/telecharger/{id}', [FactureController::class, 'telechargerFactureVente'])->name('factures.ventes.telecharger');
+    //afficher une facture
+    Route::get('factures/ventes/afficher/{id}', [FactureController::class, 'afficherFactureVente'])->name('factures.ventes.afficher');
 
     /**
      * ventes
