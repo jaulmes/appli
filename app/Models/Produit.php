@@ -31,6 +31,11 @@ class Produit extends Model
         return $this->belongsToMany(Achat::class);
     }
 
+    public function ventes(): BelongsToMany
+    {
+        return $this->belongsToMany(Vente::class);
+    }
+
     public function getPrice(){
         $prix = $this->price;
 

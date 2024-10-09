@@ -146,7 +146,7 @@ class PanierController extends Controller
     }
 
     public function validerVente(Request $request){
-        $montantTotal = \Cart::getTotal();
+        
 
         //j'enregistre le client lies a la vente
         $clients = new Client();
@@ -155,7 +155,6 @@ class PanierController extends Controller
 
         $comptes = Compte::find( $request->modePaiement);
         
-
         $dateHeure = now();
 
         $moi = now()->month;
@@ -176,11 +175,13 @@ class PanierController extends Controller
         $transactions->impot = $request->impot;
         $transactions->montantVerse = $request->input('montantVerse');
         $transactions->user_id = Auth::user()->id;
-        $produits = \Cart::getContent();
+
+        //recuperer le panier
+        $panier = \Cart::getContent();
         
         $article= [];
         $prixAchat = 0;
-        foreach($produits as $row) {
+        foreach($panier as $row) {
     	
     	    $sommePrixAchat = $row->associatedModel->prix_achat;
     	    
@@ -195,14 +196,17 @@ class PanierController extends Controller
 
         $comptes->montant = $comptes->montant + $transactions->montantVerse;
 
-        
+        //montant total du panier sans la reduction
+        $montantTotal = \Cart::getTotal();
+
+        //creation d'une vente
         $ventes = new Vente();
         $ventes->dateEncour = now()->format('m-Y');
         $ventes->nomClient = $request->input('nom');
         $ventes->numeroClient = $request->input('numero');
-        $ventes->montantTotal = $montantTotal;
         $ventes->montantVerse = $request->input('montantVerse');
         $ventes->reduction = $request->input('reduction');
+        $ventes->montantTotal = $montantTotal - $ventes->reduction;
         $ventes->compte_id = $comptes->id;
         $ventes->impot = $request->input('impot');
         $ventes->qteTotal = \Cart::getContent()->count();
@@ -214,14 +218,14 @@ class PanierController extends Controller
         else{
             $ventes->statut = "termine";
         }
+        
 
         //compter le nombre de vente pour incrementer le numero de la facture
         $numero =Vente::where('date', $ventes->date )->get()->count() + 1;
         $name = Auth::user()->name;
         $numeroFacture = substr($name, 0, 3).'_'.$annee.'_'.$moi.'_'.$numero;
         
-        $panier = \Cart::getContent();
-        
+        //dd($panier);
         $totalPrixAchat = 0;
         //mettre a jour le stock
         foreach($panier as $produit){
@@ -236,7 +240,18 @@ class PanierController extends Controller
         $ventes->save();
         $transactions->save();
         $clients->save();
-        
+
+        //je relie chaque produit du pqnier a la vente 
+        foreach($panier as $produit){
+            $ventes->produits()->attach($produit->id, [
+                'quantity' => $produit->quantity,
+                'price' => $produit->price
+
+            ]);
+        }
+                
+                
+
         // //mettre a jour le stock
         foreach(\Cart::getContent() as $item){
             $articles = Produit::find($item->id);
@@ -244,7 +259,6 @@ class PanierController extends Controller
             $articles->stock = $articles->stock - $produit->quantity;
             $articles->save();
         }
-
         $reduction = $ventes->reduction;
         //net a payer
         $netAPayer = $ventes->montantTotal -  $reduction;
