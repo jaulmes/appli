@@ -17,3 +17,11 @@ yarn-error.log
 /.fleet
 /.idea
 /.vscode
+
+# Ne pas ignorer ces fichiers
+!/storage/app/public
+!/storage/framework/cache
+!/storage/framework/sessions
+!/storage/framework/views
+!/storage/logs/.gitignore
+!/bootstrap/cache/.gitignore

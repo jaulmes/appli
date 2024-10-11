@@ -13,12 +13,18 @@ class facture extends Model
 
     protected $fillable=[
         'numeroFacture',
-        'vente_id'
+        'vente_id',
+        'installation_id'
     ] ;
 
     public function ventes(): BelongsTo
     {
         return $this->belongsTo(Vente::class, 'vente_id');
+    }
+
+    public function installations(): BelongsTo
+    {
+        return $this->belongsTo(Installation::class, 'installation_id');
     }
 
 }

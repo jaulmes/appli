@@ -37,6 +37,12 @@ class Produit extends Model
                                         ->withPivot('quantity');
     }
 
+    public function installations(): BelongsToMany
+    {
+        return $this->belongsToMany(Installation::class, 'installation_produit')
+                                        ->withPivot('quantity');
+    }
+
     public function getPrice(){
         $prix = $this->price;
 

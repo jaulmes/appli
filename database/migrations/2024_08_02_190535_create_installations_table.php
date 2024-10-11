@@ -15,8 +15,10 @@ return new class extends Migration
             $table->id();
             $table->string('nomClient');
             $table->integer('numeroClient');
-            $table->integer('montantProduit');
+            $table->integer('montantProduit');//montant total des produit selectionne pour l'installation
+            $table->integer('NetAPayer');//montant que le client doit verse(toute charge compris)
             $table->integer('montantVerse')->nullable();
+            $table->integer('totalAchat')->nullable();
             $table->integer('reduction')->nullable();
             $table->string('agentOperant')->nullable();
             $table->integer('qteTotal');

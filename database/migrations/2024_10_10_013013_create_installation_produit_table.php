@@ -11,17 +11,19 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('factures', function (Blueprint $table) {
+        Schema::create('installation_produit', function (Blueprint $table) {
             $table->id();
-            $table->string('numeroFacture');
-            $table->unsignedBigInteger('vente_id')->nullable();
-            $table->unsignedBigInteger('installation_id')->nullable();
+            $table->string('price');
+            $table->integer('quantity');
+            $table->unsignedBigInteger('produit_id');
+            $table->unsignedBigInteger('installation_id');
 
-            $table->foreign('vente_id')->references('id')
-                                        ->on('ventes')
+            //liaison evec les cles etrangere
+            $table->foreign('produit_id')->references('id')
+                                        ->on('produits')
                                         ->onDelete('cascade')
                                         ->onUpdate('cascade');
-
+            
             $table->foreign('installation_id')->references('id')
                                         ->on('installations')
                                         ->onDelete('cascade')
@@ -35,6 +37,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('factures');
+        Schema::dropIfExists('installation_produit');
     }
 };

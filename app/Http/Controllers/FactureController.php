@@ -45,4 +45,40 @@ class FactureController extends Controller
            
         return $pdf->download($factures->numeroFacture);
     }
+
+    public function factureInstallation(){
+        $factures = facture::all();
+        return view('factures.installations', compact('factures'));
+    }
+
+    public function afficherFactureInstallation($id){
+        $factures = facture::with('installations.produits')->find($id);
+
+        $installations = $factures->installations;
+        $netAPayer = $installations->montantTotal - $installations->reduction;
+
+        // chrger les donnee sur la facture pour envoyer sur une vue qui sera converti en pdf
+        $pdf = Pdf::loadView('factures.afficherFactureInstallations',[
+            'installations' =>$installations,
+            'netAPayer' => $netAPayer,
+            'factures' => $factures,
+        ]);
+        
+           
+        return $pdf->stream($factures->numeroFacture);
+    }
+
+    public function telechargerFactureInstallation($id){
+        $factures = facture::find($id);
+        $installations = $factures->installations;
+
+        // chrger les donnee sur la facture pour avoyer sur une vue qui sera converti en pdf
+        $pdf = Pdf::loadView('factures.installations',[
+            'ventes' =>$installations,
+            'factures' => $factures,
+        ]);
+        
+           
+        return $pdf->download($factures->numeroFacture);
+    }
 }

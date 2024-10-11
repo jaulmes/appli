@@ -183,7 +183,7 @@
                                                     </div>
                                                     <div class="form-group">
                                                         <label for="Commission">Commission</label>
-                                                        <input class="form-control" type="number" name="Commission" id="Commission"  required>
+                                                        <input class="form-control" type="number" name="commission" id="Commission"  required>
                                                     </div>
                                                 </div>
                                                 
@@ -206,7 +206,7 @@
                                                         
                                                     <div class="form-group">
                                                         <label for="reduction">Reduction</label>
-                                                        <input class="form-control" type="number" name="Reduction" id="reduction" required>
+                                                        <input class="form-control" type="number" name="reduction" id="reduction" required>
                                                     </div>
                                                 </div>
                                                 

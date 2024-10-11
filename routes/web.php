@@ -113,12 +113,20 @@ Route::middleware('auth')->group(function () {
     /**
      * facture
      */
-    //afficher les facture enregistre dans le systeme
+
+    //afficher les factures des ventes enregistre dans le systeme
     Route::get('factures/ventes', [FactureController::class, 'factureVente'])->name('factures.ventes');
-    //telecharger la facture
+    //telecharger la facture d'un la vente
     Route::get('factures/ventes/telecharger/{id}', [FactureController::class, 'telechargerFactureVente'])->name('factures.ventes.telecharger');
-    //afficher une facture
+    //afficher une facture d'un la vente
     Route::get('factures/ventes/afficher/{id}', [FactureController::class, 'afficherFactureVente'])->name('factures.ventes.afficher');
+    
+    //afficher les facture des installatiions enregistre dans le systeme
+    Route::get('factures/installations', [FactureController::class, 'factureInstallation'])->name('factures.installations');
+    //telecharger la facture d'uneinstallations installations
+    Route::get('factures/installations/telecharger/{id}', [FactureController::class, 'telechargerFactureInstallation'])->name('factures.installations.telecharger');
+    //afficher une facture d'une installations
+    Route::get('factures/installations/afficher/{id}', [FactureController::class, 'afficherFactureInstallation'])->name('factures.installations.afficher');
 
     /**
      * ventes
