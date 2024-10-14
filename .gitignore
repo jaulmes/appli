@@ -2,11 +2,9 @@
 /node_modules
 /public/build
 /public/hot
-/storage/*.key
 /vendor
 .env
 .env.backup
-.env.production
 .phpunit.result.cache
 Homestead.json
 Homestead.yaml
@@ -17,9 +15,4 @@ yarn-error.log
 /.idea
 /.vscode
 
-# Ne pas ignorer ces fichiers
-!/storage/framework/cache
-!/storage/framework/sessions
-!/storage/framework/views
-!/storage/logs/.gitignore
-!/bootstrap/cache/.gitignore
+
