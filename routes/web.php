@@ -7,6 +7,7 @@ use App\Http\Controllers\ChargeController;
 use App\Http\Controllers\ComptabiliteController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\FactureController;
+use App\Http\Controllers\FournisseurController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\produitController;
 use App\Http\Controllers\ProfileController;
@@ -76,6 +77,13 @@ Route::middleware('auth')->group(function () {
     Route::get('/produit/categori', [produitController::class, 'index_categorie'])->name('produit.categori');
     Route::get('/produit/ajouter_categori', [produitController::class, 'create_categorie'])->name('produit.ajouter_categori');
     Route::post('/produit/store_categori', [produitController::class, 'store_categories'])->name('produit.store_categori');
+    
+    /**
+     * fournisseur de produit
+     */
+    Route::get('/produit/afficherFournisseurs', [FournisseurController::class, 'index'])->name('produit.afficherFournisseur');
+    Route::get('/produit/ajouterFournisseur', [FournisseurController::class, 'create'])->name('produit.ajouterFournisseur');
+    Route::post('/produit/storeFournisseur', [FournisseurController::class, 'store'])->name('produit.storeFournisseur');
     
     /**
      * panier

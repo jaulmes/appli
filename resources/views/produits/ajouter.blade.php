@@ -8,9 +8,7 @@
             <div class="col-md-6">
                 <!-- general form elements -->
                 <div class="card card-primary">
-
-
-                @if ($errors->any())
+                    @if ($errors->any())
                     <div class="alert alert-danger">
                         <ul>
                             @foreach ($errors->all() as $error)
@@ -18,8 +16,7 @@
                             @endforeach
                         </ul>
                     </div>
-                @endif
-
+                    @endif
 
                     <div class="card-header">
                         <h3 class="card-title">Quick Example</h3>
@@ -28,7 +25,7 @@
                         @csrf
                         <div class="card-body">
                             <div class="row">
-                                <div class="form-group mx-4" >
+                                <div class="form-group mx-2" >
                                     <label for="titre">titre </label>
                                     <input name="name" type="text" class="form-control" id="titre" placeholder="entrer le titre" required> 
                                     @error('titre')
@@ -49,22 +46,22 @@
                                 </div>
                             </div>
                             <div class="row">
-                                    <div class="form-group mx-4">
-                                        <label for="prix_achat">Prix d'achat </label>
-                                        <input name="prix_achat" type="number" class="form-control" id="prix_achat" placeholder="entrer le prix d'achat" required>
-                                        @error('prix_achat')
-                                        <div class="invalid-feedback">
-                                            {{ $message }}
-                                        </div>
-                                        @enderror
+                                <div class="form-group mx-2">
+                                    <label for="prix_achat">Prix d'achat </label>
+                                    <input name="prix_achat" type="number" class="form-control" id="prix_achat" placeholder="entrer le prix d'achat" required>
+                                    @error('prix_achat')
+                                    <div class="invalid-feedback">
+                                        {{ $message }}
                                     </div>
-                                    <div class="form-group">
-                                        <label for="prix_vente">Prix de catalogue </label>
-                                        <input name="price" type="number" class="form-control" id="prix_vente" placeholder="entrer le prix de vente" required>
-                                    </div>
+                                    @enderror
+                                </div>
+                                <div class="form-group">
+                                    <label for="prix_vente">Prix de catalogue </label>
+                                    <input name="price" type="number" class="form-control" id="prix_vente" placeholder="entrer le prix de vente" required>
+                                </div>
                             </div>
                             <div class="row">
-                                <div class="form-group mx-4">
+                                <div class="form-group mx-2">
                                     <label for="prix_technicien">Prix technicien </label>
                                     <input name="prix_technicien" type="number" class="form-control" id="prix_technicien" placeholder="entrer le prix des technicients" required>
                                 </div>
@@ -74,7 +71,7 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="form-group mx-4">
+                                <div class="form-group mx-2">
                                     <label for="stock">stock </label>
                                     <input name="stock" type="number" class="form-control" id="stock" placeholder="entrer le stock" required>
                                 </div>
@@ -84,9 +81,19 @@
                                 </div>
                             </div>
 
+                            <div class="form-group ">
+                                <label for="fournisseur_id">fournisseur</label>
+                                <select name="fournisseur_id" class="form-control col-md-6 select2" id="fournisseur_id"  style="width: 100%;" >
+                                        <option selected="" disabled>choisir le fournisseur</option>
+                                    @foreach($fournisseurs as $fournisseur)
+                                        <option value="{{$fournisseur->id}}">{{$fournisseur->nom}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+
                             <div class="form-group">
                                 <div class="input-group">
-                                    <div class="form-group mx-4">
+                                    <div class="form-group mx-3">
                                         <label for="description">description </label>
                                         <textarea name="description" id="description" class="form-control" required></textarea>
                                     </div>
@@ -97,6 +104,7 @@
                                     </div>
 
                                 </div>
+                                
                             </div>
 
                         </div>

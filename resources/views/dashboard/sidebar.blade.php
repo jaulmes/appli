@@ -120,6 +120,20 @@
                   <p>Ajouter une categorie</p>
                 </a>
               </li>
+
+              <li class="nav-item">
+                <a href="{{route('produit.afficherFournisseur')}}" class="nav-link {{Request::is('produit/categori*')? 'active' : ''}}">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>liste des fournisseur</p>
+                </a>
+              </li>
+
+              <li class="nav-item">
+                <a href="{{route('produit.ajouterFournisseur')}}" class="nav-link {{Request::is('produit/ajouter_categori*')? 'active' : ''}}">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Ajouter un fournisseur</p>
+                </a>
+              </li>
               @endcan
             </ul>
           </li>

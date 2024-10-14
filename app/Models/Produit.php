@@ -43,6 +43,12 @@ class Produit extends Model
                                         ->withPivot('quantity');
     }
 
+    public function fournisseurs(): BelongsToMany
+    {
+        return $this->belongsToMany(Fournisseur::class, 'fournisseur_produit')
+                                        ->withPivot('price');
+    }
+
     public function getPrice(){
         $prix = $this->price;
 
