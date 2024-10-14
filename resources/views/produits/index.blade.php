@@ -49,7 +49,7 @@
                                     <th style="background-color: green;">titre</th>
                                     <th style="background-color: green;">categorie</th>
                                     <th style="background-color: green;">Stock</th>
-                                    @can('impot')
+                                    @can('IMPOT')
                                         <th style="background-color: green;">Prix d'achat</th>
                                     @endCan
                                     <th style="background-color: green;">Prix de vente</th>
@@ -57,7 +57,7 @@
                                     <th style="background-color: green;">Prix technicien</th>
                                     <th style="background-color: green;">Description</th>
                                     <th style="background-color: green;">Images</th>
-                                    @can('impot')
+                                    @can('IMPOT')
                                         <th style="background-color: green;">Actions</th>
                                     @endcan
                                 </tr>
@@ -68,7 +68,7 @@
                                     <td style="margin-rigth: -7em">{{$produit->name}}</td>
                                     <td>{{$produit->categori->titre}}</td>
                                     <td>{{$produit->stock}}</td>
-                                    @can('impot')
+                                    @can('IMPOT')
                                         <td> {{$produit->prix_achat}}</td>
                                     @endcan
                                     <td>{{$produit->price}}</td>
@@ -76,7 +76,7 @@
                                     <td>{{$produit->prix_technicien}}</td>
                                     <td>{{$produit->description}} </td>
                                     <td><img src="{{asset('storage/images/produits/'.$produit->image_produit) ?? 'bjr'}}" class="img-fluid" alt="" style="height: 5em; width: 100%"> </td>
-                                    @can('impot')
+                                    @can('IMPOT')
                                     <td>
                                         <a href="{{ route('produit.show', $produit->id)}}">
                                             <button type="button" class="btn btn-primary">modifier</button>
