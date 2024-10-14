@@ -57,7 +57,9 @@
                                     <th style="background-color: green;">Prix technicien</th>
                                     <th style="background-color: green;">Description</th>
                                     <th style="background-color: green;">Images</th>
-                                    <th style="background-color: green;">Actions</th>
+                                    @can('impot')
+                                        <th style="background-color: green;">Actions</th>
+                                    @endcan
                                 </tr>
                             </thead>
                             <tbody>
@@ -74,6 +76,7 @@
                                     <td>{{$produit->prix_technicien}}</td>
                                     <td>{{$produit->description}} </td>
                                     <td><img src="{{asset('storage/images/produits/'.$produit->image_produit) ?? 'bjr'}}" class="img-fluid" alt="" style="height: 5em; width: 100%"> </td>
+                                    @can('impot')
                                     <td>
                                         <a href="{{ route('produit.show', $produit->id)}}">
                                             <button type="button" class="btn btn-primary">modifier</button>
@@ -84,6 +87,7 @@
                                             <button type="submit" class="btn btn-warning" onclick="return confirm('etes vous sur de vouloir suprimer ce produit??')">suprimer</button>
                                         </form>
                                     </td>
+                                    @endcan
                                 </tr>
                                 @endforeach
                             </tbody>
