@@ -7,7 +7,7 @@
         <div class="col">
             <div style="margin-left: 15em; height: 4em">
                 <form action="{{ route('panier.index') }}" method="get">
-                    <input type="text" placeholder="chercher un produit..." name="q" />
+                    <input type="text" placeholder="chercher un produit..." name="q" onchange="this.form.submit()" />
                     <button type="submit"><i class="fas fa-search"></i></button>
                 </form>
             </div>
@@ -28,18 +28,20 @@
                             <div class="member-info" style="font-size: 12px;">
                                 <h7><u>Nom</u>: {{ $produit->name }}</h7>
                                 <p class="card-text"><u>Desc</u>: {{ $produit->getDescription() }}</p>
-                                <p class="card-text"><u>Prix</u>: <strong style="background-color:green">{{ $produit->getPrice() }}</strong></p>
-                                <div class="row" style="padding-bottom: 0.5em;">
+                                <p class="card-text"><u>Prix</u>: <strong class="text-success">{{ $produit->getPrice() }}</strong></p>
+                                <div class="row" style="margin-left: 0.2em; padding-bottom: 0.01em; margin-top: 0.5em;">
                                     <a href="{{ route('produit.detail', $produit->id) }}">
                                         <button class="btn btn-warning px-1"><i class="bi bi-eye"></i></button>
                                     </a>
                                     @if($produit->getStock() === "disponible")
                                     <form action="{{ route('achats.storeCart') }}" method="post">
                                         @csrf
-                                        <input type="hidden" name="id" value="{{ $produit->id }}">
-                                        <input type="hidden" name="name" value="{{ $produit->name }}">
-                                        <input type="hidden" name="price" value="{{ $produit->price }}">
-                                        <button class="btn btn-primary px-1" type="submit" style="margin-left: 2em;"><i class="bi bi-plus"></i></button>
+                                        <div class="action">
+                                            <input type="hidden" name="id" value="{{ $produit->id }}">
+                                            <input type="hidden" name="name" value="{{ $produit->name }}">
+                                            <input type="hidden" name="price" value="{{ $produit->price }}">
+                                            <button class="add-to-cart btn btn-primary px-1" type="submit" style="margin-left: 4em; margin-top:-3.5em"><i class="bi bi-plus"></i></button>
+                                        </div>
                                     </form>
                                     @endif
                                 </div>
@@ -138,7 +140,7 @@
                                                     </div>
                                                     <div class="form-group">
                                                         <label for="reduction">Reduction</label>
-                                                        <input class="form-control" type="number" name="Reduction" id="reduction" required>
+                                                        <input class="form-control" type="number" name="reduction" id="reduction" required>
                                                     </div>
 
                                                 </div>
@@ -181,7 +183,7 @@
                                                     </div>
                                                     <div class="form-group">
                                                         <label for="Commission">Commission</label>
-                                                        <input class="form-control" type="number" name="Commission" id="Commission"  required>
+                                                        <input class="form-control" type="number" name="commission" id="Commission"  required>
                                                     </div>
                                                 </div>
                                                 
@@ -204,7 +206,7 @@
                                                         
                                                     <div class="form-group">
                                                         <label for="reduction">Reduction</label>
-                                                        <input class="form-control" type="number" name="Reduction" id="reduction" required>
+                                                        <input class="form-control" type="number" name="reduction" id="reduction" required>
                                                     </div>
                                                 </div>
                                                 

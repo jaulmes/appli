@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('nomClient');
             $table->integer('numeroClient');
             $table->integer('montantTotal');
+            $table->integer('NetAPayer');
             $table->integer('montantVerse')->nullable();
             $table->integer('totalAchat')->nullable();
             $table->integer('reduction')->nullable();

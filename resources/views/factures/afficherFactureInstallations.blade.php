@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ $numeroFacture }} - {{$clients->numero}}</title>
+    <title>{{ $factures->numeroFacture }} - {{$installations->numeroClient}}</title>
     <style>
         body{
             margin-left: 0;
@@ -101,21 +101,21 @@
             <strong >NIU: M092316074072K</strong> <strong style="margin-left: 10em;">facebook : facebook/solergysolutions</strong> <strong style="margin-left: 8em;">Contacts : 6 57 24 89 25</strong>
         </p>
         <p style="margin-top: -0.5em;">
-            <strong >Code marchand {{ $ventes->compte->nom}} : {{ $ventes->compte->numero}}</strong>  <strong style="margin-left: 24em;">Email :solutionssolergy@gmail.com</strong>
+            <strong >Code marchand {{ $installations->compte->nom}} : {{ $installations->compte->numero}}</strong>  <strong style="margin-left: 24em;">Email :solutionssolergy@gmail.com</strong>
         </p>
         <div style="margin-top: -1em;">
             <p >
-                <strong>REF : {{ $numeroFacture }}</strong>  
-                <strong style="margin-left: 38em;">date: {{ $ventes->date}}</strong>
+                <strong>REF : {{ $factures->numeroFacture }}</strong>  
+                <strong style="margin-left: 38em;">date: {{ $installations->created_at}}</strong>
             </p>
             <div style="display: flex;">
                 <div style="margin-bottom: -7em;">
-                    <strong >Agent opérant : @auth {{ Auth::User()->name}}  @endauth</strong> <br > 
-                    <strong >TEL : @auth {{ Auth::User()->numero}}  @endauth</strong>
+                    <strong >Agent opérant : {{$installations->user->nom}}</strong> <br > 
+                    <strong >TEL : {{$installations->user->numero}}</strong>
                 </div>
                 <div style="margin-left: 47em;">
-                <h3><strong >client : {{$clients->nom}}</strong></h3> <br>
-                    <strong >TEL: {{$clients->numero}}</strong>
+                <h3><strong >client : {{$installations->nomClient}}</strong></h3> <br>
+                    <strong >TEL: {{$installations->numeroClient}}</strong>
                 </div>
             </div>
 
@@ -139,34 +139,35 @@
                     <th>P.U.</th>
                     <th>P.Total</th>
                 </tr>
-                @php
-                    $total = 0;
-                @endphp
-                @foreach(Cart::getContent() as $produit)
-                @php
-                    $total += $produit->price * $produit->quantity;
-                @endphp
+                @foreach($installations->produits as $produit)
+
                 <tr>
-                    <td>{{$produit->quantity}}</td>
+                    <td>{{$produit->pivot->quantity}}</td>
                     <td>{{$produit->name}}</td>
                     <td>{{$produit->price}}</td>
-                    <td>{{$produit->price * $produit->quantity}}</td>
+                    <td>{{$produit->pivot->quantity * $produit->price}}</td>
                 </tr>
                 @endforeach
+                <tr >
+                    <td  style="text-align: right;"></td>
+                    <td  style="text-align: left;">installation</td>
+                    <td ></td>
+                    <td  style="text-align: left;">{{$installations->mainOeuvre}}</td>
+                </tr>
                 <tr style="font-weight: bold;">
                     <td colspan="3" style="text-align: right;"><strong>Total</strong></td>
-                    <td><strong>{{ $total }}</strong></td>
+                    <td><strong>{{ $installations->montantProduit + $installations->mainOeuvre }}</strong></td>
                 </tr>
             </table>
         </div>
         <div class="footer" style="text-align:center">
-            @if($reduction > 0)
+            @if($installations->reduction > 0)
                 <div class="total"> 
-                    <span style="margin-bottom: 3em; Z-index: 5; background-color:grey; color: black !important"> la reduction sur votre facture est de : <strong>{{ $reduction}} Francs CFA</strong> </span>
+                    <span style="margin-bottom: 3em; Z-index: 5; background-color:grey; color: black !important"> la reduction sur votre facture est de : <strong>{{ $installations->reduction}} Francs CFA</strong> </span>
                 </div>
             @endif
             <div class="total"> 
-                <span style="margin-bottom: 3em; Z-index: 5; background-color:grey; color: black !important"> Net A Payer <strong style="background-color: green;"> <u>{{ $netAPayer}} Francs CFA</u> </strong> </span>
+                <span style="margin-bottom: 3em; Z-index: 5; background-color:grey; color: black !important"> Net A Payer <strong style="background-color: green;"> <u>{{ $installations->NetAPayer}} Francs CFA</u> </strong> </span>
             </div>
             
             <div style="margin-left: 20em; margin-top: 4em">Signature Client </div>

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Installation;
 use Illuminate\Http\Request;
 
 class InstallationController extends Controller

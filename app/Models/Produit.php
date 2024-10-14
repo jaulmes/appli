@@ -31,6 +31,24 @@ class Produit extends Model
         return $this->belongsToMany(Achat::class);
     }
 
+    public function ventes(): BelongsToMany
+    {
+        return $this->belongsToMany(Vente::class, 'produit_vente')
+                                        ->withPivot('quantity');
+    }
+
+    public function installations(): BelongsToMany
+    {
+        return $this->belongsToMany(Installation::class, 'installation_produit')
+                                        ->withPivot('quantity');
+    }
+
+    public function fournisseurs(): BelongsToMany
+    {
+        return $this->belongsToMany(Fournisseur::class, 'fournisseur_produit')
+                                        ->withPivot('price');
+    }
+
     public function getPrice(){
         $prix = $this->price;
 

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Imports\ProduitsImport;
 use App\Models\Categori;
+use App\Models\Fournisseur;
 use App\Models\Produit;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
@@ -52,7 +53,8 @@ class produitController extends Controller
     public function create()
     {
         $categories = Categori::all();
-        return view('produits.ajouter', compact('categories'));
+        $fournisseurs = Fournisseur::all();
+        return view('produits.ajouter', compact('categories', 'fournisseurs'));
     }
 
     /**
@@ -62,7 +64,7 @@ class produitController extends Controller
     {
 
        $request->validate([
-            'name' => 'required|unique:'.Produit::class,
+            // 'name' => 'required|unique:'.Produit::class,
             'prix_achat' => 'required|integer|min:0',
             'price' => 'required|integer|min:0',
             'prix_minimum' => 'required|integer|min:0',
@@ -121,10 +123,14 @@ class produitController extends Controller
             $transactions->prixAchat = $produits->prix_achat * $produits->stock;
         }
         
-
-        //dd($transactions);
         $transactions->save();
         $produits->save();
+
+        //relier le produit a son fournisseur
+        $produits->fournisseurs()->attach($request->fournisseur_id, [
+            'price' => $produits->prix_achat,
+            'quantity' => $produits->stock
+        ]);
 
 
         return redirect::route('produit.index')->with('message', 'produit ajouté avec succes!');

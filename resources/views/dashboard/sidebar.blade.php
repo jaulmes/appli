@@ -57,11 +57,35 @@
               </a>
             </li>
             
+            <!--factures-->
+            <li class="nav-item">
+              <a href="#factures" class="nav-link {{Request::is('factures')? 'active' : ''}}">
+                <i class="bi bi-receipt"></i>
+                <p>Factures</p>
+                <i class="fas fa-angle-left right"></i>
+              </a>
+              <ul class="nav nav-treeview">
+                <li class="nav-item">
+                  <a href="{{route('factures.ventes')}}" class="nav-link {{Request::is('factures/ventes*')? 'active' : ''}}">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Factures des ventes</p>
+                  </a>
+                </li>
+              </ul>
+              <ul class="nav nav-treeview">
+                <li class="nav-item">
+                  <a href="{{route('factures.installations')}}" class="nav-link {{Request::is('factures/installations*')? 'active' : ''}}">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Factures des installations</p>
+                  </a>
+                </li>
+              </ul>
+            </li>
                       <!--produit-->
           @can('VOIR_PRODUIT')
           <li class="nav-item">
             <a href="#" class="nav-link {{ Request::is('produit*')? 'active' : ''}}">
-              <i class="nav-icon fas fa-copy"></i>
+            <i class="bi bi-box-fill"></i>
               <p>
                 produits
                 <i class="fas fa-angle-left right"></i>
@@ -94,6 +118,20 @@
                 <a href="{{route('produit.ajouter_categori')}}" class="nav-link {{Request::is('produit/ajouter_categori*')? 'active' : ''}}">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Ajouter une categorie</p>
+                </a>
+              </li>
+
+              <li class="nav-item">
+                <a href="{{route('produit.afficherFournisseur')}}" class="nav-link {{Request::is('produit/categori*')? 'active' : ''}}">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>liste des fournisseur</p>
+                </a>
+              </li>
+
+              <li class="nav-item">
+                <a href="{{route('produit.ajouterFournisseur')}}" class="nav-link {{Request::is('produit/ajouter_categori*')? 'active' : ''}}">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Ajouter un fournisseur</p>
                 </a>
               </li>
               @endcan

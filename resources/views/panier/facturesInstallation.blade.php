@@ -101,12 +101,12 @@
             <strong >NIU: M092316074072K</strong> <strong style="margin-left: 10em;">facebook : facebook/solergysolutions</strong> <strong style="margin-left: 8em;">Contacts : 6 57 24 89 25</strong>
         </p>
         <p style="margin-top: -0.5em;">
-            <strong >Code marchand {{ $ventes->compte->nom}} : {{ $ventes->compte->numero}}</strong>  <strong style="margin-left: 24em;">Email :solutionssolergy@gmail.com</strong>
+            <strong >Code marchand {{ $installations->compte->nom}} : {{ $installations->compte->numero}}</strong>  <strong style="margin-left: 24em;">Email :solutionssolergy@gmail.com</strong>
         </p>
         <div style="margin-top: -1em;">
             <p >
                 <strong>REF : {{ $numeroFacture }}</strong>  
-                <strong style="margin-left: 38em;">date: {{ $ventes->date}}</strong>
+                <strong style="margin-left: 38em;">date: {{ $installations->date}}</strong>
             </p>
             <div style="display: flex;">
                 <div style="margin-bottom: -7em;">
@@ -126,7 +126,7 @@
     <div style="margin-top: -2em">
         <p class="title">
             <u>
-                facture de vente
+                facture de l'installation
             </u>
         </p>
     </div>

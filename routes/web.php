@@ -6,6 +6,8 @@ use App\Http\Controllers\PrivilageController;
 use App\Http\Controllers\ChargeController;
 use App\Http\Controllers\ComptabiliteController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\FactureController;
+use App\Http\Controllers\FournisseurController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\produitController;
 use App\Http\Controllers\ProfileController;
@@ -77,13 +79,20 @@ Route::middleware('auth')->group(function () {
     Route::post('/produit/store_categori', [produitController::class, 'store_categories'])->name('produit.store_categori');
     
     /**
+     * fournisseur de produit
+     */
+    Route::get('/produit/afficherFournisseurs', [FournisseurController::class, 'index'])->name('produit.afficherFournisseur');
+    Route::get('/produit/ajouterFournisseur', [FournisseurController::class, 'create'])->name('produit.ajouterFournisseur');
+    Route::post('/produit/storeFournisseur', [FournisseurController::class, 'store'])->name('produit.storeFournisseur');
+    
+    /**
      * panier
      */
     
     //afficher les produits 
     Route::get('panier/index', [PanierController::class, 'afficheProduit'])->name('panier.index');
     //rechercher un produit
-    Route::get('/produit/search', [PanierController::class, 'search'])->name('produit.search');
+    Route::get('/panier/search', [PanierController::class, 'search'])->name('panier.search');
     //detail du produit
     Route::get('panier/produit_detail/{id}', [PanierController::class, 'detailProduit'])->name('produit.detail');
     Route::get('panier/retirer/{id}', [PanierController::class, 'retirerProduit'])->name('produit.retirer');
@@ -99,16 +108,33 @@ Route::middleware('auth')->group(function () {
     //retirer un produit du panier
     Route::delete('panier/delete/{id}', [PanierController::class, 'delete'])->name('panier.delete');
     
-    
-    
     Route::get('detruire', function(){
         \Cart::clear();
         return redirect()->back();
     });
     
+    //afficher la facture apres avoir realise un achat ou une vente. la route c'est facture sans "s"
     Route::get('facture', [PanierController::class, 'afficheFacture'])->name('panier.facture');
     Route::post('panier/enregistrer', [PanierController::class, 'validerVente'])->name('panier.enregistrer');
     Route::post('panier/installation', [PanierController::class, 'validerInstallation'])->name('panier.installation');
+
+    /**
+     * facture
+     */
+
+    //afficher les factures des ventes enregistre dans le systeme
+    Route::get('factures/ventes', [FactureController::class, 'factureVente'])->name('factures.ventes');
+    //telecharger la facture d'un la vente
+    Route::get('factures/ventes/telecharger/{id}', [FactureController::class, 'telechargerFactureVente'])->name('factures.ventes.telecharger');
+    //afficher une facture d'un la vente
+    Route::get('factures/ventes/afficher/{id}', [FactureController::class, 'afficherFactureVente'])->name('factures.ventes.afficher');
+    
+    //afficher les facture des installatiions enregistre dans le systeme
+    Route::get('factures/installations', [FactureController::class, 'factureInstallation'])->name('factures.installations');
+    //telecharger la facture d'uneinstallations installations
+    Route::get('factures/installations/telecharger/{id}', [FactureController::class, 'telechargerFactureInstallation'])->name('factures.installations.telecharger');
+    //afficher une facture d'une installations
+    Route::get('factures/installations/afficher/{id}', [FactureController::class, 'afficherFactureInstallation'])->name('factures.installations.afficher');
 
     /**
      * ventes
