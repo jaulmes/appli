@@ -54,7 +54,7 @@
                           <div class="row">
                               <div class="form-group mx-5">
                                   <label for="titre">Nom </label>
-                                  <input name="nom" type="text" class="form-control" id="nom" placeholder="entrer le nom">
+                                  <input name="nom" type="text" class="form-control" id="nom" placeholder="entrer le nom" required>
                                   @error('nom')
                                   <div class="invalid-feedback">
                                       {{ $message }}
@@ -63,7 +63,7 @@
                               </div>
                               <div class="form-group mx-5">
                                   <label for="numero">Numero </label>
-                                  <input name="numero" type="number" class="form-control" id="numero" placeholder="entrer le numero">
+                                  <input name="numero" type="number" class="form-control" id="numero" placeholder="entrer le numero" required>
                                   @error('numero')
                                   <div class="invalid-feedback">
                                       {{ $message }}
@@ -72,7 +72,7 @@
                               </div>
                               <div class="form-group mx-5">
                                   <label for="montant">Montant </label>
-                                  <input name="montant" type="number" class="form-control" id="montant" placeholder="entrer le montant present dans le compte">
+                                  <input name="montant" type="number" class="form-control" id="montant" placeholder="entrer le montant present dans le compte" required>
                                   @error('montant')
                                   <div class="invalid-feedback">
                                       {{ $message }}

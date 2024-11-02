@@ -9,7 +9,6 @@ class ComptabiliteController extends Controller
 {
     public function index(){
         $comptes = Compte::all();
-        //return redirect()->route('dashboard.compte', $comptes);
         return view('comptes.index', compact('comptes'));
     }
 
@@ -24,7 +23,7 @@ class ComptabiliteController extends Controller
         $comptes->montant = $request->montant;
 
         $comptes->save();
-        return view('comptes.index', compact('comptes'));
+        return redirect()->route('dashboard.compte', [ 'comptes'=>$comptes ]);
     }
     
     public function edit($id){
