@@ -25,6 +25,7 @@ class produitController extends Controller
      */
     public function index(Request $request)
     {
+        
         // Récupérer la requête de recherche de l'utilisateur
         $search = $request->input('search');
     

@@ -21,8 +21,8 @@
     <!-- END: Alert -->
     
     
-    <div class="row">
-        <div class="col-12">
+    <div class="row" style="font-size: small;">
+        <div class="col-15">
             <div class="card" style="margin-top: 2em">
                 <div class="card-header">
                     <h3 class="card-title "><strong >Liste des Charges</strong></h3>

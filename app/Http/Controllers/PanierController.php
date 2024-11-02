@@ -164,7 +164,7 @@ class PanierController extends Controller
         //enregistrement transaction
         $transactions = new Transaction();
         
-        $transactions->date = $dateHeure->format('d/m/y');
+        $transactions->date = $dateHeure->format('Y-m-d');
         $transactions->moi = $moi;
         $transactions->heure = $dateHeure->format('H:i:s');
         $transactions->nomClient =$clients->nom;
