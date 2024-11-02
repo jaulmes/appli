@@ -137,12 +137,12 @@ class produitController extends Controller
             'quantity' => $produits->stock
         ]);
 
-        //event( new Vente('nouveau produit enregistre avec success'));
-        $email = "anoudemj@gmail.com";
+        // //event( new Vente('nouveau produit enregistre avec success'));
+        // $email = "anoudemj@gmail.com";
 
-        Notification::route('mail', $email)
-                    ->notify(new VenteProduit($produits));
-        //Auth::user()->notify(new VenteProduit($produits));
+        // Notification::route('mail', $email)
+        //             ->notify(new VenteProduit($produits));
+        // //Auth::user()->notify(new VenteProduit($produits));
 
 
         return redirect::route('produit.index')->with('message', 'produit ajouté avec succes!');
