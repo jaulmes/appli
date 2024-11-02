@@ -2,16 +2,21 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\Vente;
 use App\Imports\ProduitsImport;
 use App\Models\Categori;
 use App\Models\Fournisseur;
 use App\Models\Produit;
 use App\Models\Transaction;
+use App\Models\User;
+use App\Notifications\VenteProduit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use Maatwebsite\Excel\Facades\Excel;
 use Maatwebsite\Excel\Validators\ValidationException;
 use Auth;
+use Illuminate\Support\Facades\Auth as FacadesAuth;
+use Illuminate\Support\Facades\Notification;
 
 class produitController extends Controller
 {
@@ -131,6 +136,13 @@ class produitController extends Controller
             'price' => $produits->prix_achat,
             'quantity' => $produits->stock
         ]);
+
+        //event( new Vente('nouveau produit enregistre avec success'));
+        $email = "anoudemj@gmail.com";
+
+        Notification::route('mail', $email)
+                    ->notify(new VenteProduit($produits));
+        //Auth::user()->notify(new VenteProduit($produits));
 
 
         return redirect::route('produit.index')->with('message', 'produit ajouté avec succes!');
