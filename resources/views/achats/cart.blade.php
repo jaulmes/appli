@@ -4,9 +4,33 @@
 
 <section class="h-100 h-custom">
     <div class="container h-100 py-5">
+
+          <div class="container-xl px-4 mt-n4">
+              @if (session()->has('message'))
+              <div class="alert alert-success alert-icon" role="alert">
+                  <button class="btn-close" type="button" data-bs-dismiss="alert" aria-label="Close"></button>
+                  <div class="alert-icon-aside">
+                      <i class="far fa-flag"></i>
+                  </div>
+                  <div class="alert-icon-content">
+                      {{ session('message') }}
+                  </div>
+              </div>
+              @endif
+          </div>
+          <div class="container-xl px-4 mt-n4">
+              @if (session()->has('error'))
+              <div class="alert alert-danger alert-icon" role="alert">
+                  <button class="btn-close" type="button" data-bs-dismiss="alert" aria-label="Close"></button>
+                  <div class="alert-icon-content">
+                      {{ session('error') }}
+                  </div>
+              </div>
+              @endif
+          </div>
         <div class="col">
 
-            <div class="table-responsive" style="display: flex; flrx-direction: row">
+            <div class="table-responsive" style="display: flex; flex-direction: row">
                 <div class="card-body">
                     <div class="tab-content p-0">
                         <div class="row row-cols-1 row-cols-md-3 g-3" >
@@ -58,7 +82,7 @@
                     </div>
                 </div>
                 <!--mon panier-->
-                <div  style="">
+                <div >
                     <div class="card-body p-4">
                         <div class="row card shadow-2-strong mb-lg-0 " id="monPanier" style="position: fixed; width: 25em; padding-bottom: 3em; padding-top: 3em; margin-top: -7em; margin-left: -20em;  font-size:12px ">
                             <h6><strong><u>Mon panier</u></strong></h6> <br>

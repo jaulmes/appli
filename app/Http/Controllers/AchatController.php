@@ -82,6 +82,7 @@ class AchatController extends Controller
 
         
         $comptes = Compte::find( $request->modePaiement);
+        
         $dateHeure = now();
 
         //enregistrement transaction
@@ -129,6 +130,16 @@ class AchatController extends Controller
         else{
             $achats->statut = "termine";
         }
+
+        if($comptes->montant < $achats->montantVerse){
+            return redirect()->back()->
+            with(
+                'error', "le montant present dans le compte " . $comptes->nom . " est insufisant! veuillez recharger le compte ou changer de moyen de paiement"
+            );
+        }
+
+        $comptes->montant = $comptes->montant - $achats->montantVerse;
+        
 
         $transactions->save();
         //dd($transactions);
