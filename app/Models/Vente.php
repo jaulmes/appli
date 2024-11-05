@@ -22,7 +22,6 @@ class Vente extends Model
         'auteur',
         'totalAchat',
         'moiEncour',
-        'facture_id'
     ] ;
 
     public function user()

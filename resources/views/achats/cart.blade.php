@@ -51,7 +51,7 @@
                                         <div class="member-info" style="font-size: 12px;">
                                             <h7 style="margin-bottom: -0.1em;"><u>Nom</u>: {{$produit->name}}</h7>
                                             <p class="card-text" style="margin-bottom: -0.1em;"><u>Desc</u>: {{$produit->getDescription()}}</p>
-                                            <p class="card-text" style="margin-bottom: -0.1em; "><u>Prix</u>: <strong style="background-color:green"> {{$produit->getPrice()}}</strong>  </p>
+                                            <p class="card-text" style="margin-bottom: -0.1em; "><u>Prix</u>: <strong style="background-color:green"> {{$produit->prix_achat}}</strong>  </p>
                                             <div class="row" style="margin-left: 0.2em; padding-bottom: 0.01em; margin-top: 0.5em;">
                                                 <a href="{{ route('produit.detail', $produit->id)}} ">
                                                     <button class="btn btn-warning px-1" >
@@ -64,7 +64,7 @@
                                                   <div class="action">
                                                     <input type="hidden" name="id" value="{{$produit->id}}">
                                                     <input type="hidden" name="name" value="{{$produit->name}}">
-                                                    <input type="hidden" name="price" value="{{$produit->price}}">
+                                                    <input type="hidden" name="prix_achat" value="{{$produit->prix_achat}}">
                                                     <button class="add-to-cart btn btn-primary px-1" type="submit" style="margin-left: 2em; margin-top:-3.5em">
                                                       <i class="bi bi-plus"></i>
                                                     </button>
@@ -103,13 +103,13 @@
                                               <p class="mb-2">{{$produit->name}}</p>
                                         </th>
                                         <th class="align-middle">
-                                          <p class="mb-0" style="font-weight: 500;">{{$produit->price}} </p>
+                                          <p class="mb-0" style="font-weight: 500;">{{$produit->associatedModel->prix_achat}} </p>
                                         </th>
                                         <th class="align-middle">
                                           <p class="mb-0" style="font-weight: 500;">{{$produit->quantity}} </p>
                                         </th>
                                         <th class="align-middle">
-                                          <p class="mb-0" style="font-weight: 500;">{{$produit->price * $produit->quantity}} </p>
+                                          <p class="mb-0" style="font-weight: 500;">{{$produit->associatedModel->prix_achat * $produit->quantity}} </p>
                                         </th>        
                                         <th>
                                             <form action="{{route('produit.retirer', $produit->id)}}" method="get" >

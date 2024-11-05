@@ -20,7 +20,6 @@ class Installation extends Model
         'agentOperant',
         'commission',
         'impot',
-        'facture_id'
         ];
         
     public function user()

@@ -62,7 +62,7 @@ class AchatController extends Controller
 
 
          //ajouter le produit au panier
-          $panier = \Cart::add($request->id, $request->name, $request->price, 1,array())
+          $panier = \Cart::add($request->id, $request->name, $request->prix_achat, 1,array())
                      ->associate($produits);
 
             return redirect()->back()->with('message', 'produit ajoute au panier');
@@ -109,12 +109,6 @@ class AchatController extends Controller
         }
         $transactions->prixAchat = $prixAchat;
         $transactions->produit = json_encode($article);
-
-        
-        
-        
-        
-
 
         $achats = new Achat();
         $achats->total = $montantTotal;

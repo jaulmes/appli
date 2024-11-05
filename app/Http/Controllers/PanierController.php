@@ -418,7 +418,7 @@ class PanierController extends Controller
             'netAPayer' => $netAPayer,
         ]);
         
-        //\Cart::clear();       
+        \Cart::clear();       
         return $pdf->stream($numeroFacture);
     }
 
