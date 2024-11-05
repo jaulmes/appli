@@ -6,14 +6,14 @@
         <h3 class="card-title">Listes des ventes</h3>
     </div>
     <div class="container-xl px-4 mt-n4">
-        @if (session()->has('message'))
+        @if (session()->has('success'))
         <div class="alert alert-success alert-icon" role="alert">
             <button class="btn-close" type="button" data-bs-dismiss="alert" aria-label="Close"></button>
             <div class="alert-icon-aside">
                 <i class="far fa-flag"></i>
             </div>
             <div class="alert-icon-content">
-                {{ session('message') }}
+                {{ session('success') }}
             </div>
         </div>
         @endif
@@ -40,7 +40,7 @@
                                 <td>
                                     <div class="d-flex">
                                         <a href="{{ route('charges.add', $charge->id) }}" class="btn btn-outline-primary btn-sm mx-1"><i class="fas fa-edit"></i></a>
-                                        <a href="{{ route('charges.showChargeDetail', $charge->id) }}" class="btn btn-outline-primary btn-sm mx-1"><i class="fa-solid fa-eye"></i></a>
+                                        <a href="{{ route('charges.showChargeDetail', $charge->id) }}" class="btn btn-outline-primary btn-sm mx-1"><i class="bi bi-eye"></i></a>
                                     </div>
                                 </td>
                             </tr>

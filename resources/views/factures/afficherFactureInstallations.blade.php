@@ -126,7 +126,7 @@
     <div style="margin-top: -2em">
         <p class="title">
             <u>
-                facture de vente
+                facture d'installation
             </u>
         </p>
     </div>

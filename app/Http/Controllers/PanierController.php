@@ -192,12 +192,13 @@ class PanierController extends Controller
         $transactions->prixAchat = $prixAchat;
         $transactions->produit = json_encode($article);
         
-
+        //je fais une mise a jour du montant dans les comptes
         $comptes->montant = $comptes->montant + $transactions->montantVerse;
 
         //montant total du panier sans la reduction
         $montantTotal = \Cart::getTotal();
 
+        
         //creation d'une vente
         $ventes = new Vente();
         $ventes->dateEncour = now()->format('m-Y');
@@ -218,6 +219,7 @@ class PanierController extends Controller
         else{
             $ventes->statut = "termine";
         }
+
         
         //compter le nombre de vente pour incrementer le numero de la facture
         $numero =Vente::where('date', $ventes->date )->get()->count() + 1;
@@ -234,12 +236,13 @@ class PanierController extends Controller
         }
         $ventes->totalAchat = $totalPrixAchat;
 
+        //dd($ventes->produits());
         $comptes->save();
         $ventes->save();
         $transactions->save();
         $clients->save();
 
-        //je relie chaque produit du pqnier a la vente 
+        //je relie chaque produit du panier a la vente 
         foreach($panier as $produit){
             $ventes->produits()->attach($produit->id, [
                 'quantity' => $produit->quantity,
@@ -266,24 +269,21 @@ class PanierController extends Controller
         $netAPayer = $ventes->montantTotal -  $reduction;
 
         // chrger les donnee sur la facture pour avoyer sur une vue qui sera converti en pdf
-        $pdf = Pdf::loadView('panier.factures',[
-            'reduction' => $reduction,
-            'ventes' =>$ventes,
-            'clients' =>$clients,
-            'numeroFacture'=>$numeroFacture,
-            'netAPayer' => $netAPayer,
-        ]);
+        $pdf = Pdf::loadView('panier.factures',
+            [
+                'reduction' => $reduction,
+                'ventes' =>$ventes,
+                'clients' =>$clients,
+                'numeroFacture'=>$numeroFacture,
+                'netAPayer' => $netAPayer,
+            ]
+        );
         
         \Cart::clear();       
         return $pdf->stream($numeroFacture);
     }
     
     public function validerInstallation(Request $request){
-        //recuperer le montant total du panier
-        $montantTotal = \Cart::getTotal();
-        
-        //recuperer les produits du panier
-        $panier = \Cart::getContent();
         
         //creer un objet transaction
         $transactions = new Transaction();
@@ -293,14 +293,15 @@ class PanierController extends Controller
         $clients->nom = $request->input('nom');
         $clients->numero = $request->input('numero');
 
-        //recuperer le mode de paiement
-        $comptes = Compte::find( $request->modePaiement);
         
         $dateHeure = now();
 
         $moi = now()->month;
         $annee = $dateHeure->format('y');
         $jour = $dateHeure->format('d');
+
+        //recuperer les produits du panier
+        $panier = \Cart::getContent();
 
         $article= [];
         $prixAchat = 0;
@@ -313,10 +314,30 @@ class PanierController extends Controller
     	    $article[] =  $row->associatedModel->name;
 
         }
+
+        //enregistrement transaction
         $transactions->prixAchat = $prixAchat;
-        $transactions->produit = json_encode($article);
+        $transactions->produit = json_encode($article);     
+        $transactions->date = $dateHeure->format('Y/m/d');
+        $transactions->moi = $moi;
+        $transactions->heure = $dateHeure->format('H:i:s');
+        $transactions->nomClient =$clients->nom;
+        $transactions->numeroClient = $clients->numero;
+        $transactions->type = 'installation';
+        $transactions->montantVerse = $request->input('montantVerse');
+
+        //recuperer le mode de paiement
+        $comptes = Compte::find( $request->modePaiement);
         
+        //je fais une mise a jour du montant dans les comptes
         $comptes->montant = $comptes->montant + $transactions->montantVerse;
+
+        $transactions->compte_id = $comptes->id;
+        $transactions->impot = $request->impot;
+        $transactions->user_id = Auth::user()->id;
+
+        //recuperer le montant total du panier
+        $montantTotal = \Cart::getTotal();
 
         //enregistrer l'installation
         $installations = new Installation();
@@ -341,18 +362,7 @@ class PanierController extends Controller
             $installations->statut = "termine";
         }
 
-        //enregistrement transaction
-        $transactions->date = $dateHeure->format('d/m/y');
-        $transactions->moi = $moi;
-        $transactions->heure = $dateHeure->format('H:i:s');
-        $transactions->nomClient =$clients->nom;
-        $transactions->numeroClient = $clients->numero;
-        $transactions->type = 'installation';
-        $transactions->compte_id = $comptes->id;
-        $transactions->impot = $request->impot;
-        $transactions->montantVerse = $request->input('montantVerse');
-        $transactions->user_id = Auth::user()->id;
-        
+
         //compter le nombre de vente pour incrementer le numero de la facture
         $numero =Installation::where('created_at', $installations->created_at )->get()->count() + 1;
         $name = Auth::user()->name;
@@ -400,15 +410,15 @@ class PanierController extends Controller
         $netAPayer = $installations->NetAPayer;
 
         // chrger les donnee sur la facture pour avoyer sur une vue qui sera converti en pdf
-        $pdf = Pdf::loadView('panier.factures',[
+        $pdf = Pdf::loadView('panier.facturesInstallation',[
             'reduction' => $reduction,
-            'ventes' =>$installations,
+            'installations' =>$installations,
             'clients' =>$clients,
             'numeroFacture'=>$numeroFacture,
             'netAPayer' => $netAPayer,
         ]);
         
-        \Cart::clear();       
+        //\Cart::clear();       
         return $pdf->stream($numeroFacture);
     }
 

@@ -54,7 +54,7 @@
                             @foreach($factures as $facture)
                             <tr>
                                 <td>{{$facture->numeroFacture}}</td>
-                                <td>{{$facture->ventes->date}}</td>
+                                <td>{{$facture->ventes->created_at}}</td>
                                 <td>{{$facture->ventes->nomClient}}</td>
                                 <td>
                                     <a href="{{ route('factures.ventes.telecharger', $facture->id) }}" ><button><i class="bi bi-download"></i></button></a>

@@ -19,7 +19,8 @@ class Installation extends Model
         'qteTotal',
         'agentOperant',
         'commission',
-        'impot'
+        'impot',
+        'facture_id'
         ];
         
     public function user()

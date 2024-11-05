@@ -9,7 +9,7 @@ use Barryvdh\DomPDF\Facade\Pdf;
 class FactureController extends Controller
 {
     public function factureVente(){
-        $factures = facture::all();
+        $factures = facture::whereHas('ventes')->with('ventes')->get();
         return view('factures.ventes', compact('factures'));
     }
 
@@ -47,7 +47,8 @@ class FactureController extends Controller
     }
 
     public function factureInstallation(){
-        $factures = facture::all();
+        $factures = facture::whereHas('installations')->with('installations')->get();
+        //dd($factures->installations->created_at);
         return view('factures.installations', compact('factures'));
     }
 

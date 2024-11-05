@@ -21,7 +21,8 @@ class Vente extends Model
         'impot',
         'auteur',
         'totalAchat',
-        'moiEncour'
+        'moiEncour',
+        'facture_id'
     ] ;
 
     public function user()

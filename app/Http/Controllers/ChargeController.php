@@ -97,7 +97,7 @@ class ChargeController extends Controller
         
         $comptes = Compte::where('id', $request->compte_id)->first();
         
-        $comptes->montant = $comptes->montant - $charges->montant;
+        $comptes->montant = $comptes->montant - $chargeDetail->montant;
 
         $transactions->save();
         $comptes->save();

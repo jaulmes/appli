@@ -54,8 +54,8 @@
                             @foreach($factures as $facture)
                             <tr>
                                 <td>{{$facture->numeroFacture}}</td>
-                                <td>{{$facture->installations->created_at}}</td>
-                                <td>{{$facture->installations->nomClient}}</td>
+                                <td>{{$facture->installations->created_at ?? 'null'}}</td>
+                                <td>{{$facture->installations->nomClient?? 'null'}}</td>
                                 <td>
                                     <a href="{{ route('factures.installations.telecharger', $facture->id) }}" ><button><i class="bi bi-download"></i></button></a>
                                     <a href="{{ route('factures.installations.afficher', $facture->id) }}"><button><i class="bi bi-eye"></i></button></a>
