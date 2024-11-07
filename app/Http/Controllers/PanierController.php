@@ -78,28 +78,28 @@ class PanierController extends Controller
         $produits = Produit::find($request->id);
 
 
-        $cart = \Cart::getContent();
+        // $cart = \Cart::getContent();
 
-        $itemNames=[];
-        // Parcours le panier pour trouver le nombre de fois que le produit est ajouté au panier
-        foreach ($cart as $item) {
-            $itemNames[]=$item->name;
+        // $itemNames=[];
+        // // Parcours le panier pour trouver le nombre de fois que le produit est ajouté au panier
+        // foreach ($cart as $item) {
+        //     $itemNames[]=$item->name;
             
             
-        }
-        //dd($itemNames);
-        $occurences=array_count_values($itemNames);
+        // }
+        // //dd($itemNames);
+        // $occurences=array_count_values($itemNames);
         
-        //$quantite=2;
-        foreach($occurences as $itemNames=>$count){
+        // //$quantite=2;
+        // foreach($occurences as $itemNames=>$count){
 
-            if($count>1){
-                return redirect()->route('panier.index')->with('erreur', 'produit deja ete ajoute au panier');
-            }
-            else{
+        //     if($count>1){
+        //         return redirect()->route('panier.index')->with('erreur', 'produit deja ete ajoute au panier');
+        //     }
+        //     else{
                 
-            }
-        }
+        //     }
+        // }
 
 
         //ajouter le produit au panier

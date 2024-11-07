@@ -34,7 +34,7 @@
                                         <button class="btn btn-warning px-1"><i class="bi bi-eye"></i></button>
                                     </a>
                                     @if($produit->getStock() === "disponible")
-                                    <form action="{{ route('achats.storeCart') }}" method="post">
+                                    <form action="{{ route('panier.ajouter') }}" method="post">
                                         @csrf
                                         <div class="action">
                                             <input type="hidden" name="id" value="{{ $produit->id }}">
