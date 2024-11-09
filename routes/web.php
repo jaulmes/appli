@@ -52,6 +52,10 @@ Route::middleware('auth')->group(function () {
     Route::get('dashboard/comptes/edit/{id}', [ComptabiliteController::class, 'edit'])->name('dashboard.compte.edit');
     Route::put('dashboard/comptes/update/{id}', [ComptabiliteController::class, 'update'])->name('dashboard.compte.update');
     Route::delete('dashboard/comptes/delete/{id}', [ComptabiliteController::class, 'delete'])->name('dashboard.compte.delete');
+    //vue pour transfert compte
+    Route::get('dashboard/comptes/transfert', [ComptabiliteController::class, 'transfert'])->name('dashboard.compte.transfert');
+    //valider le transfert d'un compte a un autre
+    Route::post('dashboard/comptes/valider_transfert', [ComptabiliteController::class, 'valider_transfert'])->name('dashboard.compte.valider_transfert');
     
     
     

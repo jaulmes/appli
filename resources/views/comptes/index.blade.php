@@ -21,7 +21,17 @@
                 @endif
             </div>
         </div>
-        <a href="{{ route('dashboard.compte.create')}}" ><button class="btn btn-primary">ajouter un moyen de paiement</button></a>
+        <div >
+            <a href="{{ route('dashboard.compte.create')}}" style="margin-right: 25em;" >
+                <button class="btn btn-primary">ajouter un moyen de paiement</button>
+            </a>
+            @can('SUPPRIMER_COMPTE')
+                <!--lien pour trasfert-->
+                <a href="{{ route('dashboard.compte.transfert')}}" >
+                    <button class="btn btn-dark">faire un transfert <i class="bi bi-arrow-left-right"></i></button>
+                </a>
+            @endcan
+        </div>
             
         <div class="row row-cols-1 row-cols-md-4 g-3" style="margin-top: 10px;">
             <!-- small box -->
