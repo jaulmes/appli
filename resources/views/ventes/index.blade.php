@@ -47,6 +47,7 @@
                                 <th>Nom du client</th>
                                 <th>Numero du client</th>
                                 <th>Quantitée</th>
+                                <th>Net A Payer</th>
                                 <th>Montant total</th>
                                 <th>Date</th>
                                 <th>Statut</th>
@@ -59,6 +60,7 @@
                                 <td>{{$vente->nomClient}}</td>
                                 <td>{{$vente->numeroClient}}</td>
                                 <td>{{$vente->qteTotal}}</td>
+                                <td> {{$vente->NetAPayer}}</td>
                                 <td> {{$vente->montantTotal}}</td>
                                 <td>{{$vente->date}}</td>
                                 <td>{{$vente->statut}}</td>
