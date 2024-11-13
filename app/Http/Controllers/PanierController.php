@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Charge;
 use App\Models\Client;
 use App\Models\Compte;
 use App\Models\facture;
@@ -376,7 +377,14 @@ class PanierController extends Controller
             $totalPrixAchat = $totalPrixAchat + $prixAchat;
         }
         $installations->totalAchat = $totalPrixAchat;
+
+        //comptabiliser la commission comme une charge
+        $charges = new Charge();
+        $charges->titre = "commission pour l'intallation de ". $installations->nomClient. " a ". $installations->agentOperant; 
+        $charges->montant = $installations->commission;
+        $charges->date = $dateHeure->format('Y/m/d');
         
+        $charges->save();
         $comptes->save();
         $installations->save();
         $transactions->save();

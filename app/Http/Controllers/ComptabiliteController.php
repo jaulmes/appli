@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Compte;
+use App\Models\Transaction;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ComptabiliteController extends Controller
 {
@@ -90,6 +92,22 @@ class ComptabiliteController extends Controller
         //ajouter le montant transfere dans le solde receveur
         $receveur->montant = $solde_receveur + $montant_tranferer;
 
+        //valider le transfer en tant que transaction
+        $dateHeure = now();
+        $moi = now()->month;
+
+        $transactions = new Transaction();
+        $transactions->date = $dateHeure->format('Y-m-d');
+        $transactions->moi = $moi;
+        $transactions->heure = $dateHeure->format('H:i:s');
+        $transactions->type = 'transfert';
+        $transactions->impot = $request->impot;
+        $transactions->montantVerse = $request->montant;
+        $transactions->user_id = Auth::user()->id;
+        
+        
+
+        $transactions->save();
         $envoyeur->save();
         $receveur->save();
 
