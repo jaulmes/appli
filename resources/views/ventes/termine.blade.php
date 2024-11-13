@@ -51,6 +51,7 @@
                 <th>Numero du client</th>
                 <th>Autheur</th>
                 <th>Quantitée</th>
+                <th>Net A Payer</th>
                 <th>Montant total</th>
                 <th>Montant Deja Versé</th>
                 <th>Date</th>
@@ -65,6 +66,7 @@
                 <td>{{$vente->numeroClient}}</td>
                 <td>{{$vente->user->name}}</td>
                 <td>{{$vente->qteTotal}}</td>
+                <td> {{$vente->NetAPayer}}</td>
                 <td> {{$vente->montantTotal}}</td>
                 <td> {{$vente->montantVerse}}</td>
                 <td>{{$vente->date}}</td>
