@@ -30,8 +30,87 @@ class VentesController extends Controller
 
     //affiche les ventes non terminé
     public function ventesNonTermine(){
-        $ventes = Vente::where('statut', 'non termine')->get();
+        $ventes = Vente::where('statut', 'non termine')->latest()->get();
         return view('ventes.non-termine', compact('ventes'));
+    }
+    
+    //filtrer les ventes
+    public function filtrerVentes(Request $request){
+        if($request->ajax()){
+            $statut = $request->statut;
+            $output = '';
+            //je prepare ma requete
+            $query = Vente::query();
+
+            //je filtre ma requete on fonction du statut
+            if($statut == 'termine'){
+                $query->where('statut', 'termine');
+            }
+            elseif($statut == 'non_termine'){
+                $query->where('statut', 'non termine');
+            }
+
+            //je recupere les ventes dans la bd
+            $ventes = $query->get();
+
+            if($ventes){
+                foreach($ventes as $vente) {
+                    $output .=
+                    '<tr>
+                        <td>'.$vente->nomClient.'</td>
+                        <td>'.$vente->numeroClient.'</td>
+                        <td>'.$vente->user->name.'</td>
+                        <td>'.$vente->qteTotal.'</td>
+                        <td>'.$vente->NetAPayer.'</td>
+                        <td>'.$vente->montantTotal.'</td>
+                        <td>'.$vente->montantVerse.'</td>
+                        <td>'.$vente->date.'</td>
+                        <td>'.$vente->statut.'</td>
+                    </tr>
+                  ';
+                }
+            }
+            return response()->json($output);
+        }
+        return view('ventes.index', compact('ventes'));
+    }
+
+    //rechercher
+    public function rechercherVente(Request $request){
+        if($request->ajax()){
+            $output = '';
+
+            $ventes = Vente::where('nomClient', 'like', "%$request->search%")->get();
+
+            if($ventes) {
+
+                foreach($ventes as $vente) {
+
+                    $output .=
+                    '<tr>
+                        <td>'.$vente->nomClient.'</td>
+                        <td>'.$vente->numeroClient.'</td>
+                        <td>'.$vente->user->name.'</td>
+                        <td>'.$vente->qteTotal.'</td>
+                        <td>'.$vente->NetAPayer.'</td>
+                        <td>'.$vente->montantTotal.'</td>
+                        <td>'.$vente->montantVerse.'</td>
+                        <td>'.$vente->date.'</td>
+                        <td>'.$vente->statut.'</td>
+                    </tr>
+                    
+                  ';
+
+                }
+
+                return response()->json($output);
+
+            }
+            return view('ventes.index', compact('ventes'));
+        }
+        
+        //return response()->json($ventes);
+        return view('ventes.non-termine', compact('ventes'))->render();
     }
 
     //modifier les ventes non termine

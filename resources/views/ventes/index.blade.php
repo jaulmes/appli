@@ -4,7 +4,12 @@
 
 <div class="card">
     <div class="card-header">
-        <h3 class="card-title">Listes des ventes</h3>
+        <!-- Boutons de filtre -->
+        <div class="btn-group" role="group">
+            <button type="button" class="btn btn-secondary active filtre" data-statut="tout">Tout</button>
+            <button type="button" class="btn btn-secondary filtre" data-statut="non_termine">non termine</button>
+            <button type="button" class="btn btn-secondary filtre" data-statut="termine">termine</button>
+        </div>
     </div>
 
     <div class="container-xl px-4 mt-n4">
@@ -30,7 +35,7 @@
                     <h3 class="card-title "><strong>Liste des Ventes</strong></h3>
                     <div class="card-tools">
                         <div class="input-group input-group-sm" style="width: 150px;">
-                            <input type="text" name="table_search" class="form-control float-right" placeholder="Search">
+                            <input type="text" id="search" name="search" class="form-control float-right" placeholder="Search">
                             <div class="input-group-append">
                                 <button type="submit" class="btn btn-default">
                                     <i class="fas fa-search"></i>
@@ -46,22 +51,26 @@
                             <tr>
                                 <th>Nom du client</th>
                                 <th>Numero du client</th>
+                                <th>Autheur</th>
                                 <th>Quantitée</th>
                                 <th>Net A Payer</th>
                                 <th>Montant total</th>
+                                <th>Montant Deja Versé</th>
                                 <th>Date</th>
                                 <th>Statut</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody id="result">
                             @foreach($ventes as $vente)
                             <tr>
                                 <td>{{$vente->nomClient}}</td>
                                 <td>{{$vente->numeroClient}}</td>
+                                <td>{{$vente->user->name}}</td>
                                 <td>{{$vente->qteTotal}}</td>
-                                <td> {{$vente->NetAPayer}}</td>
-                                <td> {{$vente->montantTotal}}</td>
+                                <td>{{$vente->NetAPayer}}</td>
+                                <td>{{$vente->montantTotal}}</td>
+                                <td>{{$vente->montantVerse}}</td>
                                 <td>{{$vente->date}}</td>
                                 <td>{{$vente->statut}}</td>
                                 <td></td>
@@ -81,5 +90,5 @@
 @endsection
 
 @section('javascript')
-
+    @include('ventes.vente_js')
 @endsection

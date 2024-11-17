@@ -148,6 +148,10 @@ Route::middleware('auth')->group(function () {
     Route::get('ventes/termine', [VentesController::class, 'ventesTermine'])->name('ventes.termine');
     Route::get('ventes/non-termine', [VentesController::class, 'ventesNonTermine'])->name('ventes.nonTermine');
     Route::patch('ventes/modifier/{id}', [VentesController::class, 'updateVente'])->name('ventes.modifier');
+    //filtrer les ventes
+    Route::get('ventes/filtrer', [VentesController::class, 'filtrerVentes'])->name('ventes.filtrer');
+    Route::get('ventes/rechercher', [VentesController::class, 'rechercherVente'])->name('ventes.rechercher');
+
 
     /**
      * Achats
