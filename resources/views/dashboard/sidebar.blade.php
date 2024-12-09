@@ -140,46 +140,18 @@
           @endcan
 
             @can('VOIR_VENTE')
-            <li class="nav-item ">
-              <a href="#" class="nav-link {{ Request::is('ventes*') ? 'active' : '' }}" >
-                <i class="nav-icon fas fa-tachometer-alt"></i>
-                <p>
-                  ventes
-                  <i class="right fas fa-angle-left"></i>
-                </p>
-              </a>
-              
-                <ul class="nav nav-treeview">
-                    <li class="nav-item">
-                      <a class="nav-link {{ Request::is('ventes/termine*') ? 'active' : '' }}" href="{{ route('ventes.termine') }}">
-                        <div class="nav-link-icon"><i data-feather="activity"></i></div>
-                        Mes ventes
-                      </a>
-                    </li>
-                 </ul>
-
                 @can('VOIR_ACHAT')
-                  <ul class="nav nav-treeview">
                     <li class="nav-item">
                       <a class="nav-link {{ Request::is('ventes/index*') ? 'active' : '' }}" href="{{ route('ventes.index') }}">
                         <div class="nav-link-icon"><i data-feather="activity"></i></div>
-                        toute les ventes
+                        <i class="bi bi-funnel"></i>
+                        <p>Ventes</p>
                       </a>
                     </li>
-                  </ul>
 
-                <ul class="nav nav-treeview">
-                    <li class="nav-item">
-                      <a class="nav-link {{ Request::is('ventes/non-termine*') ? 'active' : '' }}" href="{{ route('ventes.nonTermine') }}">
-                        <div class="nav-link-icon"><i data-feather="activity"></i></div>
-                        Ventes non termine
-                      </a>
-                    </li>
-                </ul>
+                
                 
                 @endcan
-
-            </li>
             @endcan
 
             @can('VOIR_ACHAT')

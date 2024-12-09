@@ -43,20 +43,47 @@ class PanierController extends Controller
 
     //rechercher un produit
     public function search(Request $request){
-        $query = $request->input('q');
+        //je verifie que c'est une requete ajax
+        if($request->ajax()){
+            //j'initialise l'element quni sera retourne(html ave donne)
+            $output = '';
+            $query = $request->search;
+
+            //recuperation du produit orrespondant a la recherche
+            $produits = Produit::where('name', 'like', "%$query%")
+                                ->orWhere('desription', 'like', "%$query%")
+                                ->get();
+            if($produits){
+                foreach ($produits as $produit) {
+                    $output .= "<div class='col mb-3' style='margin-right: -4em;'>
+                                    <div class='card h-100' style='width: 12em;'>
+                                        <strong class='badge badge-danger'>" . $produit->getAlert() . "</strong>";
         
-        $produits = Produit::where('name', 'like', "%$query%")
-                ->orWhere('description', 'like', "%$query%" )
-                ->paginate(6);
-                
-        $comptes = Compte::all();
-        $quantite=\Cart::getContent()->count();
-                
-        return response()->json([
-            'produits'=>$produits,
-            'comptes'=>$comptes,
-            'quantite'=>$quantite
-        ]);
+                    if ($produit->getStock() === 'disponible') {
+                        $output .= "<strong class='badge badge-info'>" . $produit->getStock() . "</strong>";
+                    } elseif ($produit->getStock() === 'indisponible') {
+                        $output .= "<strong class='badge badge-danger'>" . $produit->getStock() . "</strong>";
+                    }
+        
+                    $output .= "<img src='" . asset('storage/images/produits/' . $produit->image_produit) . "' class='img-fluid' style='height: 5em; width: 100%;'>
+                                        <div class='member-info' style='font-size: 12px;'>
+                                            <h7><u>Nom</u>: " . $produit->name . "</h7>
+                                            <p class='card-text'><u>Desc</u>: " . $produit->getDescription() . "</p>
+                                            <p class='card-text'><u>Prix</u>: <strong class='text-success'>" . $produit->getPrice() . "</strong></p>
+                                            <div class='row' style='margin-left: 0.2em; padding-bottom: 0.01em; margin-top: 0.5em;'>
+                                                <a href='" . route('produit.detail', $produit->id) . "'>
+                                                    <button class='btn btn-warning px-1'><i class='bi bi-eye'></i></button>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>";
+                }
+                return response()->json($output);
+            }
+
+        }
+
     }
 
     //afficher les detail d'un article 

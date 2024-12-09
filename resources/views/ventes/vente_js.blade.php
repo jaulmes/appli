@@ -42,6 +42,7 @@
         $(document).on('keyup', function(e){
             e.preventDefault();
             let search = $('#search').val()
+            
 
             $.ajax({
                 url: "{{ route('ventes.rechercher') }}",

@@ -40,6 +40,8 @@
   <link rel="stylesheet" href="../../plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
   <link rel="stylesheet" href="../../plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
 
+  <!--livewire-->
+  @livewireStyles
 </head>
 <body class="hold-transition  sidebar-mini layout-fixed  layout-footer-fixed">
     <div class="wrapper">
@@ -136,7 +138,7 @@
     <script src="../../plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
     <!-- AdminLTE App -->
     <script src="../../dist/js/adminlte.min.js"></script>
-
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
     <!-- Page specific script -->
     <script>
       $(function () {
@@ -180,6 +182,8 @@
             }
         });
      </script>
+     <!--livewire-->
+     @livewireScripts
       
 </body>
 </html>

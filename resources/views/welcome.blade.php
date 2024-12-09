@@ -21,6 +21,7 @@
             font-weight: bold;
         }
     </style>
+    @livewireStyles
 </head>
 <body>
 
@@ -65,5 +66,9 @@ $totalFacture = 0;
     </tfoot>
 </table>
 
+<livewire:counter/>
+
+@livewireScripts
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </body>
 </html>
