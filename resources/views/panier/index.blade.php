@@ -6,193 +6,25 @@
     <div class="container h-100 py-5">
         <div class="col">
             <input type="text" name="search" id="search">
-`            <!-- <div style="margin-left: 15em; height: 4em">
-                <form action="{{ route('panier.index') }}" method="get">
-                    <input type="text" placeholder="chercher un produit..." name="q" onchange="this.form.submit()" />
-                    <button type="submit"><i class="fas fa-search"></i></button>
-                </form>
-            </div>` -->
             <div class="table-responsive" style="display: flex; flex-direction: row">
+
+                <!--catalogue de produit avec livewire-->
                 <div class="card-body">
                     <div class="tab-content p-0">
                         <livewire:catalogue-produit/>
                     </div>
                 </div>
-                <div style="">
-                    <div class="card-body p-4">
-                        <div class="row card shadow-2-strong mb-lg-0" id="monPanier" style="position: fixed; width: 25em; padding-bottom: 3em; padding-top: 3em; margin-top: -7em; margin-left: -20em; font-size:12px ">
-                            <h6><strong><u>Mon panier</u></strong></h6><br>
-                            <table class="table table-responsive" style="overflow-y: visible;">
-                                <thead>
-                                    <tr>
-                                        <th scope="col" class="h6">Nom</th>
-                                        <th scope="col">P U</th>
-                                        <th scope="col">QTE</th>
-                                        <th scope="col">Prix T</th>
-                                        <th scope="col">Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody class="card-body table-responsive p-0" style="height: 200px;">
-                                    @foreach( Cart::getContent() as $produit)
-                                    <tr>
-                                        <th scope="row">
-                                            <p class="mb-2">{{ $produit->name }}</p>
-                                        </th>
-                                        <th class="align-middle">
-                                            <p class="mb-0" style="font-weight: 500;">{{ $produit->price }}</p>
-                                        </th>
-                                        <th class="align-middle">
-                                            <p class="mb-0" style="font-weight: 500;">{{ $produit->quantity }}</p>
-                                        </th>
-                                        <th class="align-middle">
-                                            <p class="mb-0" style="font-weight: 500;">{{ $produit->price * $produit->quantity }}</p>
-                                        </th>
-                                        <th>
-                                            <form action="{{ route('produit.retirer', $produit->id) }}" method="get">
-                                                @csrf
-                                                <button type="submit" class="btn btn-danger"><i class="bi bi-trash"></i></button>
-                                            </form>
-                                        </th>
-                                    </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                            <div class="col-lg-4 col-xl-3">
-                                <div class="d-flex justify-content-between" style="font-weight: 500;">
-                                    <p class="mb-2">total: </p>
-                                    <p class="mb-2" style="margin-left: 10em;">{{ Cart::getTotal() }}</p>
-                                </div>
-                            </div>
-                            <form action="{{ url('detruire') }}" method="get">
-                                @csrf
-                                <button type="submit" class="btn btn-danger" style="width: 8em; font-size:10px">vider le panier</button>
-                            </form>
-                            <button type="button" style="width: 8em; margin-left:10em; margin-top:-4.7em; font-size:10px" class="btn btn-success" data-toggle="modal" data-target="#exampleModal">Valider l'achat</button>
-                        </div>
+
+                <div >
+                    <div class="card-body p-4" >
+                        <!--mon panier-->
+                        <livewire:mon-panier/>
+                        <!-- Modal -->
                         <div class="col-md-6 col-lg-4 col-xl-3 mb-4 mb-md-0">
-                            <!-- Modal -->
                             <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                 <div class="modal-dialog" role="document">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="exampleModalLabel">Enregistrement de la transaction. prix des produits: {{ Cart::getTotal() }}</h5>
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
-                                            </button>
-                                        </div>
-                                        <div class="modal-body">
-                                            <div class="row" style="display: flex; flex-direction:column">
-                                                <label><input type="radio" name="option" value="yes"> Vente de produit</label>
-                                                <label><input type="radio" name="option" value="no"> Installation</label>
-                                            </div>
-                                            
-                                            <!-- Formulaire vente de produit-->
-                                            <form id="formYes" action="{{ route('panier.enregistrer') }}" method="post" style="display: none;">
-                                                @csrf
-                                                <div style="display: flex; flex-direction: row">
-                                                    <div class="form-group">
-                                                        <label for="nom">Nom du client</label>
-                                                        <input class="form-control" type="text" name="nom" id="nom" required>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label for="numero">Numéro du client</label>
-                                                        <input class="form-control" type="number" name="numero" id="numero" required>
-                                                    </div>
-                                                </div>
-                                                <div style="display: flex; flex-direction: row">
-                                                    <div class="form-group">
-                                                        <label for="montantVerse">Montant versé</label>
-                                                        <input class="form-control" type="number" name="montantVerse" id="montantVerse" value="{{ Cart::getTotal() }}" required>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label for="reduction">Reduction</label>
-                                                        <input class="form-control" type="number" name="reduction" id="reduction" required>
-                                                    </div>
-
-                                                </div>
-                                                <div class="form-group">
-                                                    Mode de paiement...
-                                                    <select class="form-control" name="modePaiement" required>
-                                                        <option selected disabled>choix Mode de paiement...</option>
-                                                        @foreach($comptes as $compte)
-                                                        <option value="{{ $compte->id }}">{{ $compte->nom }}</option>
-                                                        @endforeach
-                                                    </select>
-                                                </div>
-                                            
-                                                <div class="form-group">
-                                                    <label for="impot">Accepter</label>
-                                                    <input type="checkbox" name="impot" id="impot">
-                                                </div>
-                                                <button type="submit" class="btn btn-primary" form="formYes">Enregistrer</button>
-                                            </form>
-                                            
-                                            
-                                            <!-- Formulaire installation sollaire -->
-                                            <form id="formNo" action="{{ route('panier.installation')}}"  method="post" style="display: none;">
-                                                @csrf
-                                                <div style="display: flex; flex-direction: row">
-                                                    <div class="form-group">
-                                                        <label for="nom">Nom du client</label>
-                                                        <input class="form-control" type="text" name="nom" id="nom" required>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label for="numero">Numéro du client</label>
-                                                        <input class="form-control" type="number" name="numero" id="numero" required>
-                                                    </div>
-                                                </div>
-
-                                                <div style="display: flex; flex-direction: row">
-                                                    <div class="form-group">
-                                                        <label for="agentOperant">Agent operant</label>
-                                                        <input class="form-control" type="text" name="agentOperant" id="agentOperant" required>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label for="Commission">Commission</label>
-                                                        <input class="form-control" type="number" name="commission" id="Commission"  required>
-                                                    </div>
-                                                </div>
-                                                
-                                                <div style="display: flex; flex-direction: row">
-                                                    <div class="form-group">
-                                                        <label for="montantProduit">Prix des produits</label>
-                                                        <input class="form-control" type="number" name="montantProduit" id="montantProduit" value="{{\Cart::getTotal()}}" required>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label for="mainOeuvre">Installation</label>
-                                                        <input class="form-control" type="number" name="mainOeuvre" id="mainOeuvre"  required>
-                                                    </div>
-                                                </div>
-                                                
-                                                <div style="display: flex; flex-direction: row">
-                                                    <div class="form-group">
-                                                            <label for="montantVerse">Montant verse</label>
-                                                            <input class="form-control" type="number" name="montantVerse" id="montantVerse" required>
-                                                    </div>
-                                                        
-                                                    <div class="form-group">
-                                                        <label for="reduction">Reduction</label>
-                                                        <input class="form-control" type="number" name="reduction" id="reduction" required>
-                                                    </div>
-                                                </div>
-                                                
-                                                    <div class="form-group">
-                                                        choix du mode de paiement...
-                                                        <select class="form-control" name="modePaiement" required>
-                                                            <option selected disabled>choix Mode de paiement...</option>
-                                                            @foreach($comptes as $compte)
-                                                            <option value="{{ $compte->id }}">{{ $compte->nom }}</option>
-                                                            @endforeach
-                                                        </select>
-                                                    </div>
-                                                
-                                                <button type="submit" class="btn btn-primary" form="formNo">Enregistrer</button>
-                                            </form>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
-                                        </div>
-                                    </div>
+                                    <!--modal avec livewire-->
+                                    <livewire:modal-vente-et-installation/>
                                 </div>
                             </div>
                         </div>
