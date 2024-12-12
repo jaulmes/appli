@@ -157,4 +157,8 @@ return [
     */
 
     'pagination_theme' => 'tailwind',
+
+    //code ajouter pour le sous domaine de l'hebergeur
+    'asset_url' => '/appli',
+
 ];
