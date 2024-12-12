@@ -157,8 +157,5 @@ return [
     */
 
     'pagination_theme' => 'tailwind',
-
-    //code ajouter pour le sous domaine de l'hebergeur
-    'asset_url' => '/appli',
-
+    'asset_url' => env('APP_URL') . '/vendor/livewire',
 ];
