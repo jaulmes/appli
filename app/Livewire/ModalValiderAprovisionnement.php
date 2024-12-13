@@ -8,7 +8,9 @@ use Livewire\Component;
 class ModalValiderAprovisionnement extends Component
 {
     public $produitPanier;
-    protected $listeners = ['quantiteModifier' => 'updateCart'];
+    
+    protected $listeners = ['quantiteModifier' => 'updateCart',
+                            'ProduitAjoute' => 'updateCart'];
 
     public function updateCart(){
         $this->produitPanier = \Cart::getContent();

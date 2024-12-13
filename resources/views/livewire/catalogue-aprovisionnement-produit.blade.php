@@ -18,9 +18,8 @@
                             <a href="{{ route('produit.detail', $produit->id) }}">
                                 <button class="btn btn-warning px-1"><i class="bi bi-eye"></i></button>
                             </a>
-                            @if($produit->getStock() === "disponible")
-                                <button class=" btn btn-primary px-1" wire:click="ajouterPanier('{{$produit->id}}')" style="margin-left: 0em; margin-top:0em; size: -1em;"><i class="bi bi-plus"></i></button>
-                            @endif
+                            <button class=" btn btn-primary px-1" wire:click="ajouterPanier('{{$produit->id}}')" style="margin-left: 0em; margin-top:0em; size: -1em;"><i class="bi bi-plus"></i></button>
+                            
                         </p>
 
                     </div>
