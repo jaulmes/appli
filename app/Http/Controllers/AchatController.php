@@ -75,12 +75,8 @@ class AchatController extends Controller
             'modePaiement' => ['required', 'max:255'],
         ]);
         
-        
-        
         $montantTotal = \Cart::getTotal();
 
-
-        
         $comptes = Compte::find( $request->modePaiement);
         
         $dateHeure = now();
@@ -118,7 +114,7 @@ class AchatController extends Controller
         $achats->qte = \Cart::getContent()->count();
         $achats->date = date('d-m-Y');
         $achats->user_id = Auth::user()->id;
-        if($achats->total > $transactions->montantVerse){
+        if($achats->total > $achats->montantVerse){
             $achats->statut = "non termine";
         }
         else{
