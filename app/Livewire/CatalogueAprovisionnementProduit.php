@@ -11,7 +11,7 @@ class CatalogueAprovisionnementProduit extends Component
     public function ajouterPanier($id){
         $produits = Produit::find($id);
         
-        \Cart::add($produits->id, $produits->name, $produits->price, 1,array())
+        \Cart::add($produits->id, $produits->name, $produits->prix_achat, 1,array())
                     ->associate($produits);
 
         /**
