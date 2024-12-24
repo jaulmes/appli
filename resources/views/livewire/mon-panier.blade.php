@@ -1,6 +1,20 @@
 <div>
     <div class="row card shadow-2-strong mb-lg-0" id="monPanier" style="position: fixed; width: 25em; padding-bottom: 3em; padding-top: 3em; margin-top: -7em; margin-left: -20em; font-size:12px ">
         <h6><strong><u>Mon panier</u></strong></h6><br>
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+        @if (session('error'))
+            <div class="alert alert-danger fw-bolder">
+                {{ session('error') }}
+            </div>
+        @endif
         <table class="table table-responsive" style="overflow-y: visible;">
             <thead>
                 <tr>
@@ -48,6 +62,6 @@
             @csrf
             <button type="submit" class="btn btn-danger" style="width: 8em; font-size:10px">vider le panier</button>
         </form>
-        <button type="button" style="width: 8em; margin-left:10em; margin-top:-4.7em; font-size:10px" class="btn btn-success" data-toggle="modal" data-target="#exampleModal">Valider l'achat</button>
+        <button type="button" style="width: 8em; margin-left:10em; margin-top:-4.7em; font-size:10px" class="btn btn-success" data-toggle="modal" data-target="#exampleModal">Valider la vente</button>
     </div>
 </div>

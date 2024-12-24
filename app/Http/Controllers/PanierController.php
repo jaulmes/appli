@@ -176,12 +176,19 @@ class PanierController extends Controller
 
     public function validerVente(Request $request){
         
+        
+
         //j'enregistre le client lies a la vente
         $clients = new Client();
         $clients->nom = $request->input('nom');
         $clients->numero = $request->input('numero');
 
         $comptes = Compte::find( $request->modePaiement);
+
+        if(!$comptes){
+            return redirect()->back()->with('error', "vous devez
+             choisir le compte pour l'enregistrrement de la vente");
+        }
         
         $dateHeure = now();
 
@@ -263,6 +270,7 @@ class PanierController extends Controller
             $totalPrixAchat = $totalPrixAchat + $prixAchat;
         }
         $ventes->totalAchat = $totalPrixAchat;
+
 
         //dd($ventes->produits());
         $comptes->save();

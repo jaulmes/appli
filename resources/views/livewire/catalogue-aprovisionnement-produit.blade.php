@@ -1,4 +1,8 @@
 <div class="row row-cols-1 row-cols-md-3 g-3 mr-0">
+<form class="form-inline my-2 my-lg-0">
+      <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+    </form>
     @foreach($produits as $produit)
         <div class="col mb-3 " style="margin-right: -4em;">
             <div class="card h-100" style="width: 12em; " >
@@ -19,7 +23,6 @@
                                 <button class="btn btn-warning px-1"><i class="bi bi-eye"></i></button>
                             </a>
                             <button class=" btn btn-primary px-1" wire:click="ajouterPanier('{{$produit->id}}')" style="margin-left: 0em; margin-top:0em; size: -1em;"><i class="bi bi-plus"></i></button>
-                            
                         </p>
 
                     </div>

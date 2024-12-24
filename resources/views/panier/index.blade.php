@@ -5,7 +5,7 @@
 <section class="h-100 h-custom">
     <div class="container h-100 py-5">
         <div class="col">
-            <input type="text" name="search" id="search">
+            
             <div class="table-responsive" style="display: flex; flex-direction: row">
 
                 <!--catalogue de produit avec livewire-->
