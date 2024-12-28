@@ -23,7 +23,7 @@
                     <div class="member-info" style="font-size: 12px;">
                         <h7><u>Nom</u>: {{ $produit->name }}</h7>
                         <p class="card-text"><u>Desc</u>: {{ $produit->getDescription() }}</p>
-                        <p class="card-text"><u>Prix</u>: <strong class="text-success">{{ $produit->getPrice() }}</strong></p>
+                        <p class="card-text"><u>Prix</u>: <strong class="text-success"><select name="price" id=""></select>{{ $produit->getPrice() }}</strong></p>
                         <div class="row" style="margin-left: 0.2em; padding-bottom: 0.01em; margin-top: 0.5em;">
                             <p>
                                 <a href="{{ route('produit.detail', $produit->id) }}">

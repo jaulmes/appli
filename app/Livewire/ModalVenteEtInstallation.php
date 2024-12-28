@@ -10,7 +10,8 @@ class ModalVenteEtInstallation extends Component
 
     //ecoute l'evenement produitAjoute et execute la fonction updateCart 
     protected $listeners = ['ProduitAjoute' => 'updateCart',
-                            'quantiteModifier' =>'updateCart'];
+                            'quantiteModifier' =>'updateCart',
+                            'prix_change' => 'updateCart'];
 
 
     //fonction qui met a jour le panier

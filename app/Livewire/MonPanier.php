@@ -10,6 +10,7 @@ use Livewire\Component;
 class MonPanier extends Component
 {
     public $cartContent;
+    public $new_price = '';
 
     protected $listeners = ['ProduitAjoute' => 'updateCart'];
 
@@ -30,6 +31,17 @@ class MonPanier extends Component
 
         $this->dispatch('quantiteModifier');
     }
+
+    public function update_prix($id){
+        $produits = Produit::find($id);
+
+        $item = \Cart::get($produits->id);
+        
+
+        \Cart::update($item->id, ['price' => $this->new_price ]);
+        $this->dispatch('prix_change');
+    }
+    
 
     //mettre a jour la quantite
     public function diminuerQuantite($id){

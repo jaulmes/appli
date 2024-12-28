@@ -30,9 +30,28 @@ class CatalogueProduit extends Component
     public function ajouterPanier($id){
         $produits = Produit::find($id);
         
-        \Cart::add($produits->id, $produits->name, $produits->price, 1,array())
-                    ->associate($produits);
+        // \Cart::add($produits->id, 
+        //             $produits->name, 
+        //             $produits->price, 
+        //             1,
+        //             'options' -> [
+        //                 'prix_technicien' -> $product->prix_technicien,
+        //                 'prix_minimum' -> $product->prix_minimum,
+        //                 'prix_achat' -> $product->prix_achat,
+        //             ], array())
+        //             ->associate($produits);
+        \Cart::add(array(
+            'id' => $produits->id, // inique row ID
+            'name' => $produits->name,
+            'price' => $produits->price,
+            'quantity' => 1,
+            'attributes' => [            
+                'prix_technicien' => $produits->prix_technicien,
+                'prix_minimum' => $produits->prix_minimum,
+                'price' => $produits->price,]
+        ));
 
+    
         /**
          * emmission d'un evenement apres ajout du produit 
          * dans le panier pour ecouter et rafraichir le composant mon panier

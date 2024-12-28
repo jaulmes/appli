@@ -32,7 +32,13 @@
                         <p class="mb-2">{{ $produit->name }}</p>
                     </th>
                     <th class="align-middle">
-                        <p class="mb-0" style="font-weight: 500;">{{ $produit->price }}</p>
+                        <p class="mb-0" style="font-weight: 500;">
+                            <select id="" wire:model="new_price" wire:change="update_prix('{{ $produit->id}}')">
+                                <option value="{{ $produit->attributes['price'] }}" >{{ $produit->attributes['price'] }}</option>
+                                <option value="{{ $produit->attributes['prix_minimum'] }}">{{ $produit->attributes['prix_minimum'] }}</option>
+                                <option value="{{ $produit->attributes['prix_technicien'] }}">{{ $produit->attributes['prix_technicien'] }}</option>
+                            </select>
+                        </p>
                     </th>
                     <th class="align-middle row">
                         <button type="button" class="btn btn-dark" wire:click="diminuerQuantite(' {{$produit->id}} ')">-</button>
