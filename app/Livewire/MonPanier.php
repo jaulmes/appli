@@ -10,7 +10,7 @@ use Livewire\Component;
 class MonPanier extends Component
 {
     public $cartContent;
-    public $new_price = '';
+    public $new_price;
 
     protected $listeners = ['ProduitAjoute' => 'updateCart'];
 

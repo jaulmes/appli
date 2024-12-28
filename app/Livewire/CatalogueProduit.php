@@ -29,17 +29,7 @@ class CatalogueProduit extends Component
     //ajout de nouveau produit dans le panier
     public function ajouterPanier($id){
         $produits = Produit::find($id);
-        
-        // \Cart::add($produits->id, 
-        //             $produits->name, 
-        //             $produits->price, 
-        //             1,
-        //             'options' -> [
-        //                 'prix_technicien' -> $product->prix_technicien,
-        //                 'prix_minimum' -> $product->prix_minimum,
-        //                 'prix_achat' -> $product->prix_achat,
-        //             ], array())
-        //             ->associate($produits);
+
         \Cart::add(array(
             'id' => $produits->id, // inique row ID
             'name' => $produits->name,

@@ -18,7 +18,7 @@
                             <p class="mb-2">{{$produit->name}}</p>
                     </th>
                     <th class="align-middle">
-                        <p class="mb-0" style="font-weight: 500;">{{$produit->associatedModel->prix_achat}} </p>
+                        <p class="mb-0" style="font-weight: 500;">{{ $produit->attributes['prix_achat'] }} </p>
                     </th>
                     <th class="align-middle">
                         <i class="fas fa-plus" wire:click="ajouterQuantite('{{$produit->id}}')"></i>
@@ -26,7 +26,7 @@
                         <i class="fas fa-minus" wire:click="diminuerQuantite('{{$produit->id}}')"></i>
                     </th>
                     <th class="align-middle">
-                        <p class="mb-0" style="font-weight: 500;">{{$produit->associatedModel->prix_achat * $produit->quantity}} </p>
+                        <p class="mb-0" style="font-weight: 500;">{{$produit->attributes['prix_achat'] * $produit->quantity}} </p>
                     </th>        
                     <th>
                         <form action="{{route('produit.retirer', $produit->id)}}" method="get" >
