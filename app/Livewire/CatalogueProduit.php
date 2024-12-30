@@ -3,27 +3,17 @@
 namespace App\Livewire;
 
 use App\Models\Produit;
-use Darryldecode\Cart\Cart;
-use Illuminate\Http\Request;
 use Livewire\Component;
 
 class CatalogueProduit extends Component
 {
     public $produits = []; //liste des produits
     public $query = '';
+    public $test = '0';
 
-    //recuperation de tous les produits dans la BD
+    // //recuperation de tous les produits dans la BD
     public function mount(){   
-        //$this->updatedQuery();
-        $word = '%'. $this->query .'%';
-        if(strlen($this->query)>0){
-            $this->produits = Produit::where('name', 'like', '%'. $this->query .'%')
-                        ->orWhere('description', 'like', '%'. $this->query .'%')
-                        ->get();
-        }
-        else{
             $this->produits = Produit::all();
-        }
     }
 
     //ajout de nouveau produit dans le panier
@@ -50,24 +40,16 @@ class CatalogueProduit extends Component
         $this->dispatch('ProduitAjoute');
     }
 
-    public function updatedQuery(){
-        $word = '%'. $this->query .'%';
-        if(strlen($this->query)>0){
-            $this->produits = Produit::where('name', 'like', $word)
-                        ->orWhere('description', 'like', $word)
-                        ->get();
-        }
-        else{
-            $this->produits = Produit::all();
-        }
-        
+    public function update_query(){
+        //$word = $this->query;
+        $word = '%' . $this->query . '%';
+        $this->produits = Produit::where('name', 'like', '%'. $word . '%')
+                                    ->orWhere('description', 'like', '%'. $word . '%')
+                                    ->get();
     }
-
 
     public function render()
     {
-        
-        //dd($produits);  
         return view('livewire.catalogue-produit');
     }
 }

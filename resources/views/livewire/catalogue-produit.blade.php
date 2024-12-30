@@ -1,13 +1,14 @@
 <div>
     <div>
         {{-- The Master doesn't talk, he acts. --}}
-            <div class="mb-4 ml-5  " style="width: 25em;">
-                <input class="form-control" 
-                        wire:model="query"
-                        placeholder="Rechercher un produit..."
-                        type="search"
-                >    
-            </div>
+        <div class="mb-4 ml-5  " style="width: 25em;">
+            <input class="form-control" 
+                    wire:model="query"
+                    placeholder="Rechercher un produit..."
+                    wire:input="update_query"
+                    type="search"
+            >    
+        </div>
     </div>
     <div class="row row-cols-1 row-cols-md-3 g-3 mr-0">
         @foreach($produits as $produit)
