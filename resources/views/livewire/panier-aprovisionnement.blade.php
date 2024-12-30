@@ -1,6 +1,11 @@
 <div>
     <div class="row card shadow-2-strong mb-lg-0 " id="monPanier" style="position: fixed; width: 25em; padding-bottom: 3em; padding-top: 3em; margin-top: -7em; margin-left: -20em;  font-size:12px ">
         <h6><strong><u>Mon panier</u></strong></h6> <br>
+        @if (session('error'))
+            <div class="alert alert-danger fw-bolder">
+                {{ session('error') }}
+            </div>
+        @endif
         <table class="table table-responsive " style="overflow-y: visible; ">
             <thead>
                 <tr>

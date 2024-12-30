@@ -38,8 +38,9 @@ class CatalogueProduit extends Component
             'attributes' => [            
                 'prix_technicien' => $produits->prix_technicien,
                 'prix_minimum' => $produits->prix_minimum,
-                'price' => $produits->price,]
-        ));
+                'price' => $produits->price,
+                'prix_achat' => $produits->prix_achat,]
+        ))->associate($produits);
 
     
         /**

@@ -215,9 +215,10 @@ class PanierController extends Controller
         
         $article= [];
         $prixAchat = 0;
+        //dd($panier);
         foreach($panier as $row) {
     	
-    	    $sommePrixAchat = $row->associatedModel->prix_achat;
+    	    $sommePrixAchat = $row->attributes['prix_achat'];
     	    
     	    $prixAchat = $prixAchat + $sommePrixAchat;
     	    
@@ -315,7 +316,7 @@ class PanierController extends Controller
             ]
         );
         
-        \Cart::clear();       
+         \Cart::clear();       
         return $pdf->stream($numeroFacture);
     }
     

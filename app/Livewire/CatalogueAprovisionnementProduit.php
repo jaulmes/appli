@@ -22,7 +22,7 @@ class CatalogueAprovisionnementProduit extends Component
                 'prix_achat' => $produits->prix_achat,
                 'price' => $produits->price
             ]
-        ));
+        ))->associate($produits);
 
         /**
          * emmission d'un evenement apres ajout du produit 
