@@ -7,6 +7,12 @@ use Livewire\Component;
 
 class CatalogueAprovisionnementProduit extends Component
 {
+    public $query;
+    public $produits = [];
+
+    public function mount(){
+        $this->produits = Produit::all();
+    }
     //ajout de nouveau produit dans le panier
     public function ajouterPanier($id){
         $produits = Produit::find($id);
@@ -30,9 +36,15 @@ class CatalogueAprovisionnementProduit extends Component
          * */
         $this->dispatch('ProduitAjoute');
     }
+
+    public function search_query(){
+        $this->produits = Produit::where('name', 'like', '%'. $this->query . '%')
+                                ->orWhere('description', 'like', '%'. $this->query . '%')
+                                ->get();
+    }
+
     public function render()
     {
-        $produits = Produit::all();
-        return view('livewire.catalogue-aprovisionnement-produit', compact('produits'));
+        return view('livewire.catalogue-aprovisionnement-produit');
     }
 }
