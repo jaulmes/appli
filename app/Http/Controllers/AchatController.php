@@ -96,7 +96,7 @@ class AchatController extends Controller
         $prixAchat = 0;
         foreach($produits as $row) {
     	
-    	    $sommePrixAchat = $row->associatedModel->prix_achat;
+    	    $sommePrixAchat = $row->attributes['prix_achat'];;
     	    
     	    $prixAchat = $prixAchat + $sommePrixAchat;
     	    
