@@ -58,7 +58,9 @@
                 <th>Nom client</th>
                 <th>Num client</th>
                 <th>Auteur</th>
-                <th>Prix achat</th>
+                @can('VOIR_UTILISATEURS')
+                    <th>Prix achat</th>
+                @endcan
                 <th>Prix vente</th>
                 <th>Moyen payement</th>
                 <th>Produits</th>
@@ -73,7 +75,9 @@
                 <td>{{$transaction->nomClient}}</td>
                 <td>{{$transaction->numeroClient}}</td>
                 <td> {{$transaction->user->name}}</td>
-                <td> {{$transaction->prixAchat}}</td>
+                @can('VOIR_UTILISATEURS')
+                    <td> {{$transaction->prixAchat}}</td>
+                @endcan
                 <td> {{$transaction->montantVerse}}</td>
                 <td> {{$transaction->compte->nom ?? ''}}</td>
                 <td> {{$transaction->produit}}</td>
