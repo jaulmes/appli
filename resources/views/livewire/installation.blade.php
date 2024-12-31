@@ -1,5 +1,5 @@
 <div>
-    <div class="card" style="margin-top: 2em">
+    <div class="card fs-0.2" style="margin-top: 2em">
         <div class="card-header">
             <h3 class="card-title "><strong>Liste des Ventes</strong></h3>
             <div class="card-tools">
@@ -25,6 +25,7 @@
                         <th>Quantitée</th>
                         <th>Net A Payer</th>
                         <th>Commission</th>
+                        <th>Reduction</th>
                         <th>Montant total</th>
                         <th>Montant Deja Versé</th>
                         <th>Date</th>
@@ -41,6 +42,7 @@
                         <td>{{$installation->qteTotal}}</td>
                         <td>{{$installation->NetAPayer}}</td>
                         <td>{{$installation->commission}}</td>
+                        <td>{{$installation->reduction}}</td>
                         <td>{{$installation->montantTotal}}</td>
                         <td>{{$installation->montantVerse}}</td>
                         <td>{{$installation->date}}</td>
