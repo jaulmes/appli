@@ -390,7 +390,8 @@ class PanierController extends Controller
         $installations->impot = $request->input('impot');
         $installations->qteTotal = \Cart::getContent()->count();
         $installations->user_id = Auth::user()->id;
-        $installations->NetAPayer = $installations->montantProduit + $installations->mainOeuvre - $installations->reduction ;
+        $installations->NetAPayer = ($installations->montantProduit + $installations->mainOeuvre) - $installations->reduction ;
+       // dd($installations);
         
         if($installations->NetAPayer > $installations->montantVerse){
             $installations->statut = "non termine";
@@ -462,7 +463,7 @@ class PanierController extends Controller
             'netAPayer' => $netAPayer,
         ]);
         
-        \Cart::clear();       
+        //\Cart::clear();       
         return $pdf->stream($numeroFacture);
     }
 

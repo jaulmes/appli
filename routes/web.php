@@ -8,11 +8,13 @@ use App\Http\Controllers\ComptabiliteController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\FactureController;
 use App\Http\Controllers\FournisseurController;
+use App\Http\Controllers\InstallationController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\produitController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\VentesController;
 use App\Http\Controllers\UserController;
+use App\Models\Installation;
 use Illuminate\Support\Facades\Route;
 use App\Models\Produit;
 use Darryldecode\Cart\Cart;
@@ -154,6 +156,11 @@ Route::middleware('auth')->group(function () {
     //filtrer les ventes
     Route::get('ventes/filtrer', [VentesController::class, 'filtrerVentes'])->name('ventes.filtrer');
     Route::get('ventes/rechercher', [VentesController::class, 'rechercherVente'])->name('ventes.rechercher');
+
+    /**
+     * installations
+     */
+    Route::get('/installations/index', [InstallationController::class, 'index'])->name('installations.index');
 
 
     /**

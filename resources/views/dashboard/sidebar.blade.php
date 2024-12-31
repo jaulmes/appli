@@ -148,16 +148,24 @@
                         <p>Ventes</p>
                       </a>
                     </li>
-
-                
-                
+                @endcan
+            @endcan
+            @can('VOIR_VENTE')
+                @can('VOIR_ACHAT')
+                    <li class="nav-item">
+                      <a class="nav-link {{ Request::is('installations/index*') ? 'active' : '' }}" href="{{ route('installations.index') }}">
+                        <div class="nav-link-icon"><i data-feather="activity"></i></div>
+                        <i class="bi bi-plugin"></i>
+                        <p>Installations</p>
+                      </a>
+                    </li>
                 @endcan
             @endcan
 
             @can('VOIR_ACHAT')
             <li class="nav-item ">
               <a href="#" class="nav-link {{ Request::is('achats*') ? 'active' : '' }}" >
-                <i class="nav-icon fas fa-tachometer-alt"></i>
+                <i class="bi bi-basket"></i>
                 <p>
                   Approvisionnement
                   <i class="right fas fa-angle-left"></i>
@@ -188,8 +196,8 @@
             
             <!--Transactions-->
             <li class="nav-item">
-              <a href="#" class="nav-link collapse show {{ Request::is('transactions*') ? 'active' : '' }}"  >
-                <i class="fa fa-calendar" aria-hidden="true"></i>
+              <a href="#" class="nav-link  {{ Request::is('transactions*') ? 'active' : '' }}"  >
+              <i class="bi bi-activity"></i>
                 <p>
                   Journal
                   <i class="right fas fa-angle-left"></i>

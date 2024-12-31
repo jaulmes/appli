@@ -12,5 +12,4 @@ class InstallationController extends Controller
         return view('installations.index', compact('installations'));
     }
     
-
 }
