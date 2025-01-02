@@ -63,6 +63,7 @@
                 <form action="{{route('logout')}}" method="post" >
                     @csrf
                     <button type="submit">
+                    <i class="bi bi-power"></i>
                         deconnexion
                     </button>
                 </form>

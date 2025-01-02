@@ -195,6 +195,7 @@ class PanierController extends Controller
         $moi = now()->month;
         $annee = $dateHeure->format('y');
         $jour = $dateHeure->format('d');
+        //dd($jour);
 
         //enregistrement transaction
         $transactions = new Transaction();
@@ -260,7 +261,7 @@ class PanierController extends Controller
         //compter le nombre de vente pour incrementer le numero de la facture
         $numero =Vente::where('date', $ventes->date )->get()->count() + 1;
         $name = Auth::user()->name;
-        $numeroFacture = substr($name, 0, 3).'_'.$annee.'_'.$moi.'_'.$numero;
+        $numeroFacture = substr($name, 0, 3).'_'.$annee.'_'.$moi.'_'.$jour.'_'.$numero;
         
         //dd($panier);
         $totalPrixAchat = 0;
@@ -404,7 +405,7 @@ class PanierController extends Controller
         //compter le nombre de vente pour incrementer le numero de la facture
         $numero =Installation::where('created_at', $installations->created_at )->get()->count() + 1;
         $name = Auth::user()->name;
-        $numeroFacture = substr($name, 0, 3).'_'.$annee.'_'.$moi.'_'.$numero;
+        $numeroFacture = substr($name, 0, 3).'_'.$annee.'_'.$moi.'_'.$jour.'_'.$numero;
         
         $totalPrixAchat = 0;
         //mettre a jour le stock
@@ -420,7 +421,7 @@ class PanierController extends Controller
         $charges->titre = "commission pour l'intallation de ". $installations->nomClient. " a ". $installations->agentOperant; 
         $charges->montant = $installations->commission;
         $charges->date = $dateHeure->format('Y/m/d');
-        
+         //dd($installations->mainOeuvre);
         $charges->save();
         $comptes->save();
         $installations->save();
@@ -437,7 +438,7 @@ class PanierController extends Controller
             ]);
         }
         
-        //creer une facture pour enregistrer dans le systeme
+        // //creer une facture pour enregistrer dans le systeme
         $factures = new facture();
         $factures->numeroFacture = $numeroFacture;
         $factures->installation_id = $installations->id;
@@ -455,12 +456,13 @@ class PanierController extends Controller
         $netAPayer = $installations->NetAPayer;
 
         // chrger les donnee sur la facture pour avoyer sur une vue qui sera converti en pdf
-        $pdf = Pdf::loadView('panier.facturesInstallation',[
+        $pdf = Pdf::loadView('factures.afficherFactureInstallations',[
             'reduction' => $reduction,
             'installations' =>$installations,
             'clients' =>$clients,
             'numeroFacture'=>$numeroFacture,
             'netAPayer' => $netAPayer,
+            'factures' =>$factures
         ]);
         
         //\Cart::clear();       

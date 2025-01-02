@@ -25,7 +25,7 @@
                     <th scope="col">Action</th>
                 </tr>
             </thead>
-            <tbody class="card-body table-responsive p-0" style="height: 200px;">
+            <tbody class="card-body table-responsive p-0" style="height: 200px; font-size: xx-small;">
                 @foreach( Cart::getContent() as $produit)
                 <tr>
                     <th scope="row">
@@ -41,9 +41,9 @@
                         </p>
                     </th>
                     <th class="align-middle row">
-                        <button type="button" class="btn btn-dark" wire:click="diminuerQuantite(' {{$produit->id}} ')">-</button>
+                        <span type="submit" wire:click="ajouterQuantite(' {{$produit->id}} ')">+</span>
                         <p class="mb-0" style="font-weight: 500;">{{ $produit->quantity }}</p>
-                        <button type="button" class="btn btn-primary" wire:click="ajouterQuantite(' {{$produit->id}} ')">+</button>
+                        <span type="submit" wire:click="diminuerQuantite(' {{$produit->id}} ')">-</span>
                     </th>
                     <th class="align-middle">
                         <p class="mb-0" style="font-weight: 500;">{{ $produit->price * $produit->quantity }}</p>

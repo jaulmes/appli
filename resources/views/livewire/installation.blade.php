@@ -1,7 +1,7 @@
 <div>
     <div class="card fs-0.2" style="margin-top: 2em">
         <div class="card-header">
-            <h3 class="card-title "><strong>Liste des Ventes</strong></h3>
+            <h3 class="card-title "><strong>Liste des installations</strong></h3>
             <div class="card-tools">
                 <div class="input-group input-group-sm" style="width: 150px;">
                     <input type="search"  class="form-control float-right" 
@@ -15,7 +15,7 @@
             </div>
         </div>
 
-        <div class="card-body table-responsive p-0" style="height: 400px;">
+        <div class="card-body table-responsive p-0" style="height: 400px; font-size: x-small;">
             <table class="table table-head-fixed text-nowrap">
                 <thead>
                     <tr>
@@ -23,10 +23,11 @@
                         <th>Numero du client</th>
                         <th>Autheur</th>
                         <th>Quantitée</th>
-                        <th>Net A Payer</th>
                         <th>Commission</th>
+                        <th>Montant total des Produits</th>
                         <th>Reduction</th>
-                        <th>Montant total</th>
+                        <th>Main d'Oeuvre</th>
+                        <th>Net A Payer</th>
                         <th>Montant Deja Versé</th>
                         <th>Date</th>
                         <th>Statut</th>
@@ -40,10 +41,11 @@
                         <td>{{$installation->numeroClient}}</td>
                         <td>{{$installation->user->name}}</td>
                         <td>{{$installation->qteTotal}}</td>
-                        <td>{{$installation->NetAPayer}}</td>
                         <td>{{$installation->commission}}</td>
+                        <td>{{$installation->montantProduit}}</td>
                         <td>{{$installation->reduction}}</td>
-                        <td>{{$installation->montantTotal}}</td>
+                        <td>{{$installation->mainOeuvre}}</td>
+                        <td>{{$installation->NetAPayer}}</td>
                         <td>{{$installation->montantVerse}}</td>
                         <td>{{$installation->date}}</td>
                         <td>{{$installation->statut}}</td>

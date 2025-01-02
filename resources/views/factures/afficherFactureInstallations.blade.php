@@ -140,13 +140,12 @@
                     <th>P.Total</th>
                 </tr>
                 @foreach($installations->produits as $produit)
-
-                <tr>
-                    <td>{{$produit->pivot->quantity}}</td>
-                    <td>{{$produit->name}}</td>
-                    <td>{{$produit->price}}</td>
-                    <td>{{$produit->pivot->quantity * $produit->price}}</td>
-                </tr>
+                    <tr>
+                        <td>{{$produit->pivot->quantity}}</td>
+                        <td>{{$produit->name}}</td>
+                        <td>{{$produit->price}}</td>
+                        <td>{{$produit->pivot->quantity * $produit->price}}</td>
+                    </tr>
                 @endforeach
                 <tr >
                     <td  style="text-align: right;"></td>

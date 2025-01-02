@@ -25,7 +25,7 @@
         <div class="col-15">
             <div class="card" style="margin-top: 2em">
                 <div class="card-header">
-                    <h3 class="card-title "><strong >Liste des Charges</strong></h3>
+                    <h3 class="card-title "><strong >Journal des Activites</strong></h3>
                         
                     <form method="get" action="{{ route('transaction.bilan') }}" style="margin-left: 20em">
                         @csrf
@@ -62,7 +62,7 @@
                                 @can('VOIR_UTILISATEURS')
                                     <th>Prix achat</th>
                                 @endcan
-                                <th>Prix vente</th>
+                                <th>Montant Verse</th>
                                 <th>Moyen payement</th>
                                 <th>Produits</th>
                                 <th>Type</th>
