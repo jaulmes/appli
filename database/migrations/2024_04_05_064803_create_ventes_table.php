@@ -20,6 +20,8 @@ return new class extends Migration
             $table->integer('montantVerse')->nullable();
             $table->integer('totalAchat')->nullable();
             $table->integer('reduction')->nullable();
+            $table->string('agentOperant')->nullable();
+            $table->string('commission')->nullable();
             $table->integer('qteTotal');
             $table->string('date');
             $table->string('statut');

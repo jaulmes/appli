@@ -20,8 +20,19 @@
                 <label for="reduction">Reduction</label>
                 <input class="form-control" type="number" name="reduction" id="reduction" required>
             </div>
-
         </div>
+        @if(\Cart::getTotal() > 50000)
+            <div style="display: flex; flex-direction: row">
+                <div class="form-group">
+                    <label for="commission">commission</label>
+                    <input class="form-control" type="number" name="commission" id="commission" required>
+                </div>
+                <div class="form-group">
+                    <label for="agentOperant">Agent Operant</label>
+                    <input class="form-control" type="text" name="agentOperant" id="agentOperant" required>
+                </div>
+            </div>
+        @endif
         <div class="form-group">
             Mode de paiement...
             <select class="form-control" name="modePaiement" required>

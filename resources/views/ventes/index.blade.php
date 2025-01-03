@@ -61,7 +61,7 @@
                                 <th>Actions</th>
                             </tr>
                         </thead>
-                        <tbody id="result">
+                        <tbody id="result" style="font-size: small;">
                             @foreach($ventes as $vente)
                             <tr>
                                 <td>{{$vente->nomClient}}</td>

@@ -22,6 +22,8 @@ class Vente extends Model
         'auteur',
         'totalAchat',
         'moiEncour',
+        'commission',
+        'agentOperant'
     ] ;
 
     public function user()

@@ -175,9 +175,6 @@ class PanierController extends Controller
     }
 
     public function validerVente(Request $request){
-        
-        
-
         //j'enregistre le client lies a la vente
         $clients = new Client();
         $clients->nom = $request->input('nom');
@@ -195,7 +192,6 @@ class PanierController extends Controller
         $moi = now()->month;
         $annee = $dateHeure->format('y');
         $jour = $dateHeure->format('d');
-        //dd($jour);
 
         //enregistrement transaction
         $transactions = new Transaction();
@@ -229,13 +225,9 @@ class PanierController extends Controller
         $transactions->prixAchat = $prixAchat;
         $transactions->produit = json_encode($article);
         
-        //je fais une mise a jour du montant dans les comptes
-        $comptes->montant = $comptes->montant + $transactions->montantVerse;
-
         //montant total du panier sans la reduction
         $montantTotal = \Cart::getTotal();
 
-        
         //creation d'une vente
         $ventes = new Vente();
         $ventes->dateEncour = now()->format('m-Y');
@@ -243,6 +235,8 @@ class PanierController extends Controller
         $ventes->numeroClient = $request->input('numero');
         $ventes->montantVerse = $request->input('montantVerse');
         $ventes->reduction = $request->input('reduction');
+        $ventes->agentOperant = $request->input('agentOperant');
+        $ventes->commission = $request->input('commission');
         $ventes->montantTotal = $montantTotal;
         $ventes->NetAPayer = $montantTotal - $ventes->reduction;
         $ventes->compte_id = $comptes->id;
@@ -256,7 +250,6 @@ class PanierController extends Controller
         else{
             $ventes->statut = "termine";
         }
-
         
         //compter le nombre de vente pour incrementer le numero de la facture
         $numero =Vente::where('date', $ventes->date )->get()->count() + 1;
@@ -273,8 +266,16 @@ class PanierController extends Controller
         }
         $ventes->totalAchat = $totalPrixAchat;
 
+        $charges = new Charge();
+        $charges->titre = "commission pour l'intallation de ". $ventes->nomClient. " a ". $ventes->agentOperant; 
+        $charges->montant = $ventes->commission;
+        $charges->date = $dateHeure->format('Y/m/d');
 
-        //dd($ventes->produits());
+        //je fais une mise a jour du montant dans les comptes
+        $comptes->montant = $comptes->montant + $transactions->montantVerse - $ventes->commission;
+
+        $charges->save();
+
         $comptes->save();
         $ventes->save();
         $transactions->save();
@@ -382,9 +383,9 @@ class PanierController extends Controller
         $installations->nomClient = $request->input('nom');
         $installations->numeroClient = $request->input('numero');
         $installations->montantProduit = $montantTotal;
+        $installations->reduction = $request->input('reduction');
         $installations->montantVerse = $request->input('montantVerse');
         $installations->agentOperant = $request->input('agentOperant');
-        $installations->reduction = $request->input('reduction');
         $installations->commission = $request->input('commission');
         $installations->mainOeuvre = $request->input('mainOeuvre');
         $installations->compte_id = $comptes->id;
