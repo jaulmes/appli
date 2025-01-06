@@ -18,14 +18,10 @@ return new class extends Migration
             $table->unsignedBigInteger('installation_id')->nullable();
 
             $table->foreign('vente_id')->references('id')
-                                        ->on('ventes')
-                                        ->onDelete('cascade')
-                                        ->onUpdate('cascade');
+                                        ->on('ventes');
 
             $table->foreign('installation_id')->references('id')
-                                        ->on('installations')
-                                        ->onDelete('cascade')
-                                        ->onUpdate('cascade');
+                                        ->on('installations');
             $table->timestamps();
         });
     }

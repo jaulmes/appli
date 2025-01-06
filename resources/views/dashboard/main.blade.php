@@ -43,7 +43,7 @@
   <!--livewire-->
   @livewireStyles
 </head>
-<body class="hold-transition  sidebar-mini layout-fixed  layout-footer-fixed">
+<body class="hold-transition  sidebar-mini layout-fixed  ">
     <div class="wrapper">
         <!-- Main Sidebar Container -->
         <aside class="main-sidebar sidebar-dark-primary elevation-4">

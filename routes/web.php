@@ -12,6 +12,7 @@ use App\Http\Controllers\InstallationController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\produitController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\TacheController;
 use App\Http\Controllers\VentesController;
 use App\Http\Controllers\UserController;
 use App\Models\Installation;
@@ -232,7 +233,11 @@ Route::middleware('auth')->group(function () {
     Route::delete('users/delete/{id}', [UserController::class, 'delete'])->name('users.delete');
     Route::get('users/edit/admin/{id}', [UserController::class, 'editAdmin'])->name('users.edit.admin');
     Route::patch('users/update/admin/{id}', [UserController::class, 'updateAdmin'])->name('users.update.admin');
-     
+
+    /**
+     * Taches
+     */
+     Route::get('taches/index', [TacheController::class, 'index'])->name('taches.index');
 });
 
 

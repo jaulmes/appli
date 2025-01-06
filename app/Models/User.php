@@ -47,4 +47,18 @@ class User extends Authenticatable
 
     protected $guard_name = 'web';
 
+    //relation avec celui qui a cree la tache
+    public function createurTache(){
+        return $this->hasMany(Tache::class, 'created_by');
+    }
+
+    //relation avec celui a qui on a assigne la tache
+    public function assigneTache(){
+        return $this->hasMany(Tache::class, 'assigned_to');
+    }
+
+    public function commentaires(){
+        return $this->hasMany(Commentaire::class);
+    }
+
 }
