@@ -53,7 +53,7 @@
                     @endif
                 </div>
                 <div>
-                    <span type="button" class="btn btn-danger" wire:click="deleteTache({{$tache->id}})">
+                    <span type="button" class="btn btn-danger" wire:click="deleteTache({{$tache->id}})" onclick="alert('etes vous sur de vouloir suprimer cettre tache?')">
                         <i class="bi bi-trash"></i>
                     </span>
                 </div>
