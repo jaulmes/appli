@@ -40,7 +40,12 @@ class Taches extends Component
         $this->taches = Tache::all();
     }
 
-
+    public function updateStatut($id){
+        $taches = Tache::find($id);
+        $taches->statut = $this->statut;
+        $taches->save();
+        return redirect()->to('taches/index');
+    }
     
     public function render()
     {

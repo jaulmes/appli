@@ -23,7 +23,7 @@
                     <span class="fw-bold">{{$tache->titre}}</span>
                 </div>
                 <div class="d-flex gap-2 align-items-center">
-                    <select id="" wire:model="statut.{{$tache->id}}" wire:change="updateStatut( {{$tache->id}} )" >
+                    <select id="" wire:model="statut" wire:change="updateStatut( {{$tache->id}} )" >
                         @if($tache->statut === "A FAIRE")
                             <option class="alert alert-dark" selected>{{$tache->statut}}</option>
                             <option class="alert alert-secondary" value="EN COURS">EN COURS</option>
