@@ -9,6 +9,12 @@
                 <span class="badge bg-primary rounded-circle p-2">0</span>
                 <span class="badge bg-success rounded-circle p-2">0</span>
             </div>
+
+            <!-- Boutons de filtre -->
+            <div class="btn-group" role="group">
+                <button type="button" class="btn btn-secondary active filtre" >Tout</button>
+                <button type="button" class="btn btn-secondary filtre" data-statut="non_termine">Mes Taches</button>
+            </div>
             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
                 Ajouter une Taches
             </button>
