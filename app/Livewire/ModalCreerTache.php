@@ -12,7 +12,7 @@ class ModalCreerTache extends Component
     public $user;
     public $titre;
     public $description;
-    public $statut;
+    public $statut = '';
     public $etat = 'non assigne';
     public $date_debut;
     public $date_fin;
@@ -43,6 +43,7 @@ class ModalCreerTache extends Component
         }
         
         $taches->save();
+        redirect()->to('taches/index');
         $this->dispatch('tacheAjoute');
     }
     public function render()

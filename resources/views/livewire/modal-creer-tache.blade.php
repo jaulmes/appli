@@ -19,7 +19,7 @@
                 <div class="col-md-6 col">
                     <label for="validationCustom04" class="form-label">Statut</label>
                     <select class="form-select" wire:change="statut()" wire:model="statut" id="validationCustom04" required>
-                        <option selected disabled>statut</option>
+                        <option selected >Choisir le statut</option>
                         <option value="A FAIRE" >A FAIRE</option>
                         <option value="EN COURS">EN COURS</option>
                         <option value="TERMINE" >TERMINE</option>

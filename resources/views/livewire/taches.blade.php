@@ -10,28 +10,56 @@
                 <span class="badge bg-success rounded-circle p-2">0</span>
             </div>
             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                Launch demo modal
+                Ajouter une Taches
             </button>
         </div>
 
         <!-- Tickets Section -->
         <ul class="list-group mb-3">
+        @foreach($taches as $tache)
             <li class="list-group-item d-flex justify-content-between align-items-center">
                 
-            @foreach($taches as $taches)
                 <div class="form-check">
-                    <span class="fw-bold text-primary">SCRUM-2</span>
+                    <span class="fw-bold">{{$tache->titre}}</span>
                 </div>
                 <div class="d-flex gap-2 align-items-center">
-                    <select name="" id="" >
-                        <option class="alert alert-dark" value="">A FAIRE</option>
-                        <option class="alert alert-secondary" value="">EN COURS</option>
-                        <option class="alert alert-success" value="">TERMINER</option>
+                    <select id="" wire:model="statut.{{$tache->id}}" wire:change="updateStatut( {{$tache->id}} )" >
+                        @if($tache->statut === "A FAIRE")
+                            <option class="alert alert-dark" selected>{{$tache->statut}}</option>
+                            <option class="alert alert-secondary" value="EN COURS">EN COURS</option>
+                            <option class="alert alert-success" value="TERMINER">TERMINER</option>
+                        @elseif($tache->statut ==="EN COURS")
+                            <option class="alert alert-secondary" selected>{{$tache->statut}}</option>
+                            <option class="alert alert-dark" value="A FAIRE">A FAIRE</option>
+                            <option class="alert alert-success" value="TERMINER">TERMINER</option>
+                        @else
+                            <option class="alert alert-success" selected>{{$tache->statut}}</option>
+                            <option class="alert alert-dark" value="A FAIRE">A FAIRE</option>
+                            <option class="alert alert-secondary" value="EN COURS">EN COURS</option>
+                        @endif
                     </select>
-                    <i class="bi bi-person-circle"></i>
+                    @if($tache->etat === "assigne")
+                        <i class="bi bi-person-circle" title="{{$tache->assigne->name}}" type="button"></i>
+                    @else
+                        <div class="dropdown">
+                            <span class="dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">non assigne</span>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <li><input type="text" class="form-control" placeholder="Rechercher..."></li>
+                                @foreach($users as $user)
+                                    <li><a class="dropdown-item primary" href="#" wire:click="updateAssigne({{$tache->id}}, {{$user->id}})">{{$user->name}}</a></li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
                 </div>
-                @endforeach
+                <div>
+                    <span type="button" class="btn btn-danger" wire:click="deleteTache({{$tache->id}})">
+                        <i class="bi bi-trash"></i>
+                    </span>
+                </div>
+                
             </li>
+            @endforeach
         </ul>
 
     </div>
