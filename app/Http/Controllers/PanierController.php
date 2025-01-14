@@ -266,15 +266,16 @@ class PanierController extends Controller
         }
         $ventes->totalAchat = $totalPrixAchat;
 
-        $charges = new Charge();
-        $charges->titre = "commission pour l'intallation de ". $ventes->nomClient. " a ". $ventes->agentOperant; 
-        $charges->montant = $ventes->commission;
-        $charges->date = $dateHeure->format('Y/m/d');
+        if(\Cart::getTotal() > 50000){
+            $charges = new Charge();
+            $charges->titre = "commission pour l'intallation de ". $ventes->nomClient. " a ". $ventes->agentOperant; 
+            $charges->montant = $ventes->commission;
+            $charges->date = $dateHeure->format('Y/m/d');
+            $charges->save();
+        }
 
         //je fais une mise a jour du montant dans les comptes
         $comptes->montant = $comptes->montant + $transactions->montantVerse - $ventes->commission;
-
-        $charges->save();
 
         $comptes->save();
         $ventes->save();

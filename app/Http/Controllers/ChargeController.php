@@ -49,6 +49,7 @@ class ChargeController extends Controller
         $transactions->montantVerse = $request->input('montant');
         $transactions->user_id = Auth::user()->id;
         
+        dd($charges);
         $transactions->save();
         $charges->save();
         $comptes->save();
