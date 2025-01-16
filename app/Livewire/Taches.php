@@ -5,6 +5,8 @@ namespace App\Livewire;
 use App\Models\Tache;
 use App\Models\User;
 use Livewire\Component;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Redirect;
 
 use function React\Promise\all;
 
@@ -12,41 +14,27 @@ class Taches extends Component
 {
     public $taches = [];
     public $statut;
+    public $tacheId;
 
-    protected $listeners = ['tacheAjoute' => 'updateTache'];
+    protected $listeners = ['tacheAjoute' => 'updateTache',
+                            'modifierStatut' => 'mesTaches'];
     public function mount(){
-        $this->taches = Tache::all();
+        $this->mesTaches();
+    }
+
+    public function mesTaches(){
+        $user_id = Auth::user()->id;
+        $this->taches = Tache::where('assigned_to', $user_id)->get();
     }
 
     public function updateTache(){
         $this->taches;
     }
-
-    public function deleteTache($id){
-        $taches = Tache::find($id)->delete();
-        $this->taches = Tache::all();
-    }
-
-    public function updateAssigne($tache_id, $user_id){
-        //je recupere la tache
-        $taches = Tache::find($tache_id);
-        //je recupere l'utilisateur chez qui je souhaites attribuer la tache
-        $users = User::find($user_id);
-
-        //j'attribut la tache a un nouvel utilisateur et je change le statut
-        $taches->assigned_to = $users->id;
-        $taches->etat = "assigne";
-        $taches->save();
-        $this->taches = Tache::all();
-    }
-
-    public function updateStatut($id){
-        $taches = Tache::find($id);
-        $taches->statut = $this->statut;
-        $taches->save();
-        return redirect()->to('taches/index');
-    }
     
+    public function allTaches(){
+        $this->taches = Tache::all();
+    }
+
     public function render()
     {
         $users = User::all();
