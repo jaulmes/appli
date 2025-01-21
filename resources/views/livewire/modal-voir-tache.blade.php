@@ -7,22 +7,45 @@
     <div class="modal-body fs-0.1">
         <div class="row">
             <div class="mb-3 col">
-                <label for="exampleFormControlInput1" class="form-label">Titre: {{$tache->titre}}</label>
+                <label for="exampleFormControlInput1" class="form-label">Titre</label>
+                <div>
+                    <span>{{$tache->titre}}</span>
+                </div>
             </div>
             <div class="mb-3 col ">
                 <label for="exampleFormControlTextarea1" class="form-label">Description</label>
-                <textarea class="form-control" wire:model="description" id="exampleFormControlTextarea1" rows="3"></textarea>
+                <div>
+                    <span>{{$tache->description}}</span>
+                </div>
             </div>
         </div>
         <div class="row">
             <div class="col-md-6 col">
                 <label for="validationCustom04" class="form-label">Statut</label>
-                <select class="form-select"  required>
-                    <option selected >Choisir le statut</option>
-                    <option value="A FAIRE" >A FAIRE</option>
-                    <option value="EN COURS">EN COURS</option>
-                    <option value="TERMINE" >TERMINE</option>
-                </select>
+                <div>
+                    <span>{{$tache->statut}}</span>
+                </div>
+            </div>
+            <div class="col-md-6 col">
+                <label for="validationCustom04" class="form-label">Responsable</label>
+                <div>
+                    <span>{{$tache->assigne->name?? "non assigne"}}</span>
+                </div>
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="col-md-6 col">
+                <label for="validationCustom04" class="form-label">Debut</label>
+                <div>
+                    <span>{{$tache->date_debut}}</span>
+                </div>
+            </div>
+            <div class="col-md-6 col">
+                <label for="validationCustom04" class="form-label">Fin</label>
+                <div>
+                    <span>{{$tache->date_fin}}</span>
+                </div>
             </div>
 
         </div>

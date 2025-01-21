@@ -4,7 +4,10 @@ namespace App\Livewire;
 
 use App\Models\Tache;
 use App\Models\User;
+use App\Notifications\AssignerTache;
+use App\Notifications\AssigneTacheNotification;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Notification;
 use Livewire\Component;
 
 class ModalCreerTache extends Component
@@ -38,11 +41,17 @@ class ModalCreerTache extends Component
         $taches->date_fin = $this->date_fin;
         if($taches->assigned_to){
             $taches->etat = "assigne";
+            
         }else{
             $taches->etat = "non assigne";
         }
         
         $taches->save();
+        //envoye une notification a l'utilisateur a qui on a assigne la tache
+        if($taches->assigned_to){
+            $users = User::where('id', $this->user)->get();
+            Notification::send($users, new AssigneTacheNotification($taches->titre));
+        }
         redirect()->to('taches/index');
         $this->dispatch('tacheAjoute');
     }
