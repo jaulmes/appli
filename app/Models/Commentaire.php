@@ -11,15 +11,12 @@ class Commentaire extends Model
     
     protected $fillable = [
         'tache_id',
+        'user_id',
         'commentaire',
     ];
-
-    public function employes(){
-        return $this->belongsTo(Employe::class);
-    }
     
     public function users(){
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     public function taches(){

@@ -4,10 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\Compte;
 use App\Models\Produit;
+use App\Models\User;
 use App\Models\Vente;
 use Illuminate\Http\Request;
 use DB;
 use Auth;
+use Illuminate\Support\Facades\Auth as FacadesAuth;
 
 class DashboardController extends Controller
 {
@@ -42,10 +44,13 @@ class DashboardController extends Controller
         //formate le montant des benefice
         $benefice = $montantVente - $montantAchat;
         $benefice_formate = number_format($benefice, 0, ',', ' ') . '   Francs CFA';
+
+        $user = FacadesAuth::user();
+        $unreadNotifications = $user->unreadNotifications ->count();
         
 
 
-        return view('dashboard.index', compact('montant', 'total_achat_formate', 'total_technicien_formate', 'total_vente_formate', 'benefice_formate'));
+        return view('dashboard.index', compact('montant', 'total_achat_formate', 'total_technicien_formate', 'total_vente_formate', 'benefice_formate', 'user', 'unreadNotifications'));
     }
     
 

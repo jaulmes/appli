@@ -47,7 +47,16 @@
                     <span>{{$tache->date_fin}}</span>
                 </div>
             </div>
-
+        </div>
+        <div>
+            <h4 class="text-center">commentaires</h4>
+            <ul>
+                @foreach($tache->commentaires as $commentaire)
+                    <li><a href="#">@ {{$commentaire->users->name}}: </a>{{$commentaire->commentaire}}</li>
+                @endforeach 
+            </ul>
+            <textarea placeholder="ajouter un commentaire..." wire:model="comment"></textarea>
+            <button class="btn btn-primary" wire:click="ajouterCommentaire">envoyer</button>
         </div>
 
     </div>
