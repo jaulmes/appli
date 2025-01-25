@@ -4,7 +4,7 @@
     <a class="nav-link position-relative" data-bs-toggle="dropdown" href="#">
       <i class="bi bi-bell fs-5"></i>
       <!-- Badge for unread notifications -->
-      <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+      <span class="badge badge-warning navbar-badge">
         {{ Auth::user()->unreadNotifications->count() }}
       </span>
     </a>

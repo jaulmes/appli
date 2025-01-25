@@ -20,16 +20,7 @@
       <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="true">
         <!-- Add icons to the links using the .nav-icon class
               with font-awesome or any other icon font library -->
-      @can('VOIR_CHARGE')
-        <li class="nav-item ">
-          <li class="nav-item">
-            <a class="nav-link {{ Request::is('dashboard*') ? 'active' : '' }}" href="{{ route('dashboard.index') }}">
-              <i class="nav-icon fas fa-tachometer-alt"></i>
-              Dashboard
-            </a>
-          </li>
-        </li>
-      @endcan
+
           <!--panier-->
           <li class="nav-item">
             <a href="{{route('panier.index')}}" class="nav-link {{Request::is('panier/index*')? 'active' : ''}}">
@@ -39,6 +30,17 @@
               <p>Boutique</p>
             </a>
           </li>
+
+          @can('VOIR_CHARGE')
+            <li class="nav-item ">
+              <li class="nav-item">
+                <a class="nav-link {{ Request::is('dashboard*') ? 'active' : '' }}" href="{{ route('dashboard.index') }}">
+                  <i class="nav-icon fas fa-tachometer-alt"></i>
+                  Dashboard
+                </a>
+              </li>
+            </li>
+          @endcan
 
           <!--Taches-->
           <li class="nav-item">
