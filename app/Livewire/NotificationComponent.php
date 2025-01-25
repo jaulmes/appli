@@ -8,6 +8,9 @@ use Livewire\Component;
 class NotificationComponent extends Component
 {
     public $user;
+
+    protected $listeners = ['refreshTacheDetails' => '$refresh'];
+    
     public function mount(){
         $this->user = Auth::user();
     }

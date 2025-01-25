@@ -34,6 +34,7 @@ class TacheItem extends Component
         }
 
         $this->dispatch('modifierStatut');
+        $this->dispatch('refreshTacheDetails');
     }
 
     public function deleteTache($id){
@@ -61,6 +62,7 @@ class TacheItem extends Component
 
 
         $this->dispatch('modifierStatut');
+        $this->dispatch('refreshTacheDetails');
     }
 
     public function showTache($id){

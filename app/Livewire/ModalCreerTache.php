@@ -54,6 +54,7 @@ class ModalCreerTache extends Component
         }
         redirect()->to('taches/index');
         $this->dispatch('tacheAjoute');
+        $this->dispatch('refreshTacheDetails');
     }
     public function render()
     {
