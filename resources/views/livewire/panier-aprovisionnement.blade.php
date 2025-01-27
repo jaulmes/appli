@@ -59,7 +59,7 @@
                 vider le panier
             </button>
         </form>
-        <button type="button" style="width: 8em; margin-left:10em; margin-top:-4.7em; font-size:10px"  class="btn btn-success" data-toggle="modal" data-target="#exampleModal">
+        <button type="button" style="width: 8em; margin-left:10em; margin-top:-4.7em; font-size:10px"  class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exampleModal">
             Valider l'achat
         </button>
     </div>
