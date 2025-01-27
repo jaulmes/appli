@@ -46,7 +46,7 @@
                 </div>
 
                 <div class="card-body table-responsive p-0" style="height: 400px;">
-                    <table class="table table-head-fixed text-nowrap">
+                    <table class="table table-head-fixed text-nowrap small">
                         <thead>
                             <tr>
                                 <th>Nom du client</th>

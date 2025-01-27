@@ -91,6 +91,8 @@ class VentesController extends Controller
                         <td>'.$vente->nomClient.'</td>
                         <td>'.$vente->numeroClient.'</td>
                         <td>'.$vente->user->name.'</td>
+                        <td>'.$vente->agentOperant.'</td>
+                        <td>'.$vente->commission.'</td>
                         <td>'.$vente->qteTotal.'</td>
                         <td>'.$vente->NetAPayer.'</td>
                         <td>'.$vente->montantTotal.'</td>
