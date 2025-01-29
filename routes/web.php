@@ -12,6 +12,7 @@ use App\Http\Controllers\InstallationController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\produitController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\RecusController;
 use App\Http\Controllers\TacheController;
 use App\Http\Controllers\VentesController;
 use App\Http\Controllers\UserController;
@@ -238,6 +239,11 @@ Route::middleware('auth')->group(function () {
      * Taches
      */
      Route::get('taches/index', [TacheController::class, 'index'])->name('taches.index');
+
+     /**
+      * recus
+      */
+      Route::get('recus/index', [RecusController::class, 'index'])->name('recus.index');
 });
 
 

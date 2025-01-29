@@ -1,4 +1,4 @@
 @extends('dashboard.main')
     @section('content')
-        <livewire:taches>
+        <livewire:recus>
     @endsection

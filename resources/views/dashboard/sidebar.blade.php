@@ -1,4 +1,3 @@
-<!-- Brand Logo -->
   <a href="index3.html" class="brand-link">
     <img src="../logo.jpg" alt="solergy solution" class="brand-image img-circle elevation-3" style="opacity: .8">
     <span class="brand-text font-weight-light">Solergy Solutions</span>
@@ -35,8 +34,8 @@
             <li class="nav-item ">
               <li class="nav-item">
                 <a class="nav-link {{ Request::is('dashboard*') ? 'active' : '' }}" href="{{ route('dashboard.index') }}">
-                  <i class="nav-icon fas fa-tachometer-alt"></i>
-                  Dashboard
+                  <i class="nav-icon bi bi-speedometer2"></i>
+                  <p>Dashboard</p>
                 </a>
               </li>
             </li>
@@ -46,31 +45,32 @@
           <li class="nav-item">
             <a href="{{route('taches.index')}}" class="nav-link {{Request::is('taches/index*')? 'active' : ''}}">
             <i class="bi bi-list-task"></i>
-              <p>Taches</p>
-              <span class="right badge badge-danger">New</span>
+              <p>Taches<span class="right badge badge-danger">New</span></p>
+              
             </a>
           </li>
           
           <!--factures-->
           <li class="nav-item">
-            <a href="#factures" class="nav-link {{Request::is('factures')? 'active' : ''}}">
+            <a href="#" class="nav-link {{Request::is('factures')? 'active' : ''}}">
               <i class="bi bi-receipt"></i>
-              <p>Factures</p>
-              <i class="fas fa-angle-left right"></i>
+              <p>Factures et Recus
+                <i class="fas fa-angle-left right"></i>
+              </p>
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
                 <a href="{{route('factures.ventes')}}" class="nav-link {{Request::is('factures/ventes*')? 'active' : ''}}">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Factures des ventes</p>
+                  <p>Factures</p>
                 </a>
               </li>
             </ul>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="{{route('factures.installations')}}" class="nav-link {{Request::is('factures/installations*')? 'active' : ''}}">
+                <a href="{{route('recus.index')}}" class="nav-link {{Request::is('factures/index*')? 'active' : ''}}">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Factures des installations</p>
+                  <p>Recus</p>
                 </a>
               </li>
             </ul>
