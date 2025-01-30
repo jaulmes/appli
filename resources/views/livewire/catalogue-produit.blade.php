@@ -1,44 +1,61 @@
-<div>
-    <div>
-        <div class="mb-4 ml-5  " style="width: 25em;">
-            <input class="form-control" 
-                    wire:model="query"
-                    placeholder="Rechercher un produit..."
-                    wire:input="update_query"
-                    type="search"
-            >    
-        </div>
-    </div>
-    <div class="row row-cols-1 row-cols-md-3 g-3 mr-0">
-        @foreach($produits as $produit)
-            <div class="col mb-3 " style="margin-right: -4em;">
-                <div class="card h-100" style="width: 12em; " >
-                    <strong class="badge badge-danger">{{ $produit->getAlert() }}</strong>
-                    @if($produit->getStock() === "disponible")
-                    <strong class="badge badge-info">{{ $produit->getStock() }}</strong>
-                    @elseif($produit->getStock() === "indisponible")
-                    <strong class="badge badge-danger">{{ $produit->getStock() }}</strong>
-                    @endif
-                    <img src="{{ asset('storage/images/produits/'.$produit->image_produit) }}" class="img-fluid" alt="" style="height: 5em; width: 100%;">
-                    <div class="member-info" style="font-size: 12px;">
-                        <h7><u>Nom</u>: {{ $produit->name }}</h7>
-                        <p class="card-text"><u>Desc</u>: {{ $produit->getDescription() }}</p>
-                        <p class="card-text"><u>Prix</u>: <strong class="text-success"><select name="price" id=""></select>{{ $produit->getPrice() }}</strong></p>
-                        <div class="row" style="margin-left: 0.2em; padding-bottom: 0.01em; margin-top: 0.5em;">
-                            <p>
-                                <a href="{{ route('produit.detail', $produit->id) }}">
-                                    <button class="btn btn-warning px-1"><i class="bi bi-eye"></i></button>
-                                </a>
-                                @if($produit->getStock() === "disponible")
-                                    <button class=" btn btn-primary px-1" wire:click="ajouterPanier('{{$produit->id}}')" style="margin-left: 0em; margin-top:0em; size: -1em;"><i class="bi bi-plus"></i></button>
-                                @endif
-                            </p>
-
-                        </div>
-                    </div>
+<div class="container py-3">
+    <div class="row">
+        <!-- Catalogue de produits (75% de l'espace) -->
+        <div class="col-md-9">
+            <!-- Barre de recherche -->
+            <div class="row justify-content-center mb-4">
+                <div class="col-md-6 col-10">
+                    <input class="form-control shadow-sm" 
+                           wire:model="query"
+                           placeholder="🔍 Rechercher un produit..."
+                           wire:input="update_query"
+                           type="search"
+                    >    
                 </div>
             </div>
-        @endforeach
+
+            <!-- Catalogue de produits -->
+            <div class="row row-cols-1 row-cols-md-3 g-4">
+                @foreach($produits as $produit)
+                    <div class="col">
+                        <div class="card h-100 shadow-sm border-0 rounded">
+                            <!-- Badge de disponibilité -->
+                            <div class="position-absolute top-0 start-0 m-2">
+                                @if($produit->getStock() === "disponible")
+                                    <span class="badge bg-success">Disponible</span>
+                                @else
+                                    <span class="badge bg-danger">Indisponible</span>
+                                @endif
+                            </div>
+
+                            <!-- Image produit -->
+                            <img src="{{ asset('storage/images/produits/'.$produit->image_produit) }}" 
+                                 class="card-img-top img-fluid" 
+                                 alt="{{ $produit->name }}" 
+                                 style="height: 150px; object-fit: cover;">
+
+                            <!-- Infos produit -->
+                            <div class="card-body text-center">
+                                <h6 class="card-title text-truncate" title="{{ $produit->name }}">{{ $produit->name }}</h6>
+                                <p class="text-muted small">{{ $produit->getDescription() }}</p>
+                                <p class="fw-bold text-primary">{{ $produit->getPrice() }} XAF</p>
+                            </div>
+
+                            <!-- Actions -->
+                            <div class="card-footer bg-white border-0 text-center d-flex justify-content-around">
+                                <a href="{{ route('produit.detail', $produit->id) }}" class="btn btn-outline-warning btn-sm">
+                                    <i class="bi bi-eye"></i> Voir
+                                </a>
+                                @if($produit->getStock() === "disponible")
+                                    <button class="btn btn-primary btn-sm" wire:click="ajouterPanier('{{ $produit->id }}')">
+                                        <i class="bi bi-cart-plus"></i> Ajouter
+                                    </button>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+        </div>
     </div>
 </div>
-
