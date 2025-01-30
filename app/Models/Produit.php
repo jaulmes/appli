@@ -34,7 +34,7 @@ class Produit extends Model
     public function ventes(): BelongsToMany
     {
         return $this->belongsToMany(Vente::class, 'produit_vente')
-                                        ->withPivot('quantity');
+                                        ->withPivot('quantity', 'price');
     }
 
     public function installations(): BelongsToMany

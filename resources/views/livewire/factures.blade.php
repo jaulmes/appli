@@ -1,25 +1,31 @@
 <div class="card shadow-lg">
-    <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+<div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+    <h3 class="card-title m-0">
         @if($type == "ventes")
-            <h3 class="card-title m-0">Liste des Factures des VENTES</h3>
+            Liste des Factures des VENTES
         @else
-            <h3 class="card-title m-0">Liste des Factures des INSTALLATIONS</h3>
+            Liste des Factures des INSTALLATIONS
         @endif
+    </h3>
 
-        @if($type == "ventes")
-            <div class="btn-group" role="group">
-                <button type="button" class="btn btn-secondary  active" wire:click="Ventes()">VENTES</button>
-                <button type="button" class="btn btn-secondary" wire:click="Intallations()" >INSTALLATIONS</button>
-            </div>
-        @else
-            <div class="btn-group" role="group">
-                <button type="button" class="btn btn-secondary  " wire:click="Ventes()">VENTES</button>
-                <button type="button" class="btn btn-secondary active" wire:click="Intallations()" >INSTALLATIONS</button>
-            </div>
-        @endif
-
+    <div class="btn-group" role="group">
+        <button type="button" class="btn btn-outline-light @if($type == 'ventes') active @endif" wire:click="Ventes()"><i class="fas fa-chart-line"></i>VENTES</button>
+        <button type="button" class="btn btn-outline-light @if($type == 'installations') active @endif" wire:click="Installations()"><i class="fas fa-cogs"></i>INSTALLATIONS</button>
     </div>
-    <!-- /.card-header -->
+</div>
+
+<div class="container-xl px-4 mt-n4">
+    @if (session()->has('message'))
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <i class="fas fa-exclamation-triangle me-2"></i>
+        {{ session('message') }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    @endif
+</div>
+
+
+
 
     <div class="card-body p-0">
         <table class="table table-hover table-bordered table-striped mb-0">
@@ -45,6 +51,9 @@
                                 <a href="{{ route('factures.ventes.afficher', $facture->id) }}" target="_blank" class="btn btn-outline-info btn-sm" title="Afficher">
                                     <i class="bi bi-eye"></i>
                                 </a>
+                                <a href="#" wire:click="supprimerFacture({{$facture->id}})" class="btn btn-outline-danger btn-sm" title="Annuler" onclick="alert('voulez vous supprimer cette facture?')">
+                                    <i class="bi bi-trash"></i>
+                                </a>
                             </td>
                         @elseif($type == "installations")
                             <td>{{ $facture->installations->created_at->format('d/m/Y') }}</td>
@@ -55,6 +64,9 @@
                                 </a>
                                 <a href="{{ route('factures.installations.afficher', $facture->id) }}" target="_blank" class="btn btn-outline-info btn-sm" title="Afficher">
                                     <i class="bi bi-eye"></i>
+                                </a>
+                                <a href="#" wire:click="supprimerFacture({{$facture->id}})" class="btn btn-outline-danger btn-sm" title="Annuler" onclick="alert('voulez vous supprimer cette facture?')">
+                                    <i class="bi bi-trash"></i>
                                 </a>
                             </td>
                         @endif

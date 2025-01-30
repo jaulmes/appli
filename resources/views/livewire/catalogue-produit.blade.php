@@ -1,6 +1,5 @@
 <div>
     <div>
-        {{-- The Master doesn't talk, he acts. --}}
         <div class="mb-4 ml-5  " style="width: 25em;">
             <input class="form-control" 
                     wire:model="query"
