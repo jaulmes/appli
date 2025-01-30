@@ -18,9 +18,12 @@
             <div class="row row-cols-1 row-cols-md-3 g-4">
                 @foreach($produits as $produit)
                     <div class="col">
-                        <div class="card h-100 shadow-sm border-0 rounded">
+                        <div class="card h-100 shadow-sm border-1 rounded">
                             <!-- Badge de disponibilité -->
                             <div class="position-absolute top-0 start-0 m-2">
+                                @if($produit->getAlert())
+                                    <span class="badge bg-danger">{{ $produit->getAlert() }}</span>
+                                @endif
                                 @if($produit->getStock() === "disponible")
                                     <span class="badge bg-success">Disponible</span>
                                 @else

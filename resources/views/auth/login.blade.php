@@ -1,84 +1,82 @@
 <!DOCTYPE html>
-<html>
-<style>
-body{
-    background-color: blue;
-}
-input[type=email], input[type=password], select {
-  width: 100%;
-  padding: 12px 20px;
-  margin: 8px 0;
-  display: inline-block;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  box-sizing: border-box;
-}
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Connexion</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <style>
+        body {
+            background-color: #f8f9fa; /* Couleur de fond moderne */
+            height: 100vh;
+        }
+        .login-container {
+            width: 100%;
+            max-width: 400px;
+            padding: 20px;
+        }
+        .login-card {
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .login-card .card-body {
+            padding: 30px;
+        }
+        .login-btn {
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+            border-radius: 8px;
+        }
+        .logo {
+            max-width: 150px;
+        }
+    </style>
+</head>
+<body class="d-flex justify-content-center align-items-center">
 
-input[type=submit] {
-  width: 100%;
-  background-color: #4CAF50;
-  color: white;
-  padding: 14px 20px;
-  margin: 8px 0;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
+    <div class="login-container">
+        <div class="text-center">
+            <img src="{{ asset('logo.jpg') }}" alt="Logo" class="logo mb-3">
+        </div>
+        <div class="card login-card">
+            <div class="card-body">
+                <h4 class="text-center mb-4">Connexion</h4>
 
-input[type=submit]:hover {
-  background-color: #45a049;
-}
+                @if ($errors->any())
+                    <div class="alert alert-danger">
+                        <ul class="mb-0">
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
 
-div {
-  border-radius: 5px;
-  background-color: #f2f2f2;
-  padding: 20px;
-  width:20em;
-  position: relative;
-  margin-top: 20%;
-  margin-left:40%;
-}
-img{
-    margin-left: 40em;
-    margin-top: -6em;
-    position: fixed;
-    height: 6em;
-    width: 10em;
-}
-</style>
-<body>
+                <form method="POST" action="{{ route('login') }}">
+                    @csrf
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" id="email" name="email" class="form-control" placeholder="Votre email..." required autofocus autocomplete="email">
+                        @error('email')
+                            <div class="text-danger">{{ $message }}</div>
+                        @enderror
+                    </div>
 
-<img src="{{asset('logo.jpg')}}"/>
+                    <div class="mb-3">
+                        <label for="password" class="form-label">Mot de passe</label>
+                        <input type="password" id="password" name="password" class="form-control" placeholder="Votre mot de passe..." required autocomplete="current-password">
+                        @error('password')
+                            <div class="text-danger">{{ $message }}</div>
+                        @enderror
+                    </div>
 
-<div >
-    @if ($errors->any())
-
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-
-    @endif
-  <form method="POST" action="{{ route('login') }}">
-      @csrf
-    <label for="email">Email</label>
-    <input type="email" id="email" name="email" placeholder="votre email..." required autofocus autocomplete="email">
-    @error('email')
-        {{ $message }}
-
-    @enderror
-
-    <label for="password" >Mot de passe</label>
-    <input type="password" id="password" name="password" placeholder="votre mot de passe"required autocomplete="current-password">
-    @error('password')
-            {{ $message }}
-
-    @enderror
-  
-    <input type="submit" value="Submit">
-  </form>
-</div>
+                    <button type="submit" class="btn btn-primary login-btn">Se connecter</button>
+                </form>
+            </div>
+        </div>
+    </div>
 
 </body>
 </html>
