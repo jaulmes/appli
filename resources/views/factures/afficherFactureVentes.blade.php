@@ -146,10 +146,10 @@
                 @foreach($ventes->produits as $produit)
 
                 <tr>
-                    <td>{{$produit->quantity}}</td>
+                    <td>{{$produit->pivot->quantity}}</td>
                     <td>{{$produit->name}}</td>
                     <td>{{$produit->price}}</td>
-                    <td>{{$produit->pivot->quantity}}</td>
+                    <td>{{$produit->pivot->quantity * $produit->price}}</td>
                 </tr>
                 @endforeach
                 <tr style="font-weight: bold;">

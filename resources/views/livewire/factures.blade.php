@@ -50,21 +50,32 @@
                             @if($type == "ventes")
                                 <td>{{ $facture->ventes->created_at->format('d/m/Y') }}</td>
                                 <td>{{ $facture->ventes->nomClient }}</td>
+                                <td class="text-center">
+                                    <a href="{{ route('factures.ventes.telecharger', $facture->id) }}" class="btn btn-outline-success btn-sm" title="Télécharger">
+                                        <i class="bi bi-download"></i>
+                                    </a>
+                                    <a href="{{ route('factures.ventes.afficher', $facture->id) }}" target="_blank" class="btn btn-outline-info btn-sm" title="Afficher">
+                                        <i class="bi bi-eye"></i>
+                                    </a>
+                                    <a href="#" wire:click="supprimerFacture({{$facture->id}})" class="btn btn-outline-danger btn-sm" title="Annuler" onclick="alert('Voulez-vous supprimer cette facture ?')">
+                                        <i class="bi bi-trash"></i>
+                                    </a>
+                                </td>
                             @elseif($type == "installations")
                                 <td>{{ $facture->installations->created_at->format('d/m/Y') }}</td>
                                 <td>{{ $facture->installations->nomClient }}</td>
+                                <td class="text-center">
+                                    <a href="{{ route('factures.installations.telecharger', $facture->id) }}" class="btn btn-outline-success btn-sm" title="Télécharger">
+                                        <i class="bi bi-download"></i>
+                                    </a>
+                                    <a href="{{ route('factures.installations.afficher', $facture->id) }}" target="_blank" class="btn btn-outline-info btn-sm" title="Afficher">
+                                        <i class="bi bi-eye"></i>
+                                    </a>
+                                    <a href="#" wire:click="supprimerFacture({{$facture->id}})" class="btn btn-outline-danger btn-sm" title="Annuler" onclick="alert('Voulez-vous supprimer cette facture ?')">
+                                        <i class="bi bi-trash"></i>
+                                    </a>
+                                </td>
                             @endif
-                            <td class="text-center">
-                                <a href="{{ route('factures.ventes.telecharger', $facture->id) }}" class="btn btn-outline-success btn-sm" title="Télécharger">
-                                    <i class="bi bi-download"></i>
-                                </a>
-                                <a href="{{ route('factures.ventes.afficher', $facture->id) }}" target="_blank" class="btn btn-outline-info btn-sm" title="Afficher">
-                                    <i class="bi bi-eye"></i>
-                                </a>
-                                <a href="#" wire:click="supprimerFacture({{$facture->id}})" class="btn btn-outline-danger btn-sm" title="Annuler" onclick="alert('Voulez-vous supprimer cette facture ?')">
-                                    <i class="bi bi-trash"></i>
-                                </a>
-                            </td>
                         </tr>
                     @endforeach
                 </tbody>
