@@ -82,9 +82,12 @@
                                 <td> {{$transaction->montantVerse}}</td>
                                 <td> {{$transaction->compte->nom ?? ''}}</td>
                                 <td style="font-size: xx-small;" class="col-12 col-md-3"> 
-                                    @foreach($transaction->produits as $produit)
+                                    
+                                    @forelse($transaction->produits as $produit)
                                         Qte: {{ $produit->pivot->quantity }} - PU: {{ $produit->pivot->price }} - {{ $produit->name }} <br>
-                                    @endforeach
+                                    @empty
+                                         {{ $transaction->produit }}
+                                    @endforelse
                                 </td>
                                 <td>{{$transaction->type}}</td>
                                 <td>{{$transaction->created_at}}</td>

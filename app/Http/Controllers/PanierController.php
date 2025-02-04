@@ -189,10 +189,9 @@ class PanierController extends Controller
         $prixAchat = 0;
         //dd($panier);
          foreach($panier as $row) {
-    	
-    	     $sommePrixAchat = $row->attributes['prix_achat'];
+    	    $sommePrixAchat = $row->attributes['prix_achat'] * $row->quantity;
     	    
-    	     $prixAchat = $prixAchat + $sommePrixAchat;
+    	    $prixAchat = $prixAchat + $sommePrixAchat;
 
         }
         $transactions->prixAchat = $prixAchat;
@@ -323,15 +322,11 @@ class PanierController extends Controller
         //recuperer les produits du panier
         $panier = \Cart::getContent();
 
-        $article= [];
         $prixAchat = 0;
         foreach($panier as $row) {
-    	
-    	    $sommePrixAchat = $row->associatedModel->prix_achat;
+    	    $sommePrixAchat = $row->attributes['prix_achat'] * $row->quantity;
     	    
     	    $prixAchat = $prixAchat + $sommePrixAchat;
-    	    
-
         }
 
         //enregistrement transaction
