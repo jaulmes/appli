@@ -18,7 +18,7 @@
         <table class="table table-responsive" style="overflow-y: visible;">
             <thead>
                 <tr>
-                    <th scope="col" class="h6">Nom</th>
+                    <th scope="col" class="h5" style="width: 30px;">Nom</th>
                     <th scope="col">P U</th>
                     <th scope="col">QTE</th>
                     <th scope="col">Prix T</th>
@@ -28,10 +28,10 @@
             <tbody class="card-body table-responsive p-0" style="height: 200px; font-size: xx-small;">
                 @foreach( Cart::getContent() as $produit)
                 <tr>
-                    <th scope="row">
-                        <p class="mb-2">{{ $produit->name }}</p>
-                    </th>
-                    <th class="align-middle">
+                    <td scope="row">
+                        <p class="mb-0" style="width: 30px;">{{ $produit->name }}</p>
+                    </td>
+                    <td class="align-middle">
                         <p class="mb-0" style="font-weight: 500;">
                             <select id="" wire:model="new_price" wire:change="update_prix('{{ $produit->id}}')">
                                 <option value="{{ $produit->attributes['price'] }}" >{{ $produit->attributes['price'] }}</option>
@@ -39,21 +39,21 @@
                                 <option value="{{ $produit->attributes['prix_technicien'] }}">{{ $produit->attributes['prix_technicien'] }}</option>
                             </select>
                         </p>
-                    </th>
-                    <th class="align-middle row">
+                    </td>
+                    <td class="align-middle row">
                         <span type="submit" wire:click="ajouterQuantite(' {{$produit->id}} ')">+</span>
                         <p class="mb-0" style="font-weight: 500;">{{ $produit->quantity }}</p>
                         <span type="submit" wire:click="diminuerQuantite(' {{$produit->id}} ')">-</span>
-                    </th>
-                    <th class="align-middle">
+                    </td>
+                    <td class="align-middle">
                         <p class="mb-0" style="font-weight: 500;">{{ $produit->price * $produit->quantity }}</p>
-                    </th>
-                    <th>
+                    </td>
+                    <td>
                         <form action="{{ route('produit.retirer', $produit->id) }}" method="get">
                             @csrf
                             <button type="submit" class="btn btn-danger"><i class="bi bi-trash"></i></button>
                         </form>
-                    </th>
+                    </td>
                 </tr>
                 @endforeach
             </tbody>

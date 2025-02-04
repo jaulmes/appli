@@ -188,21 +188,14 @@ class PanierController extends Controller
         $article= [];
         $prixAchat = 0;
         //dd($panier);
-        // foreach($panier as $row) {
+         foreach($panier as $row) {
     	
-    	//     $sommePrixAchat = $row->attributes['prix_achat'];
+    	     $sommePrixAchat = $row->attributes['prix_achat'];
     	    
-    	//     $prixAchat = $prixAchat + $sommePrixAchat;
-    	//     $quantity_article = str_pad($row->quantity, 3, '0', STR_PAD_LEFT);
-        //     $prix_article = str_pad($row->price, 7, '0', STR_PAD_LEFT);
-    	//     $article[] =  'Qte = '.$quantity_article .' PU = '.$prix_article.' '.$row->name ."\n";
+    	     $prixAchat = $prixAchat + $sommePrixAchat;
 
-        // }
-        // $transactions->prixAchat = $prixAchat;
-        // //$transactions->produit = json_encode($article, JSON_UNESCAPED_UNICODE);
-        // //$transactions->produit = implode("\n",$article);
-        // $transactions->
-        // //dd($transactions->produit);
+        }
+        $transactions->prixAchat = $prixAchat;
         
         //montant total du panier sans la reduction
         $montantTotal = \Cart::getTotal();
@@ -338,13 +331,11 @@ class PanierController extends Controller
     	    
     	    $prixAchat = $prixAchat + $sommePrixAchat;
     	    
-    	    $article[] =  $row->associatedModel->name;
 
         }
 
         //enregistrement transaction
-        $transactions->prixAchat = $prixAchat;
-        $transactions->produit = json_encode($article);     
+        $transactions->prixAchat = $prixAchat; 
         $transactions->date = $dateHeure->format('Y/m/d');
         $transactions->moi = $moi;
         $transactions->heure = $dateHeure->format('H:i:s');
@@ -424,6 +415,14 @@ class PanierController extends Controller
                 'price' => $produit->price,
                 'installation_id'=>$installations->id
 
+            ]);
+        }
+
+        // Associer chaque produit du panier à la transaction
+        foreach (\Cart::getContent() as $item) {
+            $transactions->produits()->attach($item->id, [
+                'quantity' => $item->quantity,
+                'price' => $item->price,
             ]);
         }
         

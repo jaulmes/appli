@@ -17,6 +17,7 @@ class FactureController extends Controller
         $factures = facture::with('ventes.produits')->find($id);
 
         $ventes = $factures->ventes;
+        dd($factures);
         $netAPayer = $ventes->montantTotal - $ventes->reduction;
 
         // chrger les donnee sur la facture pour envoyer sur une vue qui sera converti en pdf
