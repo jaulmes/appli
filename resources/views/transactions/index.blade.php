@@ -81,7 +81,11 @@
                                 @endcan
                                 <td> {{$transaction->montantVerse}}</td>
                                 <td> {{$transaction->compte->nom ?? ''}}</td>
-                                <td> {{$transaction->produit}}</td>
+                                <td style="font-size: xx-small;" class="col-12 col-md-3"> 
+                                    @foreach($transaction->produits as $produit)
+                                        Qte: {{ $produit->pivot->quantity }} - PU: {{ $produit->pivot->price }} - {{ $produit->name }} <br>
+                                    @endforeach
+                                </td>
                                 <td>{{$transaction->type}}</td>
                                 <td>{{$transaction->created_at}}</td>
                                 <td>{{$transaction->heure}}</td>

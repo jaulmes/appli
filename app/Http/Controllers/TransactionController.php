@@ -24,6 +24,7 @@ class TransactionController extends Controller
         $transactions = Transaction::whereMonth('created_at', Carbon::parse($currentMonth)->month)
                            ->whereYear('created_at', Carbon::parse($currentMonth)->year)
                            ->orderBy('created_at', 'desc')
+                           ->with('produits')
                            ->get();
 
         

@@ -49,6 +49,12 @@ class Produit extends Model
                                         ->withPivot('price');
     }
 
+    public function transactions()
+    {
+        return $this->belongsToMany(Transaction::class)
+                    ->withPivot('quantity', 'price');
+    }
+
     public function getPrice(){
         $prix = $this->price;
 

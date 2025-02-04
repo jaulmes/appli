@@ -105,31 +105,6 @@ class PanierController extends Controller
         //recuperer le produit ajoute dans le panier 
         $produits = Produit::find($request->id);
 
-
-        // $cart = \Cart::getContent();
-
-        // $itemNames=[];
-        // // Parcours le panier pour trouver le nombre de fois que le produit est ajouté au panier
-        // foreach ($cart as $item) {
-        //     $itemNames[]=$item->name;
-            
-            
-        // }
-        // //dd($itemNames);
-        // $occurences=array_count_values($itemNames);
-        
-        // //$quantite=2;
-        // foreach($occurences as $itemNames=>$count){
-
-        //     if($count>1){
-        //         return redirect()->route('panier.index')->with('erreur', 'produit deja ete ajoute au panier');
-        //     }
-        //     else{
-                
-        //     }
-        // }
-
-
         //ajouter le produit au panier
          $panier = \Cart::add($request->id, $request->name, $request->price, 1,array())
                     ->associate($produits);
@@ -213,17 +188,21 @@ class PanierController extends Controller
         $article= [];
         $prixAchat = 0;
         //dd($panier);
-        foreach($panier as $row) {
+        // foreach($panier as $row) {
     	
-    	    $sommePrixAchat = $row->attributes['prix_achat'];
+    	//     $sommePrixAchat = $row->attributes['prix_achat'];
     	    
-    	    $prixAchat = $prixAchat + $sommePrixAchat;
-    	    
-    	    $article[] =  $row->associatedModel->name;
+    	//     $prixAchat = $prixAchat + $sommePrixAchat;
+    	//     $quantity_article = str_pad($row->quantity, 3, '0', STR_PAD_LEFT);
+        //     $prix_article = str_pad($row->price, 7, '0', STR_PAD_LEFT);
+    	//     $article[] =  'Qte = '.$quantity_article .' PU = '.$prix_article.' '.$row->name ."\n";
 
-        }
-        $transactions->prixAchat = $prixAchat;
-        $transactions->produit = json_encode($article);
+        // }
+        // $transactions->prixAchat = $prixAchat;
+        // //$transactions->produit = json_encode($article, JSON_UNESCAPED_UNICODE);
+        // //$transactions->produit = implode("\n",$article);
+        // $transactions->
+        // //dd($transactions->produit);
         
         //montant total du panier sans la reduction
         $montantTotal = \Cart::getTotal();
@@ -288,6 +267,14 @@ class PanierController extends Controller
                 'quantity' => $produit->quantity,
                 'price' => $produit->price
 
+            ]);
+        }
+
+        // Associer chaque produit du panier à la transaction
+        foreach (\Cart::getContent() as $item) {
+            $transactions->produits()->attach($item->id, [
+                'quantity' => $item->quantity,
+                'price' => $item->price,
             ]);
         }
         
