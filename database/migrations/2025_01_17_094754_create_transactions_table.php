@@ -35,6 +35,12 @@ return new class extends Migration
                                         ->on('comptes')
                                         ->onUpdate('cascade')
                                         ->onDelete('cascade');
+
+            $table->unsignedBigInteger('recu_id')->nullable();
+            $table->foreign('recu_id')->references('id')
+                                        ->on('recus')
+                                        ->onUpdate('cascade')
+                                        ->onDelete('cascade');
             $table->timestamps();
         });
     }

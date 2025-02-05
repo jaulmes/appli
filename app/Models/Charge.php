@@ -19,4 +19,8 @@ class Charge extends Model
     {
         return $this->hasMany(ChargeDetail::class);
     }
+
+    public function recus(){
+        return $this->hasMany(Recu::class);
+    }
 }

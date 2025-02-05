@@ -5,16 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Client extends Model
+class Agent extends Model
 {
     use HasFactory;
+    protected $fillable = [
+        'name',
+        'numero'
+    ];
 
-    protected $fillable=[
-        'nom',
-        'numero',
-    ] ;
-
-    public function recus(){
+    public function recu(){
         return $this->hasMany(Recu::class);
     }
 }

@@ -61,4 +61,7 @@ class User extends Authenticatable
         return $this->hasMany(Commentaire::class);
     }
 
+    public function recus(){
+        return $this->hasMany(Recu::class);
+    }
 }

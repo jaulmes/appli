@@ -18,7 +18,8 @@ class Transaction extends Model
         'impot',
         'montantVerse',
         'user_id',
-        'compte_id'
+        'compte_id',
+        'recu_id'
     ];
 
     public function user()
@@ -35,5 +36,8 @@ class Transaction extends Model
     {
         return $this->belongsToMany(Produit::class)
                     ->withPivot('quantity', 'price');
+    }
+    public function recus(){
+        return $this->belongsTo(Recu::class);
     }
 }

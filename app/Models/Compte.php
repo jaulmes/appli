@@ -25,4 +25,7 @@ class Compte extends Model
         return $this->hasMany(Vente::class);
     }
 
+    public function recus(){
+        return $this->hasMany(Recu::class);
+    }
 }

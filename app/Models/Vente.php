@@ -46,4 +46,8 @@ class Vente extends Model
     {
         return $this->hasOne(facture::class);
     }
+
+    public function recus(){
+        return $this->hasMany(Recu::class);
+    }
 }
