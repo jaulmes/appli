@@ -52,8 +52,8 @@
                                  style="height: 150px; object-fit: cover;">
 
                             <!-- Infos produit -->
-                            <div class="card-body text-center">
-                                <h6 class="card-title text-truncate" title="{{ $produit->name }}">{{ $produit->name }}</h6>
+                            <div class="card-body row ">
+                                <p class="card-title " title="{{ $produit->name }}">{{ $produit->name }}</p>
                                 <p class="text-muted small">{{ $produit->getDescription() }}</p>
                                 <p class="fw-bold text-primary">{{ $produit->getPrice() }} XAF</p>
                             </div>
