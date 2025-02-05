@@ -4,19 +4,33 @@
         <div class="col-md-9">
             <!-- Barre de recherche -->
             <div class="row justify-content-center mb-4">
-                <div class="col-md-6 col-10">
-                    <input class="form-control shadow-sm" 
+                <div class="col-md-20 col-10 row" >
+                    <input class="form-control shadow-sm col" 
                            wire:model="query"
                            placeholder="🔍 Rechercher un produit..."
                            wire:input="update_query"
                            type="search"
-                    >    
+                    >   
+                    <div class="dropdown col">
+                        <button class="btn btn-primary dropdown-toggle" type="button"  data-bs-toggle="dropdown" >
+
+                                {{$categori}}
+
+                            
+                        </button>
+                        <ul class="dropdown-menu" >
+                            @foreach($categories as $categorie)
+                                <li><a class="dropdown-item" wire:click="filtreProduit({{$categorie->id}})" >{{$categorie->titre}}</a></li>
+                            @endforeach
+                        </ul>
+                    </div> 
                 </div>
+                
             </div>
 
             <!-- Catalogue de produits -->
             <div class="row row-cols-1 row-cols-md-3 g-4">
-                @foreach($produits as $produit)
+                @forelse($produits as $produit)
                     <div class="col">
                         <div class="card h-100 shadow-sm border-1 rounded">
                             <!-- Badge de disponibilité -->
@@ -57,7 +71,11 @@
                             </div>
                         </div>
                     </div>
-                @endforeach
+                @empty
+                    <div class="card-body text-center">
+                        <p class="fw-bold text-info">Auccun produit trouvé</p>
+                    </div>
+                @endforelse
             </div>
         </div>
     </div>
