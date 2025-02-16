@@ -35,7 +35,7 @@ class Installation extends Model
     public function produits()
     {
         return $this->belongsToMany(Produit::class, 'installation_produit')
-                            ->withPivot('quantity');
+                            ->withPivot('quantity', 'price');
     }
 
     public function factures()
