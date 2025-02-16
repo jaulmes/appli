@@ -12,7 +12,8 @@ class MonPanier extends Component
     public $cartContent;
     public $new_price;
 
-    protected $listeners = ['ProduitAjoute' => 'updateCart'];
+    protected $listeners = ['ProduitAjoute' => 'updateCart',
+                            'prix_change' => '$refresh'];
 
     public function updateCart(){
         $this->cartContent = \Cart::getContent();
@@ -39,6 +40,7 @@ class MonPanier extends Component
         
 
         \Cart::update($item->id, ['price' => $this->new_price ]);
+        
         $this->dispatch('prix_change');
     }
     

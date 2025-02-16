@@ -367,6 +367,8 @@ class PanierController extends Controller
         }
         $installations->totalAchat = $totalPrixAchat;
 
+        //dd($installations->produits->pivot);
+
         //comptabiliser la commission comme une charge
         $charges = new Charge();
         $charges->titre = "commission pour l'intallation de ". $installations->nomClient. " a ". $installations->agentOperant; 
@@ -388,6 +390,7 @@ class PanierController extends Controller
 
             ]);
         }
+        
 
         // Associer chaque produit du panier à la transaction
         foreach (\Cart::getContent() as $item) {
@@ -421,7 +424,8 @@ class PanierController extends Controller
             'clients' =>$clients,
             'numeroFacture'=>$numeroFacture,
             'netAPayer' => $netAPayer,
-            'factures' =>$factures
+            'factures' =>$factures,
+            'panier' => $panier
         ]);
         
         //\Cart::clear();       

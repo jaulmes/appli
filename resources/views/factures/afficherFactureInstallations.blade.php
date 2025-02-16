@@ -137,12 +137,12 @@
                     <th>P.U.</th>
                     <th>P.Total</th>
                 </tr>
-                @foreach($installations->produits as $produit)
+                @foreach($panier as $produit)
                     <tr>
-                        <td>{{$produit->pivot->quantity}}</td>
+                        <td>{{$produit->quantity}}</td>
                         <td>{{$produit->name}}</td>
                         <td>{{$produit->price}}</td>
-                        <td>{{$produit->pivot->quantity * $produit->price}}</td>
+                        <td>{{$produit->quantity * $produit->price}}</td>
                     </tr>
                 @endforeach
                 <tr >
