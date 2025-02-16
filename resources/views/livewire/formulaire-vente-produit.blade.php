@@ -1,14 +1,28 @@
 <div>
     <form id="formYes" action="{{ route('panier.enregistrer') }}" method="post" style="display: none;">
         @csrf
-        <div style="display: flex; flex-direction: row">
+        <div style="display: flex; flex-direction: row" id="clientExistant">
+            <div class="form-group">
+                Client
+                <select class="form-control" name="client_id" >
+                    <option selected disabled>choix du Client...</option>
+                    @foreach($clients as $client)
+                        <option value="{{ $client->id }}">{{ $client->nom }}</option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="form-group">
+                <input type="button" class="btn btn-primary" id="toggleClient" value="Nouveau client?">
+            </div>
+        </div>
+        <div id="nouveauClientFields" style="display: none; flex-direction: row;">
             <div class="form-group">
                 <label for="nom">Nom du client</label>
-                <input class="form-control" type="text" name="nom" id="nom" required>
+                <input class="form-control" type="text" name="nom" id="nom" >
             </div>
             <div class="form-group">
                 <label for="numero">Numéro du client</label>
-                <input class="form-control" type="number" name="numero" id="numero" required>
+                <input class="form-control" type="number" name="numero" id="numero" >
             </div>
         </div>
         <div style="display: flex; flex-direction: row">
@@ -49,4 +63,16 @@
         </div>
         <button type="submit" class="btn btn-primary" form="formYes">Enregistrer</button>
     </form>
+    <script>
+        document.getElementById("toggleClient").addEventListener("click", function() {
+            var clientFields = document.getElementById("nouveauClientFields");
+            var clientExistant = document.getElementById("clientExistant");
+            if (clientFields.style.display === "none") {
+                clientFields.style.display = "flex";
+                clientExistant.style.display = "none";
+            } else {
+                clientFields.style.display = "none";
+            }
+        });
+    </script>
 </div>

@@ -1,14 +1,30 @@
 <div>
     <form id="formNo" action="{{ route('panier.installation')}}"  method="post" style="display: none;">
         @csrf
-        <div style="display: flex; flex-direction: row">
+        <div style="display: flex; flex-direction: row" id="clientPresent">
+            <div class="form-group">
+                Client
+                <select class="form-control" name="client_id">
+                    <option selected disabled>Choix du Client...</option>
+                    @foreach($clients as $client)
+                        <option value="{{ $client->id }}">{{ $client->nom }}</option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="form-group">
+                <input class="btn btn-primary" type="button" id="afficherFormulaire" value="Nouveau client ?">
+            </div>
+        </div>
+
+        <!-- Champs cachés au départ -->
+        <div id="nouveauClient" style="display: none; flex-direction: row;">
             <div class="form-group">
                 <label for="nom">Nom du client</label>
-                <input class="form-control" type="text" name="nom" id="nom" required>
+                <input class="form-control" type="text" name="nom" id="nom">
             </div>
             <div class="form-group">
                 <label for="numero">Numéro du client</label>
-                <input class="form-control" type="number" name="numero" id="numero" required>
+                <input class="form-control" type="number" name="numero" id="numero">
             </div>
         </div>
 
@@ -56,4 +72,18 @@
         </div>
         <button type="submit" class="btn btn-primary" form="formNo">Enregistrer</button>
     </form>
+    <script>
+    document.getElementById("afficherFormulaire").addEventListener("click", function() {
+        var nouveauClientFields = document.getElementById("nouveauClient");
+        var clientPresent = document.getElementById("clientPresent");
+
+        if (nouveauClientFields.style.display === "none") {
+            nouveauClientFields.style.display = "flex";
+            clientPresent.style.display = "none"; // Masquer la sélection de client existant
+        } else {
+            nouveauClientFields.style.display = "none";
+            clientPresent.style.display = "flex"; // Réafficher la sélection de client existant
+        }
+    });
+</script>
 </div>

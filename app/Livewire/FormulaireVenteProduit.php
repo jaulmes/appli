@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Models\Client;
 use App\Models\Compte;
 use Livewire\Component;
 
@@ -14,11 +15,18 @@ class FormulaireVenteProduit extends Component
 
     public function updateCart(){
         $this->cartContent = \Cart::getContent();
+
     }
     
     public function render()
     {
         $comptes = Compte::all();
-        return view('livewire.formulaire-vente-produit', compact('comptes'));
+        $clients = Client::all();
+        return view('livewire.formulaire-vente-produit', 
+            [
+                'comptes' => $comptes,
+                'clients' => $clients
+            ]
+        );
     }
 }

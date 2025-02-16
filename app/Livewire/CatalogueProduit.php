@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use App\Models\Categori;
+use App\Models\Client;
 use App\Models\Produit;
 use Livewire\Component;
 

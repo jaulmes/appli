@@ -13,8 +13,6 @@ return new class extends Migration
     {
         Schema::create('ventes', function (Blueprint $table) {
             $table->id();
-            $table->string('nomClient');
-            $table->integer('numeroClient');
             $table->integer('montantTotal');
             $table->integer('NetAPayer');
             $table->integer('montantVerse')->nullable();
@@ -32,6 +30,13 @@ return new class extends Migration
             $table->unsignedBigInteger('compte_id')->nullable();
             $table->foreign('compte_id')->references('id')
                                         ->on('comptes')
+                                        ->onUpdate('cascade')
+                                        ->onDelete('cascade');
+
+            //client_id
+            $table->unsignedBigInteger('client_id')->nullable();
+            $table->foreign('client_id')->references('id')
+                                        ->on('clients')
                                         ->onUpdate('cascade')
                                         ->onDelete('cascade');
             

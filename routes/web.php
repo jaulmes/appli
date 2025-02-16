@@ -135,10 +135,14 @@ Route::middleware('auth')->group(function () {
 
     //afficher les factures des ventes enregistre dans le systeme
     Route::get('factures/ventes', [FactureController::class, 'factureVente'])->name('factures.ventes');
+    
+    Route::get('factures/recus', [RecusController::class, 'index'])->name('recus.index');
     //telecharger la facture d'un la vente
     Route::get('factures/ventes/telecharger/{id}', [FactureController::class, 'telechargerFactureVente'])->name('factures.ventes.telecharger');
     //afficher une facture d'un la vente
     Route::get('factures/ventes/afficher/{id}', [FactureController::class, 'afficherFactureVente'])->name('factures.ventes.afficher');
+    Route::get('factures/recus/afficherInstallation/{id}', [RecusController::class, 'afficherInstallation'])->name('factures.recus.afficherInstallation');
+    Route::get('factures/recus/afficherVentes/{id}', [RecusController::class, 'afficherVentes'])->name('factures.recus.afficherVente');
     
     //afficher les facture des installatiions enregistre dans le systeme
     Route::get('factures/installations', [FactureController::class, 'factureInstallation'])->name('factures.installations');
@@ -243,7 +247,6 @@ Route::middleware('auth')->group(function () {
      /**
       * recus
       */
-      Route::get('recus/index', [RecusController::class, 'index'])->name('recus.index');
 });
 
 

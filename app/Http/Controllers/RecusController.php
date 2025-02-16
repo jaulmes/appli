@@ -2,10 +2,35 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Recu;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 
 class RecusController extends Controller
 {
+    public function afficherInstallation($id){
+        $recus = Recu::with('installations.clients')->find($id);
+        
+        return $pdf = Pdf::loadView('welcome',
+                    [
+                        'recus' => $recus
+                    ])
+                    ->setPaper([0, 0, 220, 450], 'landscape')
+                    ->stream();
+    }
+
+    public function afficherVentes($id){
+        $recus = Recu::find($id);
+        
+        return $pdf = Pdf::loadView('welcome',
+                    [
+                        'recus' => $recus
+                    ])
+                    ->setOption('encoding', 'utf-8')
+                    ->setWarnings(false)
+                    ->stream();
+    }
+
     public function index(){
         return view('recus.index');
     }

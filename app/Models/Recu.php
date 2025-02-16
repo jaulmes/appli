@@ -14,18 +14,14 @@ class Recu extends Model
         'vente_id',
         'installation_id',
         'compte_id',
-        'transaction_id',
         'charge_id',
         'user_id',
         'client_id',
         'montant_recu',
-        'remarque'
-
+        'remarque' //represente plustot la raison
     ];
 
-    public function clients(){
-        return $this->belongsTo(Client::class);
-    }
+
 
     public function users(){
         return $this->belongsTo(User::class);
@@ -40,7 +36,7 @@ class Recu extends Model
     }
 
     public function installations(){
-        return $this->belongsTo(Installation::class);
+        return $this->belongsTo(Installation::class, 'installation_id');
     }
 
     public function comptes(){

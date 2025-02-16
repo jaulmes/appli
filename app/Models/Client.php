@@ -17,4 +17,10 @@ class Client extends Model
     public function recus(){
         return $this->hasMany(Recu::class);
     }
+    public function installations(){
+        return $this->hasMany(Installation::class);
+    }
+    public function ventes(){
+        return $this->hasMany(Installation::class);
+    }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Models\Client;
 use App\Models\Compte;
 use Livewire\Component;
 
@@ -20,6 +21,12 @@ class FormulaireInstallationSollaire extends Component
     public function render()
     {
         $comptes = Compte::all();
-        return view('livewire.formulaire-installation-sollaire', compact('comptes'));
+        $clients = Client::all();
+        return view('livewire.formulaire-installation-sollaire', 
+            [
+                'clients' => $clients,
+                'comptes' => $comptes
+            ]
+        );
     }
 }

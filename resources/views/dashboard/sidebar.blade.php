@@ -45,14 +45,14 @@
           <li class="nav-item">
             <a href="{{route('taches.index')}}" class="nav-link {{Request::is('taches/index*')? 'active' : ''}}">
             <i class="bi bi-list-task"></i>
-              <p>Taches<span class="right badge badge-danger">New</span></p>
+              <p>Taches</p>
               
             </a>
           </li>
           
           <!--factures-->
           <li class="nav-item">
-            <a href="#" class="nav-link {{Request::is('factures')? 'active' : ''}}">
+            <a href="#" class="nav-link {{Request::is('factures*')? 'active' : ''}}">
               <i class="bi bi-receipt"></i>
               <p>Factures et Recus
                 <i class="fas fa-angle-left right"></i>
@@ -68,9 +68,9 @@
             </ul>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="{{route('recus.index')}}" class="nav-link {{Request::is('factures/index*')? 'active' : ''}}">
+                <a href="{{route('recus.index')}}" class="nav-link {{Request::is('factures/recus*')? 'active' : ''}}">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Recus</p>
+                  <p>Recus<span class="right badge badge-danger">New</span></p>
                 </a>
               </li>
             </ul>

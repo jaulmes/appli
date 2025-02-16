@@ -50,4 +50,8 @@ class Vente extends Model
     public function recus(){
         return $this->hasMany(Recu::class);
     }
+
+    public function clients(){
+        return $this->belongsTo(Client::class);
+    }
 }

@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
-            $table->date('date');
-            $table->time('heure');
+            $table->date('date')->nullable();
+            $table->time('heure')->nullable();
             $table->string('nomClient')->nullable();
             $table->string('moi')->nullable();//moi de l'anne en cour
             $table->integer('numeroClient')->nullable();

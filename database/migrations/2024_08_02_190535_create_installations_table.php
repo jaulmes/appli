@@ -13,14 +13,13 @@ return new class extends Migration
     {
         Schema::create('installations', function (Blueprint $table) {
             $table->id();
-            $table->string('nomClient');
-            $table->integer('numeroClient');
             $table->integer('montantProduit');//montant total des produit selectionne pour l'installation
             $table->integer('NetAPayer');//montant que le client doit verse(toute charge compris)
             $table->integer('montantVerse')->nullable();
             $table->integer('totalAchat')->nullable();
             $table->integer('reduction')->nullable();
             $table->string('agentOperant')->nullable();
+            $table->string('dateLimitePaiement')->nullable();
             $table->integer('qteTotal');
             $table->string('statut');
             $table->string('mainOeuvre');
@@ -31,6 +30,13 @@ return new class extends Migration
             $table->unsignedBigInteger('compte_id')->nullable();
             $table->foreign('compte_id')->references('id')
                                         ->on('comptes')
+                                        ->onUpdate('cascade')
+                                        ->onDelete('cascade');
+            
+            //client_id
+            $table->unsignedBigInteger('client_id')->nullable();
+            $table->foreign('client_id')->references('id')
+                                        ->on('clients')
                                         ->onUpdate('cascade')
                                         ->onDelete('cascade');
             

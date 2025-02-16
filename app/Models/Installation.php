@@ -20,6 +20,8 @@ class Installation extends Model
         'agentOperant',
         'commission',
         'impot',
+        'NetAPayer',
+        'dateLimitePaiement'
         ];
         
     public function user()
@@ -45,5 +47,9 @@ class Installation extends Model
 
     public function recus(){
         return $this->hasMany(Recu::class);
+    }
+
+    public function clients(){
+        return $this->belongsTo(Client::class, 'client_id');
     }
 }

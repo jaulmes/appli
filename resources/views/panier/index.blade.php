@@ -59,26 +59,4 @@
         });
     });
 </script>
-<script>
-    //rechercher un produit
-    $(document).ready(function(){
-        $('#search').on('keyup', function(){
-            //je recupere le input
-            let query = $('#search').val()
-
-            //je reupere le produit dans la bd qui correspond
-            $.ajax({
-                url: "{{ route('panier.search') }}",
-                method: "GET",
-                data: {data:query},
-                success: function(res){
-                    $('#produit').html(res)
-                },
-                error: function(){
-                    alert('erreur lors du chargemcent des produits')
-                }
-            })
-        })
-    })
-</script>
 @endsection

@@ -75,26 +75,24 @@
     </div>
     <div class="sous-title" style="display:flex; flex-direction:row; margin-bottom: 3em; margin-top: -4.5em">
         <p>
-                    <div class="img1" >
-            <img src="{{public_path('img3.jpg')}}" alt="" style="position: relative; height: 6em">
-        </div>
-        <div class="desc" style="margin-top: -10em; margin-left: 10em">
-            <h3>
-                <strong style="font-family: 'Agency FB'; ">
-                    Prestations de services, Installation solaire, <br>
-                    Fourniture du matériel, Electricité bâtiment, <br >
-                    <span style="margin-left: 4em;">
-                        Domotique et systèmes 
-                    </span>
-                </strong>
-            </h3>
-        </div>
-        <div class="img2" style="margin-left:35em; margin-top: -15em" >
-            <img src="{{public_path('img7.jpg')}}" alt="" style="position: relative; height: 6em">
-        </div>
-            
+            <div class="img1" >
+                <img src="{{public_path('img3.jpg')}}" alt="" style="position: relative; height: 6em">
+            </div>
+            <div class="desc" style="margin-top: -10em; margin-left: 10em">
+                <h3>
+                    <strong style="font-family: 'Agency FB'; ">
+                        Prestations de services, Installation solaire, <br>
+                        Fourniture du matériel, Electricité bâtiment, <br >
+                        <span style="margin-left: 4em;">
+                            Domotique et systèmes 
+                        </span>
+                    </strong>
+                </h3>
+            </div>
+            <div class="img2" style="margin-left:35em; margin-top: -15em" >
+                <img src="{{public_path('img7.jpg')}}" alt="" style="position: relative; height: 6em">
+            </div>
         </p>
-
     </div>
     <div class="contact">
         <p style="margin-top: -0.5em;">

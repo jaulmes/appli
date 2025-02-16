@@ -41,51 +41,6 @@ class PanierController extends Controller
         return view('panier.index', compact('produits', 'quantite', 'comptes'));
     }
 
-    //rechercher un produit
-    public function search(Request $request){
-        //je verifie que c'est une requete ajax
-        if($request->ajax()){
-            //j'initialise l'element quni sera retourne(html ave donne)
-            $output = '';
-            $query = $request->search;
-
-            //recuperation du produit orrespondant a la recherche
-            $produits = Produit::where('name', 'like', "%$query%")
-                                ->orWhere('desription', 'like', "%$query%")
-                                ->get();
-            if($produits){
-                foreach ($produits as $produit) {
-                    $output .= "<div class='col mb-3' style='margin-right: -4em;'>
-                                    <div class='card h-100' style='width: 12em;'>
-                                        <strong class='badge badge-danger'>" . $produit->getAlert() . "</strong>";
-        
-                    if ($produit->getStock() === 'disponible') {
-                        $output .= "<strong class='badge badge-info'>" . $produit->getStock() . "</strong>";
-                    } elseif ($produit->getStock() === 'indisponible') {
-                        $output .= "<strong class='badge badge-danger'>" . $produit->getStock() . "</strong>";
-                    }
-        
-                    $output .= "<img src='" . asset('storage/images/produits/' . $produit->image_produit) . "' class='img-fluid' style='height: 5em; width: 100%;'>
-                                        <div class='member-info' style='font-size: 12px;'>
-                                            <h7><u>Nom</u>: " . $produit->name . "</h7>
-                                            <p class='card-text'><u>Desc</u>: " . $produit->getDescription() . "</p>
-                                            <p class='card-text'><u>Prix</u>: <strong class='text-success'>" . $produit->getPrice() . "</strong></p>
-                                            <div class='row' style='margin-left: 0.2em; padding-bottom: 0.01em; margin-top: 0.5em;'>
-                                                <a href='" . route('produit.detail', $produit->id) . "'>
-                                                    <button class='btn btn-warning px-1'><i class='bi bi-eye'></i></button>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>";
-                }
-                return response()->json($output);
-            }
-
-        }
-
-    }
-
     //afficher les detail d'un article 
     public function detailProduit(Request $request, $id){
 
@@ -151,9 +106,13 @@ class PanierController extends Controller
 
     public function validerVente(Request $request){
         //j'enregistre le client lies a la vente
-        $clients = new Client();
-        $clients->nom = $request->input('nom');
-        $clients->numero = $request->input('numero');
+        if(!$request->client_id){
+            $clients = new Client();
+            $clients->nom = $request->input('nom');
+            $clients->numero = $request->input('numero');
+        }else{
+            $clients = Client::find($request->client_id);
+        }
 
         $comptes = Compte::find( $request->modePaiement);
 
@@ -174,13 +133,17 @@ class PanierController extends Controller
         $transactions->date = $dateHeure->format('Y-m-d');
         $transactions->moi = $moi;
         $transactions->heure = $dateHeure->format('H:i:s');
-        $transactions->nomClient =$clients->nom;
-        $transactions->numeroClient = $clients->numero;
+        // if(!$request->client_id){
+        //     $transactions->client_id = $clients->id;
+        // }else{
+        //     $transactions->client_id = $request->client_id;
+        // }
         $transactions->type = 'Vente';
         $transactions->compte_id = $comptes->id;
         $transactions->impot = $request->impot;
         $transactions->montantVerse = $request->input('montantVerse');
         $transactions->user_id = Auth::user()->id;
+
 
         //recuperer le panier
         $panier = \Cart::getContent();
@@ -202,9 +165,11 @@ class PanierController extends Controller
         //creation d'une vente
         $ventes = new Vente();
         $ventes->dateEncour = now()->format('m-Y');
-        $ventes->nomClient = $request->input('nom');
-        $ventes->numeroClient = $request->input('numero');
-        $ventes->montantVerse = $request->input('montantVerse');
+        if(!$request->client_id){
+            $ventes->client_id = $clients->id;
+        }else{
+            $ventes->client_id = $request->client_id;
+        }
         $ventes->reduction = $request->input('reduction');
         $ventes->agentOperant = $request->input('agentOperant');
         $ventes->commission = $request->input('commission');
@@ -217,6 +182,7 @@ class PanierController extends Controller
         $ventes->user_id = Auth::user()->id;
         if($ventes->NetAPayer > $transactions->montantVerse){
             $ventes->statut = "non termine";
+            $ventes->dateLimitePaiement = '';
         }
         else{
             $ventes->statut = "termine";
@@ -308,11 +274,14 @@ class PanierController extends Controller
         $transactions = new Transaction();
         
         //j'enregistre le client lies a la vente
-        $clients = new Client();
-        $clients->nom = $request->input('nom');
-        $clients->numero = $request->input('numero');
+        if(!$request->client_id){
+            $clients = new Client();
+            $clients->nom = $request->input('nom');
+            $clients->numero = $request->input('numero');
+        }else{
+            $clients = Client::find($request->client_id);
+        }
 
-        
         $dateHeure = now();
 
         $moi = now()->month;
@@ -334,8 +303,11 @@ class PanierController extends Controller
         $transactions->date = $dateHeure->format('Y/m/d');
         $transactions->moi = $moi;
         $transactions->heure = $dateHeure->format('H:i:s');
-        $transactions->nomClient =$clients->nom;
-        $transactions->numeroClient = $clients->numero;
+        // if(!$request->client_id){
+        //     $transactions->client_id = $clients->id;
+        // }else{
+        //     $transactions->client_id = $request->client_id;
+        // }
         $transactions->type = 'installation';
         $transactions->montantVerse = $request->input('montantVerse');
 
@@ -354,8 +326,11 @@ class PanierController extends Controller
 
         //enregistrer l'installation
         $installations = new Installation();
-        $installations->nomClient = $request->input('nom');
-        $installations->numeroClient = $request->input('numero');
+        if(!$request->client_id){
+            $installations->client_id = $clients->id;
+        }else{
+            $installations->client_id = $request->client_id;
+        }
         $installations->montantProduit = $montantTotal;
         $installations->reduction = $request->input('reduction');
         $installations->montantVerse = $request->input('montantVerse');
@@ -371,6 +346,7 @@ class PanierController extends Controller
         
         if($installations->NetAPayer > $installations->montantVerse){
             $installations->statut = "non termine";
+            $installations->dateLimitePaiement = '';
         }
         else{
             $installations->statut = "termine";

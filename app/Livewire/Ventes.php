@@ -4,17 +4,16 @@ namespace App\Livewire;
 
 use App\Models\Client;
 use App\Models\Compte;
-use App\Models\Installation as ModelsInstallation;
 use App\Models\Recu;
 use App\Models\Transaction;
+use App\Models\Vente;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Request;
 use Livewire\Component;
 
-class Installation extends Component
+class Ventes extends Component
 {
-    public $installations = [];
+    public $ventes = [];
     public $query;
     public $client_id;
     public $clients = [];
@@ -24,24 +23,23 @@ class Installation extends Component
     public $montant;
 
     public function mount(){
-        $this->installations = ModelsInstallation::all();
+        $this->ventes = Vente::all();
         $this->clients = Client::all();
         $this->comptes = Compte::all();
     }
 
-    //ajouter un paiement
-    public function ajouterPaiement(Request $request, $id){
-        $installations = ModelsInstallation::find($id);
+    public function ajouterPaiement( $id){
+        $ventes = Vente::find($id);
         //dd($installations->clients->name);
         $recus = new Recu();
         $transactions = new Transaction();
         $comptes = Compte::find($this->compte_id);
 
         $recus->user_id = Auth::user()->id;
-        $recus->installation_id = $installations->id;
+        $recus->vente_id = $ventes->id;
         $recus->compte_id = $this->compte_id;
-        if($installations->client_id){
-            $recus->client_id = $installations->client_id;
+        if($ventes->client_id){
+            $recus->client_id = $ventes->client_id;
         }else{
             $recus->client_id = $this->client_id;
         }
@@ -58,27 +56,26 @@ class Installation extends Component
         $name = Auth::user()->name;
         $numeroFacture = substr($name, 0, 3).'_'.$dateHeure->format('y').'_'.$moi.'_'.$dateHeure->format('d').'_'.$numero;
         $recus->numero_recu = $numeroFacture;
-        $installations->montantVerse = $installations->montantVerse + $this->montant;
-        if($installations->NetAPayer > $installations->montantVerse ){
-            $installations->statut = "non termine";
-            $installations->dateLimitePaiement = '';
+        $ventes->montantVerse = $ventes->montantVerse + $this->montant;
+        if($ventes->NetAPayer > $ventes->montantVerse ){
+            $ventes->statut = "non termine";
         }
         else{
-            $installations->statut = "termine";
+            $ventes->statut = "termine";
         }
         $recus->save();
         $comptes->montant = $comptes->montant + $recus->montant_recu;
         $comptes->save();
-        $installations->save();
+        $ventes->save();
         $transactions->recu_id = $recus->id;
         $transactions->type = "recu";
         $transactions->save();
-        dd($transactions, $comptes, $recus, $installations);
+        dd($transactions, $comptes, $recus, $ventes);
         
         // chrger les donnee sur la facture pour avoyer sur une vue qui sera converti en pdf
         $pdf = Pdf::loadView('recus.installation_pdf',
             [
-                'installation' =>$installation,
+                'ventes' =>$ventes,
                 'clients' =>$clients,
                 'numeroFacture'=>$numeroFacture,
                 'montant' => $recus->montant_recu,
@@ -87,14 +84,9 @@ class Installation extends Component
         
         return $pdf->stream($numeroFacture);
     }
-    //recherche
-    public function update_search(){
-        $this->installations = ModelsInstallation::where('nomClient', 'like', '%'. $this->query .'%')
-                                                   ->orWhere('numeroClient', 'like', '%'. $this->query .'%')
-                                                   ->get();
-    }
+
     public function render()
     {
-        return view('livewire.installation');
+        return view('livewire.ventes');
     }
 }
