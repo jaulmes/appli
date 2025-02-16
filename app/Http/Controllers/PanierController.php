@@ -295,6 +295,7 @@ class PanierController extends Controller
                 'clients' =>$clients,
                 'numeroFacture'=>$numeroFacture,
                 'netAPayer' => $netAPayer,
+                'panier' => $panier
             ]
         );
         
@@ -445,7 +446,8 @@ class PanierController extends Controller
             'clients' =>$clients,
             'numeroFacture'=>$numeroFacture,
             'netAPayer' => $netAPayer,
-            'factures' =>$factures
+            'factures' =>$factures,
+            'panier' => $panier
         ]);
         
         //\Cart::clear();       
