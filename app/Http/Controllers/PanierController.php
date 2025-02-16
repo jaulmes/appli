@@ -261,6 +261,7 @@ class PanierController extends Controller
                 'clients' =>$clients,
                 'numeroFacture'=>$numeroFacture,
                 'netAPayer' => $netAPayer,
+                'panier' => $panier
             ]
         );
         
