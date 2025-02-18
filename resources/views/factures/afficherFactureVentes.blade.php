@@ -148,8 +148,8 @@
                 <tr>
                     <td>{{$produit->quantity}}</td>
                     <td>{{$produit->name}}</td>
-                    <td>{{$produit->price}}</td>
-                    <td>{{$produit->quantity * $produit->price}}</td>
+                    <td>{{$produit->pivot->price}}</td>
+                    <td>{{$produit->pivot->quantity * $produit->pivot->price}}</td>
                 </tr>
                 @endforeach
                 <tr style="font-weight: bold;">
