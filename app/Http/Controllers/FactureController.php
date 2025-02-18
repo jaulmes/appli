@@ -73,11 +73,13 @@ class FactureController extends Controller
     public function telechargerFactureInstallation($id){
         $factures = facture::find($id);
         $installations = $factures->installations;
+        $netAPayer = $installations->montantTotal - $installations->reduction;
 
         // chrger les donnee sur la facture pour avoyer sur une vue qui sera converti en pdf
-        $pdf = Pdf::loadView('factures.installations',[
-            'ventes' =>$installations,
+        $pdf = Pdf::loadView('factures.afficherFactureInstallations',[
+            'installations' =>$installations,
             'factures' => $factures,
+            'netAPayer' => $netAPayer,
         ]);
         
            
