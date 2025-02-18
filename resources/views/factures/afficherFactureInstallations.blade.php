@@ -137,7 +137,7 @@
                     <th>P.U.</th>
                     <th>P.Total</th>
                 </tr>
-                @foreach($panier as $produit)
+                @foreach($installations->produits as $produit)
                     <tr>
                         <td>{{$produit->quantity}}</td>
                         <td>{{$produit->name}}</td>

@@ -143,7 +143,7 @@
 
 
 
-                @foreach($panier as $produit)
+                @foreach($ventes->produits as $produit)
 
                 <tr>
                     <td>{{$produit->quantity}}</td>
