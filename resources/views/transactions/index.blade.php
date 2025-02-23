@@ -75,19 +75,22 @@
                             <tr>
                                 <td>{{$transaction->nomClient}}</td>
                                 <td>{{$transaction->numeroClient}}</td>
-                                <td> {{$transaction->user->name}}</td>
+                                <td> {{$transaction->user->name ?? 'Auccun nom'}}</td>
                                 @can('VOIR_UTILISATEURS')
                                     <td> {{$transaction->prixAchat}}</td>
                                 @endcan
                                 <td> {{$transaction->montantVerse}}</td>
                                 <td> {{$transaction->compte->nom ?? ''}}</td>
                                 <td style="font-size: xx-small;" class="col-12 col-md-3"> 
-                                    
-                                    @forelse($transaction->produits as $produit)
-                                        Qte: {{ $produit->pivot->quantity }} - PU: {{ $produit->pivot->price }} - {{ $produit->name }} <br>
-                                    @empty
-                                         {{ $transaction->produit }}
-                                    @endforelse
+                                    @if($transaction->charge_id)
+                                        {{$transaction->charges->titre}}
+                                    @else
+                                        @forelse($transaction->produits as $produit)
+                                            Qte: {{ $produit->pivot->quantity }} - PU: {{ $produit->pivot->price }} - {{ $produit->name }} <br>
+                                        @empty
+                                            {{ $transaction->produit }}
+                                        @endforelse
+                                    @endif
                                 </td>
                                 <td>{{$transaction->type}}</td>
                                 <td>{{$transaction->created_at}}</td>

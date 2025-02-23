@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Transaction extends Model
 {
@@ -35,5 +36,13 @@ class Transaction extends Model
     {
         return $this->belongsToMany(Produit::class)
                     ->withPivot('quantity', 'price');
+    }
+    public function charges():BelongsTo
+    {
+        return $this->belongsTo(Charge::class, 'charge_id');
+    }
+    public function chargesDetails(): BelongsTo
+    {
+        return $this->belongsTo(ChargeDetail::class, 'chargeDetail_id');
     }
 }

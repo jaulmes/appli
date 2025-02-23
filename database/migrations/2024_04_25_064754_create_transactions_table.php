@@ -35,6 +35,18 @@ return new class extends Migration
                                         ->on('comptes')
                                         ->onUpdate('cascade')
                                         ->onDelete('cascade');
+
+            $table->unsignedBigInteger('charge_id')->nullable();
+            $table->foreign('charge_id')->references('id')
+                                        ->on('charges')
+                                        ->onUpdate('cascade')
+                                        ->onDelete('cascade');
+            
+            $table->unsignedBigInteger('chargeDetail_id')->nullable();
+            $table->foreign('chargeDetail_id')->references('id')
+                                        ->on('charge_details')
+                                        ->onUpdate('cascade')
+                                        ->onDelete('cascade');
             $table->timestamps();
         });
     }

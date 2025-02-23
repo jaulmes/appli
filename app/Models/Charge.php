@@ -19,4 +19,7 @@ class Charge extends Model
     {
         return $this->hasMany(ChargeDetail::class);
     }
+    public function transactions(){
+        return $this->hasOne(Transaction::class);
+    }
 }
