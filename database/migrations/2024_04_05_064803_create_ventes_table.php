@@ -13,6 +13,8 @@ return new class extends Migration
     {
         Schema::create('ventes', function (Blueprint $table) {
             $table->id();
+            $table->string('nomClient');
+            $table->integer('numeroClient');
             $table->integer('montantTotal');
             $table->integer('NetAPayer');
             $table->integer('montantVerse')->nullable();
@@ -46,6 +48,7 @@ return new class extends Migration
                                         ->on('users')
                                         ->onUpdate('cascade')
                                         ->onDelete('cascade');
+            $table->string('dateLimitePaiement')->nullable();
             $table->timestamps();
         });
     }
