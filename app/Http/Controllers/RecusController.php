@@ -11,7 +11,7 @@ class RecusController extends Controller
     public function afficherInstallation($id){
         $recus = Recu::with('installations.clients')->find($id);
         
-        return $pdf = Pdf::loadView('welcome',
+        return $pdf = Pdf::loadView('recus.installation_pdf',
                     [
                         'recus' => $recus
                     ])

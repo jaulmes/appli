@@ -60,15 +60,14 @@
         <hr>
         <div id="content" >
             <div class="client">
-                <p>Nom du client: <strong style="background-color: white;">{{$recus->installations->clients->nom}}</strong> F CFA</p>
-                <p>Numero du client: <strong style="background-color: white;">{{$recus->installations->clients->numero}}</strong>F CFA</p>
-                <p>Motif: <strong style="background-color: white;">345678</strong>F CFA</p>
+                <p>Nom du client: <strong style="background-color: white;">{{$recus->installations->clients->nom}}</strong></p>
+                <p>Numero du client: <strong style="background-color: white;">{{$recus->installations->clients->numero}}</strong></p>
+                <p>Motif: <strong style="background-color: white;">{{$recus->remarque}}</strong></p>
             </div>
             <div id="montant" >
                 <p><strong>Montant versé:</strong> <strong style="background-color: white; margin-left: 4em;">{{$recus->montant_recu}} </strong>F CFA</p>
                 <p><strong>Dette Precedente:</strong>  <strong style="background-color: white; margin-left: 3em;">{{$recus->installations->NetAPayer - $recus->installations->montantVerse}} </strong>F CFA</p>
-                <p><strong>Dette Restante:</strong> <strong style="background-color: white; margin-left: 4em;">{{$recus->installations->NetAPayer - ($recus->installations->montantVerse - $recus->montant_recu)}} </strong>F CFA</p>
-                <p><strong>Date limite de paiement:</strong> <strong style="background-color: white;">345678 </strong>F CFA</p>
+                <p><strong>Dette Restante:</strong> <strong style="background-color: white; margin-left: 4em;">{{$recus->installations->NetAPayer - ($recus->installations->montantVerse + $recus->montant_recu)}} </strong>F CFA</p>
             </div>
         </div>
         <hr>

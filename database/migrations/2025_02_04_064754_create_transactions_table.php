@@ -39,6 +39,18 @@ return new class extends Migration
             $table->unsignedBigInteger('recu_id')->nullable();
             $table->foreign('recu_id')->references('id')
                                         ->on('recus')
+                                        ->onDelete('cascade')
+                                        ->onUpdate('cascade');
+
+            $table->unsignedBigInteger('charge_id')->nullable();
+            $table->foreign('charge_id')->references('id')
+                                        ->on('charges')
+                                        ->onUpdate('cascade')
+                                        ->onDelete('cascade');
+            
+            $table->unsignedBigInteger('chargeDetail_id')->nullable();
+            $table->foreign('chargeDetail_id')->references('id')
+                                        ->on('charge_details')  
                                         ->onUpdate('cascade')
                                         ->onDelete('cascade');
             $table->timestamps();

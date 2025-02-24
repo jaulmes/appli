@@ -14,7 +14,7 @@ class Recus extends Component
     public function afficherDetail($id){
         $recus = Recu::find($id);
         
-        return $pdf = Pdf::loadView('welcome',
+        return $pdf = Pdf::loadView('recus.installation_pdf',
                     [
                         'recus' => $recus
                     ])

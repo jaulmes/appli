@@ -50,4 +50,8 @@ class Recu extends Model
     public function agents(){
         return $this->belongsTo(Agent::class);
     }
+
+    public function clients(){
+        return $this->belongsTo(Client::class);
+    }
 }

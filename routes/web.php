@@ -167,6 +167,7 @@ Route::middleware('auth')->group(function () {
      * installations
      */
     Route::get('/installations/index', [InstallationController::class, 'index'])->name('installations.index');
+    Route::post('installations/ajouterPaiement/{id}', [InstallationController::class, 'ajouterPaiement'])->name('installations.ajouterPaiement');
 
 
     /**

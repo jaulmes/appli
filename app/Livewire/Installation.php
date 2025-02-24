@@ -77,16 +77,13 @@ class Installation extends Component
         //dd($transactions, $comptes, $recus, $installations);
         
         // chrger les donnee sur la facture pour avoyer sur une vue qui sera converti en pdf
-        $pdf = Pdf::loadView('recus.installation_pdf',
-            [
-                'installation' =>$installations,
-                'clients' =>$clients,
-                'numeroFacture'=>$numeroFacture,
-                'montant' => $recus->montant_recu,
-            ]
-        );
-        
-        return $pdf->stream($numeroFacture);
+        return $pdf = Pdf::loadView('recus.installation_pdf',
+                    [
+                        'recus' => $recus
+                    ])
+                    ->setOption('encoding', 'utf-8')
+                    ->setWarnings(false)
+                    ->stream();
     }
     //recherche
     public function update_search(){
