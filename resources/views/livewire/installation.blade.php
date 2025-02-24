@@ -22,13 +22,14 @@
                         <th>Nom du client</th>
                         <th>Numero du client</th>
                         <th>Autheur</th>
-                        <th>Quantitée</th>
+                        <th>Produits</th>
                         <th>Commission</th>
                         <th>Montant total des Produits</th>
                         <th>Reduction</th>
                         <th>Main d'Oeuvre</th>
                         <th>Net A Payer</th>
                         <th>Montant Deja Versé</th>
+                        <th>Reste</th>
                         <th>Date</th>
                         <th>Statut</th>
                         <th>Actions</th>
@@ -40,13 +41,18 @@
                         <td>{{$installation->nomClient}}</td>
                         <td>{{$installation->numeroClient}}</td>
                         <td>{{$installation->user->name}}</td>
-                        <td>{{$installation->qteTotal}}</td>
+                        <td>
+                            @foreach($installation->produits as $produit)
+                                <u>Qte</u>: {{$produit->pivot->quantity}}, <u>Titre</u>: {{$produit->name}}, <u>Prix</u>: {{$produit->pivot->price}};</br>
+                            @endforeach
+                        </td>
                         <td>{{$installation->commission}}</td>
                         <td>{{$installation->montantProduit}}</td>
                         <td>{{$installation->reduction}}</td>
                         <td>{{$installation->mainOeuvre}}</td>
                         <td>{{$installation->NetAPayer}}</td>
                         <td>{{$installation->montantVerse}}</td>
+                        <td>{{$installation->NetAPayer - $installation->montantVerse}}</td>
                         <td>{{$installation->date}}</td>
                         <td>{{$installation->statut}}</td>
                         @if($installation->statut == "non termine")
@@ -76,13 +82,15 @@
                                                     <textarea  id="remerque" wire:model="remarque" class="form-control" placeholder="ajouter une remarque"></textarea>
                                                 </div>
                                                 <div class="col-auto my-1 row">
-                                                    <label class="mr-sm-2" for="inlineFormCustomSelect">Client</label>
-                                                    <select class="custom-select mr-sm-2" id="inlineFormCustomSelect" wire:model="client_id" >
-                                                        <option selected>Choisir le client</option>
-                                                        @foreach($clients as $client)
-                                                            <option value="{{$client->id}}">{{$client->nom}}</option>
-                                                        @endforeach
-                                                    </select>
+                                                    @if(!$installation->client_id)
+                                                        <label class="mr-sm-2" for="inlineFormCustomSelect">Client</label>
+                                                        <select class="custom-select mr-sm-2" id="inlineFormCustomSelect" wire:model="client_id" >
+                                                            <option selected>Choisir le client</option>
+                                                            @foreach($clients as $client)
+                                                                <option value="{{$client->id}}">{{$client->nom}}</option>
+                                                            @endforeach
+                                                        </select>
+                                                    @endif
                                                     <label class="mr-sm-2" for="inlineFormCustomSelect">Compte</label>
                                                     <select class="custom-select mr-sm-2" id="inlineFormCustomSelect" wire:model="compte_id" >
                                                         <option selected>Choisir le compte</option>

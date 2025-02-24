@@ -44,6 +44,7 @@ class Installation extends Component
             $recus->client_id = $installations->client_id;
         }else{
             $recus->client_id = $this->client_id;
+            $installations->client_id = $this->client_id;
         }
         $recus->montant_recu = $this->montant;
         $recus->remarque = $this->remarque;
@@ -73,12 +74,12 @@ class Installation extends Component
         $transactions->recu_id = $recus->id;
         $transactions->type = "recu";
         $transactions->save();
-        dd($transactions, $comptes, $recus, $installations);
+        //dd($transactions, $comptes, $recus, $installations);
         
         // chrger les donnee sur la facture pour avoyer sur une vue qui sera converti en pdf
         $pdf = Pdf::loadView('recus.installation_pdf',
             [
-                'installation' =>$installation,
+                'installation' =>$installations,
                 'clients' =>$clients,
                 'numeroFacture'=>$numeroFacture,
                 'montant' => $recus->montant_recu,

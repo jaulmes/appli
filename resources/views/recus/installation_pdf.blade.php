@@ -1,141 +1,83 @@
 <!DOCTYPE html>
 <html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reçu de paiement - </title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            width: 148mm; /* Largeur d'un A5 */
-            margin: 10px;
-            padding: 10px;
-            border: 1px solid black;
-        }
-        .header, .footer {
-            text-align: center;
-            font-size: 14px;
-        }
-        .header img {
-            width: 50px;
-            height: auto;
-        }
-        .content {
-            margin-top: 10px;
-            background-image: url('logo.jpg');
-            background-repeat: no-repeat;
-            background-position: center;
-            opacity: 0.5;
-        }
-        .info {
-            display: flex;
-            justify-content: space-between;
-            font-size: 12px;
-            margin-bottom: 10px;
-        }
-        .table-container {
-            width: 100%;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 12px;
-        }
-        th, td {
-            border: 1px solid black;
-            padding: 5px;
-            text-align: left;
-        }
-        .total {
-            text-align: right;
-            margin-top: 10px;
-            font-size: 14px;
-        }
-        .signatures {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 30px;
-            font-size: 12px;
-        }
-    </style>
-</head>
-<body>
-    <div class="header">
-        <h2>S<img src="{{ asset('logo2.jpg')}}" alt="" style="width: 25px; height: 20px">lergy Solutions SARL</h2>
-        <div class="row">
-            <div class="row">
-                <div class="img1" >
-                    <img src="{{asset('img3.jpg')}}" alt="" style="position: absolute; height: 6em; margin-left: -17em; margin-top: -3em">
-                </div>
-            </div>
-            <div class="description row">
-                <strong style="font-family: 'Agency FB'; ">
-                    Prestations de services, Installation solaire, <br>
-                    Fourniture du matériel, Electricité bâtiment, <br >
-                    <span style="margin-left: 4em;">
-                        Domotique et systèmes 
-                    </span>
-                </strong>
-            </div>
-            <div class="row">
-                <div class="img2" style="margin-left:35em; margin-top: -5em" >
-                    <img src="{{asset('img7.jpg')}}" alt="" style="position: relative; height: 6em">
-                </div>
-            </div>
-            
-            <p><strong>Reçu de paiement</strong></p>
-        </div>
-    </div>
-    
-    <div class="content">
-        <div class="info">
-            <div>
-                <p><strong>Référence :</strong> </p>
-                <p><strong>Date :</strong> </p>
-            </div>
-            <div>
-                <p><strong>Client :</strong> </p>
-                <p><strong>Téléphone :</strong> </p>
-            </div>
-        </div>
+    <head>
+        <meta charset="UTF-8">
+        <style>
+            body{
+                background-color: #f5f5dc;
+                padding-left: 1em;
+                padding-right: 1em;
+                font-size: small;
 
-        <div class="table-container">
-            <table>
-                <tr>
-                    <th>Qté</th>
-                    <th>Désignation</th>
-                    <th>P.U.</th>
-                    <th>Total</th>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td colspan="3" style="text-align: right;"><strong>Total</strong></td>
-                    <td><strong> CFA</strong></td>
-                </tr>
-                <tr>
-                    <td colspan="3" style="text-align: right;"><strong>Net à payer</strong></td>
-                    <td><strong style="color: green;"> CFA</strong></td>
-                </tr>
-            </table>
-        </div>
-
-        <div class="signatures">
-            <div>
-                <p>Signature Client</p>
-                <br><br>
-                <hr>
+            }
+            .header{
+                display: flex;
+                flex-direction: row;
+            }
+            .logo{
+                height: 50px;
+                width: 50px;
+                margin-left: 2em;
+            }
+            .entete{
+                display: flex;
+                flex-direction: row;
+            }
+            #content{
+                display: flex;
+                background-image: url('logo.jpg');
+                background-repeat: no-repeat;
+                background-position: center;
+                opacity: 0.8;
+            }
+            #montant{
+                flex-direction: row;
+                margin-left: 22em;
+                margin-top: -9em;
+            }
+            @page {
+                margin: 0;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="header row">
+            <div class="title col">
+                <h4>Recu de versement d'argent</h4>
             </div>
-            <div>
-                <p>Signature Vendeur</p>
-                <br><br>
-                <hr>
+            <div  style="margin-left: 25em; margin-top: -2em; background-color: white; border-radius: 5px; font-size: small; padding: 2px; width: 14em;">
+                No de Recu: {{$recus->numero_recu}}
+            </div>
+            <div style="margin-left: 25em; margin-top: 0em; position: absolute;">
+                <p>Date de remise du recu: <Strong style="background-color: white;">{{$recus->created_at->format('d-m-Y')}}</Strong></p>
             </div>
         </div>
-    </div>
-</body>
+        <div class="entete" >
+            <div class="logo col">
+                <img src="{{public_path('logo.jpg')}}" class="logo" alt="">
+            </div>
+        </div>
+        <hr>
+        <div id="content" >
+            <div class="client">
+                <p>Nom du client: <strong style="background-color: white;">{{$recus->installations->clients->nom}}</strong> F CFA</p>
+                <p>Numero du client: <strong style="background-color: white;">{{$recus->installations->clients->numero}}</strong>F CFA</p>
+                <p>Motif: <strong style="background-color: white;">345678</strong>F CFA</p>
+            </div>
+            <div id="montant" >
+                <p><strong>Montant versé:</strong> <strong style="background-color: white; margin-left: 4em;">{{$recus->montant_recu}} </strong>F CFA</p>
+                <p><strong>Dette Precedente:</strong>  <strong style="background-color: white; margin-left: 3em;">{{$recus->installations->NetAPayer - $recus->installations->montantVerse}} </strong>F CFA</p>
+                <p><strong>Dette Restante:</strong> <strong style="background-color: white; margin-left: 4em;">{{$recus->installations->NetAPayer - ($recus->installations->montantVerse - $recus->montant_recu)}} </strong>F CFA</p>
+                <p><strong>Date limite de paiement:</strong> <strong style="background-color: white;">345678 </strong>F CFA</p>
+            </div>
+        </div>
+        <hr>
+        <div  style="font-size: 8px; text-align: center">
+            <span>DOUALA, EN FACE DE L'ENTRÉE COLLÈGE BÉNÉDICTE SUR L'AXE TRADEX NDOKOTTI - TOTAL BP SITEE; </span>
+            <span>NIU:  M092316074072K; </span><br>
+            <span style="font-size: xx-small;">No RCCM:  RC/DLA/2023/B/5907; </span>
+            <span >Solergy Solution Sarl - solergy-solution.com </span>
+            <span > +237 657 248 925</span>
+        </div>
+    </body>
 </html>
