@@ -48,9 +48,10 @@ class ChargeController extends Controller
         $transactions->impot = $request->impot;
         $transactions->montantVerse = $request->input('montant');
         $transactions->user_id = Auth::user()->id;
-        
-        $transactions->save();
+
         $charges->save();
+        $transactions->charge_id = $charges->id;
+        $transactions->save();
         $comptes->save();
         return Redirect::route('charges.index')->with('success', 'nouvelle charge ajouté!');
     }
@@ -99,10 +100,11 @@ class ChargeController extends Controller
         
         $comptes->montant = $comptes->montant - $chargeDetail->montant;
 
-        $transactions->save();
+
         $comptes->save();
         $chargeDetail->save();
         $charges->save();
+        $transactions->save();
 
         return view('charge.sousCharge', compact('charges'));
 

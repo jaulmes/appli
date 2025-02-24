@@ -23,4 +23,7 @@ class Charge extends Model
     public function recus(){
         return $this->hasMany(Recu::class);
     }
+    public function transactions(){
+        return $this->hasOne(Transaction::class);
+    }
 }
