@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('ventes', function (Blueprint $table) {
             $table->id();
-            $table->string('nomClient');
-            $table->integer('numeroClient');
+            $table->string('nomClient')->nullable();
+            $table->integer('numeroClient')->nullable();
             $table->integer('montantTotal');
             $table->integer('NetAPayer');
             $table->integer('montantVerse')->nullable();
