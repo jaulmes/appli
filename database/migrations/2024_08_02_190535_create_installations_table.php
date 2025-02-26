@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('installations', function (Blueprint $table) {
             $table->id();
-            $table->string('nomClient');
-            $table->integer('numeroClient');
+            $table->string('nomClient')->nullable();
+            $table->integer('numeroClient')->nullable();
             $table->integer('montantProduit');//montant total des produit selectionne pour l'installation
             $table->integer('NetAPayer');//montant que le client doit verse(toute charge compris)
             $table->integer('montantVerse')->nullable();
