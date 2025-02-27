@@ -15,12 +15,33 @@ return new class extends Migration
             $table->id();
             $table->string('numero_recu');
             $table->unsignedBigInteger('vente_id')->nullable();
+            $table->foreign('vente_id')->references('id')
+                                        ->on('ventes')
+                                        ->onDelete('cascade')
+                                        ->onUpdate('cascade');
             $table->unsignedBigInteger('installation_id')->nullable();
+            $table->foreign('installation_id')->references('id')
+                                    ->on('installations')
+                                    ->onDelete('cascade')
+                                    ->onUpdate('cascade');
             $table->unsignedBigInteger('compte_id')->nullable();
+            $table->foreign('compte_id')->references('id')
+                                    ->on('comptes')
+                                    ->onDelete('cascade')
+                                    ->onUpdate('cascade');
             $table->unsignedBigInteger('transaction_id')->nullable();
             $table->unsignedBigInteger('charge_id')->nullable();
+            
             $table->unsignedBigInteger('user_id')->nullable();
+            $table->foreign('user_id')->references('id')
+                                        ->on('users')
+                                        ->onDelete('cascade')
+                                        ->onUpdate('cascade');
             $table->unsignedBigInteger('client_id')->nullable();
+            $table->foreign('client_id')->references('id')
+                                        ->on('clients')
+                                        ->onDelete('cascade')
+                                        ->onUpdate('cascade');
             $table->unsignedBigInteger('agent_id')->nullable();
             $table->string('montant_recu')->nullable();
             $table->string('remarque')->nullable();

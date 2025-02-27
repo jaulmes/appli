@@ -2,10 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Compte;
+use App\Models\Installation;
+use App\Models\Recu;
 use App\Models\Transaction;
 use App\Models\Vente;
 use Illuminate\Http\Request;
 use Auth;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\Auth as FacadesAuth;
+
 class VentesController extends Controller
 {
     //afficher toutes les ventes
@@ -75,44 +81,63 @@ class VentesController extends Controller
         return view('ventes.index', compact('ventes'));
     }
 
-    //rechercher
-    public function rechercherVente(Request $request){
-        if($request->ajax()){
-            $output = '';
+    public function ajouterPaiement(Request $request, $id){
+        $ventes = Vente::where('id', $id)->first();
+        dd($ventes);
+        $recus = new Recu();
+        $transactions = new Transaction();
+        $comptes = Compte::find($request->compte_id);
 
-            $ventes = Vente::where('nomClient', 'like', "%$request->search%")->get();
-
-            if($ventes) {
-
-                foreach($ventes as $vente) {
-
-                    $output .=
-                    '<tr>
-                        <td>'.$vente->nomClient.'</td>
-                        <td>'.$vente->numeroClient.'</td>
-                        <td>'.$vente->user->name.'</td>
-                        <td>'.$vente->agentOperant.'</td>
-                        <td>'.$vente->commission.'</td>
-                        <td>'.$vente->qteTotal.'</td>
-                        <td>'.$vente->NetAPayer.'</td>
-                        <td>'.$vente->montantTotal.'</td>
-                        <td>'.$vente->montantVerse.'</td>
-                        <td>'.$vente->date.'</td>
-                        <td>'.$vente->statut.'</td>
-                    </tr>
-                    
-                  ';
-
-                }
-
-                return response()->json($output);
-
-            }
-            return view('ventes.index', compact('ventes'));
+        $recus->user_id = FacadesAuth::user()->id;
+        $recus->vente_id = $ventes->id;
+        $recus->compte_id = $request->compte_id;
+        if($ventes->client_id){
+            $recus->client_id = $ventes->client_id;
+        }else{
+            $recus->client_id = $request->client_id;
+            $ventes->client_id = $request->client_id;
         }
+        $recus->montant_recu = $request->montant;
+        $recus->remarque = $request->remarque;
+
+        $dateHeure = now();
+        $moi = now()->month;
+
+        //compter le nombre de vente pour incrementer le numero de la facture
+        $numero = Recu::count() + 1;
+
+        //$numero =Vente::where('date', $ventes->date )->get()->count() + 1;
+        $name = FacadesAuth::user()->name;
+        $numeroFacture = substr($name, 0, 3).'_'.$dateHeure->format('y').'_'.$moi.'_'.$dateHeure->format('d').'_'.$numero;
+        $recus->numero_recu = $numeroFacture;
+        $ventes->montantVerse = $ventes->montantVerse + $request->montant;
+
+        if($ventes->NetAPayer > $ventes->montantVerse ){
+            $ventes->statut = "non termine";
+            $ventes->dateLimitePaiement = '';
+        }
+        else{
+            $ventes->statut = "termine";
+        }
+
+        dd($ventes);
+        $recus->save();
+        $comptes->montant = $comptes->montant + $recus->montant_recu;
+        $comptes->save();
+        $ventes->save();
+        //dd($recus->ventes->clients->nom);
+        $transactions->recu_id = $recus->id;
+        $transactions->type = "recu";
+        $transactions->save();
+        //dd($transactions, $comptes, $recus, $ventes);
         
-        //return response()->json($ventes);
-        return view('ventes.non-termine', compact('ventes'))->render();
+        // chrger les donnee sur la facture pour avoyer sur une vue qui sera converti en pdf
+        return $pdf = Pdf::loadView('recus.vente_pdf',
+                    [
+                        'recus' => $recus
+                    ])
+                    ->setPaper([0, 0, 220, 450], 'landscape')
+                    ->stream();
     }
 
     //modifier les ventes non termine

@@ -34,4 +34,9 @@ class Achat extends Model
     {
         return $this->belongsTo(Compte::class);
     }
+    public function produits()
+    {
+        return $this->belongsToMany(Produit::class, 'produit_achat')
+                            ->withPivot('quantity', 'price');
+    }
 }

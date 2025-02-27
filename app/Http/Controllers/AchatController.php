@@ -9,8 +9,10 @@ use App\Models\detailAchat;
 use App\Models\Produit;
 use App\Models\Transaction;
 use Darryldecode\Cart\Cart;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class AchatController extends Controller
 {
@@ -70,83 +72,109 @@ class AchatController extends Controller
     }
     
     public function validerAchat(Request $request){
-        
-        $request->validate([
-            'modePaiement' => ['required', 'max:255'],
-        ]);
-        
-        $montantTotal = \Cart::getTotal();
+        DB::beginTransaction();
 
-        $comptes = Compte::find( $request->modePaiement);
-        
-        $dateHeure = now();
+        try{
 
-        //enregistrement transaction
-        $transactions = new Transaction();
-        $transactions->date = $dateHeure->format('d/m/y');
-        $transactions->heure = $dateHeure->format('H:i:s');
-        $transactions->type = 'Achat';
-        $transactions->impot = $request->impot;
-        $transactions->compte_id = $comptes->id;
-        $transactions->user_id = Auth::user()->id;
-        $produits = \Cart::getContent();
-        
-        
-        $article= [];
-        $prixAchat = 0;
-        foreach($produits as $row) {
-    	
-    	    $sommePrixAchat = $row->attributes['prix_achat'];;
-    	    
-    	    $prixAchat = $prixAchat + $sommePrixAchat;
-    	    
-    	    $article[] =  $row->associatedModel->name;
+            $request->validate([
+                'modePaiement' => ['required', 'max:255'],
+            ]);
+            
+            $montantTotal = \Cart::getTotal();
+    
+            $comptes = Compte::find( $request->modePaiement);
+            
+            $dateHeure = now();
+    
+            //enregistrement transaction
+            $transactions = new Transaction();
+            $transactions->date = $dateHeure->format('d/m/y');
+            $transactions->heure = $dateHeure->format('H:i:s');
+            $transactions->type = 'Achat';
+            $transactions->impot = $request->impot;
+            $transactions->compte_id = $comptes->id;
+            $transactions->user_id = Auth::user()->id;
+            $produits = \Cart::getContent();
+            
+            
+            // $article= [];
+            $prixAchat = 0;
+            foreach($produits as $row) {
+            
+                
+                $sommePrixAchat = $row->attributes['prix_achat'] * $row->quantity;
+                $prixAchat = $prixAchat + $sommePrixAchat;
+                
+            //     $article[] =  $row->associatedModel->name;
+    
+             }
+            $transactions->prixAchat = $prixAchat;
+            // $transactions->produit = json_encode($article);
+    
+            $achats = new Achat();
+            $achats->total = $montantTotal;
+            $achats->montantVerse = $request->input('montantVerse');
+            $achats->compte_id = $comptes->id;
+            $achats->impot = $request->input('impot');
+            $achats->qte = \Cart::getContent()->count();
+            $achats->date = date('d-m-Y');
+            $achats->user_id = Auth::user()->id;
+            if($achats->total > $achats->montantVerse){
+                $achats->statut = "non termine";
+            }
+            else{
+                $achats->statut = "termine";
+            }
+    
+            if($comptes->montant < $achats->montantVerse){
+                return redirect()->back()->
+                with(
+                    'error', "le montant present dans le compte " . $comptes->nom . " est insufisant! veuillez recharger le compte ou changer de moyen de paiement"
+                );
+            }
 
+            $comptes->montant = $comptes->montant - $achats->montantVerse;
+            
+    
+            $transactions->save();
+            //dd($transactions);
+            
+            $comptes->save();
+            $achats->save();
+            //je relie chaque produit du panier a la vente 
+            foreach($produits as $produit){
+                $achats->produits()->attach($produit->id, [
+                    'quantity' => $produit->quantity,
+                    'price' => $produit->price,
+                    'achat_id'=>$achats->id
+                ]);
+            }
+
+            // Associer chaque produit du panier à la transaction
+            foreach (\Cart::getContent() as $item) {
+                $transactions->produits()->attach($item->id, [
+                    'quantity' => $item->quantity,
+                    'price' => $item->price,
+                ]);
+            }
+    
+            //mettre a jour le stock
+            foreach(\Cart::getContent() as $item){
+                $articles = Produit::find($item->id);
+                $produit = \Cart::get($articles->id);
+                $articles->stock = $articles->stock + $produit->quantity;
+                $articles->save();
+            }
+    
+            \Cart::clear();
+            Db::commit();
+            return redirect()->back()->with('message', 'achat enregistré avec succes');
+        
+        }catch(Exception $e){
+            DB::rollBack();
+            return redirect()->back()->with('error', "une erreur c\'est produite". $e);
         }
-        $transactions->prixAchat = $prixAchat;
-        $transactions->produit = json_encode($article);
-
-        $achats = new Achat();
-        $achats->total = $montantTotal;
-        $achats->montantVerse = $request->input('montantVerse');
-        $achats->compte_id = $comptes->id;
-        $achats->impot = $request->input('impot');
-        $achats->qte = \Cart::getContent()->count();
-        $achats->date = date('d-m-Y');
-        $achats->user_id = Auth::user()->id;
-        if($achats->total > $achats->montantVerse){
-            $achats->statut = "non termine";
-        }
-        else{
-            $achats->statut = "termine";
-        }
-
-        if($comptes->montant < $achats->montantVerse){
-            return redirect()->back()->
-            with(
-                'error', "le montant present dans le compte " . $comptes->nom . " est insufisant! veuillez recharger le compte ou changer de moyen de paiement"
-            );
-        }
-
-        $comptes->montant = $comptes->montant - $achats->montantVerse;
         
-
-        $transactions->save();
-        //dd($transactions);
-        
-        $comptes->save();
-        $achats->save();
-
-        //mettre a jour le stock
-        foreach(\Cart::getContent() as $item){
-            $articles = Produit::find($item->id);
-            $produit = \Cart::get($articles->id);
-            $articles->stock = $articles->stock + $produit->quantity;
-            $articles->save();
-        }
-
-        \Cart::clear();
-        return redirect()->back()->with('message', 'achat enregistré avec succes');
     }
 
 

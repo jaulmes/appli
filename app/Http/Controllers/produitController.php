@@ -77,9 +77,7 @@ class produitController extends Controller
             'prix_technicien' => 'required|integer|min:0',
             'categori_id' => 'required',
             'stock' => 'required|integer|min:0'
-
         ]);
-
 
         $produits = new Produit();
 
@@ -96,31 +94,26 @@ class produitController extends Controller
         if ($file = $request->file('image_produit')) {
             $fileName = hexdec(uniqid()).'.'.$file->getClientOriginalName();
             $path = 'public/images/produits/';
-
             /**
              * Delete an image if exists.
              */
             if($produits->image_produit){
                 Storage::delete($path . $produits->image_produit);
             }
-
             // Store an image to Storage
             $file->storeAs($path, $fileName);
             $produits->image_produit = $fileName;
         }
-
         else{
             $produits->image_produit = '';
         }
-        
         $dateHeure = now();
-        
         //enregistrer l'historique
         $transactions = new Transaction();
         $transactions->date = $dateHeure->format('d/m/y');
         $transactions->heure = $dateHeure->format('H:i:s');
-        $transactions->type = "enregistrement d'un nouveau produit";
-        $transactions->user_id = Auth::user()->id;
+        $transactions->type = "Nouveau produit";
+        $transactions->user_id = FacadesAuth::user()->id;
         
         if($produits->stock == 0){
             $transactions->prixAchat = $produits->prix_achat;
@@ -128,7 +121,6 @@ class produitController extends Controller
         else{
             $transactions->prixAchat = $produits->prix_achat * $produits->stock;
         }
-        
         $transactions->save();
         $produits->save();
 
@@ -138,12 +130,11 @@ class produitController extends Controller
             'quantity' => $produits->stock
         ]);
 
-        // //event( new Vente('nouveau produit enregistre avec success'));
-        // $email = "anoudemj@gmail.com";
-
-        // Notification::route('mail', $email)
-        //             ->notify(new VenteProduit($produits));
-        // //Auth::user()->notify(new VenteProduit($produits));
+        $transactions->produits()->attach($produits->id, [
+            'price' => $produits->prix_achat,
+            'quantity' => $produits->stock,
+            'name' => $produits->name
+        ]);
 
 
         return redirect::route('produit.index')->with('message', 'produit ajouté avec succes!');

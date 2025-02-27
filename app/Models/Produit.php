@@ -28,9 +28,11 @@ class Produit extends Model
 
     public function achats(): BelongsToMany
     {
-        return $this->belongsToMany(Achat::class);
+        return $this->belongsToMany(Achat::class, 'produit_achat')
+                                            ->withPivot('quantity', 'price');
     }
 
+    
     public function ventes(): BelongsToMany
     {
         return $this->belongsToMany(Vente::class, 'produit_vente')
@@ -51,8 +53,8 @@ class Produit extends Model
 
     public function transactions()
     {
-        return $this->belongsToMany(Transaction::class)
-                    ->withPivot('quantity', 'price');
+        return $this->belongsToMany(Transaction::class, 'produit_transaction')
+                    ->withPivot('quantity', 'price', 'name');
     }
 
     public function getPrice(){

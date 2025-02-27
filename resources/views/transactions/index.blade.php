@@ -72,7 +72,7 @@
                         </thead>
                         <tbody>
                             @foreach($transactions as $transaction)
-                            <tr>
+                            <tr style="font-size: xx-small;">
                                 <td>{{$transaction->nomClient}}</td>
                                 <td>{{$transaction->numeroClient}}</td>
                                 <td> {{$transaction->user->name ?? 'Auccun nom'}}</td>

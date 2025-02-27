@@ -162,6 +162,7 @@ Route::middleware('auth')->group(function () {
     //filtrer les ventes
     Route::get('ventes/filtrer', [VentesController::class, 'filtrerVentes'])->name('ventes.filtrer');
     Route::get('ventes/rechercher', [VentesController::class, 'rechercherVente'])->name('ventes.rechercher');
+    Route::post('ventes/ajouterPaiement/{id}', [VentesController::class, 'ajouterPaiement'])->name('ventes.ajouterPaiement');
 
     /**
      * installations

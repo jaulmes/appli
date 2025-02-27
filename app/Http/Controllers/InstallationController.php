@@ -18,7 +18,6 @@ class InstallationController extends Controller
     // }
     public function ajouterPaiement(Request $request, $id){
         $installations = Installation::find($id);
-        //dd($installations->clients->name);
         $recus = new Recu();
         $transactions = new Transaction();
         $comptes = Compte::find($request->compte_id);
@@ -60,7 +59,6 @@ class InstallationController extends Controller
         $transactions->recu_id = $recus->id;
         $transactions->type = "recu";
         $transactions->save();
-        //dd($transactions, $comptes, $recus, $installations);
         
         // chrger les donnee sur la facture pour avoyer sur une vue qui sera converti en pdf
         return $pdf = Pdf::loadView('recus.installation_pdf',

@@ -21,8 +21,9 @@ return new class extends Migration
             $table->foreign('transaction_id')->references('id')
                                         ->on('transactions');
 
-            $table->integer('quantity');
-            $table->integer('price');
+            $table->integer('quantity')->nullable();
+            $table->integer('price')->nullable();
+            $table->string('name')->nullable();
             $table->timestamps();
         });
     }

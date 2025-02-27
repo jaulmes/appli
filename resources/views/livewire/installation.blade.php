@@ -84,7 +84,7 @@
                                                         <textarea  id="remerque" name="remarque" class="form-control" placeholder="ajouter une remarque"></textarea>
                                                     </div>
                                                     <div class="col-auto my-1 row">
-                                                        @if($installation->client_id)
+                                                        @if(!$installation->client_id)
                                                             <label class="mr-sm-2" for="inlineFormCustomSelect">Client</label>
                                                             <select class="custom-select mr-sm-2" id="inlineFormCustomSelect" name="client_id" >
                                                                 <option selected>Choisir le client</option>

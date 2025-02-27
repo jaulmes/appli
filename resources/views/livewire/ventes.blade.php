@@ -26,6 +26,7 @@
                     <th>Net A Payer</th>
                     <th>Montant total</th>
                     <th>Montant Deja Versé</th>
+                    <th>Reste a payer</th>
                     <th>Date</th>
                     <th>Statut</th>
                     <th>Actions</th>
@@ -33,71 +34,7 @@
             </thead>
             <tbody id="result" style="font-size: small;">
                 @foreach($ventes as $vente)
-                    <tr>
-                        <td>{{$vente->nomClient}}</td>
-                        <td>{{$vente->numeroClient}}</td>
-                        <td>{{$vente->user->name}}</td>
-                        <td>{{$vente->agentOperant}}</td>
-                        <td>{{$vente->commission}}</td>
-                        <td>{{$vente->qteTotal}}</td>
-                        <td>{{$vente->NetAPayer}}</td>
-                        <td>{{$vente->montantTotal}}</td>
-                        <td>{{$vente->montantVerse}}</td>
-                        <td>{{$vente->date}}</td>
-                        <td>{{$vente->statut}}</td>
-                        @if($vente->statut == "non termine")
-                            <td>
-                                <!-- Button trigger modal -->
-                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addPaiementVente">
-                                    Ajouter un paiement
-                                </button>
-
-                                <!-- Modal -->
-                                <div class="modal fade" id="addPaiementVente" tabindex="-1" role="dialog" aria-labelledby="ajouterPaiementVenteTitle" aria-hidden="true">
-                                    <div class="modal-dialog modal-dialog-centered" role="document">
-                                        <div class="modal-content ">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title" id="ajouterPaiementVenteTitle"> Ajouter un paiement</h5>
-                                                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
-                                                </button>
-                                            </div>
-                                            <div class="modal-body row ">
-                                                <div class="row">
-                                                    <label for="montant">Montant <span class="invalid-feedback">*</span></label>
-                                                    <input type="text" wire:model="montant" id="montant" placeholder="Entrer le montant" required class="form-control">
-                                                </div>
-                                                <div class="row">
-                                                    <label for="motif">Motif </label>
-                                                    <textarea  id="motif" wire:model="motif" class="form-control" placeholder="ajouter le motif..."></textarea>
-                                                </div>
-                                                <div class="col-auto my-1 row">
-                                                    <label class="mr-sm-2" for="SelectCLient">Client</label>
-                                                    <select class="custom-select mr-sm-2" id="SelectCLient" wire:model="client_id" >
-                                                        <option selected>Choisir le client</option>
-                                                        @foreach($clients as $client)
-                                                            <option value="{{$client->id}}">{{$client->nom}}</option>
-                                                        @endforeach
-                                                    </select>
-                                                    <label class="mr-sm-2" for="selectCompte">Compte</label>
-                                                    <select class="custom-select mr-sm-2" id="selectCompte" wire:model="compte_id" >
-                                                        <option selected>Choisir le compte</option>
-                                                        @foreach($comptes as $compte)
-                                                            <option value="{{$compte->id}}">{{$compte->nom}}</option>
-                                                        @endforeach
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                                <button type="button" class="btn btn-primary" wire:click="ajouterPaiement({{$vente->id}})">Save changes</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </td>
-                        @endif
-                    </tr>
+                    <livewire:vente-item :vente="$vente" :key="$vente->id">
                 @endforeach
             </tbody>
         </table>

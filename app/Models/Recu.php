@@ -32,7 +32,7 @@ class Recu extends Model
     }
 
     public function ventes(){
-        return $this->belongsTo(Vente::class);
+        return $this->belongsTo(Vente::class, 'vente_id');
     }
 
     public function installations(){

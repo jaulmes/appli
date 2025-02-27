@@ -23,6 +23,8 @@ class Transaction extends Model
         'recu_id'
     ];
 
+
+
     public function user()
     {
         return $this->belongsTo(User::class);
@@ -33,10 +35,11 @@ class Transaction extends Model
         return $this->belongsTo(Compte::class);
     }
 
+    //pour afficher les produits lie au vente achat et aux installations
     public function produits()
     {
-        return $this->belongsToMany(Produit::class)
-                    ->withPivot('quantity', 'price');
+        return $this->belongsToMany(Produit::class, 'produit_transaction')
+                    ->withPivot('quantity', 'price', 'name');
     }
     public function recus(){
         return $this->belongsTo(Recu::class);
