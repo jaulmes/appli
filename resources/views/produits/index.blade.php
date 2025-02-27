@@ -65,7 +65,7 @@
                             <tbody>
                                 @foreach($produits as $produit)
                                 <tr>
-                                    <td style="margin-rigth: -7em">{{$produit->name}}</td>
+                                    <td style="margin-right: -7em">{{$produit->name}}</td>
                                     <td>{{$produit->categori->titre}}</td>
                                     <td>{{$produit->stock}}</td>
                                     @can('IMPOT')

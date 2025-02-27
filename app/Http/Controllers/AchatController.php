@@ -155,6 +155,7 @@ class AchatController extends Controller
                 $transactions->produits()->attach($item->id, [
                     'quantity' => $item->quantity,
                     'price' => $item->price,
+                    'name' => $item->name
                 ]);
             }
     
