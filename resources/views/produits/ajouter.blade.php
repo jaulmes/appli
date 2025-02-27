@@ -8,15 +8,11 @@
             <div class="col-md-6">
                 <!-- general form elements -->
                 <div class="card card-primary">
-                    @if ($errors->any())
-                    <div class="alert alert-danger">
-                        <ul>
-                            @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
+                @if (session('error'))
+                    <div class="alert alert-danger fw-bolder">
+                        {{ session('error') }}
                     </div>
-                    @endif
+                @endif
 
                     <div class="card-header">
                         <h3 class="card-title">ajouter un produit</h3>
@@ -72,7 +68,7 @@
                             </div>
                             <div class="row">
                                 <div class="form-group mx-2 col">
-                                    <label for="stock">stock </label>
+                                    <label for="stock">Quantite </label>
                                     <input name="stock" type="number" class="form-control" id="stock" placeholder="entrer le stock" required>
                                 </div>
                                 <div class="form-group col">
@@ -81,15 +77,27 @@
                                 </div>
                             </div>
 
-                            <div class="form-group ">
-                                <label for="fournisseur_id">fournisseur</label>
-                                <select name="fournisseur_id" class="form-control col-md-6 select2" id="fournisseur_id"  style="width: 100%;" >
-                                        <option selected="" disabled>choisir le fournisseur</option>
-                                    @foreach($fournisseurs as $fournisseur)
-                                        <option value="{{$fournisseur->id}}">{{$fournisseur->nom}}</option>
-                                    @endforeach
-                                </select>
+                            <div class="row">
+                                <div class="form-group col">
+                                    <label for="fournisseur_id">fournisseur</label>
+                                    <select name="fournisseur_id" class="form-control col-md-6 select2" id="fournisseur_id"  style="width: 100%;" >
+                                            <option selected="" disabled>choisir le fournisseur</option>
+                                        @foreach($fournisseurs as $fournisseur)
+                                            <option value="{{$fournisseur->id}}">{{$fournisseur->nom}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="form-group col">
+                                    <label for="compte_id">Compte</label>
+                                    <select name="compte_id" class="form-control col-md-6 select2" id="compte_id"  style="width: 100%;" required>
+                                            <option selected="" disabled>choisir le Compte</option>
+                                        @foreach($comptes as $compte)
+                                            <option value="{{$compte->id}}">{{$compte->nom}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
                             </div>
+                            
 
                             <div class="form-group row">
                                 <div class="form-group mx-3 col">

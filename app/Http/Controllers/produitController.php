@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Events\Vente;
 use App\Imports\ProduitsImport;
 use App\Models\Categori;
+use App\Models\Compte;
 use App\Models\Fournisseur;
 use App\Models\Produit;
 use App\Models\Transaction;
@@ -15,7 +16,9 @@ use Illuminate\Support\Facades\Redirect;
 use Maatwebsite\Excel\Facades\Excel;
 use Maatwebsite\Excel\Validators\ValidationException;
 use Auth;
+use Exception;
 use Illuminate\Support\Facades\Auth as FacadesAuth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Notification;
 
 class produitController extends Controller
@@ -60,7 +63,8 @@ class produitController extends Controller
     {
         $categories = Categori::all();
         $fournisseurs = Fournisseur::all();
-        return view('produits.ajouter', compact('categories', 'fournisseurs'));
+        $comptes = Compte::all();
+        return view('produits.ajouter', compact('categories', 'fournisseurs', 'comptes'));
     }
 
     /**
@@ -68,76 +72,94 @@ class produitController extends Controller
      */
     public function store(Request $request)
     {
-
-       $request->validate([
-            // 'name' => 'required|unique:'.Produit::class,
-            'prix_achat' => 'required|integer|min:0',
-            'price' => 'required|integer|min:0',
-            'prix_minimum' => 'required|integer|min:0',
-            'prix_technicien' => 'required|integer|min:0',
-            'categori_id' => 'required',
-            'stock' => 'required|integer|min:0'
-        ]);
-
-        $produits = new Produit();
-
-        $produits->name = $request->input('name');
-        $produits->description = $request->input('description');
-        $produits->categori_id = $request->input('categori_id');
-        $produits->prix_achat = $request->input('prix_achat');
-        $produits->price = $request->input('price');
-        $produits->prix_technicien = $request->input('prix_technicien');
-        $produits->prix_minimum = $request->input('prix_minimum');
-        $produits->stock = $request->input('stock');
-        $produits->fabricant = $request->input('fabricant');
-
-        if ($file = $request->file('image_produit')) {
-            $fileName = hexdec(uniqid()).'.'.$file->getClientOriginalName();
-            $path = 'public/images/produits/';
-            /**
-             * Delete an image if exists.
-             */
-            if($produits->image_produit){
-                Storage::delete($path . $produits->image_produit);
+        DB::beginTransaction();
+        try{
+            $request->validate([
+                // 'name' => 'required|unique:'.Produit::class,
+                'prix_achat' => 'required|integer|min:0',
+                'price' => 'required|integer|min:0',
+                'prix_minimum' => 'required|integer|min:0',
+                'prix_technicien' => 'required|integer|min:0',
+                'categori_id' => 'required',
+                'stock' => 'required|integer|min:0',
+                'compte_id' => 'required'
+            ]);
+            
+    
+            $produits = new Produit();
+    
+            $produits->name = $request->input('name');
+            $produits->description = $request->input('description');
+            $produits->categori_id = $request->input('categori_id');
+            $produits->prix_achat = $request->input('prix_achat');
+            $produits->price = $request->input('price');
+            $produits->prix_technicien = $request->input('prix_technicien');
+            $produits->prix_minimum = $request->input('prix_minimum');
+            $produits->stock = $request->input('stock');
+            $produits->fabricant = $request->input('fabricant');
+    
+            if ($file = $request->file('image_produit')) {
+                $fileName = hexdec(uniqid()).'.'.$file->getClientOriginalName();
+                $path = 'public/images/produits/';
+                /**
+                 * Delete an image if exists.
+                 */
+                if($produits->image_produit){
+                    Storage::delete($path . $produits->image_produit);
+                }
+                // Store an image to Storage
+                $file->storeAs($path, $fileName);
+                $produits->image_produit = $fileName;
             }
-            // Store an image to Storage
-            $file->storeAs($path, $fileName);
-            $produits->image_produit = $fileName;
+            else{
+                $produits->image_produit = '';
+            }
+            $dateHeure = now();
+            //enregistrer l'historique
+            $transactions = new Transaction();
+            $transactions->date = $dateHeure->format('d/m/y');
+            $transactions->heure = $dateHeure->format('H:i:s');
+            $transactions->type = "Nouveau produit";
+            $transactions->user_id = FacadesAuth::user()->id;
+            
+            if($produits->stock == 0){
+                $transactions->prixAchat = $produits->prix_achat;
+            }
+            else{
+                $transactions->prixAchat = $produits->prix_achat * $produits->stock;
+            }
+            $comptes = Compte::find($request->compte_id);
+            if($comptes->montant < $produits->prix_achat * $produits->stock){
+                return redirect()->back()->with('error', 'le solde du compte choisi est insufisant, veuillez le recharger');
+            }
+            
+            $transactions->compte_id = $comptes->id;
+            $comptes->montant = $comptes->montant - $produits->prix_achat * $produits->stock;
+    
+            $comptes->save();
+            $transactions->save();
+            $produits->save();
+    
+            //relier le produit a son fournisseur
+            $produits->fournisseurs()->attach($request->fournisseur_id, [
+                'price' => $produits->prix_achat,
+                'quantity' => $produits->stock
+            ]);
+    
+            $transactions->produits()->attach($produits->id, [
+                'price' => $produits->prix_achat,
+                'quantity' => $produits->stock,
+                'name' => $produits->name
+            ]);
+    
+            DB::commit();
+            return redirect::route('produit.index')->with('message', 'produit ajouté avec succes!');
+        }catch(Exception $e){
+            DB::rollBack();
+            return redirect()->back()->with('error', 'une erreur est survenu: '. $e);
         }
-        else{
-            $produits->image_produit = '';
-        }
-        $dateHeure = now();
-        //enregistrer l'historique
-        $transactions = new Transaction();
-        $transactions->date = $dateHeure->format('d/m/y');
-        $transactions->heure = $dateHeure->format('H:i:s');
-        $transactions->type = "Nouveau produit";
-        $transactions->user_id = FacadesAuth::user()->id;
-        
-        if($produits->stock == 0){
-            $transactions->prixAchat = $produits->prix_achat;
-        }
-        else{
-            $transactions->prixAchat = $produits->prix_achat * $produits->stock;
-        }
-        $transactions->save();
-        $produits->save();
 
-        //relier le produit a son fournisseur
-        $produits->fournisseurs()->attach($request->fournisseur_id, [
-            'price' => $produits->prix_achat,
-            'quantity' => $produits->stock
-        ]);
-
-        $transactions->produits()->attach($produits->id, [
-            'price' => $produits->prix_achat,
-            'quantity' => $produits->stock,
-            'name' => $produits->name
-        ]);
-
-
-        return redirect::route('produit.index')->with('message', 'produit ajouté avec succes!');
+       
     }
     
     //afficher le formulaire de modification du produit
