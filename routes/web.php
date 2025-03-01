@@ -136,13 +136,11 @@ Route::middleware('auth')->group(function () {
     //afficher les factures des ventes enregistre dans le systeme
     Route::get('factures/ventes', [FactureController::class, 'factureVente'])->name('factures.ventes');
     
-    Route::get('factures/recus', [RecusController::class, 'index'])->name('recus.index');
+
     //telecharger la facture d'un la vente
     Route::get('factures/ventes/telecharger/{id}', [FactureController::class, 'telechargerFactureVente'])->name('factures.ventes.telecharger');
     //afficher une facture d'un la vente
     Route::get('factures/ventes/afficher/{id}', [FactureController::class, 'afficherFactureVente'])->name('factures.ventes.afficher');
-    Route::get('factures/recus/afficherInstallation/{id}', [RecusController::class, 'afficherInstallation'])->name('factures.recus.afficherInstallation');
-    Route::get('factures/recus/afficherVentes/{id}', [RecusController::class, 'afficherVentes'])->name('factures.recus.afficherVente');
     
     //afficher les facture des installatiions enregistre dans le systeme
     Route::get('factures/installations', [FactureController::class, 'factureInstallation'])->name('factures.installations');
@@ -162,15 +160,26 @@ Route::middleware('auth')->group(function () {
     //filtrer les ventes
     Route::get('ventes/filtrer', [VentesController::class, 'filtrerVentes'])->name('ventes.filtrer');
     Route::get('ventes/rechercher', [VentesController::class, 'rechercherVente'])->name('ventes.rechercher');
-    Route::post('ventes/ajouterPaiement/{id}', [VentesController::class, 'ajouterPaiement'])->name('ventes.ajouterPaiement');
 
     /**
      * installations
      */
     Route::get('/installations/index', [InstallationController::class, 'index'])->name('installations.index');
+
+    /**
+     * recus
+     */
+    //installation
     Route::post('installations/ajouterPaiement/{id}', [InstallationController::class, 'ajouterPaiement'])->name('installations.ajouterPaiement');
 
-
+    //ventes
+    
+    Route::get('ventes/voir/ajouterPaiement/{id}', [VentesController::class, 'formShow'])->name('ventes.voir.ajouterPaiement');
+    Route::post('ventes/ajouterPaiement/{id}', [VentesController::class, 'ajouterPaiement'])->name('ventes.ajouterPaiement');
+    Route::get('factures/recus', [RecusController::class, 'index'])->name('recus.index');
+    
+    Route::get('factures/recus/afficherInstallation/{id}', [RecusController::class, 'afficherInstallation'])->name('factures.recus.afficherInstallation');
+    Route::get('factures/recus/afficherVentes/{id}', [RecusController::class, 'afficherVentes'])->name('factures.recus.afficherVente');
     /**
      * Achats
      */

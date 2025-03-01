@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Client;
 use App\Models\Compte;
 use App\Models\Installation;
 use App\Models\Recu;
@@ -10,7 +11,9 @@ use App\Models\Vente;
 use Illuminate\Http\Request;
 use Auth;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Exception;
 use Illuminate\Support\Facades\Auth as FacadesAuth;
+use Illuminate\Support\Facades\DB;
 
 class VentesController extends Controller
 {
@@ -29,9 +32,21 @@ class VentesController extends Controller
 
     //affiche les ventes terminé
     public function ventesTermine(){
-        $userId = Auth::User()->id;
+        $userId = FacadesAuth::User()->id;
         $ventes = Vente::where('user_id', 'userId')->get();
         return view('ventes.termine', compact('ventes'));
+    }
+
+    public function formShow($id){
+        $ventes = Vente::find($id);
+        $clients = Client::all();
+        $comptes = Compte::all();
+        
+        return view('ventes.formAjouterPaiement', [
+            'ventes' => $ventes,
+            'clients' => $clients,
+            'comptes' => $comptes
+        ]);
     }
 
     //affiche les ventes non terminé
@@ -82,8 +97,9 @@ class VentesController extends Controller
     }
 
     public function ajouterPaiement(Request $request, $id){
-        $ventes = Vente::where('id', $id)->first();
-        dd($ventes);
+
+        $ventes = Vente::find($id);
+
         $recus = new Recu();
         $transactions = new Transaction();
         $comptes = Compte::find($request->compte_id);
@@ -96,6 +112,17 @@ class VentesController extends Controller
         }else{
             $recus->client_id = $request->client_id;
             $ventes->client_id = $request->client_id;
+        }
+
+        //verifier que le solde est suffisant
+        if($comptes->montant < $request->montant){
+            return redirect()->back()->with('message', 'le solde est insufisant. recharger le compte ou changer de moyen de paiement');
+        }
+        $montantVerse = $request->montant + $ventes->montantVerse;
+        
+        //verifier que le montant verse n'est pas superrieur au reste a payer
+        if($ventes->NetAPayer < $montantVerse){
+            return redirect()->back()->with('message', 'le montant versé est superieur au reste a payer');
         }
         $recus->montant_recu = $request->montant;
         $recus->remarque = $request->remarque;
@@ -114,14 +141,14 @@ class VentesController extends Controller
 
         if($ventes->NetAPayer > $ventes->montantVerse ){
             $ventes->statut = "non termine";
-            $ventes->dateLimitePaiement = '';
+            $ventes->dateLimitePaiement = $request->dateLimiteVersement;
         }
         else{
             $ventes->statut = "termine";
         }
 
-        dd($ventes);
         $recus->save();
+        
         $comptes->montant = $comptes->montant + $recus->montant_recu;
         $comptes->save();
         $ventes->save();
@@ -129,15 +156,15 @@ class VentesController extends Controller
         $transactions->recu_id = $recus->id;
         $transactions->type = "recu";
         $transactions->save();
-        //dd($transactions, $comptes, $recus, $ventes);
-        
-        // chrger les donnee sur la facture pour avoyer sur une vue qui sera converti en pdf
+
+        // charger les donnee sur la facture pour avoyer sur une vue qui sera converti en pdf
         return $pdf = Pdf::loadView('recus.vente_pdf',
                     [
                         'recus' => $recus
                     ])
                     ->setPaper([0, 0, 220, 450], 'landscape')
-                    ->stream();
+                    ->stream($numeroFacture);
+        
     }
 
     //modifier les ventes non termine

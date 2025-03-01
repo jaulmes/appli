@@ -58,16 +58,17 @@
             </div>
         </div>
         <hr>
-        <div id="content" >
+        <div id="content" style="margin-top: -3px;" >
             <div class="client">
                 <p>Nom du client: <strong style="background-color: white;">{{$recus->ventes->clients->nom}}</strong></p>
                 <p>Numero du client: <strong style="background-color: white;">{{$recus->ventes->clients->numero}}</strong></p>
                 <p>Motif: <strong style="background-color: white;">{{$recus->remarque}}</strong></p>
+                <p>Date limite du prochain versement: <strong style="background-color: white;">{{ \Carbon\Carbon::parse($recus->ventes->dateLimitePaiement)->format('d-m-Y') }}</strong></p>
             </div>
-            <div id="montant" >
+            <div id="montant"  >
                 <p><strong>Montant versé:</strong> <strong style="background-color: white; margin-left: 4em;">{{$recus->montant_recu}} </strong>F CFA</p>
-                <p><strong>Dette Precedente:</strong>  <strong style="background-color: white; margin-left: 3em;">{{$recus->ventes->NetAPayer + $recus->ventes->montantVerse}} </strong>F CFA</p>
-                <p><strong>Dette Restante:</strong> <strong style="background-color: white; margin-left: 4em;">{{$recus->ventes->NetAPayer - ($recus->ventes->montantVerse + $recus->montant_recu)}} </strong>F CFA</p>
+                <p><strong>Dette Precedente:</strong>  <strong style="background-color: white; margin-left: 3em;">{{$recus->ventes->NetAPayer - $recus->ventes->montantVerse + $recus->montant_recu}} </strong>F CFA</p>
+                <p><strong>Dette Restante:</strong> <strong style="background-color: white; margin-left: 4em;">{{$recus->ventes->NetAPayer - $recus->ventes->montantVerse}} </strong>F CFA</p>
             </div>
         </div>
         <hr>

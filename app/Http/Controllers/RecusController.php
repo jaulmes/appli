@@ -10,7 +10,7 @@ class RecusController extends Controller
 {
     public function afficherInstallation($id){
         $recus = Recu::with('installations.clients')->find($id);
-        dd($recus->ventes);
+        
         if($recus->installation_id){
             return $pdf = Pdf::loadView('recus.installation_pdf',
                                         [

@@ -14,6 +14,11 @@
         <td>{{$vente->statut}}</td>
         @if($vente->statut == "non termine")
             <td>
+                <a href="{{ route('ventes.voir.ajouterPaiement', $vente->id)}}">
+                    <button type="button" class="btn btn-warning" >
+                        Ajouter un paiement
+                    </button>
+                </a>
                 <!-- Button trigger modal -->
                 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addPaiementVente">
                     Ajouter un paiement
