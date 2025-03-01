@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Client;
+use App\Models\Compte;
 use App\Models\Recu;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
@@ -43,5 +45,15 @@ class RecusController extends Controller
 
     public function index(){
         return view('recus.index');
+    }
+
+    public function create(){
+        $clients = Client::all();
+        $comptes = Compte::all();
+        return view('recus.create', 
+                        [
+                            'clients' => $clients,
+                            'comptes' => $comptes
+                        ]);
     }
 }

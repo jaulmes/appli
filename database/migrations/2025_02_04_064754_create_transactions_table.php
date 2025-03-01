@@ -24,6 +24,18 @@ return new class extends Migration
             $table->json('produit')->nullable();
             $table->string('impot')->nullable();
 
+            $table->unsignedBigInteger('vente_id')->nullable();
+            $table->foreign('vente_id')->references('id')
+                                        ->on('ventes')
+                                        ->onUpdate('cascade')
+                                        ->onDelete('cascade');
+
+            $table->unsignedBigInteger('installation_id')->nullable();
+            $table->foreign('installation_id')->references('id')
+                                        ->on('installations')
+                                        ->onUpdate('cascade')
+                                        ->onDelete('cascade');
+
             $table->unsignedBigInteger('user_id')->nullable();
             $table->foreign('user_id')->references('id')
                                         ->on('users')
