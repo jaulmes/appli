@@ -57,60 +57,11 @@
                         <td>{{$installation->statut}}</td>
                         @if($installation->statut == "non termine")
                             <td>
-                                <!-- Button trigger modal -->
-                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModalCenter">
-                                Ajouter un paiement
-                                </button>
-
-                                <!-- Modal -->
-                                <form action="{{route('installations.ajouterPaiement', $installation->id)}}" method="post">
-                                    @csrf
-                                    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                                        <div class="modal-dialog modal-dialog-centered" role="document">
-                                            <div class="modal-content ">
-                                                <div class="modal-header">
-                                                    <h5 class="modal-title" id="exampleModalLongTitle"> Ajouter un paiement</h5>
-                                                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span>
-                                                    </button>
-                                                </div>
-                                                <div class="modal-body row ">
-                                                    <div class="row">
-                                                        <label for="montant">Montant <span class="invalid-feedback">*</span></label>
-                                                        <input type="text" name="montant" id="montant" placeholder="Entrer le montant" required class="form-control">
-                                                    </div>
-                                                    <div class="row">
-                                                        <label for="remarque">Motif </label>
-                                                        <textarea  id="remerque" name="remarque" class="form-control" placeholder="ajouter une remarque"></textarea>
-                                                    </div>
-                                                    <div class="col-auto my-1 row">
-                                                        @if(!$installation->client_id)
-                                                            <label class="mr-sm-2" for="inlineFormCustomSelect">Client</label>
-                                                            <select class="custom-select mr-sm-2" id="inlineFormCustomSelect" name="client_id" >
-                                                                <option selected>Choisir le client</option>
-                                                                @foreach($clients as $client)
-                                                                    <option value="{{$client->id}}">{{$client->nom}}</option>
-                                                                @endforeach
-                                                            </select>
-                                                        @endif
-                                                        <label class="mr-sm-2" for="inlineFormCustomSelect">Compte</label>
-                                                        <select class="custom-select mr-sm-2" id="inlineFormCustomSelect" name="compte_id" >
-                                                            <option selected>Choisir le compte</option>
-                                                            @foreach($comptes as $compte)
-                                                                <option value="{{$compte->id}}">{{$compte->nom}}</option>
-                                                            @endforeach
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                                    <button type="submit" class="btn btn-primary" wire:click="ajouterPaiement({{$installation->id}})">Save changes</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </form>
-
+                                <a href="{{ route('installations.voir.ajouterPaiement', $installation->id)}}">
+                                    <button type="button" class="btn btn-primary" >
+                                        Ajouter un paiement
+                                    </button>
+                                </a>
                             </td>
                         @endif
                     </tr>

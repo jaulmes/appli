@@ -13,7 +13,7 @@
         </div>
     </div>
 
-    <div class="card-body table-responsive p-0" style="height: 400px;">
+    <div class="card-body table-responsive p-0" style="height: 400px; font-size:small">
         <table class="table table-head-fixed text-nowrap small">
             <thead>
                 <tr>
@@ -32,7 +32,7 @@
                     <th>Actions</th>
                 </tr>
             </thead>
-            <tbody id="result" style="font-size: small;">
+            <tbody id="result" style="font-size: xx-small;">
                 @foreach($ventes as $vente)
                     <livewire:vente-item :vente="$vente" :key="$vente->id">
                 @endforeach

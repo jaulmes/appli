@@ -171,6 +171,7 @@ Route::middleware('auth')->group(function () {
      */
     //installation
     Route::post('installations/ajouterPaiement/{id}', [InstallationController::class, 'ajouterPaiement'])->name('installations.ajouterPaiement');
+    Route::get('installations/voir/ajouterPaiement/{id}', [InstallationController::class, 'formShow'])->name('installations.voir.ajouterPaiement');
 
     //ventes
     

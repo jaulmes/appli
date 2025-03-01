@@ -114,10 +114,6 @@ class VentesController extends Controller
             $ventes->client_id = $request->client_id;
         }
 
-        //verifier que le solde est suffisant
-        if($comptes->montant < $request->montant){
-            return redirect()->back()->with('message', 'le solde est insufisant. recharger le compte ou changer de moyen de paiement');
-        }
         $montantVerse = $request->montant + $ventes->montantVerse;
         
         //verifier que le montant verse n'est pas superrieur au reste a payer

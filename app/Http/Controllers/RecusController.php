@@ -33,12 +33,11 @@ class RecusController extends Controller
     public function afficherVentes($id){
         $recus = Recu::find($id);
         
-        return $pdf = Pdf::loadView('welcome',
+        return $pdf = Pdf::loadView('recus.installation_pdf',
                     [
                         'recus' => $recus
                     ])
-                    ->setOption('encoding', 'utf-8')
-                    ->setWarnings(false)
+                    ->setPaper([0, 0, 220, 450], 'landscape')
                     ->stream();
     }
 
