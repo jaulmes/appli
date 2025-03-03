@@ -28,7 +28,7 @@ class FactureController extends Controller
         ]);
         
            
-        return $pdf->stream($factures->numeroFacture);
+        return $pdf->stream($factures->numeroFacture.'.pdf');
     }
 
     public function telechargerFactureVente($id){
@@ -44,7 +44,7 @@ class FactureController extends Controller
         ]);
         
            
-        return $pdf->download($factures->numeroFacture);
+        return $pdf->download($factures->numeroFacture.'.pdf');
     }
 
     public function factureInstallation(){
@@ -67,7 +67,7 @@ class FactureController extends Controller
         ]);
         
            
-        return $pdf->stream($factures->numeroFacture);
+        return $pdf->stream($factures->numeroFacture.'.pdf');
     }
 
     public function telechargerFactureInstallation($id){
@@ -83,6 +83,6 @@ class FactureController extends Controller
         ]);
         
            
-        return $pdf->download($factures->numeroFacture);
+        return $pdf->download($factures->numeroFacture.'.pdf');
     }
 }

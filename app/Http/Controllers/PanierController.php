@@ -273,7 +273,7 @@ class PanierController extends Controller
             
             \Cart::clear();  
             DB::commit();     
-            return $pdf->stream($numeroFacture);
+            return $pdf->stream($numeroFacture.'.pdf');
         }
         catch (Exception $e) {
             DB::rollBack(); // En cas d'erreur, on annule tout
@@ -447,7 +447,7 @@ class PanierController extends Controller
             ]);
             
             //\Cart::clear();       
-            return $pdf->stream($numeroFacture);
+            return $pdf->stream($numeroFacture.'.pdf');
         }catch(Exception $e){
             DB::rollBack(); // En cas d'erreur, on annule tout
     
