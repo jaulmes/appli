@@ -171,6 +171,7 @@ Route::middleware('auth')->group(function () {
      */
     //crate
     Route::get('recus/create', [RecusController::class, 'create'])->name('recus.create');
+    Route::post('recus/store', [RecusController::class, 'store'])->name('recus.store');
     //installation
     Route::post('installations/ajouterPaiement/{id}', [InstallationController::class, 'ajouterPaiement'])->name('installations.ajouterPaiement');
     Route::get('installations/voir/ajouterPaiement/{id}', [InstallationController::class, 'formShow'])->name('installations.voir.ajouterPaiement');

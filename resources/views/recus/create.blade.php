@@ -30,9 +30,9 @@
         </div>
         @endif
         
-        <h4 class="text-center text-primary">Ajouter un paiement</h4>
+        <h4 class="text-center text-primary">Creer un nouveau recu</h4>
 
-        <form action="{{ route('installations.ajouterPaiement', $installations->id) }}" method="POST">
+        <form action=" {{route('recus.store')}}"  method="POST">
             @csrf
             <div class="row">
                 <div class="mb-3 col">
@@ -48,17 +48,15 @@
 
             <div class="row">
                 <div class="col">
-                    @if(!$installations->client_id)
-                        <div class="mb-3">
-                            <label for="SelectClient" class="form-label">Client</label>
-                            <select class="form-select " id="SelectClient" name="client_id">
-                                <option value="" selected disabled>Choisir le client</option>
-                                @foreach($clients as $client)
-                                    <option value="{{ $client->id }}">{{ $client->nom }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                    @endif
+                    <div class="mb-3">
+                        <label for="SelectClient" class="form-label">Client</label>
+                        <select class="form-select " id="SelectClient" name="client_id">
+                            <option value="" selected disabled>Choisir le client</option>
+                            @foreach($clients as $client)
+                                <option value="{{ $client->id }}">{{ $client->nom }}</option>
+                            @endforeach
+                        </select>
+                    </div>
                 </div>
 
                 <div class="mb-3 col">
@@ -72,10 +70,17 @@
                 </div>
             </div>
 
-            <div class="row mb-3">
-                <label for="dateLimiteVersement" class="form-label">Date limite du prochain versement</label>
-                <input type="date" name="dateLimiteVersement" id="dateLimiteVersement" class="form-control">
+            <div class="row">
+                <div class="col mb-3">
+                    <label for="dateLimiteVersement" class="form-label">Date limite du prochain versement</label>
+                    <input type="date" name="dateLimiteVersement" id="dateLimiteVersement" class="form-control">
+                </div>
+                <div class="col mb-3">
+                    <label for="reste" class="form-label">Reste</label>
+                    <input type="number" name="reste" id="reste" class="form-control">
+                </div>
             </div>
+
             
 
             <div class="d-grid">

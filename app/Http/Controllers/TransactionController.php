@@ -27,6 +27,7 @@ class TransactionController extends Controller
                            ->with('produits')
                            ->get();
 
+
         
         return view('transactions.index', compact('transactions', 'currentMonth' ));
     }
@@ -90,24 +91,19 @@ class TransactionController extends Controller
      */
     public function mesTransactions(Request $request)
     {
-        if(!!$request->month){
-            $moi = now()->format('m');
-            
-        }
-        else{
-            $moi = $request->month;
-        }
-        //dd($moi);
+
+        $currentMonth = $request->input('month', Carbon::now()->format('Y-m'));
+
         $userId= Auth::user()->id;
+
+        $transactions = Transaction::where('user_id', $userId)
+                                    ->whereMonth('created_at', Carbon::parse($currentMonth)->month)
+                                    ->whereYear('created_at', Carbon::parse($currentMonth)->year)
+                                    ->orderBy('created_at', 'desc')
+                                    ->with('produits')
+                                    ->get();
         
-        // $transactions = DB::table('transactions')
-        //                 ->where('user_id', '=',  $userId )
-        //                 ->where('moi', '=', $moi)
-        //                 ->get();
-        
-        $transactions = Transaction::where('user_id', $userId)->get();
-        
-        return view('transactions.mesTransactions', compact('transactions'));
+        return view('transactions.mesTransactions', compact('transactions', 'currentMonth'));
     }
     
 

@@ -28,7 +28,7 @@ class Transaction extends Model
     }
 
     public function installations(){
-        return $this->belongsTo(Installation::class, 'vente_id');
+        return $this->belongsTo(Installation::class, 'installation_id');
     }
 
     public function user()
@@ -48,7 +48,7 @@ class Transaction extends Model
                     ->withPivot('quantity', 'price', 'name');
     }
     public function recus(){
-        return $this->belongsTo(Recu::class);
+        return $this->belongsTo(Recu::class, 'recu_id');
     }
     public function charges():BelongsTo
     {

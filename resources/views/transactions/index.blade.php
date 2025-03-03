@@ -73,20 +73,37 @@
                         <tbody>
                             @foreach($transactions as $transaction)
                             <tr style="font-size: xx-small;">
-                                <td>{{$transaction->nomClient}}</td>
+                                <td>{{$transaction->nomClient ?? $transaction->recus->clients->nom?? '-' }}</td>
                                 <td>{{$transaction->numeroClient}}</td>
-                                <td> {{$transaction->user->name ?? 'Auccun nom'}}</td>
+                                <td> {{$transaction->user->name ?? $transaction->recus->users->name ?? 'Auccun nom'}}</td>
                                 @can('VOIR_UTILISATEURS')
                                     <td> {{$transaction->prixAchat}}</td>
                                 @endcan
-                                <td> {{$transaction->montantVerse}}</td>
-                                <td> {{$transaction->compte->nom ?? ''}}</td>
+                                <td> {{$transaction->montantVerse ?? $transaction->recus->montant_recu?? '-'}}</td>
+                                <td> {{$transaction->compte->nom ?? '-'}}</td>
                                 <td style="font-size: xx-small;" class="col-12 col-md-3"> 
                                     @if($transaction->charge_id)
                                         {{$transaction->charges->titre}}
+                                    @elseif($transaction->recus)
+                                        @if($transaction->recus->installations)
+                                            @foreach($transaction->recus->installations->produits as $produit)
+                                                Qte: {{ $produit->pivot->quantity }} 
+                                                - PU: {{ $produit->pivot->price }} 
+                                                - {{ $produit->name }} <br>
+                                            @endforeach
+                                        @elseif($transaction->recus->ventes)
+                                            @foreach($transaction->recus->ventes->produits as $produit)
+                                                Qte: {{ $produit->pivot->quantity }} 
+                                                - PU: {{ $produit->pivot->price }} 
+                                                - {{ $produit->name }} <br>
+                                            @endforeach
+                                        @else
+                                            hello
+                                        @endif
                                     @else
                                         @forelse($transaction->produits as $produit)
-                                            Qte: {{ $produit->pivot->quantity }} - PU: {{ $produit->pivot->price }} - {{ $produit->name }} <br>
+                                            Qte: {{ $produit->pivot->quantity }} 
+                                            - PU: {{ $produit->pivot->price }} - {{ $produit->name }} <br>
                                         @empty
                                             {{ $transaction->produit }}
                                         @endforelse

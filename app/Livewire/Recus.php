@@ -27,6 +27,7 @@ class Recus extends Component
         $recus->user_id = Auth::user()->id;
         $recus->client_id = $this->client_id;
         $recus->montant_recu = $this->montant;
+        dd($recus);
     }
     public function mount(){
         $this->recus = Recu::with('clients')

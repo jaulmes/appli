@@ -2,21 +2,8 @@
 
 @section('content')
 
-<div class="">
-    <div class="">
-        <div>
-            <form  method="post" action="{{ route('transaction.filter') }}">
-                @csrf
-                <label for="month">Month:</label>
-                <select id="month" name="month" >
-                    @for ($i = 01; $i <= 12; $i++)
-                        <option value="{{ $i }}">{{ date('F', mktime(00, 00, 00, $i, 01, 2024)) }}</option>
-                    @endfor
-                </select>
-                <input type="submit" value="valider">
-            </form>
-        </div>
-    </div>
+<div >
+
 
     <div class="container-xl px-4 mt-n4">
         @if (session()->has('message'))
@@ -34,74 +21,109 @@
     <!-- END: Alert -->
     
     
-    <div class="row">
-<div class="col-12">
-<div class="card" style="margin-top: 2em">
-<div class="card-header">
-<h3 class="card-title "><strong>Mes Charges</strong></h3>
-<div class="card-tools">
-<div class="input-group input-group-sm" style="width: 150px;">
-<input type="text" name="table_search" class="form-control float-right" placeholder="Search">
-<div class="input-group-append">
-<button type="submit" class="btn btn-default">
-<i class="fas fa-search"></i>
-</button>
-</div>
-</div>
-</div>
-</div>
-
-<div class="card-body table-responsive p-0" style="height: 400px;">
-<table class="table table-head-fixed ">
-<thead>
-<tr>
-                <th>Nom client</th>
-                <th>Num client</th>
-                <th>Auteur</th>
-                @can('VOIR_UTILISATEURS')
-                    <th>Prix achat</th>
-                @endcan
-                <th>Prix vente</th>
-                <th>Moyen payement</th>
-                <th>Produits</th>
-                <th>Type</th>
-                <th>Date</th>
-                <th>Heure</th>
-</tr>
-</thead>
-<tbody>
-            @foreach($transactions as $transaction)
-            <tr>
-                <td>{{$transaction->nomClient}}</td>
-                <td>{{$transaction->numeroClient}}</td>
-                <td> {{$transaction->user->name}}</td>
-                @can('VOIR_UTILISATEURS')
-                    <td> {{$transaction->prixAchat}}</td>
-                @endcan
-                <td> {{$transaction->montantVerse}}</td>
-                <td> {{$transaction->compte->nom ?? ''}}</td>
-                <td> {{$transaction->produit}}</td>
-                <td>{{$transaction->type}}</td>
-                <td>{{$transaction->date}}</td>
-                <td>{{$transaction->heure}}</td>
-            </tr>
-            @endforeach
-</tbody>
-</table>
-</div>
-
-</div>
-
-</div>
-</div>
-    
-    
-    
+    <div class="row" style="font-size: small;">
+        <div class="col-15">
+            <div class="card" style="margin-top: 2em">
+                <div class="card-header">
+                    <h3 class="card-title "><strong >Journal des Activites</strong></h3>
+                    
+                    <div class="card-tools">
+                        
+                        <div class="input-group input-group-sm" style="width: 150px;">
+                           <form  method="get" action="{{ route('transaction.index') }}">
+                                @csrf
+                                <select name="month" id="month" onchange="this.form.submit()" id="transactionMonth">
+                                    @for($i = 0; $i < 12; $i++)
+                                        @php
+                                            $month = Carbon\Carbon::now()->subMonths($i)->format('Y-m');
+                                        @endphp
+                                        <option value="{{ $month }}" {{ $currentMonth == $month ? 'selected' : '' }}>
+                                            {{ Carbon\Carbon::parse($month)->format('F Y') }}
+                                        </option>
+                                    @endfor
+                                </select>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body table-responsive p-0" style="height: 400px;">
+                    <table class="table table-head-fixed ">
+                        <thead>
+                            <tr>
+                                <th>Nom client</th>
+                                <th>Num client</th>
+                                <th>Auteur</th>
+                                @can('VOIR_UTILISATEURS')
+                                    <th>Prix achat</th>
+                                @endcan
+                                <th>Montant Verse</th>
+                                <th>Moyen payement</th>
+                                <th>Produits</th>
+                                <th>Type</th>
+                                <th>Date</th>
+                                <th>Heure</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach($transactions as $transaction)
+                            <tr style="font-size: xx-small;">
+                                <td>{{$transaction->nomClient ?? $transaction->recus->clients->nom?? '-' }}</td>
+                                <td>{{$transaction->numeroClient}}</td>
+                                <td> {{$transaction->user->name ?? $transaction->recus->users->name ?? 'Auccun nom'}}</td>
+                                @can('VOIR_UTILISATEURS')
+                                    <td> {{$transaction->prixAchat}}</td>
+                                @endcan
+                                <td> {{$transaction->montantVerse ?? $transaction->recus->montant_recu?? '-'}}</td>
+                                <td> {{$transaction->compte->nom ?? '-'}}</td>
+                                <td style="font-size: xx-small;" class="col-12 col-md-3"> 
+                                    @if($transaction->charge_id)
+                                        {{$transaction->charges->titre}}
+                                    @elseif($transaction->recus)
+                                        @if($transaction->recus->installations)
+                                            @foreach($transaction->recus->installations->produits as $produit)
+                                                Qte: {{ $produit->pivot->quantity }} 
+                                                - PU: {{ $produit->pivot->price }} 
+                                                - {{ $produit->name }} <br>
+                                            @endforeach
+                                        @elseif($transaction->recus->ventes)
+                                            @foreach($transaction->recus->ventes->produits as $produit)
+                                                Qte: {{ $produit->pivot->quantity }} 
+                                                - PU: {{ $produit->pivot->price }} 
+                                                - {{ $produit->name }} <br>
+                                            @endforeach
+                                        @else
+                                            hello
+                                        @endif
+                                    @else
+                                        @forelse($transaction->produits as $produit)
+                                            Qte: {{ $produit->pivot->quantity }} 
+                                            - PU: {{ $produit->pivot->price }} - {{ $produit->name }} <br>
+                                        @empty
+                                            {{ $transaction->produit }}
+                                        @endforelse
+                                    @endif
+                                </td>
+                                <td>{{$transaction->type}}</td>
+                                <td>{{$transaction->created_at}}</td>
+                                <td>{{$transaction->heure}}</td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 @endsection
 
 @section('javascript')
 
-
+    <script>
+        function updateBilanMonth() {
+            const selectedMonth = document.getElementById('transactionMonth').value;
+            document.getElementById('bilanMonth').value = selectedMonth;
+        }
+    </script>
 
 @endsection
