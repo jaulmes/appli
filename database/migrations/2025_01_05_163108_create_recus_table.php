@@ -45,6 +45,8 @@ return new class extends Migration
             $table->unsignedBigInteger('agent_id')->nullable();
             $table->string('montant_recu')->nullable();
             $table->string('remarque')->nullable();
+            $table->string('reste')->nullable();
+            $table->string('dateLimitePaiement')->nullable();
             $table->timestamps();
         });
     }

@@ -33,10 +33,10 @@
                     <td>{{$recu->clients->nom ?? ''}}</td>
                     <td>
                     <div>
-                        <a href="{{route('factures.recus.afficherInstallation', $recu->id)}}" target="_blank" type="button"  title="afficher le recu"  type="button" class="btn btn-primary" >
+                        <a href="{{route('factures.recus.afficher', $recu->id)}}" target="_blank" type="button"  title="afficher le recu"  type="button" class="btn btn-primary" >
                             <i class="bi bi-eye"></i>
                         </a>
-                        <a href="{{route('factures.recus.afficherInstallation', $recu->id)}}" type="button" class="btn btn-danger" title="supprimer la tache"  onclick="alert('etes vous sur de vouloir suprimer cettre tache?')">
+                        <a href="#" type="button" class="btn btn-danger" title="supprimer la tache"  onclick="confirm('etes vous sur de vouloir suprimer cettre tache?')">
                             <i class="bi bi-trash"></i>
                         </a>
                     </div>

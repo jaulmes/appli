@@ -12,23 +12,31 @@ use Illuminate\Support\Facades\Auth;
 
 class RecusController extends Controller
 {
-    public function afficherInstallation($id){
+    public function afficherPdf($id){
         $recus = Recu::with('installations.clients')->find($id);
         
-        if($recus->installation_id){
+        if($recus->installation_id)
+        {
             return $pdf = Pdf::loadView('recus.installation_pdf',
                                         [
                                             'recus' => $recus
                                         ])
                                         ->setPaper([0, 0, 220, 450], 'landscape')
-                                        ->stream();
-        }else{
+                                        ->stream($recus->numero_recu.'.pdf');
+        }elseif($recus->vente_id){
             return $pdf = Pdf::loadView('recus.vente_pdf',
             [
                 'recus' => $recus
             ])
             ->setPaper([0, 0, 220, 450], 'landscape')
-            ->stream();
+            ->stream($recus->numero_recu.'.pdf');
+        }else{
+            return $pdf = Pdf::loadView('recus.simple_pdf',
+            [
+                'recus' => $recus
+            ])
+            ->setPaper([0, 0, 220, 450], 'landscape')
+            ->stream($recus->numero_recu.'.pdf');
         }
         
 
@@ -42,7 +50,7 @@ class RecusController extends Controller
                         'recus' => $recus
                     ])
                     ->setPaper([0, 0, 220, 450], 'landscape')
-                    ->stream();
+                    ->stream('.pdf');
     }
 
     public function index(){
@@ -74,6 +82,8 @@ class RecusController extends Controller
 
         $recus->montant_recu = $request->montant;
         $recus->remarque = $request->remarque;
+        $recus->dateLimitePaiement = $request->dateLimiteVersement;
+        $recus->reste = $request->reste;
 
         $dateHeure = now();
         $moi = now()->month;
@@ -100,6 +110,6 @@ class RecusController extends Controller
                         'recus' => $recus
                     ])
                     ->setPaper([0, 0, 220, 450], 'landscape')
-                    ->stream($numeroFacture);
+                    ->stream($numeroFacture.'.pdf');
     }
 }
