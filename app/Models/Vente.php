@@ -54,4 +54,8 @@ class Vente extends Model
     public function clients(){
         return $this->belongsTo(Client::class, 'client_id');
     }
+
+    public function transactions(){
+        return $this->hasOne(Vente::class);
+    }
 }

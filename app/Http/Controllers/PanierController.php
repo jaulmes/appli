@@ -180,6 +180,7 @@ class PanierController extends Controller
             $ventes->commission = $request->input('commission');
             $ventes->montantTotal = $montantTotal;
             $ventes->NetAPayer = $montantTotal - $ventes->reduction;
+            $ventes->montantVerse = $request->input('montantVerse');
             $ventes->compte_id = $comptes->id;
             $ventes->impot = $request->input('impot');
             $ventes->qteTotal = \Cart::getContent()->count();

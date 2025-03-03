@@ -18,13 +18,15 @@ class Recu extends Model
         'user_id',
         'client_id',
         'montant_recu',
-        'remarque' //represente plustot la raison
+        'reste',
+        'remarque', //represente plustot la raison
+        'dateLimitePaiement'
     ];
 
 
 
     public function users(){
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     public function charges(){
@@ -52,6 +54,6 @@ class Recu extends Model
     }
 
     public function clients(){
-        return $this->belongsTo(Client::class);
+        return $this->belongsTo(Client::class, 'client_id');
     }
 }

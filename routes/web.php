@@ -169,6 +169,9 @@ Route::middleware('auth')->group(function () {
     /**
      * recus
      */
+    //crate
+    Route::get('recus/create', [RecusController::class, 'create'])->name('recus.create');
+    Route::post('recus/store', [RecusController::class, 'store'])->name('recus.store');
     //installation
     Route::post('installations/ajouterPaiement/{id}', [InstallationController::class, 'ajouterPaiement'])->name('installations.ajouterPaiement');
     Route::get('installations/voir/ajouterPaiement/{id}', [InstallationController::class, 'formShow'])->name('installations.voir.ajouterPaiement');
@@ -179,8 +182,7 @@ Route::middleware('auth')->group(function () {
     Route::post('ventes/ajouterPaiement/{id}', [VentesController::class, 'ajouterPaiement'])->name('ventes.ajouterPaiement');
     Route::get('factures/recus', [RecusController::class, 'index'])->name('recus.index');
     
-    Route::get('factures/recus/afficherInstallation/{id}', [RecusController::class, 'afficherInstallation'])->name('factures.recus.afficherInstallation');
-    Route::get('factures/recus/afficherVentes/{id}', [RecusController::class, 'afficherVentes'])->name('factures.recus.afficherVente');
+    Route::get('factures/recus/afficher/{id}', [RecusController::class, 'afficherPdf'])->name('factures.recus.afficher');
     /**
      * Achats
      */

@@ -1,8 +1,16 @@
-<div>
+<div class="card">
     <div class="card-header">
         <h3 class="card-title">Liste des Recus</h3>
+
+        <div class="card-tools">
+            <a href="{{route('recus.create')}}">
+                <button type="button" class="btn btn-primary" >
+                    Etablir un recu
+                </button>
+            </a>
+        </div>
     </div>
-        <!-- /.card-header -->
+    <!-- /.card-header -->
     <div class="card-body">
         <table class="table table">
             <thead>
@@ -25,10 +33,10 @@
                     <td>{{$recu->clients->nom ?? ''}}</td>
                     <td>
                     <div>
-                        <a href="{{route('factures.recus.afficherInstallation', $recu->id)}}" target="_blank" type="button"  title="afficher le recu"  type="button" class="btn btn-primary" >
+                        <a href="{{route('factures.recus.afficher', $recu->id)}}" target="_blank" type="button"  title="afficher le recu"  type="button" class="btn btn-primary" >
                             <i class="bi bi-eye"></i>
                         </a>
-                        <a href="{{route('factures.recus.afficherInstallation', $recu->id)}}" type="button" class="btn btn-danger" title="supprimer la tache"  onclick="alert('etes vous sur de vouloir suprimer cettre tache?')">
+                        <a href="#" type="button" class="btn btn-danger" title="supprimer la tache"  onclick="confirm('etes vous sur de vouloir suprimer cettre tache?')">
                             <i class="bi bi-trash"></i>
                         </a>
                     </div>
@@ -41,13 +49,5 @@
         </table>
     </div>
     <!-- /.card-body -->
-    <!-- <div class="card-footer clearfix">
-        <ul class="pagination pagination-sm m-0 float-right">
-            <li class="page-item"><a class="page-link" href="#">&laquo;</a></li>
-            <li class="page-item"><a class="page-link" href="#">1</a></li>
-            <li class="page-item"><a class="page-link" href="#">2</a></li>
-            <li class="page-item"><a class="page-link" href="#">3</a></li>
-            <li class="page-item"><a class="page-link" href="#">&raquo;</a></li>
-        </ul>
-    </div> -->
+    
 </div>
