@@ -288,10 +288,7 @@ class PanierController extends Controller
         DB::beginTransaction();
 
         try{
-        
-            //creer un objet transaction
-            $transactions = new Transaction();
-            
+
             //j'enregistre le client lies a la vente
             if(!$request->client_id){
                 $clients = new Client();
@@ -301,12 +298,35 @@ class PanierController extends Controller
                 $clients = Client::find($request->client_id);
             }
 
+            //recuperer le mode de paiement
+            $comptes = Compte::find( $request->modePaiement);
+
+            if(!$comptes){
+                return redirect()->back()->with('error', "vous devez
+                choisir le compte pour l'enregistrrement de la vente");
+            }
+
             $dateHeure = now();
 
             $moi = now()->month;
             $annee = $dateHeure->format('y');
             $jour = $dateHeure->format('d');
+        
+            //creer un objet transaction
+            $transactions = new Transaction();
+            
 
+            $transactions->date = $dateHeure->format('Y/m/d');
+            $transactions->moi = $moi;
+            $transactions->heure = $dateHeure->format('H:i:s');
+
+            $transactions->type = 'installation';
+            $transactions->montantVerse = $request->input('montantVerse');
+
+
+            $transactions->compte_id = $comptes->id;
+            $transactions->impot = $request->impot;
+            $transactions->user_id = Auth::user()->id;
             //recuperer les produits du panier
             $panier = \Cart::getContent();
 
@@ -317,28 +337,8 @@ class PanierController extends Controller
                 $prixAchat = $prixAchat + $sommePrixAchat;
             }
 
-            //enregistrement transaction
             $transactions->prixAchat = $prixAchat; 
-            $transactions->date = $dateHeure->format('Y/m/d');
-            $transactions->moi = $moi;
-            $transactions->heure = $dateHeure->format('H:i:s');
-            // if(!$request->client_id){
-            //     $transactions->client_id = $clients->id;
-            // }else{
-            //     $transactions->client_id = $request->client_id;
-            // }
-            $transactions->type = 'installation';
-            $transactions->montantVerse = $request->input('montantVerse');
 
-            //recuperer le mode de paiement
-            $comptes = Compte::find( $request->modePaiement);
-            
-            //je fais une mise a jour du montant dans les comptes
-            $comptes->montant = $comptes->montant + $transactions->montantVerse;
-
-            $transactions->compte_id = $comptes->id;
-            $transactions->impot = $request->impot;
-            $transactions->user_id = Auth::user()->id;
 
             //recuperer le montant total du panier
             $montantTotal = \Cart::getTotal();
@@ -361,7 +361,7 @@ class PanierController extends Controller
             $installations->qteTotal = \Cart::getContent()->count();
             $installations->user_id = Auth::user()->id;
             $installations->NetAPayer = ($installations->montantProduit + $installations->mainOeuvre) - $installations->reduction ;
-            // dd($installations);
+
             
             if($installations->NetAPayer > $installations->montantVerse){
                 $installations->statut = "non termine";
@@ -388,6 +388,7 @@ class PanierController extends Controller
 
             //dd($installations->produits->pivot);
 
+            $installations->save();
             //comptabiliser la commission comme une charge
             $charges = new Charge();
             $charges->titre = "commission pour l'intallation de ". $installations->nomClient. " a ". $installations->agentOperant; 
@@ -396,10 +397,11 @@ class PanierController extends Controller
             //dd($installations->mainOeuvre);
             $charges->save();
             $comptes->save();
-            $installations->save();
+            //je fais une mise a jour du montant dans les comptes
+            $comptes->montant = $comptes->montant + $transactions->montantVerse;
+
             $transactions->save();
             $clients->save();
-            
             //je relie chaque produit du pqnier a la vente 
             foreach($panier as $produit){
                 $installations->produits()->attach($produit->id, [
@@ -424,7 +426,7 @@ class PanierController extends Controller
             $factures->numeroFacture = $numeroFacture;
             $factures->installation_id = $installations->id;
             $factures->save();
-                    
+
             // mettre a jour le stock
             foreach(\Cart::getContent() as $item){
                 $articles = Produit::find($item->id);
@@ -447,7 +449,8 @@ class PanierController extends Controller
                 'panier' => $panier
             ]);
             
-            //\Cart::clear();       
+            \Cart::clear();    
+            Db::commit();   
             return $pdf->stream($numeroFacture.'.pdf');
         }catch(Exception $e){
             DB::rollBack(); // En cas d'erreur, on annule tout
