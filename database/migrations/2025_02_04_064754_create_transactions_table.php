@@ -36,6 +36,12 @@ return new class extends Migration
                                         ->onUpdate('cascade')
                                         ->onDelete('cascade');
 
+            $table->unsignedBigInteger('proformat_id')->nullable();
+            $table->foreign('proformat_id')->references('id')
+                                        ->on('proformats')
+                                        ->onUpdate('cascade')
+                                        ->onDelete('cascade');
+
             $table->unsignedBigInteger('user_id')->nullable();
             $table->foreign('user_id')->references('id')
                                         ->on('users')

@@ -1,19 +1,14 @@
 <div>
     <div class="row card shadow-2-strong mb-lg-0" id="monPanier" style="position: fixed; width: 25em; padding-bottom: 3em; padding-top: 3em; margin-top: -7em; margin-left: -20em; font-size:12px ">
         <h6><strong><u>Mon panier</u></strong></h6><br>
-        @if ($errors->any())
-            <div class="alert alert-danger">
-                <ul>
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-        @endif
+
         @if (session('error'))
-            <div class="alert alert-danger fw-bolder">
+        <div class="alert alert-danger alert-icon" role="alert">
+            <button class="btn-close" type="button" data-bs-dismiss="alert" aria-label="Close"></button>
+            <div class="alert-icon-content">
                 {{ session('error') }}
             </div>
+        </div>
         @endif
         <table class="table table-responsive" style="overflow-y: visible;">
             <thead>

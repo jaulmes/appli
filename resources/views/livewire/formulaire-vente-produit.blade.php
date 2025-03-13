@@ -1,5 +1,5 @@
 <div>
-    <form id="formYes" action="{{ route('panier.enregistrer') }}" method="post" style="display: none;">
+    <form id="formVente" action="{{ route('panier.enregistrer') }}" method="post" style="display: none;">
         @csrf
         <div style="display: flex; flex-direction: row" id="clientExistant">
             <div class="form-group">

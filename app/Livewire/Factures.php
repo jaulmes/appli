@@ -30,6 +30,11 @@ class Factures extends Component
         $this->chargerFacture();
     }
 
+    public function Proformats(){
+        $this->type = "proformat";
+        $this->chargerFacture();
+    }
+
     public function chargerFacture(){
         
         if($this->type == "ventes"){
@@ -43,6 +48,13 @@ class Factures extends Component
             ->with('installations')
             ->orderBy('created_at', 'desc')
             ->get();
+        }
+        elseif($this->type == "proformat"){
+            $this->factures = facture::whereHas('proformats')
+            ->with('proformats')
+            ->orderBy('created_at', 'desc')
+            ->get();
+
         }
     }
 

@@ -39,6 +39,12 @@ class Produit extends Model
                                         ->withPivot('quantity', 'price');
     }
 
+    public function proformats(): BelongsToMany
+    {
+        return $this->belongsToMany(Proformat::class, 'produit_proformats')
+                                        ->withPivot('quantity', 'price');
+    }
+
     public function installations(): BelongsToMany
     {
         return $this->belongsToMany(Installation::class, 'installation_produit')

@@ -5,7 +5,6 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class facture extends Model
 {
@@ -27,4 +26,8 @@ class facture extends Model
         return $this->belongsTo(Installation::class, 'installation_id');
     }
 
+    public function proformats(): BelongsTo
+    {
+        return $this->belongsTo(Proformat::class, 'proformat_id');
+    }
 }

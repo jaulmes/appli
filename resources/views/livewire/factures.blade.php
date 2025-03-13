@@ -5,7 +5,9 @@
         <h3 class="card-title m-0">
             @if($type == "ventes")
                 Liste des Factures des VENTES
-            @else
+            @elseif($type == "proformat")
+                Liste des Factures des PROFORMATS
+            @elseif($type == "installations")
                 Liste des Factures des INSTALLATIONS
             @endif
         </h3>
@@ -18,6 +20,9 @@
             <button type="button" class="btn btn-outline-light @if($type == 'installations') active @endif" wire:click="Installations()">
                 <i class="fas fa-cogs"></i> INSTALLATIONS
             </button>
+            <button type="button" class="btn btn-outline-light @if($type == 'proformat') active @endif" wire:click="Proformats()">
+                <i class="fas fa-file-invoice"></i> PROFORMATS
+            </button>   
         </div>
     </div>
 
@@ -69,6 +74,20 @@
                                         <i class="bi bi-download"></i>
                                     </a>
                                     <a href="{{ route('factures.installations.afficher', $facture->id) }}" target="_blank" class="btn btn-outline-info btn-sm" title="Afficher">
+                                        <i class="bi bi-eye"></i>
+                                    </a>
+                                    <a href="#" wire:click="supprimerFacture({{$facture->id}})" class="btn btn-outline-danger btn-sm" title="Annuler" onclick="alert('Voulez-vous supprimer cette facture ?')">
+                                        <i class="bi bi-trash"></i>
+                                    </a>
+                                </td>
+                            @elseif($type == "proformat")
+                                <td>{{ $facture->proformats->created_at->format('d/m/Y') }}</td>
+                                <td>{{ $facture->proformats->clients->nom }}</td>
+                                <td class="text-center">
+                                    <a href="{{ route('factures.proformats.telecharger', $facture->id) }}" class="btn btn-outline-success btn-sm" title="Télécharger">
+                                        <i class="bi bi-download"></i>
+                                    </a>
+                                    <a href="{{ route('factures.proformats.afficher', $facture->id) }}" target="_blank" class="btn btn-outline-info btn-sm" title="Afficher">
                                         <i class="bi bi-eye"></i>
                                     </a>
                                     <a href="#" wire:click="supprimerFacture({{$facture->id}})" class="btn btn-outline-danger btn-sm" title="Annuler" onclick="alert('Voulez-vous supprimer cette facture ?')">

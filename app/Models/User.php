@@ -64,4 +64,8 @@ class User extends Authenticatable
     public function recus(){
         return $this->hasMany(Recu::class);
     }
+
+    public function proformats(){
+        return $this->hasMany(Proformat::class);
+    }
 }

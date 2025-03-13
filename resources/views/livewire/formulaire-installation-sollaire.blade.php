@@ -1,5 +1,5 @@
 <div>
-    <form id="formNo" action="{{ route('panier.installation')}}"  method="post" style="display: none;">
+    <form id="formInstallation" action="{{ route('panier.installation')}}"  method="post" style="display: none;">
         @csrf
         <div style="display: flex; flex-direction: row" id="clientPresent">
             <div class="form-group">

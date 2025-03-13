@@ -48,12 +48,18 @@
         
         radioButtons.forEach(radio => {
             radio.addEventListener('change', function () {
-                if (this.value === 'yes') {
-                    formYes.style.display = 'block';
-                    formNo.style.display = 'none';
-                } else if (this.value === 'no') {
-                    formYes.style.display = 'none';
-                    formNo.style.display = 'block';
+                if (this.value === 'vente') {
+                    formVente.style.display = 'block';
+                    formInstallation.style.display = 'none';
+                    formProformat.style.display = 'none';
+                } else if (this.value === 'installation') {
+                    formVente.style.display = 'none';
+                    formInstallation.style.display = 'block';
+                    formProformat.style.display = 'none';
+                }else if (this.value === 'proformat') {
+                    formVente.style.display = 'none';
+                    formInstallation.style.display = 'none';
+                    formProformat.style.display = 'block';
                 }
             });
         });

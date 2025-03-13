@@ -31,6 +31,10 @@ class Transaction extends Model
         return $this->belongsTo(Installation::class, 'installation_id');
     }
 
+    public function proformats(){
+        return $this->belongsTo(Proformat::class, 'proformat_id');
+    }
+
     public function user()
     {
         return $this->belongsTo(User::class);
