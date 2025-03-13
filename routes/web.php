@@ -8,6 +8,7 @@ use App\Http\Controllers\ComptabiliteController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\FactureController;
 use App\Http\Controllers\FournisseurController;
+use App\Http\Controllers\FrontEndController;
 use App\Http\Controllers\InstallationController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\produitController;
@@ -19,6 +20,7 @@ use App\Http\Controllers\UserController;
 use App\Models\Installation;
 use Illuminate\Support\Facades\Route;
 use App\Models\Produit;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Darryldecode\Cart\Cart;
 
 /*
@@ -41,8 +43,20 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::get('/welcome', function(){
-    return view('welcome');
+    $pdf = Pdf::loadView('welcome');
+    return $pdf->stream('facture.pdf');
+    //return view('welcome');
 });
+
+Route::get('frontend', [App\Http\Controllers\FrontEndController::class, 'index'])->name('frontend.index');
+Route::get('/frontend/admin', [FrontEndController::class, 'admin'])->name('frontend.admin');
+Route::get('/frontend/admin/allPromoProduit', [FrontEndController::class, 'allPromoProduit'])->name('frontend.admin.allPromoProduit');
+
+
+Route::get('api', [App\Http\Controllers\CallMomoApiController::class, 'index']);
+Route::get('apiUser/form', [App\Http\Controllers\CallMomoApiController::class, 'apiUserForm'])->name('apiUser.form');//show form for user api
+Route::post('apiUser', [App\Http\Controllers\CallMomoApiController::class, 'apiUser'])->name('apiUser.get');//create user api
+Route::get('apiUser/info', [App\Http\Controllers\CallMomoApiController::class, 'userInfo'])->name('apiUser.info');//get user api info
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

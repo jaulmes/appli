@@ -19,7 +19,13 @@ class Produit extends Model
         'stock',
         'categori_id',
         'fabricant',
-        'image_produit'
+        'image_produit',
+        'prix_promo',
+        'status_promo',
+        'image_promo',
+        'image_produit2',
+        'image_produit3',
+        'image_produit4',
     ];
 
     public function categori(){
@@ -95,6 +101,14 @@ class Produit extends Model
         $stock = $this->stock;
         if($stock <=5){
             return 'alert';
+        }
+    }
+
+    public function getImageUrl(){
+        if($this->image_produit != null){
+            return asset('storage/images/produits/' . $this->image_produit);
+        }else{
+            return asset('default-img.png');
         }
     }
 }
