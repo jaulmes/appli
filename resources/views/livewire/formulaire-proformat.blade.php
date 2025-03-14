@@ -2,7 +2,7 @@
     <div>
         <form id="formProformat" action="{{ route('panier.proformat') }}" method="post" style="display: none;">
             @csrf
-            <div style="display: flex; flex-direction: row" id="clientExistant">
+            <div style="display: flex; flex-direction: row" id="clientExistantProformat">
                 <div class="form-group">
                     Client
                     <select class="form-control" name="client_id" >
@@ -13,10 +13,10 @@
                     </select>
                 </div>
                 <div class="form-group">
-                    <input type="button" class="btn btn-primary" id="toggleClient" value="Nouveau client?">
+                    <input type="button" class="btn btn-primary" id="nouveauClientProformat" value="Nouveau client?">
                 </div>
             </div>
-            <div id="nouveauClientFields" style="display: none; flex-direction: row;">
+            <div id="nouveauClientFieldsProformat" style="display: none; flex-direction: row;">
                 <div class="form-group">
                     <label for="nom">Nom du client</label>
                     <input class="form-control" type="text" name="nom" id="nom" >
@@ -32,9 +32,26 @@
                     <input class="form-control" type="number" name="reduction" id="reduction" required>
                 </div>
             </div>
-            <div class="form-group">
-                <label for="agentOperant">Agent Operant</label>
-                <input class="form-control" type="text" name="agentOperant" id="agentOperant" required>
+            <div style="display: flex; flex-direction: row">
+                <div class="form-group">
+                    <label for="agentOperant">Agent operant</label>
+                    <input class="form-control" type="text" name="agentOperant" id="agentOperant" required>
+                </div>
+                <div class="form-group">
+                    <label for="Commission">Commission</label>
+                    <input class="form-control" type="number" name="commission" id="Commission"  required>
+                </div>
+            </div>
+
+            <div style="display: flex; flex-direction: row">
+                <div class="form-group">
+                    <label for="montantProduit">Prix des produits</label>
+                    <input class="form-control" type="number" name="montantProduit" id="montantProduit" value="{{\Cart::getTotal()}}" required>
+                </div>
+                <div class="form-group">
+                    <label for="mainOeuvre">Installation</label>
+                    <input class="form-control" type="number" name="mainOeuvre" id="mainOeuvre"  required>
+                </div>
             </div>
 
             <div class="form-group">
@@ -44,9 +61,9 @@
             <button type="submit" class="btn btn-primary" form="formProformat">Enregistrer</button>
         </form>
         <script>
-            document.getElementById("toggleClient").addEventListener("click", function() {
-                var clientFields = document.getElementById("nouveauClientFields");
-                var clientExistant = document.getElementById("clientExistant");
+            document.getElementById("nouveauClientProformat").addEventListener("click", function() {
+                var clientFields = document.getElementById("nouveauClientFieldsProformat");
+                var clientExistant = document.getElementById("clientExistantProformat");
                 if (clientFields.style.display === "none") {
                     clientFields.style.display = "flex";
                     clientExistant.style.display = "none";

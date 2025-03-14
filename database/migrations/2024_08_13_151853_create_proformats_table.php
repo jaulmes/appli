@@ -25,6 +25,8 @@ return new class extends Migration
             $table->string('statut')->nullable();
             $table->string('dateEncour')->nullable();
             $table->string('impot')->nullable();
+            $table->string('mainOeuvre')->nullable();
+            $table->string('commission')->nullable();
 
             //client_id
             $table->unsignedBigInteger('client_id')->nullable();

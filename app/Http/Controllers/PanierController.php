@@ -474,6 +474,8 @@ class PanierController extends Controller
             }else{
                 $clients = Client::find($request->client_id);
             }
+            
+            $clients->save();
 
             $dateHeure = now();
 
@@ -519,10 +521,12 @@ class PanierController extends Controller
             $proformats->montantTotal = $montantTotal;
             $proformats->reduction = $request->input('reduction');
             $proformats->agentOperant = $request->input('agentOperant');
+            $proformats->commission = $request->input('commission');
+            $proformats->mainOeuvre = $request->input('mainOeuvre');
             $proformats->impot = $request->input('impot');
             $proformats->qteTotal = \Cart::getContent()->count();
             $proformats->user_id = Auth::user()->id;
-            $proformats->NetAPayer = $proformats->montantTotal - $proformats->reduction ;
+            $proformats->NetAPayer = $proformats->montantTotal + $proformats->mainOeuvre - $proformats->reduction ;
 
             //compter le nombre de vente pour incrementer le numero de la facture
             $numero = Proformat::whereDate('created_at', Carbon::today())->count() + 1;
@@ -546,7 +550,6 @@ class PanierController extends Controller
 
 
             $transactions->save();
-            $clients->save();
             //je relie chaque produit du pqnier a la vente 
             foreach($panier as $produit){
                 $proformats->produits()->attach($produit->id, [

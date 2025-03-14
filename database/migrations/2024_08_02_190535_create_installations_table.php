@@ -23,7 +23,7 @@ return new class extends Migration
             $table->string('agentOperant')->nullable();
             $table->integer('qteTotal');
             $table->string('statut');
-            $table->string('mainOeuvre');
+            $table->string('mainOeuvre')->nullable();
             $table->string('commission')->nullable();
             $table->string('impot')->nullable();
             

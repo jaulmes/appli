@@ -152,6 +152,12 @@
                     <td>{{$produit->pivot->quantity * $produit->pivot->price}}</td>
                 </tr>
                 @endforeach
+                <tr >
+                    <td  style="text-align: right;"></td>
+                    <td  style="text-align: left;">installation</td>
+                    <td ></td>
+                    <td  style="text-align: left;">{{$proformats->mainOeuvre}}</td>
+                </tr>
                 <tr style="font-weight: bold;">
                     <td colspan="3" style="text-align: right;"><strong>Total</strong></td>
                     <td><strong>{{ $proformats->montantTotal }}</strong></td>
