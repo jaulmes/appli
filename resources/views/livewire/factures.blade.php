@@ -82,7 +82,7 @@
                                 </td>
                             @elseif($type == "proformat")
                                 <td>{{ $facture->proformats->created_at->format('d/m/Y') }}</td>
-                                <td>{{ $facture->proformats->clients->nom }}</td>
+                                <td>{{ $facture->proformats->clients->nom?? $facture->proformats->nomClient }}</td>
                                 <td class="text-center">
                                     <a href="{{ route('factures.proformats.telecharger', $facture->id) }}" class="btn btn-outline-success btn-sm" title="Télécharger">
                                         <i class="bi bi-download"></i>

@@ -115,7 +115,7 @@
                 </div>
                 <div style="margin-left: 47em;">
                 <h3><strong >client : {{$proformats->clients->nom ?? $proformats->nomClient}}</strong></h3> <br>
-                    <strong >TEL: {{$proformats->clients->numero ??$proformats->numeroClient}}</strong>
+                    <strong >TEL: {{$proformats->clients->numero ?? $proformats->numeroClient}}</strong>
                 </div>
             </div>
 
@@ -160,7 +160,7 @@
                 </tr>
                 <tr style="font-weight: bold;">
                     <td colspan="3" style="text-align: right;"><strong>Total</strong></td>
-                    <td><strong>{{ $proformats->montantTotal }}</strong></td>
+                    <td><strong>{{ $proformats->montantTotal + $proformats->mainOeuvre}}</strong></td>
                 </tr>
             </table>
         </div>
