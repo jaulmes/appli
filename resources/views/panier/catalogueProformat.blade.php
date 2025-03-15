@@ -11,7 +11,7 @@
                 <!--catalogue de produit avec livewire-->
                 <div class="card-body">
                     <div class="tab-content p-0">
-                        <livewire:catalogue-produit/>
+                        <livewire:catalogue-proformat/>
                     </div>
                 </div>
 
@@ -24,7 +24,7 @@
                             <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                 <div class="modal-dialog" role="document">
                                     <!--modal avec livewire-->
-                                    <livewire:modal-vente-et-installation/>
+                                    <livewire:modal-proformat/>
                                 </div>
                             </div>
                         </div>

@@ -116,6 +116,9 @@ Route::middleware('auth')->group(function () {
     
     //afficher les produits 
     Route::get('panier/index', [PanierController::class, 'afficheProduit'])->name('panier.index');
+
+    //catalogue pour les proformats
+    Route::get('panier/proformat', [PanierController::class, 'proformat'])->name('panier.proformat');
     //rechercher un produit
     Route::get('/panier/search', [PanierController::class, 'search'])->name('panier.search');
     //detail du produit
@@ -142,6 +145,7 @@ Route::middleware('auth')->group(function () {
     Route::get('facture', [PanierController::class, 'afficheFacture'])->name('panier.facture');
     Route::post('panier/enregistrer', [PanierController::class, 'validerVente'])->name('panier.enregistrer');
     Route::post('panier/installation', [PanierController::class, 'validerInstallation'])->name('panier.installation');
+    Route::post('panier/proformat', [PanierController::class, 'validerProformat'])->name('panier.proformat');
 
     /**
      * facture
@@ -163,6 +167,8 @@ Route::middleware('auth')->group(function () {
     //afficher une facture d'une installations
     Route::get('factures/installations/afficher/{id}', [FactureController::class, 'afficherFactureInstallation'])->name('factures.installations.afficher');
 
+    Route::get('factures/proformats/telecharger/{id}', [FactureController::class, 'telechargerFactureProformat'])->name('factures.proformats.telecharger');
+    Route::get('factures/proformats/afficher/{id}', [FactureController::class, 'afficherFactureProformat'])->name('factures.proformats.afficher');
     /**
      * ventes
      */

@@ -9,8 +9,10 @@ use App\Models\facture;
 use App\Models\Produit;
 use App\Models\Transaction;
 use App\Models\Installation;
+use App\Models\Proformat;
 use App\Models\Vente;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Carbon\Carbon;
 use Darryldecode\Cart\Cart;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -457,6 +459,151 @@ class PanierController extends Controller
     
             return redirect()->back()->with('error', 'Une erreur s\'est produite : ' . $e->getMessage());
         }
+    }
+
+    public function validerProformat(Request $request){
+        DB::beginTransaction();
+
+        try{
+
+            //j'enregistre le client lies a la vente
+            if(!$request->client_id){
+                $clients = new Client();
+                $clients->nom = $request->input('nom');
+                $clients->numero = $request->input('numero');
+            }else{
+                $clients = Client::find($request->client_id);
+            }
+            
+            $clients->save();
+
+            $dateHeure = now();
+
+            $moi = now()->month;
+            $annee = $dateHeure->format('y');
+            $jour = $dateHeure->format('d');
+        
+            //creer un objet transaction
+            $transactions = new Transaction();
+            
+
+            $transactions->date = $dateHeure->format('Y/m/d');
+            $transactions->moi = $moi;
+            $transactions->heure = $dateHeure->format('H:i:s');
+
+            $transactions->type = 'proformat';
+
+            $transactions->impot = $request->impot;
+            $transactions->user_id = Auth::user()->id;
+            //recuperer les produits du panier
+            $panier = \Cart::getContent();
+
+            $prixAchat = 0;
+            foreach($panier as $row) {
+                $sommePrixAchat = $row->attributes['prix_achat'] * $row->quantity;
+                
+                $prixAchat = $prixAchat + $sommePrixAchat;
+            }
+
+            $transactions->prixAchat = $prixAchat; 
+
+
+            //recuperer le montant total du panier
+            $montantTotal = \Cart::getTotal();
+
+            //enregistrer l'installation
+            $proformats = new Proformat();
+            if(!$request->client_id){
+                $proformats->client_id = $clients->id;
+            }else{
+                $proformats->client_id = $request->client_id;
+            }
+            $proformats->montantTotal = $montantTotal;
+            $proformats->reduction = $request->input('reduction');
+            $proformats->agentOperant = $request->input('agentOperant');
+            $proformats->mainOeuvre = $request->input('mainOeuvre');
+            $proformats->impot = $request->input('impot');
+            $proformats->qteTotal = \Cart::getContent()->count();
+            $proformats->user_id = Auth::user()->id;
+            $proformats->NetAPayer = $proformats->montantTotal + $proformats->mainOeuvre - $proformats->reduction ;
+
+            //compter le nombre de vente pour incrementer le numero de la facture
+            $numero = Proformat::whereDate('created_at', Carbon::today())->count() + 1;
+            $name = Auth::user()->name;
+            $numeroFacture = substr($name, 0, 3).'_'.$annee.'_'.$moi.'_'.$jour.'_'.$numero;
+            //dd($numeroFacture);
+            
+            $totalPrixAchat = 0;
+            
+            //mettre a jour le stock
+            foreach($panier as $produit){
+                $articles = Produit::find($produit->id);
+                $prixAchat = $articles->prix_achat;
+                $totalPrixAchat = $totalPrixAchat + $prixAchat;
+            }
+            $proformats->totalAchat = $totalPrixAchat;
+
+            //dd($installations->produits->pivot);
+
+            $proformats->save();
+
+
+            $transactions->save();
+            //je relie chaque produit du pqnier a la vente 
+            foreach($panier as $produit){
+                $proformats->produits()->attach($produit->id, [
+                    'quantity' => $produit->quantity,
+                    'price' => $produit->price,
+                    'proformat_id'=>$proformats->id
+
+                ]);
+            }
+            
+
+            // Associer chaque produit du panier à la transaction
+            foreach (\Cart::getContent() as $item) {
+                $transactions->produits()->attach($item->id, [
+                    'quantity' => $item->quantity,
+                    'price' => $item->price,
+                ]);
+            }
+            
+            // //creer une facture pour enregistrer dans le systeme
+            $factures = new facture();
+            $factures->numeroFacture = $numeroFacture;
+            $factures->proformat_id = $proformats->id;
+            $factures->save();
+
+
+            $reduction = $proformats->reduction;
+            //net a payer
+            $netAPayer = $proformats->NetAPayer;
+
+            // chrger les donnee sur la facture pour avoyer sur une vue qui sera converti en pdf
+            $pdf = Pdf::loadView('factures.afficherProformats',[
+                'reduction' => $reduction,
+                'proformat_id' =>$proformats,
+                'clients' =>$clients,
+                'numeroFacture'=>$numeroFacture,
+                'netAPayer' => $netAPayer,
+                'factures' =>$factures,
+                'panier' => $panier,
+                'proformats' => $proformats
+            ]);
+            
+            \Cart::clear();    
+            Db::commit();   
+            return $pdf->stream($numeroFacture.'.pdf');
+        }catch(Exception $e){
+            DB::rollBack(); // En cas d'erreur, on annule tout
+    
+            return redirect()->back()->with('error', 'Une erreur s\'est produite : ' . $e->getMessage());
+        }
+    }
+
+    //afficher le catalogue des produit pour le proformat
+    public function proformat(){
+        return view('panier.catalogueProformat');
     }
 
     public function afficheFacture(){

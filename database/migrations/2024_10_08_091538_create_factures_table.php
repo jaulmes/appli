@@ -16,6 +16,10 @@ return new class extends Migration
             $table->string('numeroFacture');
             $table->unsignedBigInteger('vente_id')->nullable();
             $table->unsignedBigInteger('installation_id')->nullable();
+            $table->unsignedBigInteger('proformat_id')->nullable();
+
+            $table->foreign('proformat_id')->references('id')
+            ->on('proformats');
 
             $table->foreign('vente_id')->references('id')
                                         ->on('ventes');

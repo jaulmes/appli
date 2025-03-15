@@ -11,29 +11,23 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('installations', function (Blueprint $table) {
+        Schema::create('proformats', function (Blueprint $table) {
             $table->id();
             $table->string('nomClient')->nullable();
             $table->integer('numeroClient')->nullable();
-            $table->integer('montantProduit');//montant total des produit selectionne pour l'installation
-            $table->integer('NetAPayer');//montant que le client doit verse(toute charge compris)
-            $table->integer('montantVerse')->nullable();
+            $table->integer('montantTotal');
+            $table->integer('NetAPayer');
             $table->integer('totalAchat')->nullable();
             $table->integer('reduction')->nullable();
             $table->string('agentOperant')->nullable();
-            $table->integer('qteTotal');
-            $table->string('statut');
+            $table->integer('qteTotal')->nullable();
+            $table->string('date')->nullable();
+            $table->string('statut')->nullable();
+            $table->string('dateEncour')->nullable();
+            $table->string('impot')->nullable();
             $table->string('mainOeuvre')->nullable();
             $table->string('commission')->nullable();
-            $table->string('impot')->nullable();
-            
-            //compte_key
-            $table->unsignedBigInteger('compte_id')->nullable();
-            $table->foreign('compte_id')->references('id')
-                                        ->on('comptes')
-                                        ->onUpdate('cascade')
-                                        ->onDelete('cascade');
-            
+
             //client_id
             $table->unsignedBigInteger('client_id')->nullable();
             $table->foreign('client_id')->references('id')
@@ -47,7 +41,6 @@ return new class extends Migration
                                         ->on('users')
                                         ->onUpdate('cascade')
                                         ->onDelete('cascade');
-            $table->string('dateLimitePaiement')->nullable();
             $table->timestamps();
         });
     }
@@ -57,6 +50,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('installations');
+        Schema::dropIfExists('proformats');
     }
 };

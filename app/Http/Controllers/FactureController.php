@@ -85,4 +85,21 @@ class FactureController extends Controller
            
         return $pdf->download($factures->numeroFacture.'.pdf');
     }
+
+    public function afficherFactureProformat($id){
+        $factures = facture::with('proformats.produits')->find($id);
+
+        $proformats = $factures->proformats;
+        $netAPayer = $proformats->montantTotal - $proformats->reduction;
+
+        // chrger les donnee sur la facture pour envoyer sur une vue qui sera converti en pdf
+        $pdf = Pdf::loadView('factures.afficherProformats',[
+            'proformats' =>$proformats,
+            'netAPayer' => $netAPayer,
+            'factures' => $factures,
+        ]);
+        
+           
+        return $pdf->stream($factures->numeroFacture.'.pdf');
+    }
 }
