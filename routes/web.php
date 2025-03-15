@@ -102,6 +102,9 @@ Route::middleware('auth')->group(function () {
     
     //afficher les produits 
     Route::get('panier/index', [PanierController::class, 'afficheProduit'])->name('panier.index');
+
+    //catalogue pour les proformats
+    Route::get('panier/proformat', [PanierController::class, 'proformat'])->name('panier.proformat');
     //rechercher un produit
     Route::get('/panier/search', [PanierController::class, 'search'])->name('panier.search');
     //detail du produit

@@ -7,17 +7,8 @@
             </button>
         </div>
         <div class="modal-body">
-            <div class="row" style="display: flex; flex-direction:column">
-                <label><input type="radio" name="option" value="vente"> Vente de produit</label>
-                <label><input type="radio" name="option" value="installation"> Installation</label>
-            </div>
-            
-            <!-- Formulaire vente de produit-->
-            <livewire:formulaire-vente-produit/>
-            
             <!-- Formulaire installation sollaire -->
-            <livewire:formulaire-installation-sollaire/>
-
+            <livewire:formulaire-proformat/>
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>

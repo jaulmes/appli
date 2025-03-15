@@ -521,7 +521,6 @@ class PanierController extends Controller
             $proformats->montantTotal = $montantTotal;
             $proformats->reduction = $request->input('reduction');
             $proformats->agentOperant = $request->input('agentOperant');
-            $proformats->commission = $request->input('commission');
             $proformats->mainOeuvre = $request->input('mainOeuvre');
             $proformats->impot = $request->input('impot');
             $proformats->qteTotal = \Cart::getContent()->count();
@@ -600,6 +599,11 @@ class PanierController extends Controller
     
             return redirect()->back()->with('error', 'Une erreur s\'est produite : ' . $e->getMessage());
         }
+    }
+
+    //afficher le catalogue des produit pour le proformat
+    public function proformat(){
+        return view('panier.catalogueProformat');
     }
 
     public function afficheFacture(){

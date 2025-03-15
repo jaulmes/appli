@@ -1,6 +1,6 @@
 <div>
     <div>
-        <form id="formProformat" action="{{ route('panier.proformat') }}" method="post" style="display: none;">
+        <form id="formProformat" action="{{ route('panier.proformat') }}" method="post" >
             @csrf
             <div style="display: flex; flex-direction: row" id="clientExistantProformat">
                 <div class="form-group">
