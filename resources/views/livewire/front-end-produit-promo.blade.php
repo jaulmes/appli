@@ -13,13 +13,13 @@
             @forelse($produits as $produit)
                 <li class="item">
                     <div class="product-img">
-                        <img src="dist/img/default-150x150.png" alt="Product Image" class="img-size-50">
+                        <img src="{{ $produit->getImageUrl() }}" alt="Product Image" class="img-size-50">
                     </div>
                     <div class="product-info">
-                        <a href="javascript:void(0)" class="product-title">Samsung TV
+                        <a href="javascript:void(0)" class="product-title">{{$produit->name}}
                         <span class="badge badge-warning float-right">$1800</span></a>
                         <span class="product-description">
-                        Samsung 32" 1080p 60Hz LED Smart HDTV.
+                        {{$produit->getDescription()}}
                         </span>
                     </div>
                 </li>

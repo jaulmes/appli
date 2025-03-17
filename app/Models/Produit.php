@@ -72,7 +72,7 @@ class Produit extends Model
     public function getPrice(){
         $prix = $this->price;
 
-        return number_format($prix, 0, ',', ' ') . '   Francs CFA';
+        return number_format($prix, 0, ',', ' ') . '  f';
     }
     
     public function getPrixAchat(){
