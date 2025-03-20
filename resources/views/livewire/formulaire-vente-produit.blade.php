@@ -61,7 +61,7 @@
             <label for="impot">Accepter</label>
             <input type="checkbox" name="impot" id="impot">
         </div>
-        <button type="submit" class="btn btn-primary" form="formYes">Enregistrer</button>
+        <button type="submit" class="btn btn-primary" >Enregistrer</button>
     </form>
     <script>
         document.getElementById("toggleClient").addEventListener("click", function() {
