@@ -70,7 +70,7 @@
                 @endforeach
             </select>
         </div>
-        <button type="submit" class="btn btn-primary" form="formNo">Enregistrer</button>
+        <button type="submit" class="btn btn-primary" >Enregistrer</button>
     </form>
     <script>
     document.getElementById("afficherFormulaire").addEventListener("click", function() {
