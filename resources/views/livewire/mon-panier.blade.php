@@ -43,7 +43,7 @@
                     </td>
                     <td >
                         <p  style="cursor: pointer;">{{ $produit['quantity'] }}</p>
-                        <input type="number" placeholder="prix manuel..." style="width: 50px;"  wire:model="quantity" value="{{ $produit['quantity'] }}" wire:change="modifierQuantite(' {{$produit['id']}} ')">
+                        <input type="number" placeholder="Qte..." style="width: 50px;"  wire:model="quantity" value="{{ $produit['quantity'] }}" wire:change="modifierQuantite(' {{$produit['id']}} ')">
                     </td>    
                     <td>{{ $produit['price'] * $produit['quantity'] }}</td>
                     <td>
