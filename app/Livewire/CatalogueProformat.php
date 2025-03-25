@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use App\Models\Categori;
 use App\Models\Produit;
+use Illuminate\Support\Facades\Session;
 use Livewire\Component;
 
 class CatalogueProformat extends Component
@@ -11,28 +12,35 @@ class CatalogueProformat extends Component
     public $produits;
     public $categories;
     public $categori;
+    public $cart = [];
 
-    //ajout de nouveau produit dans le panier
-    public function ajouterPanier($id){
-        $produits = Produit::find($id);
+    protected $listeners = [
+                            'ProduitAjoute' => 'mount',
+                            'panierVide' => 'mount',
+                            'prix_change' => 'mount',
+                            'ProduitRetire' => 'mount',
+                            'quantiteModifier' => 'mount'
+                            ];
 
-        \Cart::add(array(
-            'id' => $produits->id, // inique row ID
-            'name' => $produits->name,
-            'price' => $produits->price,
-            'quantity' => 1,
-            'attributes' => [            
-                'prix_technicien' => $produits->prix_technicien,
-                'prix_minimum' => $produits->prix_minimum,
-                'price' => $produits->price,
-                'prix_achat' => $produits->prix_achat,]
-        ))->associate($produits);
-
-    
-        /**
-         * emmission d'un evenement apres ajout du produit 
-         * dans le panier pour ecouter et rafraichir le composant mon panier
-         * */
+    public function addToCart($id){
+        $produit = Produit::find($id);
+        if(isset($this->cart[$id])){
+            $this->cart[$id]['quantity'] += 1;
+        }else{
+            $this->cart[$id] = [
+                'quantity' => 1,
+                'id' => $produit->id,
+                'name' => $produit->name,
+                'price' => $produit->price,
+                'prix_catalogue' => $produit->price,
+                'prix_technicien' => $produit->prix_technicien,
+                'prix_minimum' => $produit->prix_minimum,
+                'prix_achat' => $produit->prix_achat,
+                'prix_promo' => $produit->prix_promo,
+            ];
+        }
+        
+        Session::put('cart', $this->cart);
         $this->dispatch('ProduitAjoute');
     }
 
@@ -57,6 +65,7 @@ class CatalogueProformat extends Component
     public function mount(){   
         $this->produits = Produit::all();
         $this->categories = Categori::all();
+        $this->cart = Session::get('cart', []);
     }
 
 

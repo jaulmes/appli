@@ -63,7 +63,7 @@
                                 <a href="{{ route('produit.detail', $produit->id) }}" class="btn btn-outline-warning btn-sm">
                                     <i class="bi bi-eye"></i> Voir
                                 </a>
-                                <button class="btn btn-primary btn-sm" wire:click="ajouterPanier('{{ $produit->id }}')">
+                                <button class="btn btn-primary btn-sm" wire:click="addToCart('{{ $produit->id }}')">
                                     <i class="bi bi-cart-plus"></i> Ajouter
                                 </button>                       
                             </div>
