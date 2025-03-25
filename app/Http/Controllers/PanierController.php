@@ -235,7 +235,8 @@ class PanierController extends Controller
                     'panier' => $panier
                 ]
             );
-             
+            
+            Session::forget('cart');
             Db::commit();   
             return $pdf->stream($numeroFacture.'-'.$clients->numero.'.pdf');
         }catch(Exception $e){
@@ -417,6 +418,7 @@ class PanierController extends Controller
                 'panier' => $panier
             ]);
                 
+            Session::forget('cart');
             Db::commit();   
             return $pdf->stream($numeroFacture.'-'.$clients->numero.'.pdf');
         }catch(Exception $e){
@@ -558,7 +560,7 @@ class PanierController extends Controller
                 'proformats' => $proformats
             ]);
             
-   
+            Session::forget('cart');
             Db::commit();   
             return $pdf->stream($numeroFacture.'-'.$clients->numero.'.pdf');
         }catch(Exception $e){
