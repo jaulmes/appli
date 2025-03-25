@@ -472,7 +472,7 @@ class PanierController extends Controller
             $montantTotal = 0;
             foreach($panier as $row) {
                 $sommePrixAchat = $row['prix_achat'] * $row['quantity'];
-                $sommePrixCatalogue = $row['prix_catalogue'] * $row['quantity'];
+                $sommePrixCatalogue = $row['price'] * $row['quantity'];
 
                 $qteTotalProduit = $qteTotalProduit + 1;
 
