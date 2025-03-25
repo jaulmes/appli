@@ -13,6 +13,7 @@ class CatalogueProformat extends Component
     public $categories;
     public $categori;
     public $cart = [];
+    public $query;
 
     protected $listeners = [
                             'ProduitAjoute' => 'mount',
@@ -50,6 +51,7 @@ class CatalogueProformat extends Component
         $this->produits = Produit::where('name', 'like', '%'. $word . '%')
                                     ->orWhere('description', 'like', '%'. $word . '%')
                                     ->get();
+        $this->cart = Session::get('cart', []); 
     }
 
     //filtre des produits par categories
@@ -60,6 +62,7 @@ class CatalogueProformat extends Component
         $this->produits = Produit::where('categori_id', $id)
                                     ->orderBy('name', 'asc')
                                     ->get();
+        $this->cart = Session::get('cart', []); 
     }
 
     public function mount(){   

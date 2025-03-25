@@ -67,6 +67,7 @@ class CatalogueProduit extends Component
         $this->produits = Produit::where('name', 'like', '%'. $word . '%')
                                     ->orWhere('description', 'like', '%'. $word . '%')
                                     ->get();
+        $this->cart = Session::get('cart', []); 
     }
 
     //filtre des produits par categories
@@ -77,6 +78,7 @@ class CatalogueProduit extends Component
         $this->produits = Produit::where('categori_id', $id)
                                     ->orderBy('name', 'asc')
                                     ->get();
+        $this->cart = Session::get('cart', []); 
     }
 
     public function render()
