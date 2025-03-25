@@ -40,16 +40,27 @@ class PanierController extends Controller
         }
         
         $comptes = Compte::all();
-
-        $quantite= 0;
-        foreach(Session::get('cart', []) as $produit){
-            $quantite = $quantite + $produit['quantity'];
-        }
+        $quantite=\Cart::getContent()->count();
 
         return view('panier.index', compact('produits', 'quantite', 'comptes'));
     }
 
-    
+    //afficher les detail d'un article 
+    public function detailProduit(Request $request, $id){
+
+        $produits = Produit::Where('id', $id)->first();
+
+        //verifier que le produit est disponible
+        $stock = $produits->stock <= 0 ? 'indisponible' : 'disponible';
+
+        return view('panier.showArticle', [
+            "produits" => $produits,
+            "stock" => $stock
+        ]);
+    }
+
+
+
 
     public function validerVente(Request $request){
 
