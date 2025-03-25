@@ -1,6 +1,6 @@
 <div>
     <div class="card shadow-lg p-3 bg-white rounded" id="monPanier"
-        style="position: fixed; right: 0; top: 10%; width: 25em; font-size: 12px;">
+        style="position: fixed; right: 0; top: 10%; width: 27em; font-size: 12px;">
         
         <!-- Titre du panier -->
         <h6 class="text-center"><strong><u>Mon panier</u></strong></h6>
@@ -41,11 +41,10 @@
                         </select>
                         <input class="mt-1" placeholder="prix manuel..." type="number" wire:model.lazy="new_price" wire:change="update_prix('{{ $produit['id'] }}')" style="width: 70px;" >
                     </td>
-                    <td class="align-middle row">
-                            <span type="submit" wire:click="ajouterQuantite(' {{$produit['id']}} ')">+</span>
-                            <input  class="col" type="number" wire:model="quantity" wire:change="modifierQuantite(' {{$produit['id']}} ')" value="{{ $produit['quantity'] }}">
-                            <span type="submit" wire:click="diminuerQuantite(' {{$produit['id']}} ')">-</span>
-                        </td>
+                    <td >
+                        <p  style="cursor: pointer;">{{ $produit['quantity'] }}</p>
+                        <input type="number" placeholder="prix manuel..." style="width: 50px;"  wire:model="quantity" value="{{ $produit['quantity'] }}" wire:change="modifierQuantite(' {{$produit['id']}} ')">
+                    </td>    
                     <td>{{ $produit['price'] * $produit['quantity'] }}</td>
                     <td>
                         <button class="btn btn-danger btn-sm" wire:click="retirerProduit({{ $produit['id'] }})">
