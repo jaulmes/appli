@@ -34,10 +34,10 @@
                     <td>
                         <select wire:model="new_price" wire:change="update_prix('{{ $produit['id'] }}')" >
                             <option selected value="{{ $produit['price'] }}">{{ $produit['price'] }}</option>
-                            <option selected value="{{ $produit['price'] }}">{{ $produit['price'] }}</option>
-                            <option value="{{ $produit['prix_technicien'] }}">{{ $produit['prix_technicien'] }}</option>
-                            <option value="{{ $produit['prix_minimum'] }}">{{ $produit['prix_minimum'] }}</option>
-                            <option value="{{ $produit['prix_promo'] }}">{{ $produit['prix_promo'] }}</option>
+                            <option selected value="{{ $produit['prix_catalogue'] }}">{{ $produit['prix_catalogue'] }} - PC</option>
+                            <option value="{{ $produit['prix_technicien'] }}">{{ $produit['prix_technicien'] }} - PT</option>
+                            <option value="{{ $produit['prix_minimum'] }}">{{ $produit['prix_minimum'] }} - PM</option>
+                            <option value="{{ $produit['prix_promo'] }}">{{ $produit['prix_promo'] }} - PP</option>
                         </select>
                         <input class="mt-1" placeholder="prix manuel..." type="number" wire:model.lazy="new_price" wire:change="update_prix('{{ $produit['id'] }}')" style="width: 70px;" >
                     </td>
