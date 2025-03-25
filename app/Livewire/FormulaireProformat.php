@@ -10,18 +10,27 @@ class FormulaireProformat extends Component
 {
     public $clients;
     public $cartContent;
+    public $montantTotal;
+
+    protected $listeners = ['ProduitAjoute' => 'montantTotal',
+                            'quantiteModifier' =>'montantTotal',
+                            'prix_change' => 'montantTotal',
+                            'ProduitRetire' => 'montantTotal',
+                            'panierVide' => 'montantTotal'];
 
     public function montantTotal(){
         $this->cartContent = Session::get('cart', []);
-        $total = 0;
+        $montantTotal = 0;
         foreach($this->cartContent as $item){
-            $total = $total + $item['quantity'] * $item['price'];
+            $montantTotal = $montantTotal + $item['quantity'] * $item['price'];
         }
-        return $total;
+        return $montantTotal;
     }
+
 
     public function mount(){
         $this->clients = Client::all();
+        $this->cartContent = Session::get('cart', []);
     }
 
     public function render()

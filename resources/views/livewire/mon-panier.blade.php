@@ -43,7 +43,7 @@
                     </td>
                     <td class="align-middle row">
                             <span type="submit" wire:click="ajouterQuantite(' {{$produit['id']}} ')">+</span>
-                            <p class="mb-0" style="font-weight: 500;">{{ $produit['quantity'] }}</p>
+                            <input  class="col" type="number" wire:model="quantity" wire:change="modifierQuantite(' {{$produit['id']}} ')" value="{{ $produit['quantity'] }}">
                             <span type="submit" wire:click="diminuerQuantite(' {{$produit['id']}} ')">-</span>
                         </td>
                     <td>{{ $produit['price'] * $produit['quantity'] }}</td>

@@ -13,6 +13,7 @@ class MonPanier extends Component
     public $cartContent = [];
     public $new_price;
     public $cart = [];
+    public $quantity;
 
     protected $listeners = ['ProduitAjoute' => 'updateCart',
                             'panierVide' => 'updateCart',
@@ -71,12 +72,21 @@ class MonPanier extends Component
 
     }
 
+    public function modifierQuantite($id){
+        $produits = Produit::find($id);
+        $this->cart[$produits->id]['quantity'] = $this->quantity;
+        Session::put('cart', $this->cart);
+        $this->dispatch('quantiteModifier');
+    } 
+
     public function retirerProduit($id){
         unset($this->cart[$id]);
         Session::put('cart', $this->cart);
         $this->cart = Session::get('cart', []);
         $this->dispatch('ProduitRetire');
     }
+
+
 
     public function viderPanier(){
         $this->cart = [];
