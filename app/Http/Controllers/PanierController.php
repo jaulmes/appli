@@ -120,7 +120,7 @@ class PanierController extends Controller
             $montantTotal = 0;
             foreach($panier as $row) {
                 $sommePrixAchat = $row['prix_achat'] * $row['quantity'];
-                $sommePrixCatalogue = $row['prix_catalogue'] * $row['quantity'];
+                $sommePrixCatalogue = $row['price'] * $row['quantity'];
 
                 $qteTotalProduit = $qteTotalProduit + 1;
 
@@ -237,7 +237,7 @@ class PanierController extends Controller
             );
              
             Db::commit();   
-            return $pdf->stream($numeroFacture.'.pdf');
+            return $pdf->stream($numeroFacture.'-'.$clients->numero.'.pdf');
         }catch(Exception $e){
             DB::rollBack(); // En cas d'erreur, on annule tout
     
@@ -302,7 +302,7 @@ class PanierController extends Controller
             $montantTotal = 0;
             foreach($panier as $row) {
                 $sommePrixAchat = $row['prix_achat'] * $row['quantity'];
-                $sommePrixCatalogue = $row['prix_catalogue'] * $row['quantity'];
+                $sommePrixCatalogue = $row['price'] * $row['quantity'];
 
                 $qteTotalProduit = $qteTotalProduit + 1;
 
@@ -418,7 +418,7 @@ class PanierController extends Controller
             ]);
                 
             Db::commit();   
-            return $pdf->stream($numeroFacture.'.pdf');
+            return $pdf->stream($numeroFacture.'-'.$clients->numero.'.pdf');
         }catch(Exception $e){
             DB::rollBack(); // En cas d'erreur, on annule tout
     
@@ -560,7 +560,7 @@ class PanierController extends Controller
             
    
             Db::commit();   
-            return $pdf->stream($numeroFacture.'.pdf');
+            return $pdf->stream($numeroFacture.'-'.$clients->numero.'.pdf');
         }catch(Exception $e){
             DB::rollBack(); // En cas d'erreur, on annule tout
     
