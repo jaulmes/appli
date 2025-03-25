@@ -64,7 +64,7 @@
                                     <i class="bi bi-eye"></i> Voir
                                 </a>
                                 @if($produit->getStock() === "disponible")
-                                    <button class="btn btn-primary btn-sm" wire:click="ajouterPanier('{{ $produit->id }}')">
+                                    <button class="btn btn-primary btn-sm" wire:click="addToCart('{{ $produit->id }}')">
                                         <i class="bi bi-cart-plus"></i> Ajouter
                                     </button>
                                 @endif

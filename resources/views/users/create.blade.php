@@ -22,7 +22,7 @@
 
 
                     <div class="card-header">
-                        <h3 class="card-title">Quick Example</h3>
+                        <h3 class="card-title">Register</h3>
                     </div>
                     <form method="post" action="{{route('users.store')}}" >
                         @csrf
@@ -65,18 +65,7 @@
                                 </div>
                             </div>
 
-                            <div class="row">
-                                <div class="form-group mx-4">
-                                    <label for="role">Role </label>
-                                    <select name="role_id" class="form-control" id="role" required>
-                                            <option value="" selected disabled> choisir le role</option>
-                                        @foreach($roles as $role)
-                                            <option value="{{$role->id}}">{{$role->name}}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-
-                            </div>
+                            
 
 
 

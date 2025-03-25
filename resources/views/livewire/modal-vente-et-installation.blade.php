@@ -1,7 +1,7 @@
 <div>
     <div class="modal-content">
         <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Enregistrement de la transaction. prix des produits: {{ Cart::getTotal() }} F cfa</h5>
+            <h5 class="modal-title" id="exampleModalLabel">Enregistrement de la transaction. prix des produits: {{ $this->panierTotal() }} F cfa</h5>
             <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>

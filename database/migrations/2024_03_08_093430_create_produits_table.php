@@ -28,6 +28,12 @@ return new class extends Migration
                             on('categoris')->
                             onDelete('cascade')->
                             onUpdate('cascade');
+            $table->integer('prix_promo')->nullable();
+            $table->boolean('status_promo')->default(false);
+            $table->string('image_promo')->nullable();
+            $table->string('image_produit2')->nullable();
+            $table->string('image_produit3')->nullable();
+            $table->string('image_produit4')->nullable();
             $table->timestamps();
         });
     }

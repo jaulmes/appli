@@ -1,7 +1,11 @@
 <div>
-    <div class="row card shadow-2-strong mb-lg-0" id="monPanier" style="position: fixed; width: 25em; padding-bottom: 3em; padding-top: 3em; margin-top: -7em; margin-left: -20em; font-size:12px ">
-        <h6><strong><u>Mon panier</u></strong></h6><br>
-
+    <div class="card shadow-lg p-3 bg-white rounded" id="monPanier"
+        style="position: fixed; right: 0; top: 10%; width: 25em; font-size: 12px;">
+        
+        <!-- Titre du panier -->
+        <h6 class="text-center"><strong><u>Mon panier</u></strong></h6>
+        
+        <!-- Message d'erreur si nécessaire -->
         @if (session('error'))
         <div class="alert alert-danger alert-icon" role="alert">
             <button class="btn-close" type="button" data-bs-dismiss="alert" aria-label="Close"></button>
@@ -10,59 +14,78 @@
             </div>
         </div>
         @endif
-        <table class="table table-responsive" style="overflow-y: visible;">
-            <thead>
+
+        <!-- Tableau des produits -->
+        <table class="table table-striped table-hover text-center table-responsive"  style="height: 200px; font-size: xx-small;">
+            <thead class="bg-light">
                 <tr>
-                    <th scope="col" class="h5" style="width: 30px;">Nom</th>
-                    <th scope="col">P U</th>
+                    <th scope="col">Nom</th>
+                    <th scope="col">P.U</th>
                     <th scope="col">QTE</th>
-                    <th scope="col">Prix T</th>
+                    <th scope="col">Total</th>
                     <th scope="col">Action</th>
                 </tr>
             </thead>
-            <tbody class="card-body table-responsive p-0" style="height: 200px; font-size: xx-small;">
-                @foreach( Cart::getContent() as $produit)
-                <tr>
-                    <td scope="row">
-                        <p class="mb-0" style="width: 30px;">{{ $produit->name }}</p>
-                    </td>
-                    <td class="align-middle">
-                        <p class="mb-0" style="font-weight: 500;">
-                            <select id="" wire:model="new_price" wire:change="update_prix('{{ $produit->id}}')">
-                                <option value="{{ $produit->attributes['price'] }}" >{{ $produit->attributes['price'] }}</option>
-                                <option value="{{ $produit->attributes['prix_minimum'] }}">{{ $produit->attributes['prix_minimum'] }}</option>
-                                <option value="{{ $produit->attributes['prix_technicien'] }}">{{ $produit->attributes['prix_technicien'] }}</option>
-                            </select>
-                        </p>
+            <tbody>
+                
+                @forelse($cart as $produit)
+                <tr style="font-size: xx-small;">
+                    <td>{{ $produit['name'] }}</td>
+                    <td>
+                        <select wire:model="new_price" wire:change="update_prix('{{ $produit['id'] }}')" >
+                            <option selected value="{{ $produit['price'] }}">{{ $produit['price'] }}</option>
+                            <option selected value="{{ $produit['price'] }}">{{ $produit['price'] }}</option>
+                            <option value="{{ $produit['prix_technicien'] }}">{{ $produit['prix_technicien'] }}</option>
+                            <option value="{{ $produit['prix_minimum'] }}">{{ $produit['prix_minimum'] }}</option>
+                            <option value="{{ $produit['prix_promo'] }}">{{ $produit['prix_promo'] }}</option>
+                        </select>
+                        <input class="mt-1" placeholder="prix manuel..." type="number" wire:model.lazy="new_price" wire:change="update_prix('{{ $produit['id'] }}')" style="width: 70px;" >
                     </td>
                     <td class="align-middle row">
-                        <span type="submit" wire:click="ajouterQuantite(' {{$produit->id}} ')">+</span>
-                        <p class="mb-0" style="font-weight: 500;">{{ $produit->quantity }}</p>
-                        <span type="submit" wire:click="diminuerQuantite(' {{$produit->id}} ')">-</span>
-                    </td>
-                    <td class="align-middle">
-                        <p class="mb-0" style="font-weight: 500;">{{ $produit->price * $produit->quantity }}</p>
-                    </td>
+                            <span type="submit" wire:click="ajouterQuantite(' {{$produit['id']}} ')">+</span>
+                            <p class="mb-0" style="font-weight: 500;">{{ $produit['quantity'] }}</p>
+                            <span type="submit" wire:click="diminuerQuantite(' {{$produit['id']}} ')">-</span>
+                        </td>
+                    <td>{{ $produit['price'] * $produit['quantity'] }}</td>
                     <td>
-                        <form action="{{ route('produit.retirer', $produit->id) }}" method="get">
-                            @csrf
-                            <button type="submit" class="btn btn-danger"><i class="bi bi-trash"></i></button>
-                        </form>
+                        <button class="btn btn-danger btn-sm" wire:click="retirerProduit({{ $produit['id'] }})">
+                            <i class="bi bi-trash"></i>
+                        </button>
                     </td>
                 </tr>
-                @endforeach
+                @empty
+                <tr>
+                    <td colspan="5" class="text-center">Votre panier est vide</td>
+                </tr>
+                @endforelse
             </tbody>
         </table>
-        <div class="col-lg-4 col-xl-3">
-            <div class="d-flex justify-content-between" style="font-weight: 500;">
-                <p class="mb-2">total: </p>
-                <p class="mb-2" style="margin-left: 10em;">{{ Cart::getTotal() }}</p>
-            </div>
+
+        <!-- Total du panier -->
+        <div class="d-flex justify-content-between p-2 bg-light rounded">
+            <strong>Total :</strong>
+            <span>{{ $this->panierTotal() }}</span>
         </div>
-        <form action="{{ url('detruire') }}" method="get">
-            @csrf
-            <button type="submit" class="btn btn-danger" style="width: 8em; font-size:10px">vider le panier</button>
-        </form>
-        <button type="button" style="width: 8em; margin-left:10em; margin-top:-4.7em; font-size:10px" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exampleModal">Valider la vente</button>
+
+        <!-- Boutons du panier -->
+        <div class="d-flex justify-content-between align-items-center mt-3">
+            <button type="button" class="btn btn-danger px-3" style="font-size: 12px;" wire:click="viderPanier">
+                🗑 Vider le panier
+            </button>
+            <button type="button" class="btn btn-success px-3" style="font-size: 12px;" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                ✅ Valider la vente
+            </button>
+        </div>
     </div>
+
+    <script>
+        let select_prix = document.getElementById('select_prix');
+        let prix = document.getElementById('prix');
+        let afficheur = document.getElementById('afficheur');
+
+        afficheur.addEventListener('click', function() {
+            select_prix.style.display = 'none';
+            prix.style.display = 'block';
+        });
+    </script>
 </div>

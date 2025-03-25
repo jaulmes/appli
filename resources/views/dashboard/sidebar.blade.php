@@ -27,7 +27,7 @@
         
         <!-- Boutique -->
         <li class="nav-item">
-          <a href="{{ route('panier.index') }}" class="nav-link {{ Request::is('panier/index*') ? 'active' : '' }}">
+          <a href="{{ route('panier.index') }}" wire:navigate class="nav-link {{ Request::is('panier/index*') ? 'active' : '' }}">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cart" viewBox="0 0 16 16">
               <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5M3.102 4l1.313 7h8.17l1.313-7zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4m7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4m-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2m7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2"/>
             </svg>
@@ -46,7 +46,7 @@
         <!-- Dashboard (pour les utilisateurs autorisés) -->
         @can('VOIR_CHARGE')
         <li class="nav-item">
-          <a href="{{ route('dashboard.index') }}" class="nav-link {{ Request::is('dashboard*') ? 'active' : '' }}">
+          <a href="{{ route('dashboard.index') }}" wire:navigate class="nav-link {{ Request::is('dashboard*') ? 'active' : '' }}">
             <i class="nav-icon bi bi-speedometer2"></i>
             <p>Dashboard</p>
           </a>
@@ -55,7 +55,7 @@
 
         <!-- Tâches -->
         <li class="nav-item">
-          <a href="{{ route('taches.index') }}" class="nav-link {{ Request::is('taches/index*') ? 'active' : '' }}">
+          <a href="{{ route('taches.index') }}" wire:navigate class="nav-link {{ Request::is('taches/index*') ? 'active' : '' }}">
             <i class="nav-icon bi bi-list-task"></i>
             <p>Tâches</p>
           </a>
@@ -72,13 +72,13 @@
           </a>
           <ul class="nav nav-treeview">
             <li class="nav-item">
-              <a href="{{ route('factures.ventes') }}" class="nav-link {{ Request::is('factures/ventes*') ? 'active' : '' }}">
+              <a href="{{ route('factures.ventes') }}" wire:navigate class="nav-link {{ Request::is('factures/ventes*') ? 'active' : '' }}">
                 <i class="far fa-circle nav-icon"></i>
                 <p>Factures</p>
               </a>
             </li>
             <li class="nav-item">
-              <a href="{{ route('recus.index') }}" class="nav-link {{ Request::is('factures/recus*') ? 'active' : '' }}">
+              <a href="{{ route('recus.index') }}" wire:navigate class="nav-link {{ Request::is('factures/recus*') ? 'active' : '' }}">
                 <i class="far fa-circle nav-icon"></i>
                 <p>
                   Reçus
@@ -101,40 +101,40 @@
           </a>
           <ul class="nav nav-treeview">
             <li class="nav-item">
-              <a href="{{ route('produit.index') }}" class="nav-link {{ Request::is('produit/index*') ? 'active' : '' }}">
+              <a href="{{ route('produit.index') }}" wire:navigate class="nav-link {{ Request::is('produit/index*') ? 'active' : '' }}">
                 <i class="far fa-circle nav-icon"></i>
                 <p>Liste des produits</p>
               </a>
             </li>
             @can('CREER_PRODUIT')
             <li class="nav-item">
-              <a href="{{ route('produit.ajouter') }}" class="nav-link {{ Request::is('produit/create*') ? 'active' : '' }}">
+              <a href="{{ route('produit.ajouter') }}" wire:navigate class="nav-link {{ Request::is('produit/create*') ? 'active' : '' }}">
                 <i class="far fa-circle nav-icon"></i>
                 <p>Ajouter</p>
               </a>
             </li>
             @endcan
             <li class="nav-item">
-              <a href="{{ route('produit.categori') }}" class="nav-link {{ Request::is('produit/categori*') ? 'active' : '' }}">
+              <a href="{{ route('produit.categori') }}" wire:navigate class="nav-link {{ Request::is('produit/categori*') ? 'active' : '' }}">
                 <i class="far fa-circle nav-icon"></i>
                 <p>Liste des catégories</p>
               </a>
             </li>
             @can('CREER_PRODUIT')
             <li class="nav-item">
-              <a href="{{ route('produit.ajouter_categori') }}" class="nav-link {{ Request::is('produit/ajouter_categori*') ? 'active' : '' }}">
+              <a href="{{ route('produit.ajouter_categori') }}" wire:navigate class="nav-link {{ Request::is('produit/ajouter_categori*') ? 'active' : '' }}">
                 <i class="far fa-circle nav-icon"></i>
                 <p>Ajouter une catégorie</p>
               </a>
             </li>
             <li class="nav-item">
-              <a href="{{ route('produit.afficherFournisseur') }}" class="nav-link {{ Request::is('produit/categori*') ? 'active' : '' }}">
+              <a href="{{ route('produit.afficherFournisseur') }}" wire:navigate class="nav-link {{ Request::is('produit/categori*') ? 'active' : '' }}">
                 <i class="far fa-circle nav-icon"></i>
                 <p>Liste des fournisseurs</p>
               </a>
             </li>
             <li class="nav-item">
-              <a href="{{ route('produit.ajouterFournisseur') }}" class="nav-link {{ Request::is('produit/ajouter_categori*') ? 'active' : '' }}">
+              <a href="{{ route('produit.ajouterFournisseur') }}" wire:navigate class="nav-link {{ Request::is('produit/ajouter_categori*') ? 'active' : '' }}">
                 <i class="far fa-circle nav-icon"></i>
                 <p>Ajouter un fournisseur</p>
               </a>
@@ -148,13 +148,13 @@
         @can('VOIR_VENTE')
           @can('VOIR_ACHAT')
             <li class="nav-item">
-              <a href="{{ route('ventes.index') }}" class="nav-link {{ Request::is('ventes/index*') ? 'active' : '' }}">
+              <a href="{{ route('ventes.index') }}" wire:navigate class="nav-link {{ Request::is('ventes/index*') ? 'active' : '' }}">
                 <i class="nav-icon bi bi-funnel"></i>
                 <p>Ventes</p>
               </a>
             </li>
             <li class="nav-item">
-              <a href="{{ route('installations.index') }}" class="nav-link {{ Request::is('installations/index*') ? 'active' : '' }}">
+              <a href="{{ route('installations.index') }}" wire:navigate class="nav-link {{ Request::is('installations/index*') ? 'active' : '' }}">
                 <i class="nav-icon bi bi-plugin"></i>
                 <p>Installations</p>
               </a>
@@ -174,14 +174,14 @@
           </a>
           <ul class="nav nav-treeview">
             <li class="nav-item">
-              <a href="{{ route('achats.index') }}" class="nav-link {{ Request::is('achats/index*') ? 'active' : '' }}">
+              <a href="{{ route('achats.index') }}" wire:navigate class="nav-link {{ Request::is('achats/index*') ? 'active' : '' }}">
                 <i class="nav-icon far fa-circle"></i>
                 <p>Afficher les achats</p>
               </a>
             </li>
             @can('CREER_ACHAT')
             <li class="nav-item">
-              <a href="{{ route('achats.cart') }}" class="nav-link {{ Request::is('achats/cart*') ? 'active' : '' }}">
+              <a href="{{ route('achats.cart') }}" wire:navigate class="nav-link {{ Request::is('achats/cart*') ? 'active' : '' }}">
                 <i class="nav-icon far fa-circle"></i>
                 <p>Créer un achat</p>
               </a>
@@ -203,14 +203,14 @@
           <ul class="nav nav-treeview">
             @can('VOIR_TRANSACTION')
             <li class="nav-item">
-              <a href="{{ route('transaction.index') }}" class="nav-link {{ Request::is('transactions/index*') ? 'active' : '' }}">
+              <a href="{{ route('transaction.index') }}" wire:navigate class="nav-link {{ Request::is('transactions/index*') ? 'active' : '' }}">
                 <i class="nav-icon far fa-circle"></i>
                 <p>Toutes les activités</p>
               </a>
             </li>
             @endcan
             <li class="nav-item">
-              <a href="{{ route('transaction.mesTransactions') }}" class="nav-link {{ Request::is('transactions/mesTransactions*') ? 'active' : '' }}">
+              <a href="{{ route('transaction.mesTransactions') }}" wire:navigate class="nav-link {{ Request::is('transactions/mesTransactions*') ? 'active' : '' }}">
                 <i class="nav-icon far fa-circle"></i>
                 <p>Mes activités</p>
               </a>
@@ -230,14 +230,14 @@
           </a>
           <ul class="nav nav-treeview">
             <li class="nav-item">
-              <a href="{{ route('charges.index') }}" class="nav-link {{ Request::is('charges/index*') ? 'active' : '' }}">
+              <a href="{{ route('charges.index') }}" wire:navigate class="nav-link {{ Request::is('charges/index*') ? 'active' : '' }}">
                 <i class="nav-icon far fa-circle"></i>
                 <p>Afficher les charges</p>
               </a>
             </li>
             @can('CREER_CHARGE')
             <li class="nav-item">
-              <a href="{{ route('charges.create') }}" class="nav-link {{ Request::is('charges/create*') ? 'active' : '' }}">
+              <a href="{{ route('charges.create') }}" wire:navigate class="nav-link {{ Request::is('charges/create*') ? 'active' : '' }}">
                 <i class="nav-icon far fa-circle"></i>
                 <p>Créer une charge</p>
               </a>
@@ -259,18 +259,24 @@
           </a>
           <ul class="nav nav-treeview">
             <li class="nav-item">
-              <a href="{{ route('permission.index') }}" class="nav-link {{ Request::is('securite/permission/index*') ? 'active' : '' }}">
+              <a href="{{ route('permission.index') }}" wire:navigate class="nav-link {{ Request::is('securite/permission/index*') ? 'active' : '' }}">
                 <i class="nav-icon far fa-circle"></i>
                 <p>Liste des permissions</p>
               </a>
             </li>
             <li class="nav-item">
-              <a href="{{ route('permission.create') }}" class="nav-link {{ Request::is('securite/permission/create*') ? 'active' : '' }}">
+              <a href="{{ route('permission.create') }}" wire:navigate class="nav-link {{ Request::is('securite/permission/create*') ? 'active' : '' }}">
                 <i class="nav-icon far fa-circle"></i>
                 <p>Créer une permission</p>
               </a>
             </li>
           </ul>
+        </li>
+        <li class="nav-item">
+          <a href="{{ route('frontend.admin') }}" wire:navigate class="nav-link {{ Request::is('frontend*') ? 'active' : '' }}">
+            <i class="nav-icon bi bi-speedometer2"></i>
+            <p>Site Web Admin</p>
+          </a>
         </li>
         @endcan
 
@@ -286,13 +292,13 @@
           </a>
           <ul class="nav nav-treeview">
             <li class="nav-item">
-              <a href="{{ route('role.index') }}" class="nav-link {{ Request::is('securite/role/index*') ? 'active' : '' }}">
+              <a href="{{ route('role.index') }}" wire:navigate class="nav-link {{ Request::is('securite/role/index*') ? 'active' : '' }}">
                 <i class="nav-icon far fa-circle"></i>
                 <p>Liste des rôles</p>
               </a>
             </li>
             <li class="nav-item">
-              <a href="{{ route('role.create') }}" class="nav-link {{ Request::is('securite/role/create*') ? 'active' : '' }}">
+              <a href="{{ route('role.create') }}" wire:navigate class="nav-link {{ Request::is('securite/role/create*') ? 'active' : '' }}">
                 <i class="nav-icon far fa-circle"></i>
                 <p>Créer un rôle</p>
               </a>
@@ -313,13 +319,13 @@
           </a>
           <ul class="nav nav-treeview">
             <li class="nav-item">
-              <a href="{{ route('users.index') }}" class="nav-link {{ Request::is('users/index*') ? 'active' : '' }}">
+              <a href="{{ route('users.index') }}" wire:navigate class="nav-link {{ Request::is('users/index*') ? 'active' : '' }}">
                 <i class="nav-icon far fa-circle"></i>
                 <p>Liste des utilisateurs</p>
               </a>
             </li>
             <li class="nav-item">
-              <a href="{{ route('users.create') }}" class="nav-link {{ Request::is('users/create*') ? 'active' : '' }}">
+              <a href="{{ route('users.create') }}" wire:navigate class="nav-link {{ Request::is('users/create*') ? 'active' : '' }}">
                 <i class="nav-icon far fa-circle"></i>
                 <p>Créer un utilisateur</p>
               </a>

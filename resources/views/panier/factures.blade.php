@@ -142,15 +142,15 @@
                 @php
                     $total = 0;
                 @endphp
-                @foreach(Cart::getContent() as $produit)
+                @foreach($panier as $produit)
                 @php
-                    $total += $produit->price * $produit->quantity;
+                    $total += $produit['price'] * $produit['quantity'];
                 @endphp
                 <tr>
-                    <td>{{$produit->quantity}}</td>
-                    <td>{{$produit->name}}</td>
-                    <td>{{$produit->price}}</td>
-                    <td>{{$produit->price * $produit->quantity}}</td>
+                    <td>{{$produit['quantity']}}</td>
+                    <td>{{$produit['name']}}</td>
+                    <td>{{$produit['price']}}</td>
+                    <td>{{$produit['price'] * $produit['quantity']}}</td>
                 </tr>
                 @endforeach
                 <tr style="font-weight: bold;">

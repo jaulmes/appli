@@ -46,7 +46,7 @@
             <div style="display: flex; flex-direction: row">
                 <div class="form-group">
                     <label for="montantProduit">Prix des produits</label>
-                    <input class="form-control" type="number" name="montantProduit" id="montantProduit" value="{{\Cart::getTotal()}}" required>
+                    <input class="form-control" type="number" name="montantProduit" id="montantProduit" value="{{$this->montantTotal()}}" required>
                 </div>
                 <div class="form-group">
                     <label for="mainOeuvre">Installation</label>

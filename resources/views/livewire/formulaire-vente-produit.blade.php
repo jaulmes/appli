@@ -28,14 +28,14 @@
         <div style="display: flex; flex-direction: row">
             <div class="form-group">
                 <label for="montantVerse">Montant versé</label>
-                <input class="form-control" type="number" name="montantVerse" id="montantVerse" value="{{ Cart::getTotal() }}" required>
+                <input class="form-control" type="number" name="montantVerse" id="montantVerse" value="{{ $this->montantTotal() }}" required>
             </div>
             <div class="form-group">
                 <label for="reduction">Reduction</label>
                 <input class="form-control" type="number" name="reduction" id="reduction" required>
             </div>
         </div>
-        @if(\Cart::getTotal() > 50000)
+        @if($this->montantTotal() > 50000)
             <div style="display: flex; flex-direction: row">
                 <div class="form-group">
                     <label for="commission">commission</label>
