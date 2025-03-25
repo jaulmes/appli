@@ -136,11 +136,6 @@ Route::middleware('auth')->group(function () {
     //retirer un produit du panier
     Route::delete('panier/delete/{id}', [PanierController::class, 'delete'])->name('panier.delete');
     
-    Route::get('detruire', function(){
-        \Cart::clear();
-        return redirect()->back();
-    });
-    
     //afficher la facture apres avoir realise un achat ou une vente. la route c'est facture sans "s"
     Route::get('facture', [PanierController::class, 'afficheFacture'])->name('panier.facture');
     Route::post('panier/enregistrer', [PanierController::class, 'validerVente'])->name('panier.enregistrer');

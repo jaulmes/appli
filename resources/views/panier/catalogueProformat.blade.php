@@ -11,7 +11,7 @@
                 <!--catalogue de produit avec livewire-->
                 <div class="card-body">
                     <div class="tab-content p-0">
-                        <livewire:catalogue-proformat/>
+                        <livewire:catalogue-produit/>
                     </div>
                 </div>
 

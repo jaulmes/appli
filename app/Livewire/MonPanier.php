@@ -5,18 +5,23 @@ namespace App\Livewire;
 use App\Models\Produit;
 use Darryldecode\Cart\Cart;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 use Livewire\Component;
 
 class MonPanier extends Component
 {
-    public $cartContent;
+    public $cartContent = [];
     public $new_price;
+    public $cart = [];
 
     protected $listeners = ['ProduitAjoute' => 'updateCart',
-                            'prix_change' => '$refresh'];
+                            'panierVide' => 'updateCart',
+                            'prix_change' => 'updateCart'];
+
 
     public function updateCart(){
-        $this->cartContent = \Cart::getContent();
+        $this->cart = session()->get('cart', []);
+        // dd($this->cartContent);
     }
 
     //mettre a jour la quantite
@@ -24,42 +29,75 @@ class MonPanier extends Component
         //je recupere le produit dans le systeme avec son Id
         $produits = Produit::find($id);
         //je recupere le produit dans le panier
-        $item = \Cart::get($produits->id);
-        //dd($item->quantity);
-        $quantity = $item->quantity ++;
+        $item = $this->cart[$produits->id];
 
-        \Cart::update($item->id, ['quantity' => $quantity ]);
+        $quantity = $item['quantity'] + 1;
+        $this->cart[$produits->id]['quantity'] = $quantity;
+        Session::put('cart', $this->cart);
 
         $this->dispatch('quantiteModifier');
+
     }
 
     public function update_prix($id){
         $produits = Produit::find($id);
 
-        $item = \Cart::get($produits->id);
+        $item = $this->cart[$produits->id];
+    
+        $item['price'] = $this->new_price;
+        $this->cart[$produits->id]['price'] = $item['price'];
+        Session::put('cart', $this->cart);
         
 
-        \Cart::update($item->id, ['price' => $this->new_price ]);
+        //\Cart::update($item->id, ['price' => $this->new_price ]);
         
         $this->dispatch('prix_change');
     }
-    
 
     //mettre a jour la quantite
     public function diminuerQuantite($id){
         //je recupere le produit dans le systeme avec son Id
         $produits = Produit::find($id);
         //je recupere le produit dans le panier
-        $item = \Cart::get($produits->id);
-        if($item->quantity > 0){
-            $quantity = $item->quantity --;
+        $item = $this->cart[$produits->id];
 
-            \Cart::update($item->id, ['quantity' => $quantity ]);
+        if($item['quantity'] > 0){
+            $quantity = $item['quantity'] -1;
+            $this->cart[$produits->id]['quantity'] = $quantity;
+            Session::put('cart', $this->cart);
     
             $this->dispatch('quantiteModifier');
         }
 
     }
+
+    public function retirerProduit($id){
+        unset($this->cart[$id]);
+        Session::put('cart', $this->cart);
+        $this->cart = Session::get('cart', []);
+        $this->dispatch('ProduitRetire');
+    }
+
+    public function viderPanier(){
+        $this->cart = [];
+
+        session()->forget('cart');
+        $this->cart = Session::get('cart', []); 
+        $this->dispatch('panierVide');
+    }
+
+    public function panierTotal(){
+        $total = 0;
+        foreach($this->cart as $item){
+            $total += $item['price'] * $item['quantity'];
+        }
+        return $total;
+    }
+
+    public function mount(){
+        $this->cart = session()->get('cart', []);
+    }
+
 
     public function render()
     {

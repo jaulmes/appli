@@ -1,7 +1,7 @@
 <div>
     <div class="modal-content">
         <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Enregistrement de la transaction. prix des produits: {{ Cart::getTotal() }} F cfa</h5>
+            <h5 class="modal-title" id="exampleModalLabel">Enregistrement du proformat. <br/> prix des produits: <span class="badge bg-success">{{ $this->montantTotal() }} F cfa</span></h5>
             <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>

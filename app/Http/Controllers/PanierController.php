@@ -40,75 +40,19 @@ class PanierController extends Controller
         }
         
         $comptes = Compte::all();
-        $quantite=\Cart::getContent()->count();
+
+        $quantite= 0;
+        foreach(Session::get('cart', []) as $produit){
+            $quantite = $quantite + $produit['quantity'];
+        }
 
         return view('panier.index', compact('produits', 'quantite', 'comptes'));
     }
 
-    //afficher les detail d'un article 
-    public function detailProduit(Request $request, $id){
-
-        $produits = Produit::Where('id', $id)->first();
-
-        //verifier que le produit est disponible
-        $stock = $produits->stock <= 0 ? 'indisponible' : 'disponible';
-
-        return view('panier.showArticle', [
-            "produits" => $produits,
-            "stock" => $stock
-        ]);
-    }
-
-    public function ajouterAuPanier(Request $request){
-
-        //recuperer le produit ajoute dans le panier 
-        $produits = Produit::find($request->id);
-
-        //ajouter le produit au panier
-         $panier = \Cart::add($request->id, $request->name, $request->price, 1,array())
-                    ->associate($produits);
-
-        return redirect()->route('panier.index')->with('message', 'produit ajoute au panier');
-    }
-
-    public function retirerProduit($id, Request $request){
-        
-        \Cart::remove($request->id);
-
-        return redirect()->back();
-    }
-
-    //afficher le panier de l'utilisateur
-    public function index(){
-        $panier = \Cart::getContent();
-        return view('panier.monPanier', compact('panier'));
-    }
-
-
-
-    public function update( Request $request, $id){
-        
-
-        $data = $request->json()->all();
- 
-        if($data['quantity'] > $data['stock']){
-            Session::flash('erreur', 'la quantite de ce produit est insufisante');
-            return response()->json(['erreur'=> 'produit insufisant']);
-        }
-        \Cart::update($id, [
-            'quantity' => $data['quantity']
-        ]);
-        Session::flash('succes', 'la quantite a bien ete mis a jour');
-        return response()->json(['Success'=> 'panier mis a jour avec succes']);
-
-    }
-
-    public function delete($id){
-        \Cart::remove($id);
-        return redirect()->back();
-    }
+    
 
     public function validerVente(Request $request){
+
         DB::beginTransaction();
 
         try{
@@ -153,21 +97,29 @@ class PanierController extends Controller
 
 
             //recuperer le panier
-            $panier = \Cart::getContent();
+            $panier = Session::get('cart', []);
             
             $article= [];
             $prixAchat = 0;
-            //dd($panier);
+
+            //quantite total
+            $qteTotalProduit = 0;
+            
+            //montant total du panier sans la reduction
+            $montantTotal = 0;
             foreach($panier as $row) {
-                $sommePrixAchat = $row->attributes['prix_achat'] * $row->quantity;
-                
+                $sommePrixAchat = $row['prix_achat'] * $row['quantity'];
+                $sommePrixCatalogue = $row['prix_catalogue'] * $row['quantity'];
+
+                $qteTotalProduit = $qteTotalProduit + 1;
+
+                $montantTotal = $montantTotal + $sommePrixCatalogue;
                 $prixAchat = $prixAchat + $sommePrixAchat;
 
             }
             $transactions->prixAchat = $prixAchat;
             
-            //montant total du panier sans la reduction
-            $montantTotal = \Cart::getTotal();
+
 
             //creation d'une vente
             $ventes = new Vente();
@@ -185,7 +137,7 @@ class PanierController extends Controller
             $ventes->montantVerse = $request->input('montantVerse');
             $ventes->compte_id = $comptes->id;
             $ventes->impot = $request->input('impot');
-            $ventes->qteTotal = \Cart::getContent()->count();
+            $ventes->qteTotal = $qteTotalProduit;
             $ventes->date = date('d-m-Y');
             $ventes->user_id = Auth::user()->id;
             if($ventes->NetAPayer > $transactions->montantVerse){
@@ -203,9 +155,9 @@ class PanierController extends Controller
             
             //dd($panier);
             $totalPrixAchat = 0;
-            //mettre a jour le stock
+            //stocker le total des prix d'achat des produits de la facture
             foreach($panier as $produit){
-                $articles = Produit::find($produit->id);
+                $articles = Produit::find($produit['id']);
                 $prixAchat = $articles->prix_achat;
                 $totalPrixAchat = $totalPrixAchat + $prixAchat;
             }
@@ -213,7 +165,7 @@ class PanierController extends Controller
 
             
             $ventes->save();
-            if(\Cart::getTotal() > 50000){
+            if($montantTotal > 50000){
                 $charges = new Charge();
                 $charges->titre = "commission pour l'intallation de ". $ventes->nomClient. " a ". $ventes->agentOperant; 
                 $charges->montant = $ventes->commission;
@@ -230,18 +182,18 @@ class PanierController extends Controller
 
             //je relie chaque produit du panier a la vente 
             foreach($panier as $produit){
-                $ventes->produits()->attach($produit->id, [
-                    'quantity' => $produit->quantity,
-                    'price' => $produit->price
+                $ventes->produits()->attach($produit['id'], [
+                    'quantity' => $produit['quantity'],
+                    'price' => $produit['price']
 
                 ]);
             }
 
-            // Associer chaque produit du panier à la transaction
-            foreach (\Cart::getContent() as $item) {
-                $transactions->produits()->attach($item->id, [
-                    'quantity' => $item->quantity,
-                    'price' => $item->price,
+            //je relis chaque produit a la transaction
+            foreach ($panier as $item) {
+                $transactions->produits()->attach($item['id'], [
+                    'quantity' => $item['quantity'],
+                    'price' => $item['price'],
                 ]);
             }
             
@@ -252,10 +204,9 @@ class PanierController extends Controller
             $factures->save();
                     
             // mettre a jour le stock
-            foreach(\Cart::getContent() as $item){
-                $articles = Produit::find($item->id);
-                $produit = \Cart::get($articles->id);
-                $articles->stock = $articles->stock - $produit->quantity;
+            foreach($panier as $item){
+                $articles = Produit::find($item['id']);
+                $articles->stock = $articles->stock - $item['quantity'];
                 $articles->save();
             }
             $reduction = $ventes->reduction;
@@ -273,16 +224,15 @@ class PanierController extends Controller
                     'panier' => $panier
                 ]
             );
-            
-            \Cart::clear();  
-            DB::commit();     
+             
+            Db::commit();   
             return $pdf->stream($numeroFacture.'.pdf');
-        }
-        catch (Exception $e) {
+        }catch(Exception $e){
             DB::rollBack(); // En cas d'erreur, on annule tout
     
             return redirect()->back()->with('error', 'Une erreur s\'est produite : ' . $e->getMessage());
-        } 
+        }
+
     }
 
     
@@ -330,20 +280,26 @@ class PanierController extends Controller
             $transactions->impot = $request->impot;
             $transactions->user_id = Auth::user()->id;
             //recuperer les produits du panier
-            $panier = \Cart::getContent();
+            $panier = Session::get('cart', []);
 
             $prixAchat = 0;
+
+            //quantite total des produits
+            $qteTotalProduit = 0;
+
+            //montant total du panier sans la reduction
+            $montantTotal = 0;
             foreach($panier as $row) {
-                $sommePrixAchat = $row->attributes['prix_achat'] * $row->quantity;
-                
+                $sommePrixAchat = $row['prix_achat'] * $row['quantity'];
+                $sommePrixCatalogue = $row['prix_catalogue'] * $row['quantity'];
+
+                $qteTotalProduit = $qteTotalProduit + 1;
+
+                $montantTotal = $montantTotal + $sommePrixCatalogue;
                 $prixAchat = $prixAchat + $sommePrixAchat;
             }
 
             $transactions->prixAchat = $prixAchat; 
-
-
-            //recuperer le montant total du panier
-            $montantTotal = \Cart::getTotal();
 
             //enregistrer l'installation
             $installations = new Installation();
@@ -360,7 +316,7 @@ class PanierController extends Controller
             $installations->mainOeuvre = $request->input('mainOeuvre');
             $installations->compte_id = $comptes->id;
             $installations->impot = $request->input('impot');
-            $installations->qteTotal = \Cart::getContent()->count();
+            $installations->qteTotal = $qteTotalProduit;
             $installations->user_id = Auth::user()->id;
             $installations->NetAPayer = ($installations->montantProduit + $installations->mainOeuvre) - $installations->reduction ;
 
@@ -382,13 +338,12 @@ class PanierController extends Controller
             $totalPrixAchat = 0;
             //mettre a jour le stock
             foreach($panier as $produit){
-                $articles = Produit::find($produit->id);
+                $articles = Produit::find($produit['id']);
                 $prixAchat = $articles->prix_achat;
                 $totalPrixAchat = $totalPrixAchat + $prixAchat;
             }
             $installations->totalAchat = $totalPrixAchat;
 
-            //dd($installations->produits->pivot);
 
             $installations->save();
             //comptabiliser la commission comme une charge
@@ -396,19 +351,20 @@ class PanierController extends Controller
             $charges->titre = "commission pour l'intallation de ". $installations->nomClient. " a ". $installations->agentOperant; 
             $charges->montant = $installations->commission;
             $charges->date = $dateHeure->format('Y/m/d');
-            //dd($installations->mainOeuvre);
+
             $charges->save();
             $comptes->save();
+
             //je fais une mise a jour du montant dans les comptes
             $comptes->montant = $comptes->montant + $transactions->montantVerse;
 
             $transactions->save();
             $clients->save();
-            //je relie chaque produit du pqnier a la vente 
+            //je relie chaque produit du pqnier a l'installation
             foreach($panier as $produit){
-                $installations->produits()->attach($produit->id, [
-                    'quantity' => $produit->quantity,
-                    'price' => $produit->price,
+                $installations->produits()->attach($produit['id'], [
+                    'quantity' => $produit['quantity'],
+                    'price' => $produit['price'],
                     'installation_id'=>$installations->id
 
                 ]);
@@ -416,10 +372,10 @@ class PanierController extends Controller
             
 
             // Associer chaque produit du panier à la transaction
-            foreach (\Cart::getContent() as $item) {
-                $transactions->produits()->attach($item->id, [
-                    'quantity' => $item->quantity,
-                    'price' => $item->price,
+            foreach ($panier as $item) {
+                $transactions->produits()->attach($item['id'], [
+                    'quantity' => $item['quantity'],
+                    'price' => $item['price'],
                 ]);
             }
             
@@ -430,10 +386,9 @@ class PanierController extends Controller
             $factures->save();
 
             // mettre a jour le stock
-            foreach(\Cart::getContent() as $item){
-                $articles = Produit::find($item->id);
-                $produit = \Cart::get($articles->id);
-                $articles->stock = $articles->stock - $produit->quantity;
+            foreach($panier as $item){
+                $articles = Produit::find($item['id']);
+                $articles->stock = $articles->stock - $item['quantity'];
                 $articles->save();
             }
             $reduction = $installations->reduction;
@@ -450,8 +405,7 @@ class PanierController extends Controller
                 'factures' =>$factures,
                 'panier' => $panier
             ]);
-            
-            \Cart::clear();    
+                
             Db::commit();   
             return $pdf->stream($numeroFacture.'.pdf');
         }catch(Exception $e){
@@ -496,22 +450,28 @@ class PanierController extends Controller
             $transactions->impot = $request->impot;
             $transactions->user_id = Auth::user()->id;
             //recuperer les produits du panier
-            $panier = \Cart::getContent();
+            $panier = Session::get('cart', []);
 
             $prixAchat = 0;
+
+            //quantite total des produits
+            $qteTotalProduit = 0;
+
+            //montant total du panier sans la reduction
+            $montantTotal = 0;
             foreach($panier as $row) {
-                $sommePrixAchat = $row->attributes['prix_achat'] * $row->quantity;
-                
+                $sommePrixAchat = $row['prix_achat'] * $row['quantity'];
+                $sommePrixCatalogue = $row['prix_catalogue'] * $row['quantity'];
+
+                $qteTotalProduit = $qteTotalProduit + 1;
+
+                $montantTotal = $montantTotal + $sommePrixCatalogue;
                 $prixAchat = $prixAchat + $sommePrixAchat;
             }
 
             $transactions->prixAchat = $prixAchat; 
 
-
-            //recuperer le montant total du panier
-            $montantTotal = \Cart::getTotal();
-
-            //enregistrer l'installation
+            //enregistrer le proformat
             $proformats = new Proformat();
             if(!$request->client_id){
                 $proformats->client_id = $clients->id;
@@ -523,7 +483,7 @@ class PanierController extends Controller
             $proformats->agentOperant = $request->input('agentOperant');
             $proformats->mainOeuvre = $request->input('mainOeuvre');
             $proformats->impot = $request->input('impot');
-            $proformats->qteTotal = \Cart::getContent()->count();
+            $proformats->qteTotal = $qteTotalProduit;
             $proformats->user_id = Auth::user()->id;
             $proformats->NetAPayer = $proformats->montantTotal + $proformats->mainOeuvre - $proformats->reduction ;
 
@@ -531,29 +491,25 @@ class PanierController extends Controller
             $numero = Proformat::whereDate('created_at', Carbon::today())->count() + 1;
             $name = Auth::user()->name;
             $numeroFacture = substr($name, 0, 3).'_'.$annee.'_'.$moi.'_'.$jour.'_'.$numero;
-            //dd($numeroFacture);
             
             $totalPrixAchat = 0;
             
-            //mettre a jour le stock
+            //stocker le total des prix d'achat des produits de la facture
             foreach($panier as $produit){
-                $articles = Produit::find($produit->id);
+                $articles = Produit::find($produit['id']);
                 $prixAchat = $articles->prix_achat;
                 $totalPrixAchat = $totalPrixAchat + $prixAchat;
             }
             $proformats->totalAchat = $totalPrixAchat;
 
-            //dd($installations->produits->pivot);
-
             $proformats->save();
-
 
             $transactions->save();
             //je relie chaque produit du pqnier a la vente 
             foreach($panier as $produit){
-                $proformats->produits()->attach($produit->id, [
-                    'quantity' => $produit->quantity,
-                    'price' => $produit->price,
+                $proformats->produits()->attach($produit['id'], [
+                    'quantity' => $produit['quantity'],
+                    'price' => $produit['price'],
                     'proformat_id'=>$proformats->id
 
                 ]);
@@ -561,10 +517,10 @@ class PanierController extends Controller
             
 
             // Associer chaque produit du panier à la transaction
-            foreach (\Cart::getContent() as $item) {
-                $transactions->produits()->attach($item->id, [
-                    'quantity' => $item->quantity,
-                    'price' => $item->price,
+            foreach ($panier as $item) {
+                $transactions->produits()->attach($item['id'], [
+                    'quantity' => $item['quantity'],
+                    'price' => $item['price'],
                 ]);
             }
             
@@ -591,7 +547,7 @@ class PanierController extends Controller
                 'proformats' => $proformats
             ]);
             
-            \Cart::clear();    
+   
             Db::commit();   
             return $pdf->stream($numeroFacture.'.pdf');
         }catch(Exception $e){

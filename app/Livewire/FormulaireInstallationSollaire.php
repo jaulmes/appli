@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use App\Models\Client;
 use App\Models\Compte;
+use Illuminate\Support\Facades\Session;
 use Livewire\Component;
 
 class FormulaireInstallationSollaire extends Component
@@ -15,8 +16,13 @@ class FormulaireInstallationSollaire extends Component
                             'quantiteModifier' => 'updateCart'];
 
     //fonction qui met a jour le panier
-    public function updateCart(){
-        $this->cartContent = \Cart::getContent();
+    public function montantTotal(){
+        $this->cartContent = Session::get('cart', []);
+        $total = 0;
+        foreach($this->cartContent as $item){
+            $total = $total + $item['quantity'] * $item['price'];
+        }
+        return $total;
     }
     public function render()
     {
