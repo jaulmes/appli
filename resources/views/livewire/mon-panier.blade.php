@@ -45,7 +45,7 @@
                         <p  style="cursor: pointer;">{{ $produit['quantity'] }}</p>
                         <input type="number" placeholder="Qte..." style="width: 50px;"  wire:model="quantity" value="{{ $produit['quantity'] }}" wire:change="modifierQuantite(' {{$produit['id']}} ')">
                     </td>    
-                    <td>{{ $produit['price'] * $produit['quantity'] }}</td>
+                    <td>{{  (int)$produit['price'] * $produit['quantity'] }}</td>
                     <td>
                         <button class="btn btn-danger btn-sm" wire:click="retirerProduit({{ $produit['id'] }})">
                             <i class="bi bi-trash"></i>

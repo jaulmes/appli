@@ -19,7 +19,7 @@ class FormulaireVenteProduit extends Component
         $this->cartContent = Session::get('cart', []);
         $montantTotal = 0;
         foreach($this->cartContent as $item){
-            $montantTotal += $item['quantity'] * $item['price'];
+            $montantTotal += $item['quantity'] * (int)$item['price'];
         }
         return $montantTotal;
     }

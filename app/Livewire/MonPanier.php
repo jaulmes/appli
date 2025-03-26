@@ -100,7 +100,7 @@ class MonPanier extends Component
     public function panierTotal(){
         $total = 0;
         foreach($this->cart as $item){
-            $total += $item['price'] * $item['quantity'];
+            $total += (int)$item['price'] * $item['quantity'];
         }
         return $total;
     }

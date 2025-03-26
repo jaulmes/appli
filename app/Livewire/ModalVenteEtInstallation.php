@@ -20,7 +20,7 @@ class ModalVenteEtInstallation extends Component
         $this->cart = Session::get('cart', []);
         $total = 0;
         foreach($this->cart as $item){
-            $total =$total + $item['quantity'] * $item['price'];
+            $total =$total + $item['quantity'] * (int)$item['price'];
         }
         return $total;
     }
