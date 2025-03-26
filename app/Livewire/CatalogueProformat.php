@@ -16,7 +16,6 @@ class CatalogueProformat extends Component
     public $query;
 
     protected $listeners = [
-                            'ProduitAjoute' => 'mount',
                             'panierVide' => 'mount',
                             'prix_change' => 'mount',
                             'ProduitRetire' => 'mount',

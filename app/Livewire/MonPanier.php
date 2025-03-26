@@ -16,6 +16,7 @@ class MonPanier extends Component
     public $quantity;
 
     protected $listeners = ['ProduitAjoute' => 'updateCart',
+                            'produitAjoute' => '$refresh',
                             'panierVide' => 'updateCart',
                             'prix_change' => 'updateCart'];
 

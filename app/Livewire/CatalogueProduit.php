@@ -17,7 +17,7 @@ class CatalogueProduit extends Component
     public $categori = 'categorie';
     public $cart = [];
 
-    protected $listeners = ['ProduitAjoute' => 'mount',
+    protected $listeners = [
                             'panierVide' => 'mount',
                             'prix_change' => 'mount',
                             'ProduitRetire' => 'mount',
