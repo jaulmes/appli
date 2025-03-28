@@ -49,8 +49,6 @@ Route::get('/welcome', function(){
 });
 
 Route::get('frontend', [App\Http\Controllers\FrontEndController::class, 'index'])->name('frontend.index');
-Route::get('/frontend/admin', [FrontEndController::class, 'admin'])->name('frontend.admin');
-Route::get('/frontend/admin/allPromoProduit', [FrontEndController::class, 'allPromoProduit'])->name('frontend.admin.allPromoProduit');
 
 
 Route::get('api', [App\Http\Controllers\CallMomoApiController::class, 'index']);
@@ -62,6 +60,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    //front end admin
+    Route::get('/frontend/admin', [FrontEndController::class, 'admin'])->name('frontend.admin');
+    Route::get('/frontend/admin/allPromoProduit', [FrontEndController::class, 'allPromoProduit'])->name('frontend.admin.allPromoProduit');
 
     /**
      * Dashboardd

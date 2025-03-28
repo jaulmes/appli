@@ -14,13 +14,13 @@
 
         <!-- Boutons de navigation -->
         <div class="btn-group mt-3 mt-sm-0" role="group">
-            <button type="button" class="btn btn-outline-light @if($type == 'ventes') active @endif" wire:click="Ventes()">
+            <button wire:key="facture-ventes" type="button" class="btn btn-outline-light @if($type == 'ventes') active @endif" wire:click="Ventes()">
                 <i class="fas fa-chart-line"></i> VENTES
             </button>
-            <button type="button" class="btn btn-outline-light @if($type == 'installations') active @endif" wire:click="Installations()">
+            <button wire:key="facture-installations" type="button" class="btn btn-outline-light @if($type == 'installations') active @endif" wire:click="Installations()">
                 <i class="fas fa-cogs"></i> INSTALLATIONS
             </button>
-            <button type="button" class="btn btn-outline-light @if($type == 'proformat') active @endif" wire:click="Proformats()">
+            <button wire:key="facture-proformat" type="button" class="btn btn-outline-light @if($type == 'proformat') active @endif" wire:click="Proformats()">
                 <i class="fas fa-file-invoice"></i> PROFORMATS
             </button>   
         </div>
@@ -54,7 +54,7 @@
                             <td class="fw-bold">{{ $facture->numeroFacture }}</td>
                             @if($type == "ventes")
                                 <td>{{ $facture->ventes->created_at->format('d/m/Y') }}</td>
-                                <td>{{ $facture->ventes->nomClient }}</td>
+                                <td style=" text-align: center;">{{ $facture->ventes->clients->nom?? $facture->ventes->nomClient?? '-' }}</td>
                                 <td class="text-center">
                                     <a href="{{ route('factures.ventes.telecharger', $facture->id) }}" class="btn btn-outline-success btn-sm" title="Télécharger">
                                         <i class="bi bi-download"></i>
@@ -68,7 +68,7 @@
                                 </td>
                             @elseif($type == "installations")
                                 <td>{{ $facture->installations->created_at->format('d/m/Y') }}</td>
-                                <td>{{ $facture->installations->nomClient }}</td>
+                                <td>{{ $facture->installations->nomClient ?? $facture->installations->clients->nom }}</td>
                                 <td class="text-center">
                                     <a href="{{ route('factures.installations.telecharger', $facture->id) }}" class="btn btn-outline-success btn-sm" title="Télécharger">
                                         <i class="bi bi-download"></i>

@@ -2,45 +2,64 @@
 
 namespace App\Livewire;
 
+use App\Models\Categori;
 use App\Models\Produit;
+use Illuminate\Support\Facades\Session;
 use Livewire\Component;
 
 class CatalogueAprovisionnementProduit extends Component
 {
-    public $query;
+    public $query, $cart, $categori, $categories;
     public $produits = [];
 
-    public function mount(){
+
+    protected $listeners = [
+        'panierVide' => 'mount',
+        'prix_change' => 'mount',
+        'ProduitRetire' => 'mount',
+        'quantiteModifier' => 'mount'
+        ];
+
+    public function mount(){   
         $this->produits = Produit::all();
+        $this->categories = Categori::all();
+        $this->cart = Session::get('cart', []);
     }
-    //ajout de nouveau produit dans le panier
-    public function ajouterPanier($id){
-        $produits = Produit::find($id);
+    
+    public function update_query(){
+        $word = '%' . $this->query . '%';
+        $this->produits = Produit::where('name', 'like', '%'. $word . '%')
+                                    ->orWhere('description', 'like', '%'. $word . '%')
+                                    ->get();
+        $this->cart = Session::get('cart', []); 
+    }
+
+    //filtre des produits par categories
+    public function filtreProduit($id){
         
-        \Cart::add(array(
-            'id' => $produits->id, // inique row ID
-            'name' => $produits->name,
-            'price' => $produits->prix_achat,
-            'quantity' => 1,
-            'attributes' => [            
-                'prix_technicien' => $produits->prix_technicien,
-                'prix_minimum' => $produits->prix_minimum,
-                'prix_achat' => $produits->prix_achat,
-                'price' => $produits->price
-            ]
-        ))->associate($produits);
-
-        /**
-         * emmission d'un evenement apres ajout du produit 
-         * dans le panier pour ecouter et rafraichir le composant mon panier
-         * */
-        $this->dispatch('ProduitAjoute');
+        $categoris = Categori::find( $id);
+        $this->categori = $categoris->titre;
+        $this->produits = Produit::where('categori_id', $id)
+                                    ->orderBy('name', 'asc')
+                                    ->get();
+        $this->cart = Session::get('cart', []); 
     }
 
-    public function search_query(){
-        $this->produits = Produit::where('name', 'like', '%'. $this->query . '%')
-                                ->orWhere('description', 'like', '%'. $this->query . '%')
-                                ->get();
+    public function addToCart($id){
+        $produit = Produit::find($id);
+        if(isset($this->cart[$id])){
+            $this->cart[$id]['quantity'] += 1;
+        }else{
+            $this->cart[$id] = [
+                'quantity' => 1,
+                'id' => $produit->id,
+                'name' => $produit->name,
+                'prix_achat' => $produit->prix_achat,
+            ];
+        }
+        
+        Session::put('cart', $this->cart);
+        $this->dispatch('ProduitAjoute');
     }
 
     public function render()

@@ -16,11 +16,11 @@ class CatalogueProformat extends Component
     public $query;
 
     protected $listeners = [
-                            'panierVide' => 'mount',
-                            'prix_change' => 'mount',
-                            'ProduitRetire' => 'mount',
-                            'quantiteModifier' => 'mount'
-                            ];
+        'panierVide' => 'mount',
+        'prix_change' => 'mount',
+        'ProduitRetire' => 'mount',
+        'quantiteModifier' => 'mount'
+        ];
 
     public function addToCart($id){
         $produit = Produit::find($id);
@@ -35,7 +35,6 @@ class CatalogueProformat extends Component
                 'prix_catalogue' => $produit->price,
                 'prix_technicien' => $produit->prix_technicien,
                 'prix_minimum' => $produit->prix_minimum,
-                'prix_achat' => $produit->prix_achat,
                 'prix_promo' => $produit->prix_promo,
             ];
         }
