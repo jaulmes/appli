@@ -54,7 +54,12 @@ class CatalogueAprovisionnementProduit extends Component
                 'quantity' => 1,
                 'id' => $produit->id,
                 'name' => $produit->name,
+                'price' => $produit->price,
+                'prix_catalogue' => $produit->price,
+                'prix_technicien' => $produit->prix_technicien,
+                'prix_minimum' => $produit->prix_minimum,
                 'prix_achat' => $produit->prix_achat,
+                'prix_promo' => $produit->prix_promo,
             ];
         }
         
