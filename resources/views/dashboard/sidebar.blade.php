@@ -72,13 +72,13 @@
           </a>
           <ul class="nav nav-treeview">
             <li class="nav-item">
-              <a href="{{ route('factures.ventes') }}" wire:navigate class="nav-link {{ Request::is('factures/ventes*') ? 'active' : '' }}">
+              <a href="{{ route('factures.ventes') }}"  class="nav-link {{ Request::is('factures/ventes*') ? 'active' : '' }}">
                 <i class="far fa-circle nav-icon"></i>
                 <p>Factures</p>
               </a>
             </li>
             <li class="nav-item">
-              <a href="{{ route('recus.index') }}" wire:navigate class="nav-link {{ Request::is('factures/recus*') ? 'active' : '' }}">
+              <a href="{{ route('recus.index') }}"  class="nav-link {{ Request::is('factures/recus*') ? 'active' : '' }}">
                 <i class="far fa-circle nav-icon"></i>
                 <p>
                   Reçus
