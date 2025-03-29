@@ -108,7 +108,7 @@
             </li>
             @can('CREER_PRODUIT')
             <li class="nav-item">
-              <a href="{{ route('produit.ajouter') }}" wire:navigate class="nav-link {{ Request::is('produit/create*') ? 'active' : '' }}">
+              <a href="{{ route('produit.ajouter') }}"  class="nav-link {{ Request::is('produit/create*') ? 'active' : '' }}">
                 <i class="far fa-circle nav-icon"></i>
                 <p>Ajouter</p>
               </a>

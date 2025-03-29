@@ -28,9 +28,16 @@
                 </div>
                 
             </div>
-
+            @if (session()->has('message'))
+                <div class="row">
+                    <span class="alert alert-success">
+                        {{ session('message') }}
+                    </span>
+                </div>
+            @endif
             <!-- Catalogue de produits -->
             <div class="row row-cols-1 row-cols-md-3 g-4">
+
                 @forelse($produits as $produit)
                     <div class="col" wire:key="produit-{{ $produit->id }}">
                         <div class="card h-100 shadow-sm border-1 rounded">
