@@ -62,7 +62,9 @@
                         </p>
                         <div class="mt-auto">
                             <button class="btn btn-primary rounded-pill px-4">
-                                En savoir plus
+                                <a wire:navigate href="{{ route('detail-realisation', $realisation->id)}}">
+                                    En savoir plus
+                                </a>
                             </button>
                         </div>
                     </div>

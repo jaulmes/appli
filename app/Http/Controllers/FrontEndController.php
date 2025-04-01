@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Categori;
 use App\Models\Produit;
+use App\Models\Realisation;
 use Illuminate\Http\Request;
 
 class FrontEndController extends Controller
@@ -19,5 +21,25 @@ class FrontEndController extends Controller
     public function allPromoProduit(){
         $produits = Produit::where('status_promo', 1)->get();
         return view('frontend.page.nosProduitPromo', compact('produits'));
+    }
+
+    public function allCategories(){
+        $categories = Categori::all();
+        return view('frontend.page.nosCategorie', compact('categories'));
+    }
+
+    public function categorieDetail($id){
+        $produits = Produit::where('categori_id', $id)->get();
+        return view('frontend.page.categorieDetail', compact('produits'));
+    }
+
+    public function detailProduit($id){
+        $produit = Produit::find($id);
+        return view('frontend.page.produitDetail', compact('produit'));
+    }
+
+    public function detailRealisation($id){
+        $realisation = Realisation::find($id);
+        return view('frontend.page.realisationDetail', compact('realisation'));
     }
 }

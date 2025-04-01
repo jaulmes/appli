@@ -192,35 +192,24 @@
   </header>
 
   <!-- Section Hero -->
-  <section class="hero-header position-relative overflow-hidden" style="background: linear-gradient(135deg, #FFE259 0%, #FFA751 100%);" data-aos="fade-up">
+  <section class="hero-header position-relative overflow-hidden" style="background-image: url('{{asset('home2.png') }}')" data-aos="fade-up">
     <div class="container py-5">
       <div class="row g-5 align-items-center">
         <!-- Texte de présentation -->
         <div class="col-md-12 col-lg-7" data-aos="fade-right" data-aos-delay="200">
-          <h4 class="mb-3 text-secondary fw-bold">Votre spécialiste en solutions solaires</h4>
-          <h1 class="mb-5 display-3 text-primary fw-bold">Vente & Installation d'Équipements Solaires</h1>
-          <p class="mb-4">Basés à Douala, Cameroun, nous vous offrons des solutions d'énergie renouvelable et durable pour vos projets résidentiels et professionnels.</p>
-          <div class="position-relative mx-auto w-100" style="max-width: 500px;" data-aos="zoom-in" data-aos-delay="600">
-            <input class="form-control border-2 border-secondary py-3 px-4 rounded-pill" type="text" placeholder="Rechercher un produit..." aria-label="Rechercher">
-            <button type="submit" class="btn btn-primary border-2 border-secondary py-3 px-4 position-absolute rounded-pill text-white search-btn" style="top: 0; right: 20%;">Chercher</button>
-          </div>
+          <span style="font-size: 3em;" class="mb-5  text-info display-2  fw-bold">Vente & Installation d'Équipements Solaires</span><hr/>
+
         </div>
         <!-- Carousel de présentation -->
-        <div class="col-md-12 col-lg-5" data-aos="fade-left" data-aos-delay="600">
+        <div class="col-md-12 col-lg-5" style=" text-align: center;" data-aos="fade-left" data-aos-delay="600">
+          <h5 class=" pl-3 mb-3 text-white fw-bold">Votre spécialiste en solutions solaires</h5>
           <div id="carouselId" class="carousel slide position-relative shadow-lg rounded-4 overflow-hidden" data-bs-ride="carousel">
             <livewire:front-end-presentation-view />
-            <button class="carousel-control-prev" type="button" data-bs-target="#carouselId" data-bs-slide="prev">
-              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-              <span class="visually-hidden">Précédent</span>
-            </button>
-            <button class="carousel-control-next" type="button" data-bs-target="#carouselId" data-bs-slide="next">
-              <span class="carousel-control-next-icon" aria-hidden="true"></span>
-              <span class="visually-hidden">Suivant</span>
-            </button>
           </div>
         </div>
       </div>
     </div>
+    <p class="mb-4 text-white">Basés à Douala, Cameroun, nous vous offrons des solutions d'énergie renouvelable et durable pour vos projets résidentiels et professionnels.</p>
   </section>
 
   <!-- Section Features -->
@@ -228,7 +217,7 @@
     <div class="container py-5">
       <div class="row g-4">
         <!-- Feature 1 : Installation Rapide -->
-        <div class="col-md-6 col-lg-3" data-aos="fade-up" data-aos-delay="100">
+        <div class="col-md-6 col-lg-3"  data-aos="fade-up" data-aos-delay="100">
           <div class="featurs-item text-center rounded bg-light p-4">
             <div class="featurs-icon btn-square rounded-circle bg-secondary mb-4 mx-auto">
               <i class="fas fa-solar-panel fa-3x text-white"></i>
@@ -273,27 +262,7 @@
 
   <!-- Section Produits en Promotion -->
   <section class="fruite py-5">
-    <div class="container py-5">
-      <div class="tab-class text-center">
-        <div class="row g-4 bg-grey align-items-center mb-5">
-          <div class="col-lg-4 text-start">
-            <h1>Nos Produits Solaires</h1>
-          </div>
-          <div class="col-lg-8 text-end">
-            <ul class="nav nav-pills d-inline-flex mb-0">
-              <li class="nav-item">
-                <a class="d-flex m-2 py-2 bg-light rounded-pill active" data-bs-toggle="pill" href="#tab-5">
-                  <span class="text-dark" style="width: 130px;">Voir tous</span>
-                </a>
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div class="tab-content">
-          <livewire:front-end-promo-product>
-        </div>
-      </div>
-    </div>
+    <livewire:front-end-promo-product>
   </section>
 
   <!-- Section Réalisations / Projets -->

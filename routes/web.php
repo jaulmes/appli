@@ -51,6 +51,14 @@ Route::get('/welcome', function(){
 Route::get('frontend', [App\Http\Controllers\FrontEndController::class, 'index'])->name('frontend.index');
 Route::get('allPromoProduit', [FrontEndController::class, 'allPromoProduit'])->name('allPromoProduit');
 
+Route::get('produit-detail/{id}', [FrontEndController::class, 'detailProduit'])->name('produit-detail');
+
+Route::get('allCategorie', [FrontEndController::class, 'allCategories'])->name('all-categorie');
+Route::get('categorie-detail/{id}', [FrontEndController::class, 'categorieDetail'])->name('categorie-detail');
+
+Route::get('detail-realisation/{id}', [FrontEndController::class, 'detailRealisation'])->name('detail-realisation');
+
+
 
 Route::get('api', [App\Http\Controllers\CallMomoApiController::class, 'index']);
 Route::get('apiUser/form', [App\Http\Controllers\CallMomoApiController::class, 'apiUserForm'])->name('apiUser.form');//show form for user api
