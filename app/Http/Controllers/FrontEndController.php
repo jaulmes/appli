@@ -17,8 +17,7 @@ class FrontEndController extends Controller
     }
 
     public function allPromoProduit(){
-        $produit_promo = Produit::where('status_promo', 1)->get();
-        $produit_non_promo = Produit::where('status_promo', 0)->get();
-        return view('frontend.allPromoProduit', compact('produit_promo', 'produit_non_promo'));
+        $produits = Produit::where('status_promo', 1)->get();
+        return view('frontend.page.nosProduitPromo', compact('produits'));
     }
 }

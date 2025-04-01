@@ -1,76 +1,49 @@
-@extends('dashboard.main')
-
-@section('head')
-  <!-- Bootstrap CSS -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <!-- Ionicons CSS -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/6.1.2/ionicons.min.css">
-@endsection
-@section('content')
-
-<div>
-    <button class="btn btn-danger">Retour</button>
-</div>
-
-<div class="card">
-    <div class="card-header border-0 ">
-        <h3 class="message">
-            @if(session()->has('message'))
-                <div class="alert alert-success">
-                    {{ session('message') }}
-                </div>
-            @endif
-        </h3>
-    <h3 class="card-title ">Tous les produits en promotion</h3>
-        <div class="card-tools">
-            <div>
-                <!-- Button trigger modal -->
-                <button type="button" class="badge bg-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-                ajouter un produit
-                </button>
-
-                <!-- Modal -->
-                <livewire:front-end-modal-all-product>
-            </div>
+<div class="container py-5">
+    <!-- En-tête -->
+    <div class="row align-items-center mb-5">
+        <div class="col-md-6">
+            <h4 class="mb-0">Nos catégories de produits</h4>
+        </div>
+        <div class="col-md-6 text-md-end">
+            <a href="{{ route('allPromoProduit') }}" class="btn btn-dark rounded-pill">
+                Voir plus
+            </a>
         </div>
     </div>
-    <div class="card-body table-responsive p-0">
-        <table class="table table-striped table-valign-middle">
-            <thead>
-                <tr>
-                    <th>Product</th>
-                    <th>Prix </th>
-                    <th>Prix promo</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                @forelse($produit_promo as $produit)
-                    <tr>
-                        <td>
-                            <img src="{{ $produit->getImageUrl() }} " alt="Product 1" class="img-circle img-size-32 mr-2">
-                            {{$produit->name}}
-                        </td>
-                        <td>{{$produit->price}}</td>
-                        <td>
-                            {{$produit->prix_promo}}
-                        </td>
-                        <td>
-                            <a href="#" class="text-muted badge bg-danger">
-                                annuler la promo
+
+    <!-- Liste des catégories -->
+    <div class="row g-3">
+        @forelse($categoris as $categori)
+            <div class="col-sm-6 col-lg-4">
+                <div class="card h-100 shadow-sm border-0">
+                    <div class="card-body d-flex align-items-center">
+                        <!-- Image de la catégorie -->
+                        <div class="me-3">
+                            <img src="{{ $categori->image_categorie ? asset('storage/images/produits/categories/' . $categori->image_categorie) : asset('images/default-category.jpg') }}" 
+                                 alt="Image de {{ $categori->titre }}" 
+                                 class="img-fluid rounded-circle border" 
+                                 style="width: 80px; height: 80px; object-fit: cover;">
+                        </div>
+                        <!-- Contenu de la catégorie -->
+                        <div>
+                            <h5 class="card-title mb-2">
+                                <a href="{{ route('produits.parCategorie', $categori->id) }}" 
+                                   class="stretched-link text-decoration-none text-dark fw-bold">
+                                    {{ $categori->titre }}
+                                </a>
+                            </h5>
+                            <a href="{{ route('produits.parCategorie', $categori->id) }}" 
+                               class="btn btn-primary btn-sm">
+                                Voir les produits
                             </a>
-                        </td>
-                    </tr>
-                @empty
-                    <tr>
-                        <td>
-                            <p> auccun produit en promotion ...<i class="bi bi-exclamation-circle "></i></p>
-                        </td>
-                    </tr>
-                @endforelse
-            </tbody>
-        </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        @empty
+            <div class="col-12 text-center">
+                <p class="text-muted">Aucune catégorie disponible pour le moment.</p>
+            </div>
+        @endforelse
     </div>
 </div>
-            <!-- /.card --> 
-@endsection

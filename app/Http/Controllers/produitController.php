@@ -20,6 +20,7 @@ use Exception;
 use Illuminate\Support\Facades\Auth as FacadesAuth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Facades\Storage;
 
 class produitController extends Controller
 {
@@ -265,35 +266,6 @@ class produitController extends Controller
         return view('produits.import');
     }
 
-    //enregistrer les donnees des produits provenant du fichier excel
-    public function storeImportProduit(Request $request){
-        $request->validate([
-            'file' => 'required|mimes:xlsx'
-        ]);
-
-        try{
-
-            Excel::import(new ProduitsImport, $request->file('file'));
-           
-            return Redirect::route('produit.index')->with('message', 'liste de produit importé avec succes');
-            
-        }
-        catch (ValidationException $e){            
-            $failures = $e->failures();
-            foreach($failures as $failure){
-                $attribute = $failure->attribute();
-                $errors = $failure->errors();
-            }
-
-            return redirect()->back()->with('message', 'echec!!!');
-        }
-
-        dd($request);
-
-    }
-
-
-
     /**
      * gerer les categories des produits
      */
@@ -316,11 +288,82 @@ class produitController extends Controller
         $categories->titre = $request->input('titre');
         $categories->description = $request->input('description');
 
+        if ($file = $request->file('image_categorie')) {
+            $fileName = hexdec(uniqid()).'.'.$file->getClientOriginalName();
+            $path = 'public/images/produits/categories';
+            /**
+             * Delete an image if exists.
+             */
+            if($categories->image_categorie){
+                Storage::delete($path . $categories->image_categorie);
+            }
+            // Store an image to Storage
+            $file->storeAs($path, $fileName);
+            $categories->image_categorie = $fileName;
+        }
+        else{
+            $categories->image_categorie = '';
+        }
+
+        $dateHeure = now();
+        //enregistrer l'historique
+        $transactions = new Transaction();
+        $transactions->date = $dateHeure->format('d/m/y');
+        $transactions->heure = $dateHeure->format('H:i:s');
+        $transactions->type = "Nouvelle categorie de produit";
+        $transactions->user_id = FacadesAuth::user()->id;
+        
+
+        $transactions->save();
         $categories->save();
         return redirect()->back()->with('message', 'categorie ajoutée avec succes!');
     }
-    
 
+    public function show_categories($id){
+        $categories = Categori::find($id);
+        return view('produits.edit_categorie',
+                        [
+                            'categories' => $categories
+                        ]
+                    );
+    }
+    
+    //enregistrer la categorie dans la base de donnee
+    public function edit_categories(Request $request, $id)  {
+        $categories = Categori::find($id);
+        
+        $categories->titre = $request->input('titre');
+        $categories->description = $request->input('description');
+
+        if ($file = $request->file('image_categorie')) {
+            $fileName = hexdec(uniqid()).'.'.$file->getClientOriginalName();
+            $path = 'public/images/produits/categories';
+            /**
+             * Delete an image if exists.
+             */
+            if($categories->image_categorie){
+                Storage::delete($path . $categories->image_categorie);
+            }
+            // Store an image to Storage
+            $file->storeAs($path, $fileName);
+            $categories->image_categorie = $fileName;
+        }
+        else{
+            $categories->image_categorie = '';
+        }
+
+        $dateHeure = now();
+        //enregistrer l'historique
+        $transactions = new Transaction();
+        $transactions->date = $dateHeure->format('d/m/y');
+        $transactions->heure = $dateHeure->format('H:i:s');
+        $transactions->type = "modification de la categorie produit";
+        $transactions->user_id = FacadesAuth::user()->id;
+
+        $transactions->save();
+        $categories->save();
+        return redirect()->back()->with('message', 'categorie modifiée avec succes!');
+    }
 
 
 }

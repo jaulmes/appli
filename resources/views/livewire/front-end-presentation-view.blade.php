@@ -12,7 +12,7 @@
   <div class="carousel-inner">
     @foreach ($presentations as $index => $presentation)
       <div class="carousel-item @if($index === 0) active @endif">
-        <img src="{{ asset('storage/images/presentations/'.$presentation->image) }}" class="d-block w-100" alt="Image {{ $index + 1 }}">
+        <img src="{{ asset('storage/images/presentations/'.$presentation->image) }}" style="height: 20em;" class="d-block w-100" alt="Image {{ $index + 1 }}">
       </div>
     @endforeach
   </div>

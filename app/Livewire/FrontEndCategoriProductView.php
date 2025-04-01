@@ -12,7 +12,7 @@ class FrontEndCategoriProductView extends Component
     use WithPagination;
 
     public function mount(){
-        $this->categoris = Categori::inRandomOrder()->take(10)->get();
+        $this->categoris = Categori::inRandomOrder()->take(9)->get();
     }
 
     public function render()

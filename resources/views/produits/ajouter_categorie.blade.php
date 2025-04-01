@@ -2,45 +2,44 @@
 
 @section('content')
 <section class="content">
-    <div class="container-fluid " style="margin-left: 300px;">
-        <div class="row">
-            <!-- left column -->
+    <div class="container-fluid">
+        <div class="row justify-content-center">
+            <!-- Colonne centrée -->
             <div class="col-md-6">
-                <!-- general form elements -->
                 <div class="card card-secondary">
-                  
-                        @if(session()->has('message'))
-                        <div class="alert alert-success alert-icon" role="alert">
-                            <button class="btn-close" type="button" data-bs-dismiss="alert" aria-label="Close"></button>
-                            <div class="alert-icon-content">
-                                {{ session('message') }}
-                            </div>
+                    
+                    @if(session()->has('message'))
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            {{ session('message') }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                         </div>
-                        @endif
-                   
+                    @endif
+
                     <div class="card-header">
-                        <h3 class="card-title">Custom Elements</h3>
+                        <h3 class="card-title">Ajouter une catégorie</h3>
                     </div>
-                    <form method="post" action="{{route('produit.store_categori')}}">
+
+                    <form method="post" action="{{ route('produit.store_categori') }}" enctype="multipart/form-data">
                         @csrf
                         <div class="card-body">
-                            <div class="form-group">
-                                <label for="titre">titre</label>
-                                <input type="text" name="titre" class="form-control" id="titre" placeholder="entrer le titre de la categorie" required>
-
-                            </div>
-                            <div class="form-group">
-                                <label for="des">description</label>
-                                <textarea class="form-control" name="description" id="" cols="10" rows="10" placeholder="description" ></textarea>
-
+                            <div class="mb-3">
+                                <label for="titre" class="form-label">Titre</label>
+                                <input type="text" name="titre" class="form-control" id="titre" placeholder="Entrer le titre de la catégorie" required>
                             </div>
 
+                            <div class="mb-3">
+                                <label for="description" class="form-label">Description</label>
+                                <textarea class="form-control" name="description" id="description" rows="4" placeholder="Description"></textarea>
+                            </div>
 
+                            <div class="mb-3">
+                                <label for="image_categorie" class="form-label">Image</label>
+                                <input type="file" name="image_categorie" id="image_categorie" class="form-control">
+                            </div>
                         </div>
-                        <!-- /.card-body -->
 
-                        <div class="card-footer">
-                            <button type="submit" class="btn btn-primary">Submit</button>
+                        <div class="card-footer text-end">
+                            <button type="submit" class="btn btn-primary">Soumettre</button>
                         </div>
                     </form>
                 </div>

@@ -49,6 +49,7 @@ Route::get('/welcome', function(){
 });
 
 Route::get('frontend', [App\Http\Controllers\FrontEndController::class, 'index'])->name('frontend.index');
+Route::get('allPromoProduit', [FrontEndController::class, 'allPromoProduit'])->name('allPromoProduit');
 
 
 Route::get('api', [App\Http\Controllers\CallMomoApiController::class, 'index']);
@@ -104,6 +105,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/produit/categori', [produitController::class, 'index_categorie'])->name('produit.categori');
     Route::get('/produit/ajouter_categori', [produitController::class, 'create_categorie'])->name('produit.ajouter_categori');
     Route::post('/produit/store_categori', [produitController::class, 'store_categories'])->name('produit.store_categori');
+    Route::put('/produit/edit_categori/{id}', [produitController::class, 'edit_categories'])->name('produit.edit_categori');
+    Route::get('/produit/show_categori/{id}', [produitController::class, 'show_categories'])->name('produit.show_categori');
     
     /**
      * fournisseur de produit

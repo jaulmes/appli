@@ -1,703 +1,545 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 
-    <head>
-        <meta charset="utf-8">
-        <title>Solergy solutions - solution energetique et autonome</title>
-        <meta content="width=device-width, initial-scale=1.0" name="viewport">
-        <meta content="" name="keywords">
-        <meta content="" name="description">
+<head>
+  <meta charset="utf-8">
+  <title>Solergy Solutions SARL - Vente et Installation d'Équipements Solaires à Douala, Cameroun</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Meta SEO -->
+  <meta name="description" content="Solergy Solutions SARL, spécialiste de la vente et de l'installation d'équipements solaires à Douala, Cameroun. Profitez d'une énergie renouvelable et durable pour vos projets résidentiels et professionnels.">
+  <meta name="keywords" content="Solergy Solutions, équipements solaires, Douala, Cameroun, installation solaire, vente panneaux solaires, énergie renouvelable">
+  <meta name="author" content="Solergy Solutions SARL">
+  <link rel="canonical" href="https://www.solergysolutions.com/">
 
-        <!-- Google Web Fonts -->
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Raleway:wght@600;800&display=swap" rel="stylesheet"> 
+  <!-- Open Graph / Facebook -->
+  <meta property="og:title" content="Solergy Solutions SARL - Vente et Installation d'Équipements Solaires à Douala, Cameroun">
+  <meta property="og:description" content="Votre spécialiste en solutions solaires, de la vente à l'installation d'équipements solaires à Douala, Cameroun.">
+  <meta property="og:image" content="{{ asset('logo.jpg') }}">
+  <meta property="og:url" content="https://www.solergysolutions.com/">
+  <meta property="og:type" content="website">
 
-        <!-- Icon Font Stylesheet -->
-        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css"/>
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Solergy Solutions SARL - Vente et Installation d'Équipements Solaires à Douala, Cameroun">
+  <meta name="twitter:description" content="Découvrez nos solutions solaires innovantes pour vos projets d'énergie renouvelable à Douala.">
+  <meta name="twitter:image" content="{{ asset('logo.jpg') }}">
 
-        <!-- Libraries Stylesheet -->
-        <link href="{{asset('frontend-assets/lib/lightbox/css/lightbox.min.css')}}" rel="stylesheet">
-        <link href="{{ asset('frontend-assets/lib/owlcarousel/assets/owl.carousel.min.css')}}" rel="stylesheet">
+  <!-- Google Web Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Raleway:wght@600;800&display=swap" rel="stylesheet">
 
+  <!-- Icon Font Stylesheet -->
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
 
-        <!-- Customized Bootstrap Stylesheet -->
-        <link href="{{asset('frontend-assets/css/bootstrap.min.css')}}" rel="stylesheet">
+  <!-- Libraries Stylesheet -->
+  <link href="{{ asset('frontend-assets/lib/lightbox/css/lightbox.min.css') }}" rel="stylesheet">
+  <link href="{{ asset('frontend-assets/lib/owlcarousel/assets/owl.carousel.min.css') }}" rel="stylesheet">
 
-        <!-- Template Stylesheet -->
-        <link href="{{ asset('frontend-assets/css/style.css')}}" rel="stylesheet">
+  <!-- Bootstrap & Template Stylesheet -->
+  <link href="{{ asset('frontend-assets/css/bootstrap.min.css') }}" rel="stylesheet">
+  <link href="{{ asset('frontend-assets/css/style.css') }}" rel="stylesheet">
 
-          <!-- Favicon -->
-        <link rel="apple-touch-icon" sizes="180x180" href="../favicon/apple-touch-icon.png">
-        <link rel="icon" type="image/png" sizes="32x32" href="../favicon/favicon-32x32.png">
-        <link rel="icon" type="image/png" sizes="16x16" href="../favicon/favicon-16x16.png">
-        <link rel="manifest" href="../favicon/site.webmanifest">
-        <meta name="theme-color" content="#ffffff">
-    </head>
+  <!-- Favicon -->
+  <link rel="apple-touch-icon" sizes="180x180" href="../favicon/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="../favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="../favicon/favicon-16x16.png">
+  <link rel="manifest" href="../favicon/site.webmanifest">
+  <meta name="theme-color" content="#ffffff">
 
-    <body>
+  <!-- AOS CSS pour les animations -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
 
-        <!-- Spinner Start -->
-        <div id="spinner" class="show w-100 vh-100 bg-white position-fixed translate-middle top-50 start-50  d-flex align-items-center justify-content-center">
-            <div class="spinner-grow text-primary" role="status"></div>
+  @livewireStyles
+
+  <!-- Structured Data (JSON-LD) pour le SEO -->
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Solergy Solutions SARL",
+      "url": "https://www.solergysolutions.com/",
+      "logo": "{{ asset('logo.jpg') }}",
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "telephone": "+237657248925",
+        "contactType": "customer support",
+        "areaServed": "CM",
+        "availableLanguage": "fr"
+      },
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "En face Collège Bénédicte, Ndockoti",
+        "addressLocality": "Douala",
+        "addressCountry": "CM"
+      },
+      "sameAs": [
+        "https://www.facebook.com/solergysolutions",
+        "https://twitter.com/solergysolutions",
+        "https://www.linkedin.com/company/solergysolutions"
+      ]
+    }
+  </script>
+
+  <style>
+    /* Transitions et animations personnalisées */
+    .hero-header {
+      transition: all 0.5s ease;
+      min-height: 80vh;
+    }
+    .hero-header:hover {
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+    }
+    .search-btn {
+      transition: background-color 0.3s ease, transform 0.3s ease;
+    }
+    .search-btn:hover {
+      background-color: #ff7f00;
+      transform: translateY(-2px);
+    }
+    .carousel.slide {
+      transition: transform 0.4s ease;
+    }
+    .carousel.slide:hover {
+      transform: scale(1.02);
+    }
+    .featurs-item {
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    .featurs-item:hover {
+      transform: translateY(-5px) scale(1.03);
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    }
+    .featurs-icon {
+      transition: background-color 0.3s ease, transform 0.3s ease;
+    }
+    .featurs-item:hover .featurs-icon {
+      background-color: #ff7f00;
+      transform: rotate(10deg);
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Spinner de chargement -->
+  <div id="spinner" class="show w-100 vh-100 bg-white position-fixed translate-middle top-50 start-50 d-flex align-items-center justify-content-center">
+    <div class="spinner-grow text-primary" role="status"></div>
+  </div>
+  
+  <!-- Navbar (Header) -->
+  <header>
+    <div class="container-fluid fixed-top">
+      <!-- Top Bar -->
+      <div class="container topbar d-none d-lg-block" style="background-color: #3e3ee7;">
+        <div class="d-flex justify-content-between">
+          <div class="top-info ps-2">
+            <small class="me-3">
+              <i class="fas fa-map-marker-alt me-2 text-secondary"></i>
+              <a href="#" class="text-white">En face Collège Bénédicte, Ndockoti, Douala, Cameroun</a>
+            </small>
+            <small class="me-3">
+              <i class="fas fa-envelope me-2 text-secondary"></i>
+              <a href="mailto:solergysolutions@gmail.com" class="text-white">solergysolutions@gmail.com</a>
+            </small>
+          </div>
+          <div class="top-link pe-2">
+            <a href="tel:+237657248925" class="text-white"><small class="mx-2">+237 6 57 24 89 25</small>/</a>
+            <a href="#" class="text-white"><small class="mx-2">Conditions d'utilisation</small>/</a>
+            <a href="#" class="text-white"><small class="ms-2">Politique de vente</small></a>
+          </div>
         </div>
-        <!-- Spinner End -->
-
-
-        <!-- Navbar start -->
-        <div class="container-fluid fixed-top">
-            <div class="container topbar d-none d-lg-block" style="background-color: #3e3ee7;">
-                <div class="d-flex justify-content-between">
-                    <div class="top-info ps-2">
-                        <small class="me-3"><i class="fas fa-map-marker-alt me-2 text-secondary"></i> <a href="#" class="text-white">En face college benedicte, ndockoti, Douala, cameroun</a></small>
-                        <small class="me-3"><i class="fas fa-envelope me-2 text-secondary"></i><a href="#" class="text-white">solergysolutions@gmail.com</a></small>
-                    </div>
-                    <div class="top-link pe-2">
-                        <a href="#" class="text-white"><small class="text-white mx-2">+237 6 57 24 89 25</small>/</a>
-                        <a href="#" class="text-white"><small class="text-white mx-2">Terms of Use</small>/</a>
-                        <a href="#" class="text-white"><small class="text-white ms-2">Sales and Refunds</small></a>
-                    </div>
-                </div>
+      </div>
+      <!-- Navbar principale -->
+      <div class="container px-0">
+        <nav class="navbar navbar-light bg-white navbar-expand-xl">
+          <a href="index.html" class="navbar-brand">
+            <img src="{{ asset('logo.jpg') }}" alt="Logo Solergy Solutions SARL" style="width: 100px; height: 80px;">
+          </a>
+          <button class="navbar-toggler py-2 px-3" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+            <span class="fa fa-bars text-primary"></span>
+          </button>
+          <div class="collapse navbar-collapse bg-white" id="navbarCollapse">
+            <ul class="navbar-nav mx-auto">
+              <li class="nav-item"><a href="index.html" class="nav-link active">Accueil</a></li>
+              <li class="nav-item"><a href="shop.html" class="nav-link">Produits</a></li>
+              <li class="nav-item"><a href="shop-detail.html" class="nav-link">Détails</a></li>
+              <li class="nav-item dropdown">
+                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
+                <ul class="dropdown-menu m-0 bg-secondary rounded-0">
+                  <li><a href="cart.html" class="dropdown-item">Panier</a></li>
+                  <li><a href="chackout.html" class="dropdown-item">Paiement</a></li>
+                  <li><a href="testimonial.html" class="dropdown-item">Témoignages</a></li>
+                  <li><a href="404.html" class="dropdown-item">Erreur 404</a></li>
+                </ul>
+              </li>
+              <li class="nav-item"><a href="contact.html" class="nav-link">Contact</a></li>
+            </ul>
+            <div class="d-flex m-3 me-0">
+              <a href="#" class="position-relative me-4 my-auto">
+                <i class="fa fa-shopping-bag fa-2x" style="color: #3e3ee7;"></i>
+                <span class="position-absolute bg-secondary rounded-circle d-flex align-items-center justify-content-center text-dark px-1" style="top: -5px; left: 15px; height: 20px; min-width: 20px;">3</span>
+              </a>
+              <a href="#" class="my-auto">
+                <button class="btn btn-primary" style="color: #3e3ee7;">Se connecter</button>
+              </a>
             </div>
-            <div class="container px-0">
-                <nav class="navbar navbar-light bg-white navbar-expand-xl">
-                    <a href="index.html" class="navbar-brand"><img src="{{ asset('logo.jpg')}}" alt="" style="width: 100px; height: 80px;"></a>
-                    <button class="navbar-toggler py-2 px-3" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
-                        <span class="fa fa-bars text-primary"></span>
-                    </button>
-                    <div class="collapse navbar-collapse bg-white" id="navbarCollapse">
-                        <div class="navbar-nav mx-auto">
-                            <a href="index.html" class="nav-item nav-link active">Home</a>
-                            <a href="shop.html" class="nav-item nav-link">Shop</a>
-                            <a href="shop-detail.html" class="nav-item nav-link">Shop Detail</a>
-                            <div class="nav-item dropdown">
-                                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
-                                <div class="dropdown-menu m-0 bg-secondary rounded-0">
-                                    <a href="cart.html" class="dropdown-item">Cart</a>
-                                    <a href="chackout.html" class="dropdown-item">Chackout</a>
-                                    <a href="testimonial.html" class="dropdown-item">Testimonial</a>
-                                    <a href="404.html" class="dropdown-item">404 Page</a>
-                                </div>
-                            </div>
-                            <a href="contact.html" class="nav-item nav-link">Contact</a>
-                        </div>
-                        <div class="d-flex m-3 me-0">
-                            <a href="#" class="position-relative me-4 my-auto">
-                                <i class="fa fa-shopping-bag fa-2x" style="color: #3e3ee7;"></i>
-                                <span class="position-absolute bg-secondary rounded-circle d-flex align-items-center justify-content-center text-dark px-1" style="top: -5px; left: 15px; height: 20px; min-width: 20px;">3</span>
-                            </a>
-                            <a href="#" class="my-auto">
-                                <button class="btn btn-primary" style="color: #3e3ee7;">se connecter</button>
-                            </a>
-                        </div>
-                    </div>
-                </nav>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <!-- Section Hero -->
+  <section class="hero-header position-relative overflow-hidden" style="background: linear-gradient(135deg, #FFE259 0%, #FFA751 100%);" data-aos="fade-up">
+    <div class="container py-5">
+      <div class="row g-5 align-items-center">
+        <!-- Texte de présentation -->
+        <div class="col-md-12 col-lg-7" data-aos="fade-right" data-aos-delay="200">
+          <h4 class="mb-3 text-secondary fw-bold">Votre spécialiste en solutions solaires</h4>
+          <h1 class="mb-5 display-3 text-primary fw-bold">Vente & Installation d'Équipements Solaires</h1>
+          <p class="mb-4">Basés à Douala, Cameroun, nous vous offrons des solutions d'énergie renouvelable et durable pour vos projets résidentiels et professionnels.</p>
+          <div class="position-relative mx-auto w-100" style="max-width: 500px;" data-aos="zoom-in" data-aos-delay="600">
+            <input class="form-control border-2 border-secondary py-3 px-4 rounded-pill" type="text" placeholder="Rechercher un produit..." aria-label="Rechercher">
+            <button type="submit" class="btn btn-primary border-2 border-secondary py-3 px-4 position-absolute rounded-pill text-white search-btn" style="top: 0; right: 20%;">Chercher</button>
+          </div>
+        </div>
+        <!-- Carousel de présentation -->
+        <div class="col-md-12 col-lg-5" data-aos="fade-left" data-aos-delay="600">
+          <div id="carouselId" class="carousel slide position-relative shadow-lg rounded-4 overflow-hidden" data-bs-ride="carousel">
+            <livewire:front-end-presentation-view />
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselId" data-bs-slide="prev">
+              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Précédent</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselId" data-bs-slide="next">
+              <span class="carousel-control-next-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Suivant</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section Features -->
+  <section class="featurs py-5">
+    <div class="container py-5">
+      <div class="row g-4">
+        <!-- Feature 1 : Installation Rapide -->
+        <div class="col-md-6 col-lg-3" data-aos="fade-up" data-aos-delay="100">
+          <div class="featurs-item text-center rounded bg-light p-4">
+            <div class="featurs-icon btn-square rounded-circle bg-secondary mb-4 mx-auto">
+              <i class="fas fa-solar-panel fa-3x text-white"></i>
             </div>
+            <h5>Installation Rapide</h5>
+            <p class="mb-0">Installation en moins de 24h</p>
+          </div>
         </div>
-        <!-- Navbar End -->
-
-
-        <!-- Hero Start -->
-        <div class="container-fluid py-5 mb-5 hero-header">
-            <div class="container py-5">
-                <div class="row g-5 align-items-center">
-                    <div class="col-md-12 col-lg-7">
-                        <h4 class="mb-3 text-secondary">100% Organic Foods</h4>
-                        <h1 class="mb-5 display-3 text-primary">Organic Veggies & Fruits Foods</h1>
-                        <div class="position-relative mx-auto">
-                            <input class="form-control border-2 border-secondary w-75 py-3 px-4 rounded-pill" type="number" placeholder="Search">
-                            <button type="submit" class="btn btn-primary border-2 border-secondary py-3 px-4 position-absolute rounded-pill text-white h-100" style="top: 0; right: 25%;">Submit Now</button>
-                        </div>
-                    </div>
-                    <div class="col-md-12 col-lg-5">
-                        <div id="carouselId" class="carousel slide position-relative" data-bs-ride="carousel">
-                            <livewire:front-end-presentation-view>
-                            <button class="carousel-control-prev" type="button" data-bs-target="#carouselId" data-bs-slide="prev">
-                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                <span class="visually-hidden">Previous</span>
-                            </button>
-                            <button class="carousel-control-next" type="button" data-bs-target="#carouselId" data-bs-slide="next">
-                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                <span class="visually-hidden">Next</span>
-                            </button>
-                        </div>
-                    </div>
-                </div>
+        <!-- Feature 2 : Énergie Efficace -->
+        <div class="col-md-6 col-lg-3" data-aos="fade-up" data-aos-delay="200">
+          <div class="featurs-item text-center rounded bg-light p-4">
+            <div class="featurs-icon btn-square rounded-circle bg-secondary mb-4 mx-auto">
+              <i class="fas fa-bolt fa-3x text-white"></i>
             </div>
+            <h5>Énergie Efficace</h5>
+            <p class="mb-0">Optimisation de l’énergie solaire</p>
+          </div>
         </div>
-        <!-- Hero End -->
-
-
-        <!-- Featurs Section Start -->
-        <div class="container-fluid featurs py-5">
-            <div class="container py-5">
-                <div class="row g-4">
-                    <div class="col-md-6 col-lg-3">
-                        <div class="featurs-item text-center rounded bg-light p-4">
-                            <div class="featurs-icon btn-square rounded-circle bg-secondary mb-5 mx-auto">
-                                <i class="fas fa-car-side fa-3x text-white"></i>
-                            </div>
-                            <div class="featurs-content text-center">
-                                <h5>Free Shipping</h5>
-                                <p class="mb-0">Free on order over $300</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-lg-3">
-                        <div class="featurs-item text-center rounded bg-light p-4">
-                            <div class="featurs-icon btn-square rounded-circle bg-secondary mb-5 mx-auto">
-                                <i class="fas fa-user-shield fa-3x text-white"></i>
-                            </div>
-                            <div class="featurs-content text-center">
-                                <h5>Security Payment</h5>
-                                <p class="mb-0">100% security payment</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-lg-3">
-                        <div class="featurs-item text-center rounded bg-light p-4">
-                            <div class="featurs-icon btn-square rounded-circle bg-secondary mb-5 mx-auto">
-                                <i class="fas fa-exchange-alt fa-3x text-white"></i>
-                            </div>
-                            <div class="featurs-content text-center">
-                                <h5>30 Day Return</h5>
-                                <p class="mb-0">30 day money guarantee</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-lg-3">
-                        <div class="featurs-item text-center rounded bg-light p-4">
-                            <div class="featurs-icon btn-square rounded-circle bg-secondary mb-5 mx-auto">
-                                <i class="fa fa-phone-alt fa-3x text-white"></i>
-                            </div>
-                            <div class="featurs-content text-center">
-                                <h5>24/7 Support</h5>
-                                <p class="mb-0">Support every time fast</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+        <!-- Feature 3 : Sécurité Garantie -->
+        <div class="col-md-6 col-lg-3" data-aos="fade-up" data-aos-delay="300">
+          <div class="featurs-item text-center rounded bg-light p-4">
+            <div class="featurs-icon btn-square rounded-circle bg-secondary mb-4 mx-auto">
+              <i class="fas fa-shield-alt fa-3x text-white"></i>
             </div>
+            <h5>Sécurité Garantie</h5>
+            <p class="mb-0">Matériel de qualité et garanti</p>
+          </div>
         </div>
-        <!-- Featurs Section End -->
-
-
-        <!-- Fruits Shop Start-->
-        <div class="container-fluid fruite py-5">
-            <div class="container py-5">
-                <div class="tab-class text-center">
-                    <div class="row g-4 bg-grey">
-                        <div class="col-lg-4 text-start">
-                            <h1>Nos produits en promotion</h1>
-                        </div>
-                        <div class="col-lg-8 text-end">
-                            <ul class="nav nav-pills d-inline-flex text-center mb-5">
-                                
-                                <li class="nav-item">
-                                    <a class="d-flex m-2 py-2 bg-light rounded-pill active" data-bs-toggle="pill" href="#tab-5">
-                                        <span class="text-dark" style="width: 130px;">Voir tous les produits</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="tab-content">
-                        <!------------------->
-                        <livewire:front-end-promo-product>
-                    </div>
-                </div>      
+        <!-- Feature 4 : Support 24/7 -->
+        <div class="col-md-6 col-lg-3" data-aos="fade-up" data-aos-delay="400">
+          <div class="featurs-item text-center rounded bg-light p-4">
+            <div class="featurs-icon btn-square rounded-circle bg-secondary mb-4 mx-auto">
+              <i class="fa fa-headset fa-3x text-white"></i>
             </div>
+            <h5>Support 24/7</h5>
+            <p class="mb-0">Assistance technique continue</p>
+          </div>
         </div>
-        <!-- Fruits Shop End-->
+      </div>
+    </div>
+  </section>
 
-
-        <!-- Featurs Start -->
-        <div class="container-fluid service py-5">
-            <livewire:front-end-realisation-view/>
+  <!-- Section Produits en Promotion -->
+  <section class="fruite py-5">
+    <div class="container py-5">
+      <div class="tab-class text-center">
+        <div class="row g-4 bg-grey align-items-center mb-5">
+          <div class="col-lg-4 text-start">
+            <h1>Nos Produits Solaires</h1>
+          </div>
+          <div class="col-lg-8 text-end">
+            <ul class="nav nav-pills d-inline-flex mb-0">
+              <li class="nav-item">
+                <a class="d-flex m-2 py-2 bg-light rounded-pill active" data-bs-toggle="pill" href="#tab-5">
+                  <span class="text-dark" style="width: 130px;">Voir tous</span>
+                </a>
+              </li>
+            </ul>
+          </div>
         </div>
-        <!-- Featurs End -->
+        <div class="tab-content">
+          <livewire:front-end-promo-product>
+        </div>
+      </div>
+    </div>
+  </section>
 
+  <!-- Section Réalisations / Projets -->
+  <section class="service py-5">
+    <div class="container-fluid">
+      <livewire:front-end-realisation-view/>
+    </div>
+  </section>
 
-        <!-- Vesitable Shop Start-->
-        <livewire:front-end-promo-product>
-        <!-- Vesitable Shop End -->
+  <!-- Section Catégories de Produits -->
+  <section>
+    <livewire:front-end-categori-product-view>
+  </section>
 
-
-        <!-- Banner Section Start-->
-        <div class="container-fluid banner bg-secondary my-5">
-            <div class="container py-5">
-                <div class="row g-4 align-items-center">
-                    <div class="col-lg-6">
-                        <div class="py-4">
-                            <h1 class="display-3 text-white">Fresh Exotic Fruits</h1>
-                            <p class="fw-normal display-3 text-dark mb-4">in Our Store</p>
-                            <p class="mb-4 text-dark">The generated Lorem Ipsum is therefore always free from repetition injected humour, or non-characteristic words etc.</p>
-                            <a href="#" class="banner-btn btn border-2 border-white rounded-pill text-dark py-3 px-5">BUY</a>
-                        </div>
-                    </div>
-                    <div class="col-lg-6">
-                        <div class="position-relative">
-                            <img src="{{ asset('frontend-assets/img/baner-1.png')}}" class="img-fluid w-100 rounded" alt="">
-                            <div class="d-flex align-items-center justify-content-center bg-white rounded-circle position-absolute" style="width: 140px; height: 140px; top: 0; left: 0;">
-                                <h1 style="font-size: 100px;">1</h1>
-                                <div class="d-flex flex-column">
-                                    <span class="h2 mb-0">50$</span>
-                                    <span class="h4 text-muted mb-0">kg</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+  <!-- Section Statistiques -->
+  <section class="py-5">
+    <div class="container">
+      <div class="bg-light p-5 rounded" data-aos="fade-up">
+        <div class="row g-4 justify-content-center">
+          <div class="col-md-6 col-lg-3">
+            <div class="counter bg-white rounded p-5 text-center">
+              <i class="fa fa-users text-secondary mb-2"></i>
+              <h4>Clients Satisfaits</h4>
+              <h1>1963</h1>
             </div>
-        </div>
-        <!-- Banner Section End -->
-
-
-        <!-- Bestsaler Product Start -->
-        <div class="container-fluid py-5">
-            <div class="container py-5">
-                <div class="text-center mx-auto mb-5" style="max-width: 700px;">
-                    <h1 class="display-4">Bestseller Products</h1>
-                    <p>Latin words, combined with a handful of model sentence structures, to generate Lorem Ipsum which looks reasonable.</p>
-                </div>
-                <div class="row g-4">
-                    <div class="col-lg-6 col-xl-4">
-                        <div class="p-4 rounded bg-light">
-                            <div class="row align-items-center">
-                                <div class="col-6">
-                                    <img src="{{ asset('frontend-assets/img/best-product-1.jpg')}}" class="img-fluid rounded-circle w-100" alt="">
-                                </div>
-                                <div class="col-6">
-                                    <a href="#" class="h5">Organic Tomato</a>
-                                    <div class="d-flex my-3">
-                                        <i class="fas fa-star text-primary"></i>
-                                        <i class="fas fa-star text-primary"></i>
-                                        <i class="fas fa-star text-primary"></i>
-                                        <i class="fas fa-star text-primary"></i>
-                                        <i class="fas fa-star"></i>
-                                    </div>
-                                    <h4 class="mb-3">3.12 $</h4>
-                                    <a href="#" class="btn border border-secondary rounded-pill px-3 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-6 col-xl-4">
-                        <div class="p-4 rounded bg-light">
-                            <div class="row align-items-center">
-                                <div class="col-6">
-                                    <img src="{{ asset('frontend-assets/img/best-product-2.jpg')}}" class="img-fluid rounded-circle w-100" alt="">
-                                </div>
-                                <div class="col-6">
-                                    <a href="#" class="h5">Organic Tomato</a>
-                                    <div class="d-flex my-3">
-                                        <i class="fas fa-star text-primary"></i>
-                                        <i class="fas fa-star text-primary"></i>
-                                        <i class="fas fa-star text-primary"></i>
-                                        <i class="fas fa-star text-primary"></i>
-                                        <i class="fas fa-star"></i>
-                                    </div>
-                                    <h4 class="mb-3">3.12 $</h4>
-                                    <a href="#" class="btn border border-secondary rounded-pill px-3 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-6 col-xl-4">
-                        <div class="p-4 rounded bg-light">
-                            <div class="row align-items-center">
-                                <div class="col-6">
-                                    <img src="{{ asset('frontend-assets/img/best-product-3.jpg')}}" class="img-fluid rounded-circle w-100" alt="">
-                                </div>
-                                <div class="col-6">
-                                    <a href="#" class="h5">Organic Tomato</a>
-                                    <div class="d-flex my-3">
-                                        <i class="fas fa-star text-primary"></i>
-                                        <i class="fas fa-star text-primary"></i>
-                                        <i class="fas fa-star text-primary"></i>
-                                        <i class="fas fa-star text-primary"></i>
-                                        <i class="fas fa-star"></i>
-                                    </div>
-                                    <h4 class="mb-3">3.12 $</h4>
-                                    <a href="#" class="btn border border-secondary rounded-pill px-3 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-6 col-xl-4">
-                        <div class="p-4 rounded bg-light">
-                            <div class="row align-items-center">
-                                <div class="col-6">
-                                    <img src="{{ asset('frontend-assets/img/best-product-4.jpg')}}" class="img-fluid rounded-circle w-100" alt="">
-                                </div>
-                                <div class="col-6">
-                                    <a href="#" class="h5">Organic Tomato</a>
-                                    <div class="d-flex my-3">
-                                        <i class="fas fa-star text-primary"></i>
-                                        <i class="fas fa-star text-primary"></i>
-                                        <i class="fas fa-star text-primary"></i>
-                                        <i class="fas fa-star text-primary"></i>
-                                        <i class="fas fa-star"></i>
-                                    </div>
-                                    <h4 class="mb-3">3.12 $</h4>
-                                    <a href="#" class="btn border border-secondary rounded-pill px-3 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-6 col-xl-4">
-                        <div class="p-4 rounded bg-light">
-                            <div class="row align-items-center">
-                                <div class="col-6">
-                                    <img src="{{ asset('frontend-assets/img/best-product-5.jpg')}}" class="img-fluid rounded-circle w-100" alt="">
-                                </div>
-                                <div class="col-6">
-                                    <a href="#" class="h5">Organic Tomato</a>
-                                    <div class="d-flex my-3">
-                                        <i class="fas fa-star text-primary"></i>
-                                        <i class="fas fa-star text-primary"></i>
-                                        <i class="fas fa-star text-primary"></i>
-                                        <i class="fas fa-star text-primary"></i>
-                                        <i class="fas fa-star"></i>
-                                    </div>
-                                    <h4 class="mb-3">3.12 $</h4>
-                                    <a href="#" class="btn border border-secondary rounded-pill px-3 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-6 col-xl-4">
-                        <div class="p-4 rounded bg-light">
-                            <div class="row align-items-center">
-                                <div class="col-6">
-                                    <img src="{{ asset('frontend-assets/img/best-product-6.jpg')}}" class="img-fluid rounded-circle w-100" alt="">
-                                </div>
-                                <div class="col-6">
-                                    <a href="#" class="h5">Organic Tomato</a>
-                                    <div class="d-flex my-3">
-                                        <i class="fas fa-star text-primary"></i>
-                                        <i class="fas fa-star text-primary"></i>
-                                        <i class="fas fa-star text-primary"></i>
-                                        <i class="fas fa-star text-primary"></i>
-                                        <i class="fas fa-star"></i>
-                                    </div>
-                                    <h4 class="mb-3">3.12 $</h4>
-                                    <a href="#" class="btn border border-secondary rounded-pill px-3 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-lg-6 col-xl-3">
-                        <div class="text-center">
-                            <img src="img/fruite-item-1.jpg" class="img-fluid rounded" alt="">
-                            <div class="py-4">
-                                <a href="#" class="h5">Organic Tomato</a>
-                                <div class="d-flex my-3 justify-content-center">
-                                    <i class="fas fa-star text-primary"></i>
-                                    <i class="fas fa-star text-primary"></i>
-                                    <i class="fas fa-star text-primary"></i>
-                                    <i class="fas fa-star text-primary"></i>
-                                    <i class="fas fa-star"></i>
-                                </div>
-                                <h4 class="mb-3">3.12 $</h4>
-                                <a href="#" class="btn border border-secondary rounded-pill px-3 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-lg-6 col-xl-3">
-                        <div class="text-center">
-                            <img src="img/fruite-item-2.jpg" class="img-fluid rounded" alt="">
-                            <div class="py-4">
-                                <a href="#" class="h5">Organic Tomato</a>
-                                <div class="d-flex my-3 justify-content-center">
-                                    <i class="fas fa-star text-primary"></i>
-                                    <i class="fas fa-star text-primary"></i>
-                                    <i class="fas fa-star text-primary"></i>
-                                    <i class="fas fa-star text-primary"></i>
-                                    <i class="fas fa-star"></i>
-                                </div>
-                                <h4 class="mb-3">3.12 $</h4>
-                                <a href="#" class="btn border border-secondary rounded-pill px-3 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-lg-6 col-xl-3">
-                        <div class="text-center">
-                            <img src="img/fruite-item-3.jpg" class="img-fluid rounded" alt="">
-                            <div class="py-4">
-                                <a href="#" class="h5">Organic Tomato</a>
-                                <div class="d-flex my-3 justify-content-center">
-                                    <i class="fas fa-star text-primary"></i>
-                                    <i class="fas fa-star text-primary"></i>
-                                    <i class="fas fa-star text-primary"></i>
-                                    <i class="fas fa-star text-primary"></i>
-                                    <i class="fas fa-star"></i>
-                                </div>
-                                <h4 class="mb-3">3.12 $</h4>
-                                <a href="#" class="btn border border-secondary rounded-pill px-3 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-lg-6 col-xl-3">
-                        <div class="text-center">
-                            <img src="img/fruite-item-4.jpg" class="img-fluid rounded" alt="">
-                            <div class="py-2">
-                                <a href="#" class="h5">Organic Tomato</a>
-                                <div class="d-flex my-3 justify-content-center">
-                                    <i class="fas fa-star text-primary"></i>
-                                    <i class="fas fa-star text-primary"></i>
-                                    <i class="fas fa-star text-primary"></i>
-                                    <i class="fas fa-star text-primary"></i>
-                                    <i class="fas fa-star"></i>
-                                </div>
-                                <h4 class="mb-3">3.12 $</h4>
-                                <a href="#" class="btn border border-secondary rounded-pill px-3 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+          </div>
+          <div class="col-md-6 col-lg-3">
+            <div class="counter bg-white rounded p-5 text-center">
+              <i class="fa fa-thumbs-up text-secondary mb-2"></i>
+              <h4>Qualité de Service</h4>
+              <h1>99%</h1>
             </div>
-        </div>
-        <!-- Bestsaler Product End -->
-
-
-        <!-- Fact Start -->
-        <div class="container-fluid py-5">
-            <div class="container">
-                <div class="bg-light p-5 rounded">
-                    <div class="row g-4 justify-content-center">
-                        <div class="col-md-6 col-lg-6 col-xl-3">
-                            <div class="counter bg-white rounded p-5">
-                                <i class="fa fa-users text-secondary"></i>
-                                <h4>satisfied customers</h4>
-                                <h1>1963</h1>
-                            </div>
-                        </div>
-                        <div class="col-md-6 col-lg-6 col-xl-3">
-                            <div class="counter bg-white rounded p-5">
-                                <i class="fa fa-users text-secondary"></i>
-                                <h4>quality of service</h4>
-                                <h1>99%</h1>
-                            </div>
-                        </div>
-                        <div class="col-md-6 col-lg-6 col-xl-3">
-                            <div class="counter bg-white rounded p-5">
-                                <i class="fa fa-users text-secondary"></i>
-                                <h4>quality certificates</h4>
-                                <h1>33</h1>
-                            </div>
-                        </div>
-                        <div class="col-md-6 col-lg-6 col-xl-3">
-                            <div class="counter bg-white rounded p-5">
-                                <i class="fa fa-users text-secondary"></i>
-                                <h4>Available Products</h4>
-                                <h1>789</h1>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+          </div>
+          <div class="col-md-6 col-lg-3">
+            <div class="counter bg-white rounded p-5 text-center">
+              <i class="fa fa-certificate text-secondary mb-2"></i>
+              <h4>Certificats Qualité</h4>
+              <h1>33</h1>
             </div>
-        </div>
-        <!-- Fact Start -->
-
-
-        <!-- Tastimonial Start -->
-        <div class="container-fluid testimonial py-5">
-            <div class="container py-5">
-                <div class="testimonial-header text-center">
-                    <h4 class="text-primary">Our Testimonial</h4>
-                    <h1 class="display-5 mb-5 text-dark">Our Client Saying!</h1>
-                </div>
-                <div class="owl-carousel testimonial-carousel">
-                    <div class="testimonial-item img-border-radius bg-light rounded p-4">
-                        <div class="position-relative">
-                            <i class="fa fa-quote-right fa-2x text-secondary position-absolute" style="bottom: 30px; right: 0;"></i>
-                            <div class="mb-4 pb-4 border-bottom border-secondary">
-                                <p class="mb-0">Lorem Ipsum is simply dummy text of the printing Ipsum has been the industry's standard dummy text ever since the 1500s,
-                                </p>
-                            </div>
-                            <div class="d-flex align-items-center flex-nowrap">
-                                <div class="bg-secondary rounded">
-                                    <img src="img/testimonial-1.jpg" class="img-fluid rounded" style="width: 100px; height: 100px;" alt="">
-                                </div>
-                                <div class="ms-4 d-block">
-                                    <h4 class="text-dark">Client Name</h4>
-                                    <p class="m-0 pb-3">Profession</p>
-                                    <div class="d-flex pe-5">
-                                        <i class="fas fa-star text-primary"></i>
-                                        <i class="fas fa-star text-primary"></i>
-                                        <i class="fas fa-star text-primary"></i>
-                                        <i class="fas fa-star text-primary"></i>
-                                        <i class="fas fa-star"></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="testimonial-item img-border-radius bg-light rounded p-4">
-                        <div class="position-relative">
-                            <i class="fa fa-quote-right fa-2x text-secondary position-absolute" style="bottom: 30px; right: 0;"></i>
-                            <div class="mb-4 pb-4 border-bottom border-secondary">
-                                <p class="mb-0">Lorem Ipsum is simply dummy text of the printing Ipsum has been the industry's standard dummy text ever since the 1500s,
-                                </p>
-                            </div>
-                            <div class="d-flex align-items-center flex-nowrap">
-                                <div class="bg-secondary rounded">
-                                    <img src="img/testimonial-1.jpg" class="img-fluid rounded" style="width: 100px; height: 100px;" alt="">
-                                </div>
-                                <div class="ms-4 d-block">
-                                    <h4 class="text-dark">Client Name</h4>
-                                    <p class="m-0 pb-3">Profession</p>
-                                    <div class="d-flex pe-5">
-                                        <i class="fas fa-star text-primary"></i>
-                                        <i class="fas fa-star text-primary"></i>
-                                        <i class="fas fa-star text-primary"></i>
-                                        <i class="fas fa-star text-primary"></i>
-                                        <i class="fas fa-star text-primary"></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="testimonial-item img-border-radius bg-light rounded p-4">
-                        <div class="position-relative">
-                            <i class="fa fa-quote-right fa-2x text-secondary position-absolute" style="bottom: 30px; right: 0;"></i>
-                            <div class="mb-4 pb-4 border-bottom border-secondary">
-                                <p class="mb-0">Lorem Ipsum is simply dummy text of the printing Ipsum has been the industry's standard dummy text ever since the 1500s,
-                                </p>
-                            </div>
-                            <div class="d-flex align-items-center flex-nowrap">
-                                <div class="bg-secondary rounded">
-                                    <img src="img/testimonial-1.jpg" class="img-fluid rounded" style="width: 100px; height: 100px;" alt="">
-                                </div>
-                                <div class="ms-4 d-block">
-                                    <h4 class="text-dark">Client Name</h4>
-                                    <p class="m-0 pb-3">Profession</p>
-                                    <div class="d-flex pe-5">
-                                        <i class="fas fa-star text-primary"></i>
-                                        <i class="fas fa-star text-primary"></i>
-                                        <i class="fas fa-star text-primary"></i>
-                                        <i class="fas fa-star text-primary"></i>
-                                        <i class="fas fa-star text-primary"></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+          </div>
+          <div class="col-md-6 col-lg-3">
+            <div class="counter bg-white rounded p-5 text-center">
+              <i class="fa fa-box text-secondary mb-2"></i>
+              <h4>Produits Disponibles</h4>
+              <h1>789</h1>
             </div>
+          </div>
         </div>
-        <!-- Tastimonial End -->
+      </div>
+    </div>
+  </section>
 
-
-        <!-- Footer Start -->
-        <div class="container-fluid bg-dark text-white-50 footer pt-5 mt-5">
-            <div class="container py-5">
-                <div class="pb-4 mb-4" style="border-bottom: 1px solid rgba(226, 175, 24, 0.5) ;">
-                    <div class="row g-4">
-                        <div class="col-lg-3">
-                            <a href="#">
-                                <h1 class="text-primary mb-0">Fruitables</h1>
-                                <p class="text-secondary mb-0">Fresh products</p>
-                            </a>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="position-relative mx-auto">
-                                <input class="form-control border-0 w-100 py-3 px-4 rounded-pill" type="number" placeholder="Your Email">
-                                <button type="submit" class="btn btn-primary border-0 border-secondary py-3 px-4 position-absolute rounded-pill text-white" style="top: 0; right: 0;">Subscribe Now</button>
-                            </div>
-                        </div>
-                        <div class="col-lg-3">
-                            <div class="d-flex justify-content-end pt-3">
-                                <a class="btn  btn-outline-secondary me-2 btn-md-square rounded-circle" href=""><i class="fab fa-twitter"></i></a>
-                                <a class="btn btn-outline-secondary me-2 btn-md-square rounded-circle" href=""><i class="fab fa-facebook-f"></i></a>
-                                <a class="btn btn-outline-secondary me-2 btn-md-square rounded-circle" href=""><i class="fab fa-youtube"></i></a>
-                                <a class="btn btn-outline-secondary btn-md-square rounded-circle" href=""><i class="fab fa-linkedin-in"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row g-5">
-                    <div class="col-lg-3 col-md-6">
-                        <div class="footer-item">
-                            <h4 class="text-light mb-3">Why People Like us!</h4>
-                            <p class="mb-4">typesetting, remaining essentially unchanged. It was 
-                                popularised in the 1960s with the like Aldus PageMaker including of Lorem Ipsum.</p>
-                            <a href="" class="btn border-secondary py-2 px-4 rounded-pill text-primary">Read More</a>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-6">
-                        <div class="d-flex flex-column text-start footer-item">
-                            <h4 class="text-light mb-3">Shop Info</h4>
-                            <a class="btn-link" href="">About Us</a>
-                            <a class="btn-link" href="">Contact Us</a>
-                            <a class="btn-link" href="">Privacy Policy</a>
-                            <a class="btn-link" href="">Terms & Condition</a>
-                            <a class="btn-link" href="">Return Policy</a>
-                            <a class="btn-link" href="">FAQs & Help</a>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-6">
-                        <div class="d-flex flex-column text-start footer-item">
-                            <h4 class="text-light mb-3">Account</h4>
-                            <a class="btn-link" href="">My Account</a>
-                            <a class="btn-link" href="">Shop details</a>
-                            <a class="btn-link" href="">Shopping Cart</a>
-                            <a class="btn-link" href="">Wishlist</a>
-                            <a class="btn-link" href="">Order History</a>
-                            <a class="btn-link" href="">International Orders</a>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-6">
-                        <div class="footer-item">
-                            <h4 class="text-light mb-3">Contact</h4>
-                            <p>Address: 1429 Netus Rd, NY 48247</p>
-                            <p>Email: Example@gmail.com</p>
-                            <p>Phone: +0123 4567 8910</p>
-                            <p>Payment Accepted</p>
-                            <img src="img/payment.png" class="img-fluid" alt="">
-                        </div>
-                    </div>
-                </div>
+  <!-- Section Témoignages -->
+  <section class="testimonial py-5">
+    <div class="container py-5">
+      <div class="testimonial-header text-center" data-aos="fade-up">
+        <h4 class="text-primary">Témoignages</h4>
+        <h1 class="display-5 mb-5 text-dark">Ce que disent nos clients</h1>
+      </div>
+      <div class="owl-carousel testimonial-carousel" data-aos="fade-up" data-aos-delay="200">
+        <!-- Témoignage 1 -->
+        <div class="testimonial-item bg-light rounded p-4">
+          <div class="position-relative">
+            <i class="fa fa-quote-right fa-2x text-secondary position-absolute" style="bottom: 30px; right: 0;"></i>
+            <div class="mb-4 pb-4 border-bottom border-secondary">
+              <p class="mb-0">"Solergy Solutions SARL a transformé notre manière de consommer l'énergie. L'installation a été rapide et professionnelle."</p>
             </div>
-        </div>
-        <!-- Footer End -->
-
-        <!-- Copyright Start -->
-        <div class="container-fluid copyright bg-dark py-4">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
-                        <span class="text-light"><a href="#"><i class="fas fa-copyright text-light me-2"></i>Your Site Name</a>, All right reserved.</span>
-                    </div>
-                    <div class="col-md-6 my-auto text-center text-md-end text-white">
-                        <!--/*** This template is free as long as you keep the below author’s credit link/attribution link/backlink. ***/-->
-                        <!--/*** If you'd like to use the template without the below author’s credit link/attribution link/backlink, ***/-->
-                        <!--/*** you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". ***/-->
-                        Designed By <a class="border-bottom" href="#">anoudemj@gmail.com</a> Distributed By <a class="border-bottom" href="https://themewagon.com">ThemeWagon</a>
-                    </div>
+            <div class="d-flex align-items-center">
+              <div class="bg-secondary rounded">
+                <img src="img/testimonial-1.jpg" class="img-fluid rounded" style="width: 100px; height: 100px;" alt="Client satisfait">
+              </div>
+              <div class="ms-4">
+                <h4 class="text-dark">Jean Dupont</h4>
+                <p class="mb-1">Directeur Général</p>
+                <div>
+                  <i class="fas fa-star text-primary"></i>
+                  <i class="fas fa-star text-primary"></i>
+                  <i class="fas fa-star text-primary"></i>
+                  <i class="fas fa-star text-primary"></i>
+                  <i class="fas fa-star"></i>
                 </div>
+              </div>
             </div>
+          </div>
         </div>
-        <!-- Copyright End -->
+        <!-- Témoignage 2 -->
+        <div class="testimonial-item bg-light rounded p-4">
+          <div class="position-relative">
+            <i class="fa fa-quote-right fa-2x text-secondary position-absolute" style="bottom: 30px; right: 0;"></i>
+            <div class="mb-4 pb-4 border-bottom border-secondary">
+              <p class="mb-0">"L'équipe est réactive et l'installation de nos panneaux solaires a été effectuée dans les délais impartis."</p>
+            </div>
+            <div class="d-flex align-items-center">
+              <div class="bg-secondary rounded">
+                <img src="img/testimonial-1.jpg" class="img-fluid rounded" style="width: 100px; height: 100px;" alt="Client satisfait">
+              </div>
+              <div class="ms-4">
+                <h4 class="text-dark">Marie Koffi</h4>
+                <p class="mb-1">Responsable Technique</p>
+                <div>
+                  <i class="fas fa-star text-primary"></i>
+                  <i class="fas fa-star text-primary"></i>
+                  <i class="fas fa-star text-primary"></i>
+                  <i class="fas fa-star text-primary"></i>
+                  <i class="fas fa-star text-primary"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Témoignage 3 -->
+        <div class="testimonial-item bg-light rounded p-4">
+          <div class="position-relative">
+            <i class="fa fa-quote-right fa-2x text-secondary position-absolute" style="bottom: 30px; right: 0;"></i>
+            <div class="mb-4 pb-4 border-bottom border-secondary">
+              <p class="mb-0">"Nous recommandons vivement Solergy Solutions pour leur expertise et leur professionnalisme dans le domaine solaire."</p>
+            </div>
+            <div class="d-flex align-items-center">
+              <div class="bg-secondary rounded">
+                <img src="img/testimonial-1.jpg" class="img-fluid rounded" style="width: 100px; height: 100px;" alt="Client satisfait">
+              </div>
+              <div class="ms-4">
+                <h4 class="text-dark">Samuel Ngu</h4>
+                <p class="mb-1">Entrepreneur</p>
+                <div>
+                  <i class="fas fa-star text-primary"></i>
+                  <i class="fas fa-star text-primary"></i>
+                  <i class="fas fa-star text-primary"></i>
+                  <i class="fas fa-star text-primary"></i>
+                  <i class="fas fa-star text-primary"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 
+  <!-- Footer -->
+  <footer class="bg-dark text-white-50 footer pt-5 mt-5">
+    <div class="container py-5">
+      <div class="pb-4 mb-4" style="border-bottom: 1px solid rgba(226, 175, 24, 0.5);">
+        <div class="row g-4">
+          <div class="col-lg-3">
+            <a href="#">
+              <h1 class="text-primary mb-0">Solergy Solutions SARL</h1>
+              <p class="text-secondary mb-0">Solutions Solaires à Douala</p>
+            </a>
+          </div>
+          <div class="col-lg-6">
+            <div class="position-relative mx-auto">
+              <input class="form-control border-0 w-100 py-3 px-4 rounded-pill" type="email" placeholder="Votre Email" aria-label="Votre Email">
+              <button type="submit" class="btn btn-primary border-0 py-3 px-4 position-absolute rounded-pill text-white" style="top: 0; right: 0;">S'abonner</button>
+            </div>
+          </div>
+          <div class="col-lg-3">
+            <div class="d-flex justify-content-end pt-3">
+              <a class="btn btn-outline-secondary me-2 btn-md-square rounded-circle" href="#"><i class="fab fa-twitter"></i></a>
+              <a class="btn btn-outline-secondary me-2 btn-md-square rounded-circle" href="#"><i class="fab fa-facebook-f"></i></a>
+              <a class="btn btn-outline-secondary me-2 btn-md-square rounded-circle" href="#"><i class="fab fa-youtube"></i></a>
+              <a class="btn btn-outline-secondary btn-md-square rounded-circle" href="#"><i class="fab fa-linkedin-in"></i></a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row g-5">
+        <div class="col-lg-3 col-md-6">
+          <div>
+            <h4 class="text-light mb-3">Pourquoi nous choisir ?</h4>
+            <p class="mb-4">Notre expertise et notre engagement pour une énergie renouvelable de qualité font de nous le partenaire idéal pour vos projets solaires.</p>
+            <a href="#" class="btn border-secondary py-2 px-4 rounded-pill text-primary">En savoir plus</a>
+          </div>
+        </div>
+        <div class="col-lg-3 col-md-6">
+          <div class="d-flex flex-column">
+            <h4 class="text-light mb-3">Infos Boutique</h4>
+            <a class="btn-link" href="#">À propos de nous</a>
+            <a class="btn-link" href="#">Contactez-nous</a>
+            <a class="btn-link" href="#">Politique de confidentialité</a>
+            <a class="btn-link" href="#">Conditions générales</a>
+            <a class="btn-link" href="#">Politique de retour</a>
+            <a class="btn-link" href="#">FAQs</a>
+          </div>
+        </div>
+        <div class="col-lg-3 col-md-6">
+          <div class="d-flex flex-column">
+            <h4 class="text-light mb-3">Mon Compte</h4>
+            <a class="btn-link" href="#">Mon Compte</a>
+            <a class="btn-link" href="#">Détails Boutique</a>
+            <a class="btn-link" href="#">Panier</a>
+            <a class="btn-link" href="#">Liste de souhaits</a>
+            <a class="btn-link" href="#">Historique Commandes</a>
+            <a class="btn-link" href="#">Commandes internationales</a>
+          </div>
+        </div>
+        <div class="col-lg-3 col-md-6">
+          <div>
+            <h4 class="text-light mb-3">Contact</h4>
+            <p>Adresse : En face Collège Bénédicte, Ndockoti, Douala, Cameroun</p>
+            <p>Email : <a href="mailto:solergysolutions@gmail.com" class="text-white">solergysolutions@gmail.com</a></p>
+            <p>Téléphone : +237 6 57 24 89 25</p>
+            <p>Modes de paiement acceptés :</p>
+            <img src="img/payment.png" class="img-fluid" alt="Modes de paiement">
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
 
+  <!-- Copyright -->
+  <div class="container-fluid bg-dark py-4">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
+          <span class="text-light"><i class="fas fa-copyright text-light me-2"></i>Solergy Solutions SARL, Tous droits réservés.</span>
+        </div>
+        <div class="col-md-6 text-center text-md-end">
+          Designed by <a class="border-bottom" href="mailto:anoudemj@gmail.com">anoudemj@gmail.com</a> | Distributed by <a class="border-bottom" href="https://themewagon.com">ThemeWagon</a>
+        </div>
+      </div>
+    </div>
+  </div>
 
-        <!-- Back to Top -->
-        <a href="#" class="btn btn-primary border-3 border-primary rounded-circle back-to-top"><i class="fa fa-arrow-up"></i></a>   
+  <!-- Back to Top -->
+  <a href="#" class="btn btn-primary border-3 border-primary rounded-circle back-to-top"><i class="fa fa-arrow-up"></i></a>
 
-        
-        <!-- JavaScript Libraries -->
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
-        <script src="{{ asset('frontend-assets/lib/easing/easing.min.js')}}"></script>
-        <script src="{{ asset('frontend-assets/lib/waypoints/waypoints.min.js')}}"></script>
-        <script src="{{ asset('frontend-assets/lib/lightbox/js/lightbox.min.js')}}"></script>
-        <script src="{{ asset('frontend-assets/lib/owlcarousel/owl.carousel.min.js')}}"></script>
-
-        <!-- Template Javascript -->
-        <script src="{{ asset('frontend-assets/js/main.js')}}"></script>
-    </body>
+  @livewireScripts
+  <!-- JavaScript Libraries -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="{{ asset('frontend-assets/lib/easing/easing.min.js') }}"></script>
+  <script src="{{ asset('frontend-assets/lib/waypoints/waypoints.min.js') }}"></script>
+  <script src="{{ asset('frontend-assets/lib/lightbox/js/lightbox.min.js') }}"></script>
+  <script src="{{ asset('frontend-assets/lib/owlcarousel/owl.carousel.min.js') }}"></script>
+  <!-- Template Javascript -->
+  <script src="{{ asset('frontend-assets/js/main.js') }}"></script>
+  <!-- AOS Script -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+  <script>
+    AOS.init({
+      once: true,
+      offset: 100,
+      duration: 800
+    });
+  </script>
+</body>
 
 </html>
