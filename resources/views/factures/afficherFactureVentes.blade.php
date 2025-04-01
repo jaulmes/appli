@@ -110,8 +110,8 @@
             </p>
             <div style="display: flex;">
                 <div style="margin-bottom: -7em;">
-                    <strong >Agent opérant : {{$ventes->user->name}}</strong> <br > 
-                    <strong >TEL : {{$ventes->user->numero}}</strong>
+                    <strong >Agent opérant : {{ $ventes->user->name ?? $ventes->agentOperant?? '-'}}</strong> <br > 
+                    <strong >TEL : {{$ventes->user->numero?? '-'}}</strong>
                 </div>
                 <div style="margin-left: 47em;">
                 <h3><strong >client : {{$ventes->nomClient ?? $ventes->clients->nom}}</strong></h3> <br>

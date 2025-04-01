@@ -108,7 +108,7 @@
             </p>
             <div style="display: flex;">
                 <div style="margin-bottom: -7em;">
-                    <strong >Agent opérant : {{$installations->user->nom}}</strong> <br > 
+                    <strong >Agent opérant : {{$installations->user->name}}</strong> <br > 
                     <strong >TEL : {{$installations->user->numero}}</strong>
                 </div>
                 <div style="margin-left: 47em;">
