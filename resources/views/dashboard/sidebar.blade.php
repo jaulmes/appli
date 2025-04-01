@@ -181,7 +181,7 @@
             </li>
             @can('CREER_ACHAT')
             <li class="nav-item">
-              <a href="{{ route('achats.cart') }}" wire:navigate class="nav-link {{ Request::is('achats/cart*') ? 'active' : '' }}">
+              <a href="{{ route('achats.cart') }}" class="nav-link {{ Request::is('achats/cart*') ? 'active' : '' }}">
                 <i class="nav-icon far fa-circle"></i>
                 <p>Créer un achat</p>
               </a>
