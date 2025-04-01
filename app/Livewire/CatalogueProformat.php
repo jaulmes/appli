@@ -36,6 +36,7 @@ class CatalogueProformat extends Component
                 'prix_technicien' => $produit->prix_technicien,
                 'prix_minimum' => $produit->prix_minimum,
                 'prix_promo' => $produit->prix_promo,
+                'prix_achat' => $produit->prix_achat,
             ];
         }
         
