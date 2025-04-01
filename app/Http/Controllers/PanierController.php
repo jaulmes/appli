@@ -64,14 +64,13 @@ class PanierController extends Controller
 
     public function validerVente(Request $request){
 
-        DB::beginTransaction();
 
-        try{
             //j'enregistre le client lies a la vente
             if(!$request->client_id){
                 $clients = new Client();
                 $clients->nom = $request->input('nom');
                 $clients->numero = $request->input('numero');
+                $clients->save();
             }else{
                 $clients = Client::find($request->client_id);
             }
@@ -131,7 +130,7 @@ class PanierController extends Controller
             $transactions->prixAchat = $prixAchat;
             
 
-
+            
             //creation d'une vente
             $ventes = new Vente();
             $ventes->dateEncour = now()->format('m-Y');
@@ -175,6 +174,7 @@ class PanierController extends Controller
             $ventes->totalAchat = $totalPrixAchat;
 
             
+
             $ventes->save();
             if($montantTotal > 50000){
                 $charges = new Charge();
@@ -189,7 +189,6 @@ class PanierController extends Controller
 
             $comptes->save();
             $transactions->save();
-            $clients->save();
 
             //je relie chaque produit du panier a la vente 
             foreach($panier as $produit){
@@ -237,13 +236,9 @@ class PanierController extends Controller
             );
             
             Session::forget('cart');
-            Db::commit();   
+   
             return $pdf->stream($numeroFacture.'-'.$clients->numero.'.pdf');
-        }catch(Exception $e){
-            DB::rollBack(); // En cas d'erreur, on annule tout
-    
-            return redirect()->back()->with('error', 'Une erreur s\'est produite : ' . $e->getMessage());
-        }
+     
 
     }
 

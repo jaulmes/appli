@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ $factures->numeroFacture }} - {{$ventes->numeroClient ?? $ventes->clients->numero}}</title>
+    <title>{{ $factures->numeroFacture }} - {{$ventes->numeroClient ?? $ventes->clients->numero?? '-'}}</title>
     <style>
         body{
             margin-left: 0;
@@ -114,8 +114,8 @@
                     <strong >TEL : {{$ventes->user->numero?? '-'}}</strong>
                 </div>
                 <div style="margin-left: 47em;">
-                <h3><strong >client : {{$ventes->nomClient ?? $ventes->clients->nom}}</strong></h3> <br>
-                    <strong >TEL: {{$ventes->numeroClient ?? $ventes->clients->numero}}</strong>
+                <h3><strong >client : {{$ventes->client_id}}</strong></h3> <br>
+                    <strong >TEL: {{$ventes->client_id}}</strong>
                 </div>
             </div>
 

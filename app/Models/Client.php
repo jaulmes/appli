@@ -21,7 +21,7 @@ class Client extends Model
         return $this->hasMany(Installation::class);
     }
     public function ventes(){
-        return $this->hasMany(Installation::class);
+        return $this->hasMany(Vente::class);
     }
     public function proformats(){
         return $this->hasMany(Proformat::class);
