@@ -56,10 +56,10 @@
                                                 <!-- Prix et actions -->
                                                 <div class="d-flex align-items-center justify-content-between border-top pt-3">
                                                     <div>
-                                                        <span class="badge bg-success fs-5 px-3 py-2"><strong>{{ $produit->prix_promo }}€</strong></span>
-                                                        <small class="text-muted ms-1"><strike>{{ $produit->getPrice() }}€</strike></small>
+                                                        <span class="badge bg-success fs-5 px-3 py-2"><strong>{{ $produit->prix_promo }} f cfa</strong></span>
+                                                        <small class="text-muted ms-1"><strike>{{ $produit->getPrice() }}</strike></small>
                                                     </div>
-                                                    <button class="btn btn-sm btn-primary rounded-pill px-3 shadow-sm">
+                                                    <button class="btn btn-sm btn-primary rounded-pill px-3 shadow-sm" wire:click="addToCart({{$produit->id}})">
                                                         <i class="fas fa-cart-plus me-2"></i> Ajouter
                                                     </button>
                                                 </div>

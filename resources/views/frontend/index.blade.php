@@ -9,13 +9,13 @@
   <meta name="description" content="Solergy Solutions SARL, spécialiste de la vente et de l'installation d'équipements solaires à Douala, Cameroun. Profitez d'une énergie renouvelable et durable pour vos projets résidentiels et professionnels.">
   <meta name="keywords" content="Solergy Solutions, équipements solaires, Douala, Cameroun, installation solaire, vente panneaux solaires, énergie renouvelable">
   <meta name="author" content="Solergy Solutions SARL">
-  <link rel="canonical" href="https://www.solergysolutions.com/">
+  <link rel="canonical" href="https://www.solergy-solutions.com/">
 
   <!-- Open Graph / Facebook -->
   <meta property="og:title" content="Solergy Solutions SARL - Vente et Installation d'Équipements Solaires à Douala, Cameroun">
   <meta property="og:description" content="Votre spécialiste en solutions solaires, de la vente à l'installation d'équipements solaires à Douala, Cameroun.">
   <meta property="og:image" content="{{ asset('logo.jpg') }}">
-  <meta property="og:url" content="https://www.solergysolutions.com/">
+  <meta property="og:url" content="https://www.solergy-solutions.com/">
   <meta property="og:type" content="website">
 
   <!-- Twitter Card -->
@@ -59,7 +59,7 @@
       "@context": "https://schema.org",
       "@type": "Organization",
       "name": "Solergy Solutions SARL",
-      "url": "https://www.solergysolutions.com/",
+      "url": "https://www.solergy-solutions.com/",
       "logo": "{{ asset('logo.jpg') }}",
       "contactPoint": {
         "@type": "ContactPoint",
@@ -88,33 +88,42 @@
       transition: all 0.5s ease;
       min-height: 80vh;
     }
+
     .hero-header:hover {
       box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
     }
+
     .search-btn {
       transition: background-color 0.3s ease, transform 0.3s ease;
     }
+
     .search-btn:hover {
       background-color: #ff7f00;
       transform: translateY(-2px);
     }
+
     .carousel.slide {
       transition: transform 0.4s ease;
     }
+
     .carousel.slide:hover {
       transform: scale(1.02);
     }
+
     .featurs-item {
       transition: transform 0.3s ease, box-shadow 0.3s ease;
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     }
+
     .featurs-item:hover {
       transform: translateY(-5px) scale(1.03);
       box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
     }
+
     .featurs-icon {
       transition: background-color 0.3s ease, transform 0.3s ease;
     }
+
     .featurs-item:hover .featurs-icon {
       background-color: #ff7f00;
       transform: rotate(10deg);
@@ -127,78 +136,20 @@
   <div id="spinner" class="show w-100 vh-100 bg-white position-fixed translate-middle top-50 start-50 d-flex align-items-center justify-content-center">
     <div class="spinner-grow text-primary" role="status"></div>
   </div>
-  
+
   <!-- Navbar (Header) -->
   <header>
-    <div class="container-fluid fixed-top">
-      <!-- Top Bar -->
-      <div class="container topbar d-none d-lg-block" style="background-color: #3e3ee7;">
-        <div class="d-flex justify-content-between">
-          <div class="top-info ps-2">
-            <small class="me-3">
-              <i class="fas fa-map-marker-alt me-2 text-secondary"></i>
-              <a href="#" class="text-white">En face Collège Bénédicte, Ndockoti, Douala, Cameroun</a>
-            </small>
-            <small class="me-3">
-              <i class="fas fa-envelope me-2 text-secondary"></i>
-              <a href="mailto:solergysolutions@gmail.com" class="text-white">solergysolutions@gmail.com</a>
-            </small>
-          </div>
-          <div class="top-link pe-2">
-            <a href="tel:+237657248925" class="text-white"><small class="mx-2">+237 6 57 24 89 25</small>/</a>
-            <a href="#" class="text-white"><small class="mx-2">Conditions d'utilisation</small>/</a>
-            <a href="#" class="text-white"><small class="ms-2">Politique de vente</small></a>
-          </div>
-        </div>
-      </div>
-      <!-- Navbar principale -->
-      <div class="container px-0">
-        <nav class="navbar navbar-light bg-white navbar-expand-xl">
-          <a href="index.html" class="navbar-brand">
-            <img src="{{ asset('logo.jpg') }}" alt="Logo Solergy Solutions SARL" style="width: 100px; height: 80px;">
-          </a>
-          <button class="navbar-toggler py-2 px-3" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
-            <span class="fa fa-bars text-primary"></span>
-          </button>
-          <div class="collapse navbar-collapse bg-white" id="navbarCollapse">
-            <ul class="navbar-nav mx-auto">
-              <li class="nav-item"><a href="index.html" class="nav-link active">Accueil</a></li>
-              <li class="nav-item"><a href="shop.html" class="nav-link">Produits</a></li>
-              <li class="nav-item"><a href="shop-detail.html" class="nav-link">Détails</a></li>
-              <li class="nav-item dropdown">
-                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
-                <ul class="dropdown-menu m-0 bg-secondary rounded-0">
-                  <li><a href="cart.html" class="dropdown-item">Panier</a></li>
-                  <li><a href="chackout.html" class="dropdown-item">Paiement</a></li>
-                  <li><a href="testimonial.html" class="dropdown-item">Témoignages</a></li>
-                  <li><a href="404.html" class="dropdown-item">Erreur 404</a></li>
-                </ul>
-              </li>
-              <li class="nav-item"><a href="contact.html" class="nav-link">Contact</a></li>
-            </ul>
-            <div class="d-flex m-3 me-0">
-              <a href="#" class="position-relative me-4 my-auto">
-                <i class="fa fa-shopping-bag fa-2x" style="color: #3e3ee7;"></i>
-                <span class="position-absolute bg-secondary rounded-circle d-flex align-items-center justify-content-center text-dark px-1" style="top: -5px; left: 15px; height: 20px; min-width: 20px;">3</span>
-              </a>
-              <a href="#" class="my-auto">
-                <button class="btn btn-primary" style="color: #3e3ee7;">Se connecter</button>
-              </a>
-            </div>
-          </div>
-        </nav>
-      </div>
-    </div>
+    <livewire:front-end-header-view />
   </header>
 
-  <!-- Section Hero -->
-  <section class="hero-header position-relative overflow-hidden" style="background-image: url('{{asset('home2.png') }}')" data-aos="fade-up">
+  <!-- Acceuill -->
+  <section class="hero-header position-relative " style="background-image: url('{{asset('home2.png') }}')" data-aos="fade-up">
     <div class="container py-5">
       <div class="row g-5 align-items-center">
         <!-- Texte de présentation -->
         <div class="col-md-12 col-lg-7" data-aos="fade-right" data-aos-delay="200">
-          <span style="font-size: 3em;" class="mb-5  text-info display-2  fw-bold">Vente & Installation d'Équipements Solaires</span><hr/>
-
+          <span style="font-size: 3em;" class="mb-5  text-info display-2  fw-bold">Vente & Installation d'Équipements Solaires</span>
+          <hr />
         </div>
         <!-- Carousel de présentation -->
         <div class="col-md-12 col-lg-5" style=" text-align: center;" data-aos="fade-left" data-aos-delay="600">
@@ -213,11 +164,31 @@
   </section>
 
   <!-- Section Features -->
+
+
+  <!-- Section Produits en Promotion -->
+  <section class="fruite py-5">
+    <livewire:front-end-promo-product>
+  </section>
+
+  <!-- Section Réalisations / Projets -->
+  <section class="service py-5">
+    <div class="container-fluid">
+      <livewire:front-end-realisation-view />
+    </div>
+  </section>
+
+  <!-- Section Catégories de Produits -->
+  <section>
+    <livewire:front-end-categori-product-view>
+  </section>
+
+  <!-- Garantie -->
   <section class="featurs py-5">
     <div class="container py-5">
       <div class="row g-4">
         <!-- Feature 1 : Installation Rapide -->
-        <div class="col-md-6 col-lg-3"  data-aos="fade-up" data-aos-delay="100">
+        <div class="col-md-6 col-lg-3" data-aos="fade-up" data-aos-delay="100">
           <div class="featurs-item text-center rounded bg-light p-4">
             <div class="featurs-icon btn-square rounded-circle bg-secondary mb-4 mx-auto">
               <i class="fas fa-solar-panel fa-3x text-white"></i>
@@ -254,61 +225,6 @@
             </div>
             <h5>Support 24/7</h5>
             <p class="mb-0">Assistance technique continue</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Section Produits en Promotion -->
-  <section class="fruite py-5">
-    <livewire:front-end-promo-product>
-  </section>
-
-  <!-- Section Réalisations / Projets -->
-  <section class="service py-5">
-    <div class="container-fluid">
-      <livewire:front-end-realisation-view/>
-    </div>
-  </section>
-
-  <!-- Section Catégories de Produits -->
-  <section>
-    <livewire:front-end-categori-product-view>
-  </section>
-
-  <!-- Section Statistiques -->
-  <section class="py-5">
-    <div class="container">
-      <div class="bg-light p-5 rounded" data-aos="fade-up">
-        <div class="row g-4 justify-content-center">
-          <div class="col-md-6 col-lg-3">
-            <div class="counter bg-white rounded p-5 text-center">
-              <i class="fa fa-users text-secondary mb-2"></i>
-              <h4>Clients Satisfaits</h4>
-              <h1>1963</h1>
-            </div>
-          </div>
-          <div class="col-md-6 col-lg-3">
-            <div class="counter bg-white rounded p-5 text-center">
-              <i class="fa fa-thumbs-up text-secondary mb-2"></i>
-              <h4>Qualité de Service</h4>
-              <h1>99%</h1>
-            </div>
-          </div>
-          <div class="col-md-6 col-lg-3">
-            <div class="counter bg-white rounded p-5 text-center">
-              <i class="fa fa-certificate text-secondary mb-2"></i>
-              <h4>Certificats Qualité</h4>
-              <h1>33</h1>
-            </div>
-          </div>
-          <div class="col-md-6 col-lg-3">
-            <div class="counter bg-white rounded p-5 text-center">
-              <i class="fa fa-box text-secondary mb-2"></i>
-              <h4>Produits Disponibles</h4>
-              <h1>789</h1>
-            </div>
           </div>
         </div>
       </div>
