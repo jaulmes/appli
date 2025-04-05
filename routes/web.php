@@ -48,8 +48,10 @@ Route::get('/welcome', function(){
     //return view('welcome');
 });
 
-Route::get('frontend', [App\Http\Controllers\FrontEndController::class, 'index'])->name('frontend.index');
+Route::get('frontend', [FrontEndController::class, 'index'])->name('frontend.index');
 Route::get('allPromoProduit', [FrontEndController::class, 'allPromoProduit'])->name('allPromoProduit');
+
+Route::get('all-produit', [FrontEndController::class, 'allProduit'])->name('all-produit');
 
 Route::get('produit-detail/{id}', [FrontEndController::class, 'detailProduit'])->name('produit-detail');
 
@@ -57,6 +59,8 @@ Route::get('allCategorie', [FrontEndController::class, 'allCategories'])->name('
 Route::get('categorie-detail/{id}', [FrontEndController::class, 'categorieDetail'])->name('categorie-detail');
 
 Route::get('detail-realisation/{id}', [FrontEndController::class, 'detailRealisation'])->name('detail-realisation');
+
+Route::get('detail-service/{id}', [FrontEndController::class, 'detailService'])->name('detail-service');
 
 
 

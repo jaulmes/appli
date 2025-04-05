@@ -143,7 +143,7 @@
   </header>
 
   <!-- Acceuill -->
-  <section class="hero-header position-relative " style="background-image: url('{{asset('home2.png') }}')" data-aos="fade-up">
+  <section class="hero-header position-relative " style="background-image: url('<?php echo asset('home2.png'); ?>')" data-aos="fade-up">
     <div class="container py-5">
       <div class="row g-5 align-items-center">
         <!-- Texte de présentation -->
@@ -178,9 +178,23 @@
     </div>
   </section>
 
+    <!-- Section produits -->
+    <section class="service py-5">
+    <div class="container-fluid">
+      <livewire:front-end-nos-produit-view>
+    </div>
+  </section>
+
   <!-- Section Catégories de Produits -->
   <section>
     <livewire:front-end-categori-product-view>
+  </section>
+
+  <!-- Section Services -->
+  <section class="service py-5">
+    <div class="container-fluid">
+      <livewire:front-end-service-view>
+    </div>
   </section>
 
   <!-- Garantie -->

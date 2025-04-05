@@ -12,9 +12,8 @@ class FrontEndRealisationView extends Component
     public function mount(){
         $this->realisations = Realisation::all();
     }
-    public 
-    function render()
-    {
+     
+    public function render(){
         return view('livewire.front-end-realisation-view');
     }
 }

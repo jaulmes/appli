@@ -6,15 +6,15 @@ use App\Models\Produit;
 use Illuminate\Support\Facades\Session;
 use Livewire\Component;
 
-class FrontEndPromoProduct extends Component
+class FrontEndAllPromoProduitView extends Component
 {
-
     public $produits;
     public $cart = [];
 
-    public $listeners = [
-        'addToCartProduct' => 'addToCart',
-    ];
+    public function mount()
+    {
+        $this->produits = Produit::where('status_promo', 1)->get();
+    }
 
     public function addToCart($id){
         $produit = Produit::where('id', $id)->first();
@@ -37,11 +37,8 @@ class FrontEndPromoProduct extends Component
         $this->dispatch('ProduitAjoute');
     }
 
-    public function mount(){
-        $this->produits = Produit::where('status_promo', 1)->get();
-    }
     public function render()
     {
-        return view('livewire.front-end-promo-product');
+        return view('livewire.front-end-all-promo-produit-view');
     }
 }

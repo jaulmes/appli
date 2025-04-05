@@ -2,7 +2,7 @@
     <div class="tab-class text-center">
         <div class="row g-4 bg-grey align-items-center mb-5">
             <div class="col-lg-4 text-start">
-                <h1>Nos Promotions</h1>
+                <h1>Nos Produits</h1>
             </div>
             <div class="col-lg-8 text-end">
                 <ul class="nav nav-pills d-inline-flex mb-0">
@@ -15,11 +15,11 @@
             </div>
         </div>
         <div class="tab-content">
-            <div id="carouselPromoProduits" class="carousel slide" data-bs-ride="carousel" data-bs-interval="5000">
+            <div id="carouselProduits" class="carousel slide" data-bs-ride="carousel" data-bs-interval="5000">
                 <!-- Indicateurs du carousel -->
                 <div class="carousel-indicators">
                     @foreach($produits->chunk(4) as $chunkIndex => $chunk)
-                        <button type="button" data-bs-target="#carouselPromoProduits" data-bs-slide-to="{{ $chunkIndex }}" @if($chunkIndex === 0) class="active" aria-current="true" @endif aria-label="Slide {{ $chunkIndex + 1 }}"></button>
+                        <button type="button" data-bs-target="#carouselProduits" data-bs-slide-to="{{ $chunkIndex }}" @if($chunkIndex === 0) class="active" aria-current="true" @endif aria-label="Slide {{ $chunkIndex + 1 }}"></button>
                     @endforeach
                 </div>
 
@@ -44,9 +44,7 @@
                                                     </div>
                                                     <!-- Bouton "Voir en détail" -->
                                                     <div class="w-100 d-grid">
-                                                        <a href=" {{route('produit-detail', $produit->id)}}">
-                                                            <button class="btn btn-light rounded-pill shadow-sm">Voir en détail</button>
-                                                        </a>
+                                                        <button class="btn btn-light rounded-pill shadow-sm">Voir en détail</button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -58,10 +56,9 @@
                                                 <!-- Prix et actions -->
                                                 <div class="d-flex align-items-center justify-content-between border-top pt-3">
                                                     <div>
-                                                        <span class="badge bg-success fs-5 px-3 py-2"><strong>{{ $produit->prix_promo }} f cfa</strong></span>
-                                                        <small class="text-muted ms-1"><strike>{{ $produit->getPrice() }}</strike></small>
+                                                        <span class="badge bg-success fs-5 px-3 py-2"><strong>{{ $produit->getPrice() }}</strong></span>
                                                     </div>
-                                                    <button class="btn btn-sm btn-primary rounded-pill px-3 shadow-sm" wire:click="addToCart({{$produit->id}})">
+                                                    <button class="btn btn-sm btn-primary rounded-pill px-3 shadow-sm" wire:click="addProductToCart({{$produit->id}})">
                                                         <i class="fas fa-cart-plus me-2"></i> Ajouter
                                                     </button>
                                                 </div>
@@ -75,11 +72,11 @@
                 </div>
 
                 <!-- Boutons de navigation customisés -->
-                <button class="carousel-control-prev" type="button" data-bs-target="#carouselPromoProduits" data-bs-slide="prev">
+                <button class="carousel-control-prev" type="button" data-bs-target="#carouselProduits" data-bs-slide="prev">
                     <span class="carousel-control-prev-icon bg-dark rounded-circle p-3" aria-hidden="true"></span>
                     <span class="visually-hidden">Précédent</span>
                 </button>
-                <button class="carousel-control-next" type="button" data-bs-target="#carouselPromoProduits" data-bs-slide="next">
+                <button class="carousel-control-next" type="button" data-bs-target="#carouselProduits" data-bs-slide="next">
                     <span class="carousel-control-next-icon bg-dark rounded-circle p-3" aria-hidden="true"></span>
                     <span class="visually-hidden">Suivant</span>
                 </button>
@@ -147,3 +144,5 @@
         </div>
     </div>
 </div>
+
+

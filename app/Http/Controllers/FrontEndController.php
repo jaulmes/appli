@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Categori;
 use App\Models\Produit;
 use App\Models\Realisation;
+use App\Models\Service;
 use Illuminate\Http\Request;
 
 class FrontEndController extends Controller
@@ -41,5 +42,10 @@ class FrontEndController extends Controller
     public function detailRealisation($id){
         $realisation = Realisation::find($id);
         return view('frontend.page.realisationDetail', compact('realisation'));
+    }
+
+    public function detailService($id){
+        $service = Service::find($id);
+        return view('frontend.page.serviceDetail', compact('service'));
     }
 }
