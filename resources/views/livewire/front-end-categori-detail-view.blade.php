@@ -1,8 +1,4 @@
-@extends('frontend.layout.index')
-
-@section('content')
-<div class="container py-5" style="margin-top: 13em;">
-  <div class="row justify-content-center">
+<div class="row justify-content-center">
     @foreach($produits as $produit)
       <div class="col-md-6 col-lg-4 col-xl-3 mb-4">
         <div class="card h-100 border-0 hover-scale overflow-hidden shadow-sm transition-all">
@@ -35,6 +31,9 @@
 
             <!-- Actions -->
             <div class="mt-3">
+                <button class="btn btn-sm btn-primary rounded-pill">
+                    <i class="fas fa-cart-plus me-2"></i>Ajouter
+                </button>
                 <a href="{{ route('produit-detail', $produit->id) }}" wire:navigate class="btn btn-sm btn-dark rounded-pill">
                     <i class="fas fa-eye me-2"></i>Voir en détail
                 </a>
@@ -44,30 +43,3 @@
       </div>
     @endforeach
   </div>
-</div>
-
-<!-- Styles additionnels -->
-<style>
-  .image-zoom-container {
-    transition: transform 0.3s;
-    overflow: hidden;
-  }
-  .zoom-image {
-    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-  .image-zoom-container:hover .zoom-image {
-    transform: scale(1.4);
-  }
-  .hover-scale:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08) !important;
-  }
-  .transition-all {
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-  /* Opacité de l'overlay lors du hover */
-  .hover-opacity-100:hover {
-    opacity: 1 !important;
-  }
-</style>
-@endsection

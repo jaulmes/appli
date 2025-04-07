@@ -18,10 +18,12 @@ class FrontEndPromoProduct extends Component
 
     public function addToCart($id){
         $produit = Produit::where('id', $id)->first();
-        if(isset($this->cart[$produit->id])){
-            $this->cart[$produit->id]['quantity'] += 1;
+        $cart = session()->get('cart', []);
+
+        if(isset($cart[$produit->id])){
+            $cart[$produit->id]['quantity'] += 1;
         }else{
-            $this->cart[$produit->id] = [
+            $cart[$produit->id] = [
                 'quantity' => 1,
                 'id' => $produit->id,
                 'name' => $produit->name,
@@ -33,7 +35,7 @@ class FrontEndPromoProduct extends Component
             ];
         }
         
-        Session::put('cart', $this->cart);
+        Session::put('cart', $cart);
         $this->dispatch('ProduitAjoute');
     }
 

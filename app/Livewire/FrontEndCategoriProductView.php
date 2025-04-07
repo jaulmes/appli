@@ -9,7 +9,12 @@ use Livewire\WithPagination;
 class FrontEndCategoriProductView extends Component
 {
     public $categoris;
+    public $categoriId;
     use WithPagination;
+
+    public function detailCategori(){
+
+    }
 
     public function mount(){
         $this->categoris = Categori::inRandomOrder()->take(9)->get();

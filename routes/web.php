@@ -17,6 +17,7 @@ use App\Http\Controllers\RecusController;
 use App\Http\Controllers\TacheController;
 use App\Http\Controllers\VentesController;
 use App\Http\Controllers\UserController;
+use App\Livewire\FrontEndCategoriDetailView;
 use App\Models\Installation;
 use Illuminate\Support\Facades\Route;
 use App\Models\Produit;
@@ -54,9 +55,11 @@ Route::get('allPromoProduit', [FrontEndController::class, 'allPromoProduit'])->n
 Route::get('all-produit', [FrontEndController::class, 'allProduit'])->name('all-produit');
 
 Route::get('produit-detail/{id}', [FrontEndController::class, 'detailProduit'])->name('produit-detail');
+Route::post('add-to-cart/{id}', [FrontEndController::class, 'addToCart'])->name('add-to-cart');
 
 Route::get('allCategorie', [FrontEndController::class, 'allCategories'])->name('all-categorie');
 Route::get('categorie-detail/{id}', [FrontEndController::class, 'categorieDetail'])->name('categorie-detail');
+Route::get('detail-categorie/{id}', [FrontEndCategoriDetailView::class])->name('detail-categorie');
 
 Route::get('detail-realisation/{id}', [FrontEndController::class, 'detailRealisation'])->name('detail-realisation');
 
