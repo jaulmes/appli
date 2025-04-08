@@ -62,4 +62,7 @@ class Transaction extends Model
     {
         return $this->belongsTo(ChargeDetail::class, 'chargeDetail_id');
     }
+    public function commandes(){
+        return $this->belongsTo(commande::class);
+    }
 }

@@ -29,4 +29,10 @@ class Client extends Model
     public function transactions(){
         return $this->hasMany(Transaction::class);
     }
+    public function commandes(){
+        return $this->hasMany(commande::class);
+    }
+    public function produits(){
+        return $this->hasMany(Produit::class);
+    }
 }

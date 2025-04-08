@@ -10,7 +10,7 @@ class FrontEndProduitPromo extends Component
     public $produits;
 
     public function mount(){
-        $this->produits = Produit::where('status_promo', 1)->get();
+        $this->produits = Produit::where('status_promo', 1)->take(5)->get();
     }
 
     public function render()

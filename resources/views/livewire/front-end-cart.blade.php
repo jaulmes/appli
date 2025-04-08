@@ -39,8 +39,8 @@
             <button class="btn btn-danger" wire:click="vider_panier">
                 <i class="bi bi-trash-fill me-1"></i> 🚮 Vider le panier
             </button>
-            <a href="#" class="btn btn-success">
-                Procéder au paiement
+            <a href=" {{ route('passer.commande')}}" wire:navigate class="btn btn-success">
+                Passer la commande
             </a>
         </div>
 

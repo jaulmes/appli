@@ -33,7 +33,7 @@ class FrontEndAllPromoProduitView extends Component
             ];
         }
         
-        Session::put('cart', $this->cart);
+        Session::put('frontEndCart', $this->cart);
         $this->dispatch('ProduitAjoute');
     }
 

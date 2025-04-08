@@ -15,7 +15,7 @@ class FrontEndCart extends Component
     ];
 
     public function mount(){
-        $this->cart = Session::get('cart', []);
+        $this->cart = Session::get('frontEndCart', []);
         //calcul du montant total du panier
         $this->montantTotal = array_reduce($this->cart, function($total, $produit) {
             $price = $produit['status_promo'] == 0 ? $produit['price'] : $produit['prix_promo'];
@@ -25,8 +25,8 @@ class FrontEndCart extends Component
 
     public function retirerProduit($id){
         unset($this->cart[$id]);
-        Session::put('cart', $this->cart);
-        $this->cart = Session::get('cart', []);
+        Session::put('frontEndCart', $this->cart);
+        $this->cart = Session::get('frontEndCart', []);
         $this->dispatch('ProduitRetire');
     }
 
@@ -41,7 +41,7 @@ class FrontEndCart extends Component
                 return $total + ($item['quantity'] * $price);
             }, 0);
     
-            Session::put('cart', $this->cart);
+            Session::put('frontEndCart', $this->cart);
     
             // Notification du frontend
             $this->dispatch('quantiteModifier');
@@ -51,7 +51,7 @@ class FrontEndCart extends Component
 
 
     public function vider_panier(){
-        Session::forget('cart', []);
+        Session::forget('frontEndCart', []);
         $this->dispatch('panierVide');
     }
 

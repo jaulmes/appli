@@ -19,7 +19,7 @@ class FrontEndHeaderView extends Component
 
     public function mount(){
 
-        $this->cart = Session::get('cart', []);
+        $this->cart = Session::get('frontEndCart', []);
 
         $this->qte = 0; // Nombre total d'articles dans le panier
         $this->qte = count($this->cart); // Nombre de produits distincts

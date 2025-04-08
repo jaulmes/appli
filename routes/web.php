@@ -59,12 +59,14 @@ Route::post('add-to-cart/{id}', [FrontEndController::class, 'addToCart'])->name(
 
 Route::get('allCategorie', [FrontEndController::class, 'allCategories'])->name('all-categorie');
 Route::get('categorie-detail/{id}', [FrontEndController::class, 'categorieDetail'])->name('categorie-detail');
-Route::get('detail-categorie/{id}', [FrontEndCategoriDetailView::class])->name('detail-categorie');
 
 Route::get('detail-realisation/{id}', [FrontEndController::class, 'detailRealisation'])->name('detail-realisation');
 
 Route::get('detail-service/{id}', [FrontEndController::class, 'detailService'])->name('detail-service');
 
+Route::get('passer-commande', [FrontEndController::class, 'passerCommande'])->name('passer.commande');
+
+Route::post('valider-commande', [FrontEndController::class, 'validerCommande'])->name('valider.commande');
 
 
 Route::get('api', [App\Http\Controllers\CallMomoApiController::class, 'index']);
@@ -79,7 +81,7 @@ Route::middleware('auth')->group(function () {
 
     //front end admin
     Route::get('/frontend/admin', [FrontEndController::class, 'admin'])->name('frontend.admin');
-    Route::get('/frontend/admin/allPromoProduit', [FrontEndController::class, 'allPromoProduit'])->name('frontend.admin.allPromoProduit');
+    Route::get('/frontend/admin/allPromoProduit', [FrontEndController::class, 'allPromoProduitAdmin'])->name('frontend.admin.allPromoProduit');
 
     /**
      * Dashboardd

@@ -159,6 +159,12 @@
                 <p>Installations</p>
               </a>
             </li>
+            <li class="nav-item">
+              <a href="{{ route('ventes.index') }}" wire:navigate class="nav-link {{ Request::is('ventes/index*') ? 'active' : '' }}">
+              📦
+                <p>Commandes</p>
+              </a>
+            </li>
           @endcan
         @endcan
 

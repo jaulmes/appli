@@ -58,4 +58,8 @@ class Vente extends Model
     public function transactions(){
         return $this->hasOne(Vente::class);
     }
+
+    public function commandes(){
+        return $this->belongsTo(commande::class);
+    }
 }

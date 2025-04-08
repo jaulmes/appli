@@ -48,6 +48,12 @@ return new class extends Migration
                                         ->on('users')
                                         ->onUpdate('cascade')
                                         ->onDelete('cascade');
+
+            $table->unsignedBigInteger('commande_id')->nullable();
+            $table->foreign('commande_id')->references('id')
+                                        ->on('commandes')
+                                        ->onUpdate('cascade')
+                                        ->onDelete('cascade');
             $table->string('dateLimitePaiement')->nullable();
             $table->timestamps();
         });
