@@ -15,17 +15,17 @@ return new class extends Migration
             $table->id();
             $table->string('nomClient')->nullable();
             $table->integer('numeroClient')->nullable();
-            $table->integer('montantTotal');
-            $table->integer('NetAPayer');
+            $table->integer('montantTotal')->nullable();
+            $table->integer('NetAPayer')->nullable();
             $table->integer('montantVerse')->nullable();
             $table->integer('totalAchat')->nullable();
             $table->integer('reduction')->nullable();
             $table->string('agentOperant')->nullable();
             $table->string('commission')->nullable();
-            $table->integer('qteTotal');
-            $table->string('date');
-            $table->string('statut');
-            $table->string('dateEncour');
+            $table->integer('qteTotal')->nullable();
+            $table->string('date')->nullable();
+            $table->string('statut')->nullable();
+            $table->string('dateEncour')->nullable();
             $table->string('impot')->nullable();
             
             //compte_key

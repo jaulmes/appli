@@ -1,121 +1,134 @@
 @extends('dashboard.main')
 
 @section('content')
+<div class="container-fluid my-4">
+    <!-- Message d'alerte -->
+    @if (session()->has('message'))
+        <div class="alert alert-success alert-dismissible fade show shadow-sm" role="alert">
+            <i class="fas fa-check-circle me-2"></i>
+            {{ session('message') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
 
-<div >
-
-
-    <div class="container-xl px-4 mt-n4">
-        @if (session()->has('message'))
-        <div class="alert alert-success alert-icon" role="alert">
-            <button class="btn-close" type="button" data-bs-dismiss="alert" aria-label="Close"></button>
-            <div class="alert-icon-aside">
-                <i class="far fa-flag"></i>
-            </div>
-            <div class="alert-icon-content">
-                {{ session('message') }}
+    <!-- Journal des Activités -->
+    <div class="card shadow-sm">
+        <div class="card-header d-flex flex-column flex-md-row align-items-start align-items-md-center justify-content-between gap-3">
+            <h3 class="card-title mb-0"><strong>Journal des Activités</strong></h3>
+            
+            <div class="d-flex flex-wrap gap-2">
+                <form method="GET" action="{{ route('transaction.bilan') }}" class="d-flex align-items-center">
+                    @csrf
+                    <input type="hidden" name="month" id="bilanMonth" value="{{ $currentMonth }}">
+                    <button type="submit" class="btn btn-primary btn-sm">
+                        <i class="fas fa-chart-line me-1"></i>
+                        Afficher le bilan du mois
+                    </button>
+                </form>
+                
+                <form method="GET" action="{{ route('transaction.index') }}">
+                    @csrf
+                    <div class="input-group input-group-sm" style="width: 180px;">
+                        <select name="month" id="transactionMonth" class="form-select" onchange="this.form.submit()">
+                            @for($i = 0; $i < 12; $i++)
+                                @php
+                                    $month = \Carbon\Carbon::now()->subMonths($i)->format('Y-m');
+                                @endphp
+                                <option value="{{ $month }}" {{ $currentMonth == $month ? 'selected' : '' }}>
+                                    {{ \Carbon\Carbon::parse($month)->format('F Y') }}
+                                </option>
+                            @endfor
+                        </select>
+                        <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
+                    </div>
+                </form>
             </div>
         </div>
-        @endif
-    </div>
-    <!-- END: Alert -->
-    
-    
-    <div class="row" style="font-size: small;">
-        <div class="col-15">
-            <div class="card" style="margin-top: 2em">
-                <div class="card-header">
-                    <h3 class="card-title "><strong >Journal des Activites</strong></h3>
-                        
-                    <form method="get" action="{{ route('transaction.bilan') }}" style="margin-left: 20em">
-                        @csrf
-                        <input type="hidden" name="month" id="bilanMonth" value="{{ $currentMonth }}">
-                        <button type="submit" class="btn btn-primary">Afficher le bilan du mois</button>
-                    </form>
-                    
-                    <div class="card-tools">
-                        
-                        <div class="input-group input-group-sm" style="width: 150px;">
-                           <form  method="get" action="{{ route('transaction.index') }}">
-                                @csrf
-                                <select name="month" id="month" onchange="this.form.submit()" id="transactionMonth">
-                                    @for($i = 0; $i < 12; $i++)
-                                        @php
-                                            $month = Carbon\Carbon::now()->subMonths($i)->format('Y-m');
-                                        @endphp
-                                        <option value="{{ $month }}" {{ $currentMonth == $month ? 'selected' : '' }}>
-                                            {{ Carbon\Carbon::parse($month)->format('F Y') }}
-                                        </option>
-                                    @endfor
-                                </select>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-                <div class="card-body table-responsive p-0" style="height: 400px;">
-                    <table class="table table-head-fixed ">
-                        <thead>
-                            <tr>
-                                <th>Nom client</th>
-                                <th>Num client</th>
-                                <th>Auteur</th>
+
+        <div class="card-body p-0">
+            <div class="table-responsive" style="max-height: 450px;">
+                <table class="table table-striped table-hover mb-0">
+                    <thead class="table-light sticky-top" style="z-index: 1;">
+                        <tr>
+                            <th>Nom client</th>
+                            <th>Num client</th>
+                            <th>Auteur</th>
+                            @can('VOIR_UTILISATEURS')
+                                <th>Prix achat</th>
+                            @endcan
+                            <th>Montant Verse</th>
+                            <th>Moyen paiement</th>
+                            <th>Produits</th>
+                            <th>Type</th>
+                            <th>Date</th>
+                            <th>Heure</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($transactions as $transaction)
+                            <tr class="align-middle small">
+                                <td>{{ $transaction->nomClient ?? $transaction->recus->clients->nom ?? $transaction->recus->ventes->commandes->clients->nom ?? '-' }}</td>
+                                <td>{{ $transaction->numeroClient ?? $transaction->recus->clients->numero ?? $transaction->recus->ventes->commandes->clients->numero ?? '-' }}</td>
+                                <td>
+                                    {{ $transaction->user->name ?? $transaction->recus->users->name ?? 'Aucun nom' }}
+                                </td>
                                 @can('VOIR_UTILISATEURS')
-                                    <th>Prix achat</th>
+                                    <td>{{ $transaction->prixAchat }}</td>
                                 @endcan
-                                <th>Montant Verse</th>
-                                <th>Moyen payement</th>
-                                <th>Produits</th>
-                                <th>Type</th>
-                                <th>Date</th>
-                                <th>Heure</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach($transactions as $transaction)
-                            <tr style="font-size: xx-small;">
-                                <td>{{$transaction->nomClient ?? $transaction->recus->clients->nom?? '-' }}</td>
-                                <td>{{$transaction->numeroClient}}</td>
-                                <td> {{$transaction->user->name ?? $transaction->recus->users->name ?? 'Auccun nom'}}</td>
-                                @can('VOIR_UTILISATEURS')
-                                    <td> {{$transaction->prixAchat}}</td>
-                                @endcan
-                                <td> {{$transaction->montantVerse ?? $transaction->recus->montant_recu?? '-'}}</td>
-                                <td> {{$transaction->compte->nom ?? '-'}}</td>
-                                <td style="font-size: xx-small;" class="col-12 col-md-3"> 
+                                <td>{{ $transaction->montantVerse ?? $transaction->recus->montant_recu ?? '-' }}</td>
+                                <td>{{ $transaction->compte->nom ?? '-' }}</td>
+                                <td class="text-wrap">
                                     @if($transaction->charge_id)
-                                        {{$transaction->charges->titre}}
+                                        {{ $transaction->charges->titre }}
                                     @elseif($transaction->recus)
                                         @if($transaction->recus->installations)
                                             @foreach($transaction->recus->installations->produits as $produit)
-                                                Qte: {{ $produit->pivot->quantity }} 
-                                                - PU: {{ $produit->pivot->price }} 
-                                                - {{ $produit->name }} <br>
+                                                <div class="mb-1">
+                                                    <small>
+                                                        Qte: {{ $produit->pivot->quantity }} - PU: {{ $produit->pivot->price }} - {{ $produit->name }}
+                                                    </small>
+                                                </div>
                                             @endforeach
                                         @elseif($transaction->recus->ventes)
                                             @foreach($transaction->recus->ventes->produits as $produit)
-                                                Qte: {{ $produit->pivot->quantity }} 
-                                                - PU: {{ $produit->pivot->price }} 
-                                                - {{ $produit->name }} <br>
+                                                <div class="mb-1">
+                                                    <small>
+                                                        Qte: {{ $produit->pivot->quantity }} - PU: {{ $produit->pivot->price }} - {{ $produit->name }}
+                                                    </small>
+                                                </div>
                                             @endforeach
                                         @else
-                                            hello
+                                            <small>Aucun produit renseigné</small>
                                         @endif
                                     @else
                                         @forelse($transaction->produits as $produit)
-                                            Qte: {{ $produit->pivot->quantity }} 
-                                            - PU: {{ $produit->pivot->price }} - {{ $produit->name }} <br>
+                                            <div class="mb-1">
+                                                <small>
+                                                    Qte: {{ $produit->pivot->quantity }} - PU: {{ $produit->pivot->price }} - {{ $produit->name }}
+                                                </small>
+                                            </div>
                                         @empty
-                                            {{ $transaction->produit }}
+                                            <small>{{ $transaction->produit }}</small>
                                         @endforelse
                                     @endif
                                 </td>
-                                <td>{{$transaction->type}}</td>
-                                <td>{{$transaction->created_at}}</td>
-                                <td>{{$transaction->heure}}</td>
+                                <td>{{ $transaction->type }}</td>
+                                <td>{{ \Carbon\Carbon::parse($transaction->created_at)->format('d/m/Y') }}</td>
+                                <td>{{ $transaction->heure }}</td>
                             </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <!-- Pied de Tableau -->
+        <div class="card-footer bg-light">
+            <div class="d-flex flex-column flex-md-row justify-content-between align-items-center">
+                <div class="text-muted small mb-2 mb-md-0">
+                    Affichage de {{ $transactions->firstItem() }} à {{ $transactions->lastItem() }} sur {{ $transactions->total() }} résultats
+                </div>
+                <div class="mt-2 mt-md-0">
+                    {{ $transactions->links('pagination::bootstrap-4') }}
                 </div>
             </div>
         </div>
@@ -124,12 +137,10 @@
 @endsection
 
 @section('javascript')
-
-    <script>
-        function updateBilanMonth() {
-            const selectedMonth = document.getElementById('transactionMonth').value;
-            document.getElementById('bilanMonth').value = selectedMonth;
-        }
-    </script>
-
+<script>
+    // Permet de synchroniser le mois sélectionné du formulaire de transactions avec le bilan
+    document.getElementById('transactionMonth').addEventListener('change', function() {
+        document.getElementById('bilanMonth').value = this.value;
+    });
+</script>
 @endsection

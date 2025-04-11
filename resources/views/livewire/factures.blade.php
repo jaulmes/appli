@@ -54,7 +54,7 @@
                             <td class="fw-bold">{{ $facture->numeroFacture }}</td>
                             @if($type == "ventes")
                                 <td>{{ $facture->ventes->created_at->format('d/m/Y') }}</td>
-                                <td style=" text-align: center;">{{ $facture->ventes->clients->nom?? $facture->ventes->nomClient?? '-' }}</td>
+                                <td style=" text-align: center;">{{ $facture->ventes->clients->nom?? $facture->ventes->nomClient?? $facture->ventes->commandes->clients->nom?? '-' }}</td>
                                 <td class="text-center">
                                     <a href="{{ route('factures.ventes.telecharger', $facture->id) }}" class="btn btn-outline-success btn-sm" title="Télécharger">
                                         <i class="bi bi-download"></i>

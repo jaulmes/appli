@@ -60,8 +60,8 @@
         <hr>
         <div id="content" style="margin-top: -3px;" >
             <div class="client">
-                <p>Nom du client: <strong style="background-color: white;">{{$recus->ventes->clients->nom}}</strong></p>
-                <p>Numero du client: <strong style="background-color: white;">{{$recus->ventes->clients->numero}}</strong></p>
+                <p>Nom du client: <strong style="background-color: white;">{{$recus->ventes->clients->nom?? $recus->ventes->commandes->clients->nom}}</strong></p>
+                <p>Numero du client: <strong style="background-color: white;">{{$recus->ventes->clients->numero?? $recus->ventes->commandes->clients->numero}}</strong></p>
                 <p>Motif: <strong style="background-color: white;">{{$recus->remarque}}</strong></p>
                 <p>Date limite du prochain versement: <strong style="background-color: white;">{{ \Carbon\Carbon::parse($recus->ventes->dateLimitePaiement)->format('d-m-Y') }}</strong></p>
             </div>

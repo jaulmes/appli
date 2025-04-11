@@ -46,12 +46,12 @@
                 <tbody >
                     <div>
                         <tr>
-                            <td>{{$ventes->clients->nom?? $ventes->nomClient}}</td>
-                            <td>{{$ventes->numeroClient}}</td>
+                            <td>{{$ventes->clients->nom?? $ventes->nomClient ?? $ventes->commandes->clients->nom}}</td>
+                            <td>{{$ventes->numeroClient ?? $ventes->commandes->clients->numero}}</td>
                             <td>{{$ventes->NetAPayer}}</td>
                             <td>{{$ventes->montantVerse}}</td>
                             <td>{{$ventes->NetAPayer - $ventes->montantVerse}}</td>
-                            <td>{{$ventes->date}}</td>
+                            <td>{{$ventes->created_at->format('d-m-y')}}</td>
                             <td>{{$ventes->dateLimitePaiement}}</td>
                         </tr>
                     </div>
@@ -77,7 +77,7 @@
 
             <div class="row">
                 <div class="col">
-                    @if(!$ventes->client_id)
+                    @if(!$ventes->client_id && !$ventes->commandes->client_id)
                         <div class="mb-3">
                             <label for="SelectClient" class="form-label">Client</label>
                             <select class="form-select " id="SelectClient" name="client_id">

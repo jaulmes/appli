@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ $factures->numeroFacture }} - {{$ventes->numeroClient ?? $ventes->clients->numero?? '-'}}</title>
+    <title>{{ $numeroFacture }} - {{$clients->numero}}</title>
     <style>
         body{
             margin-left: 0;
+            font-family: DejaVu Sans, sans-serif;
         }
         div.title{
             margin-left: 9em;
@@ -105,17 +106,17 @@
         </p>
         <div style="margin-top: -1em;">
             <p >
-                <strong>REF : {{ $factures->numeroFacture }}</strong>  
-                <strong style="margin-left: 35em;">date: {{ $ventes->created_at->format('d-m-y')}}</strong>
+                <strong>REF : {{ $numeroFacture }}</strong>  
+                <strong style="margin-left: 38em;">date: {{ $ventes->date}}</strong>
             </p>
             <div style="display: flex;">
-                <div style="margin-bottom: -10em;">
-                    <strong >Agent opérant : {{ $ventes->user->name ?? $ventes->agentOperant?? '-'}}</strong> <br > 
-                    <strong >TEL : {{$ventes->user->numero?? '-'}}</strong>
+                <div style="margin-bottom: -7em;">
+                    <strong >Agent opérant : @auth {{ Auth::User()->name}}  @endauth</strong> <br > 
+                    <strong >TEL : @auth {{ Auth::User()->numero}}  @endauth</strong>
                 </div>
                 <div style="margin-left: 47em;">
-                <h3><strong >client : {{ $ventes->clients->nom?? $ventes->commandes->clients->nom}}</strong></h3> <br>
-                    <strong >TEL: {{$ventes->clients->numero?? $ventes->commandes->clients->numero}}</strong>
+                <h3><strong >client : {{$clients->nom}}</strong></h3> <br>
+                    <strong >TEL: {{$clients->numero}}</strong>
                 </div>
             </div>
 
@@ -126,7 +127,7 @@
     <div style="margin-top: -2em">
         <p class="title">
             <u>
-                facture de vente
+                Facture de vente
             </u>
         </p>
     </div>
@@ -139,29 +140,13 @@
                     <th>P.U.</th>
                     <th>P.Total</th>
                 </tr>
-
-
-
-
-                @foreach($ventes->produits as $produit)
-
-                <tr>
-                    <td>{{$produit->pivot->quantity}}</td>
-                    <td>{{$produit->name}}</td>
-                    <td>{{$produit->pivot->price}}</td>
-                    <td>{{$produit->pivot->quantity * $produit->pivot->price}}</td>
-                </tr>
-                @endforeach
-                <tr style="font-weight: bold;">
-                    <td colspan="3" style="text-align: right;"><strong>Total</strong></td>
-                    <td><strong>{{ $ventes->montantTotal }}</strong></td>
-                </tr>
+                
             </table>
         </div>
         <div class="footer" style="text-align:center">
-            @if($ventes->reduction > 0)
+            @if($reduction > 0)
                 <div class="total"> 
-                    <span style="margin-bottom: 3em; Z-index: 5; background-color:grey; color: black !important"> la reduction sur votre facture est de : <strong>{{ $ventes->reduction}} Francs CFA</strong> </span>
+                    <span style="margin-bottom: 3em; Z-index: 5; background-color:grey; color: black !important"> la reduction sur votre facture est de : <strong>{{ $reduction}} Francs CFA</strong> </span>
                 </div>
             @endif
             <div class="total"> 

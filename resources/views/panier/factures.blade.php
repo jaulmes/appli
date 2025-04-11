@@ -144,13 +144,13 @@
                 @endphp
                 @foreach($panier as $produit)
                 @php
-                    $total += $produit['price'] * $produit['quantity'];
+                    $total += $produit['price'] ?? $produit->pivot->price * $produit['quantity'] ?? $produit->pivot->quantity;
                 @endphp
                 <tr>
-                    <td>{{$produit['quantity']}}</td>
-                    <td>{{$produit['name']}}</td>
-                    <td>{{$produit['price']}}</td>
-                    <td>{{$produit['price'] * $produit['quantity']}}</td>
+                    <td>{{$produit['quantity'] ?? $produit->pivot->quantity}}</td>
+                    <td>{{$produit['name'] ?? $produit->name}}</td>
+                    <td>{{$produit['price'] ?? $produit->pivot->price}}</td>
+                    <td>{{$produit['price'] ?? $produit->pivot->price * $produit['quantity'] ?? $produit->pivot->quantity}}</td>
                 </tr>
                 @endforeach
                 <tr style="font-weight: bold;">

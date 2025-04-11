@@ -60,6 +60,6 @@ class Vente extends Model
     }
 
     public function commandes(){
-        return $this->belongsTo(commande::class);
+        return $this->belongsTo(commande::class, 'commande_id');
     }
 }

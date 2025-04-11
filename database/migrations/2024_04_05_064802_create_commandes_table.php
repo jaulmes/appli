@@ -13,7 +13,8 @@ return new class extends Migration
     {
         Schema::create('commandes', function (Blueprint $table) {
             $table->id();
-            $table->boolean('status')->default(0);
+            $table->boolean('status')->default(0);//si c'est une nouvelle commande ou une commande déjà existante
+            $table->boolean('validation')->default(0);//si la commande est validée en vente ou non
             $table->integer('montant_total')->nullable();
             $table->unsignedBigInteger('client_id');
             $table->foreign('client_id')->references('id')

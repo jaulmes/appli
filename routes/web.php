@@ -4,6 +4,7 @@ use App\Http\Controllers\AchatController;
 use App\Http\Controllers\PanierController;
 use App\Http\Controllers\PrivilageController;
 use App\Http\Controllers\ChargeController;
+use App\Http\Controllers\CommandeController;
 use App\Http\Controllers\ComptabiliteController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\FactureController;
@@ -202,6 +203,12 @@ Route::middleware('auth')->group(function () {
      * installations
      */
     Route::get('/installations/index', [InstallationController::class, 'index'])->name('installations.index');
+
+    /**
+     * Commandes
+     */
+    Route::get('commandes/index', [CommandeController::class, 'index'])->name('commandes.index');
+    Route::get('commandes/{id}', [CommandeController::class, 'commandeDetail'])->name('commandes.detail');
 
     /**
      * recus

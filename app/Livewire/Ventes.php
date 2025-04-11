@@ -21,9 +21,41 @@ class Ventes extends Component
     public $compte_id;
     public $remarque;
     public $montant;
+    public $type = 'all';
+    public $nbreNonTermine;
+
+    public function filter($type){
+        if($type == 'all'){
+            $this->ventes = Vente::orderBy('id', 'desc')->get();
+            $this->type = 'all';
+            return;
+        }
+        if ($type === 'termine') {
+            // Ventes terminées : NetAPayer - montantVerse <= 0
+            $this->ventes = Vente::whereRaw('NetAPayer - montantVerse <= 0')
+                ->orderBy('id', 'desc')
+                ->get();
+            $this->type = 'termine';
+            return;
+        }
+    
+        if ($type === 'non_termine') {
+            // Ventes non terminées : NetAPayer - montantVerse > 0
+            $this->ventes = Vente::whereRaw('NetAPayer - montantVerse > 0')
+                ->orderBy('id', 'desc')
+                ->get();
+
+            $this->type = 'non_termine';
+            return;
+        }
+    }
 
     public function mount(){
-        $this->ventes = Vente::all();
+        $this->ventes = Vente::orderBy('id', 'desc')->get();
+        //nombre de vente non terminée
+        $this->nbreNonTermine = Vente::whereRaw('NetAPayer - montantVerse > 0')->count();
+
+
         $this->clients = Client::all();
         $this->comptes = Compte::all();
     }
