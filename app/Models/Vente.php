@@ -33,7 +33,7 @@ class Vente extends Model
     
     public function compte()
     {
-        return $this->belongsTo(Compte::class);
+        return $this->belongsTo(Compte::class, 'compte_id');
     }
 
     public function produits()
@@ -52,7 +52,7 @@ class Vente extends Model
     }
 
     public function clients(){
-        return $this->belongsTo(Client::class);
+        return $this->belongsTo(Client::class, 'client_id');
     }
 
     public function transactions(){

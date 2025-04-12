@@ -114,8 +114,8 @@
                     <strong >TEL : {{$ventes->user->numero?? '-'}}</strong>
                 </div>
                 <div style="margin-left: 47em;">
-                <h3><strong >client : {{ $ventes->clients->nom?? $ventes->commandes->clients->nom}}</strong></h3> <br>
-                    <strong >TEL: {{$ventes->clients->numero?? $ventes->commandes->clients->numero}}</strong>
+                <h3><strong >client : {{ $ventes->clients->nom?? $ventes->commandes->clients->nom?? '-'}}</strong></h3> <br>
+                    <strong >TEL: {{$ventes->clients->numero?? $ventes->commandes->clients->numero?? '-'}}</strong>
                 </div>
             </div>
 
