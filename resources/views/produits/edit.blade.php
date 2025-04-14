@@ -2,117 +2,161 @@
 
 @section('content')
 <section class="content">
-    <div class="container-fluid mr-5 " style="margin-left: 300px; position: relative;">
-        <div class="row">
-            <!-- left column -->
-            <div class="col-md-6">
-                <!-- general form elements -->
-                <div class="card card-primary">
-
-
-                @if ($errors->any())
-        <div class="alert alert-danger">
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
-
-
-                    <div class="card-header">
-                        <h3 class="card-title">Quick Example</h3>
+    <div class="container-fluid">
+        <!-- Centrer le formulaire avec les classes Bootstrap -->
+        <div class="row justify-content-center">
+            <div class="col-lg-8 col-md-10">
+                <div class="card shadow-sm border-0">
+                    <div class="card-header bg-primary text-white">
+                        <h3 class="card-title mb-0">Modifier le Produit</h3>
                     </div>
-                    <form method="post" action="{{route('produit.edit', $produit->id)}}" enctype="multipart/form-data">
-                        @method('put')
-                        @csrf
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="form-group mx-4" >
-                                    <label for="titre">titre </label>
-                                    <input name="name" value="{{old('name')?? $produit->name}}" type="text" class="form-control" id="titre" placeholder="entrer le titre">
-                                    @error('titre')
-                                        <div class="invalid-feedback">
-                                            {{ $message }}
-                                        </div>
-                                    @enderror
-                                </div>
-
-                                <div class="form-group ">
-                                    <label for="categori_id">Categorie</label>
-                                    <select name="categori_id" value="{{old('categori_id')?? $produit->categori->name}}" required class="form-control col-md-6 select2" id="categori_id"  style="width: 100%;" >
-                                            <option disabled value="{{ $produit->categori_id }}" selected >{{$produit->categori->name}}</option>
-                                        @foreach($categories as $categorie)
-                                            <option value="{{$categorie->id}}">{{$categorie->titre}}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
+                    <div class="card-body">
+                        <!-- Affichage des erreurs de validation -->
+                        @if ($errors->any())
+                            <div class="alert alert-danger">
+                                <ul class="mb-0">
+                                    @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
                             </div>
-                            <div class="row">
-                                    <div class="form-group mx-4">
-                                        <label for="prix_achat">Prix d'achat </label>
-                                        <input name="prix_achat" value="{{old('prix_achat')?? $produit->prix_achat}}" type="number" class="form-control" id="prix_achat" placeholder="entrer le prix d'achat">
-                                        @error('prix_achat')
-                                        <div class="invalid-feedback">
-                                            {{ $message }}
-                                        </div>
+                        @endif
+
+                        <form method="post" action="{{ route('produit.edit', $produit->id) }}" enctype="multipart/form-data">
+                            @method('put')
+                            @csrf
+                            <div class="row g-3">
+                                <!-- Titre -->
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="titre" class="form-label">Titre</label>
+                                        <input name="name" value="{{ old('name', $produit->name) }}" type="text" class="form-control @error('name') is-invalid @enderror" id="titre" placeholder="Entrer le titre">
+                                        @error('name')
+                                            <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
                                     </div>
+                                </div>
+
+                                <!-- Catégorie -->
+                                <div class="col-md-6">
                                     <div class="form-group">
-                                        <label for="prix_vente">Prix de catalogue </label>
-                                        <input name="price" value="{{old('price')?? $produit->price}}" type="number" class="form-control" id="prix_vente" placeholder="entrer le prix de vente">
+                                        <label for="categori_id" class="form-label">Catégorie</label>
+                                        <select name="categori_id" required class="form-select @error('categori_id') is-invalid @enderror" id="categori_id">
+                                            <option disabled {{ old('categori_id', $produit->categori_id) ? '' : 'selected' }}>Choisir la catégorie</option>
+                                            @foreach($categories as $categorie)
+                                                <option value="{{ $categorie->id }}"
+                                                    {{ (old('categori_id', $produit->categori_id) == $categorie->id) ? 'selected' : '' }}>
+                                                    {{ $categorie->titre }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                        @error('categori_id')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
                                     </div>
-                            </div>
-                            <div class="row">
-                                <div class="form-group mx-4">
-                                    <label for="prix_technicien">Prix technicien </label>
-                                    <input name="prix_technicien" value="{{old('prix_technicien')?? $produit->prix_technicien}}" type="number" class="form-control" id="prix_technicien" placeholder="entrer le prix des technicients">
                                 </div>
-                                <div class="form-group ">
-                                    <label for="prix_minimum">Prix minimum </label>
-                                    <input name="prix_minimum" value="{{old('prix_minimum')?? $produit->prix_minimum}}" type="number" class="form-control" id="prix_minimum" placeholder="entrer le prix minimum">
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="form-group mx-4">
-                                    <label for="stock">stock </label>
-                                    <input name="stock" value="{{old('stock')?? $produit->stock}}" type="number" class="form-control" id="stock" placeholder="entrer le stock">
-                                </div>
-                                <div class="form-group ">
-                                    <label for="fabricant">fabricant </label>
-                                    <input type="text" name="fabricant" value="{{old('fabricant')?? $produit->fabricant}}" id="fabricant" class="form-control" placeholder="entrer le fabricant">
-                                </div>
-                            </div>
 
-                            <div class="form-group">
-                                <div class="input-group">
-                                    <div class="form-group mx-4">
-                                        <label for="description">description </label>
-                                        <textarea name="description" id="description" class="form-control" rows="10" cols="30" >{{old('description')?? $produit->description}}</textarea>
+                                <!-- Prix d'achat -->
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="prix_achat" class="form-label">Prix d'achat</label>
+                                        <input name="prix_achat" value="{{ old('prix_achat', $produit->prix_achat) }}" type="number" class="form-control @error('prix_achat') is-invalid @enderror" id="prix_achat" placeholder="Entrer le prix d'achat">
+                                        @error('prix_achat')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
                                     </div>
-
-
                                 </div>
-                                <div class="custom-file">
-                                    <label class="custom-file-label" for="image_produit">image {{ public_path('storage/images/produits/'.$produit->image_produit) }}</label>
-                                    <input type="file" value="{{ asset('storage/images/produits/'.$produit->image_produit) }}" name="image_produit" class="custom-file-input" id="image_produit"  />
-                                    @if($produit->image_produit)
-                                        <div class="form-group mx-4 mt-2">
-                                            <label>Image actuelle :</label><br>
-                                            <img src="{{ asset('storage/images/produits/' . $produit->image_produit) }}" alt="Image du produit" width="150">
-                                        </div>
-                                    @endif
+
+                                <!-- Prix de catalogue -->
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="prix_vente" class="form-label">Prix de catalogue</label>
+                                        <input name="price" value="{{ old('price', $produit->price) }}" type="number" class="form-control @error('price') is-invalid @enderror" id="prix_vente" placeholder="Entrer le prix de vente">
+                                        @error('price')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+
+                                <!-- Prix technicien -->
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="prix_technicien" class="form-label">Prix technicien</label>
+                                        <input name="prix_technicien" value="{{ old('prix_technicien', $produit->prix_technicien) }}" type="number" class="form-control @error('prix_technicien') is-invalid @enderror" id="prix_technicien" placeholder="Entrer le prix technicien">
+                                        @error('prix_technicien')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+
+                                <!-- Prix minimum -->
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="prix_minimum" class="form-label">Prix minimum</label>
+                                        <input name="prix_minimum" value="{{ old('prix_minimum', $produit->prix_minimum) }}" type="number" class="form-control @error('prix_minimum') is-invalid @enderror" id="prix_minimum" placeholder="Entrer le prix minimum">
+                                        @error('prix_minimum')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+
+                                <!-- Stock -->
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="stock" class="form-label">Stock</label>
+                                        <input name="stock" value="{{ old('stock', $produit->stock) }}" type="number" class="form-control @error('stock') is-invalid @enderror" id="stock" placeholder="Entrer le stock">
+                                        @error('stock')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+
+                                <!-- Fabricant -->
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="fabricant" class="form-label">Fabricant</label>
+                                        <input type="text" name="fabricant" value="{{ old('fabricant', $produit->fabricant) }}" id="fabricant" class="form-control @error('fabricant') is-invalid @enderror" placeholder="Entrer le fabricant">
+                                        @error('fabricant')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+
+                                <!-- Description -->
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <label for="description" class="form-label">Description</label>
+                                        <textarea name="description" id="description" class="form-control @error('description') is-invalid @enderror" rows="4" placeholder="Entrer la description">{{ old('description', $produit->description) }}</textarea>
+                                        @error('description')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+
+                                <!-- Image -->
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <label for="image_produit" class="form-label">Image</label>
+                                        <input type="file" name="image_produit" class="form-control @error('image_produit') is-invalid @enderror" id="image_produit">
+                                        @error('image_produit')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                        @if($produit->image_produit)
+                                            <div class="mt-3">
+                                                <label class="form-label">Image actuelle :</label><br>
+                                                <img src="{{ asset('storage/images/produits/' . $produit->image_produit) }}" alt="Image du produit" class="img-fluid rounded" style="max-width: 150px;">
+                                            </div>
+                                        @endif
+                                    </div>
                                 </div>
                             </div>
 
-                        </div>
-                        <!-- /.card-body -->
-
-                        <div class="card-footer">
-                            <button type="submit" class="btn btn-primary">Submit</button>
-                        </div>
-                    </form>
+                            <!-- Bouton de soumission -->
+                            <div class="text-end mt-4">
+                                <button type="submit" class="btn btn-primary px-4">Mettre à jour</button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
