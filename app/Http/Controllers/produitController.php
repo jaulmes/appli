@@ -203,7 +203,9 @@ class produitController extends Controller
             $path = 'public/images/produits/';
 
             // Delete an image if exists.
-             
+            if ($produits->image_produit && Storage::exists('public/images/produits/' . $produits->image_produit)) {
+                Storage::delete('public/images/produits' . $produits->image_produit);
+            }
 
             // Store an image to Storage
             $file->storeAs($path, $fileName);
@@ -211,7 +213,7 @@ class produitController extends Controller
         }
 
         else{
-            $produits->image_produit = '';
+            $produits->image_produit = $produits->image_produit;
         }
         
         $dateHeure = now();

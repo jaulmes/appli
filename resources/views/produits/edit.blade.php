@@ -42,7 +42,7 @@
                                 <div class="form-group ">
                                     <label for="categori_id">Categorie</label>
                                     <select name="categori_id" value="{{old('categori_id')?? $produit->categori->name}}" required class="form-control col-md-6 select2" id="categori_id"  style="width: 100%;" >
-                                            <option selected="" disabled>choisir la categorie</option>
+                                            <option disabled value="{{ $produit->categori_id }}" selected >{{$produit->categori->name}}</option>
                                         @foreach($categories as $categorie)
                                             <option value="{{$categorie->id}}">{{$categorie->titre}}</option>
                                         @endforeach
@@ -91,12 +91,18 @@
                                         <label for="description">description </label>
                                         <textarea name="description" id="description" class="form-control" rows="10" cols="30" >{{old('description')?? $produit->description}}</textarea>
                                     </div>
-                                    <div class="custom-file">
-                                        <label class="custom-file-label" for="image_produit">image</label>
-                                        <input type="file" value="{{old('image_produit')?? $produit->image_produit}}" name="image_produit" class="custom-file-input" id="image_produit"  />
 
-                                    </div>
 
+                                </div>
+                                <div class="custom-file">
+                                    <label class="custom-file-label" for="image_produit">image {{ public_path('storage/images/produits/'.$produit->image_produit) }}</label>
+                                    <input type="file" value="{{ asset('storage/images/produits/'.$produit->image_produit) }}" name="image_produit" class="custom-file-input" id="image_produit"  />
+                                    @if($produit->image_produit)
+                                        <div class="form-group mx-4 mt-2">
+                                            <label>Image actuelle :</label><br>
+                                            <img src="{{ asset('storage/images/produits/' . $produit->image_produit) }}" alt="Image du produit" width="150">
+                                        </div>
+                                    @endif
                                 </div>
                             </div>
 

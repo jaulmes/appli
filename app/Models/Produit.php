@@ -29,7 +29,7 @@ class Produit extends Model
     ];
 
     public function categori(){
-        return $this->belongsTo(Categori::class);
+        return $this->belongsTo(Categori::class, 'categori_id');
     }
 
     public function achats(): BelongsToMany
