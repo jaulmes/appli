@@ -30,6 +30,8 @@
     <link rel="icon" type="image/png" sizes="16x16" href="../favicon/favicon-16x16.png">
     <link rel="manifest" href="../favicon/site.webmanifest">
     <meta name="theme-color" content="#ffffff">
+
+
 </head>
 
 <body>
@@ -160,7 +162,7 @@
 
                             <!-- Bouton de soumission -->
                             <div class="d-grid mt-5">
-                                <button class="btn btn-primary btn-lg py-3 fw-bold rounded-3"
+                                <button id="addToCartButton" class="btn btn-primary btn-lg py-3 fw-bold rounded-3"
                                     type="submit"
                                     id="submitBtn">
                                     <span class="submit-text">Valider la commande</span>
@@ -168,6 +170,12 @@
                                         role="status"
                                         aria-hidden="true"></span>
                                 </button>
+                                <!-- Facebook Pixel Event -->
+                                <script type="text/javascript">
+                                    document.getElementById('addToCartButton').addEventListener('click', function() {
+                                        fbq('track', 'Purchase');
+                                    }, false);
+                                </script>
                             </div>
                         </form>
                     </div>
