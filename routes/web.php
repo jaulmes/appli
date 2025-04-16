@@ -4,6 +4,7 @@ use App\Http\Controllers\AchatController;
 use App\Http\Controllers\PanierController;
 use App\Http\Controllers\PrivilageController;
 use App\Http\Controllers\ChargeController;
+use App\Http\Controllers\ClientController;
 use App\Http\Controllers\CommandeController;
 use App\Http\Controllers\ComptabiliteController;
 use App\Http\Controllers\DashboardController;
@@ -99,6 +100,10 @@ Route::middleware('auth')->group(function () {
     //valider le transfert d'un compte a un autre
     Route::post('dashboard/comptes/valider_transfert', [ComptabiliteController::class, 'valider_transfert'])->name('dashboard.compte.valider_transfert');
     
+    /**
+     * clients
+     */
+    Route::get('clients/index', [ClientController::class, 'index'])->name('clients.index');
     
     
     /**

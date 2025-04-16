@@ -50,6 +50,14 @@
                 </li>
                 @endcan
 
+                <!-- Clients -->
+                <li class="nav-item">
+                    <a href="{{ route('clients.index') }}" wire:navigate class="nav-link {{ Request::is('clients/index*') ? 'active' : '' }}">
+                        👤
+                        <p>Clients</p>
+                    </a>
+                </li>
+
                 <!-- Tâches -->
                 <li class="nav-item">
                     <a href="{{ route('taches.index') }}" wire:navigate class="nav-link {{ Request::is('taches/index*') ? 'active' : '' }}">
