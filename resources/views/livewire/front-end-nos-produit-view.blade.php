@@ -7,7 +7,7 @@
             <div class="col-lg-8 text-end">
                 <ul class="nav nav-pills d-inline-flex mb-0">
                     <li class="nav-item">
-                        <a href="{{ route('allPromoProduit') }}" wire:navigate class="btn btn-dark rounded-pill">
+                        <a href="{{ route('all-produit') }}" wire:navigate class="btn btn-dark rounded-pill">
                             Voir plus
                         </a>
                     </li>

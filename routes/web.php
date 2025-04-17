@@ -54,7 +54,10 @@ Route::get('/welcome', function(){
 Route::get('frontend', [FrontEndController::class, 'index'])->name('frontend.index');
 Route::get('allPromoProduit', [FrontEndController::class, 'allPromoProduit'])->name('allPromoProduit');
 
-Route::get('all-produit', [FrontEndController::class, 'allProduit'])->name('all-produit');
+Route::get('all-produit', [FrontEndController::class, 'allProduits'])->name('all-produit');
+
+Route::get('all-realisations', [FrontEndController::class, 'allRealisations'])->name('all-realisations');
+Route::get('nos-services', [FrontEndController::class, 'nosServices'])->name('nos-services');
 
 Route::get('produit-detail/{id}', [FrontEndController::class, 'detailProduit'])->name('produit-detail');
 Route::post('add-to-cart/{id}', [FrontEndController::class, 'addToCart'])->name('add-to-cart');

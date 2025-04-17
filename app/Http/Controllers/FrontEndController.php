@@ -145,8 +145,22 @@ class FrontEndController extends Controller
         return view('frontend.page.realisationDetail', compact('realisation'));
     }
 
+    public function allProduits(){
+        $produits = Produit::all();
+        return view('frontend.page.allProduit', compact('produits'));
+    }
+
     public function detailService($id){
         $service = Service::find($id);
         return view('frontend.page.serviceDetail', compact('service'));
+    }
+
+    public function allServices(){
+        $services = Service::all();
+        return view('frontend.page.nosServices', compact('services'));
+    }
+    public function allRealisations(){
+        $realisations = Realisation::all();
+        return view('frontend.page.allRealisation', compact('realisations'));
     }
 }

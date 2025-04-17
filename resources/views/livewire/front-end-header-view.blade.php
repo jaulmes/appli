@@ -36,6 +36,112 @@
                 </div>
             </div>
         </div>
+        <style>
+/* ——————————————————————————————————————————————————————————————————
+   1) Fond dégradé animé
+—————————————————————————————————————————————————————————————————— */
+.topbar {
+  background: linear-gradient(
+    270deg,
+    #0066ff,
+    #00ccff,
+    #6600cc,
+    #ff0066
+  );
+  background-size: 800% 800%;
+  animation: gradientShift 20s ease infinite;
+  overflow: hidden;
+  position: relative;
+  z-index: 999;
+}
+
+@keyframes gradientShift {
+  0%   { background-position: 0%   50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0%   50%; }
+}
+
+
+/* ——————————————————————————————————————————————————————————————————
+   2) Apparition en cascade des items
+—————————————————————————————————————————————————————————————————— */
+.topbar .top-info .d-flex,
+.topbar .top-link .d-flex {
+  opacity: 0;
+  transform: translateY(-20px);
+  animation: fadeInDown 0.8s forwards;
+}
+
+/* Staggering */
+.topbar .top-info .d-flex:nth-child(1) { animation-delay: 0.2s; }
+.topbar .top-info .d-flex:nth-child(2) { animation-delay: 0.4s; }
+.topbar .top-link .d-flex:nth-child(1) { animation-delay: 0.6s; }
+.topbar .top-link .d-flex:nth-child(2) { animation-delay: 0.8s; }
+
+@keyframes fadeInDown {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+/* ——————————————————————————————————————————————————————————————————
+   3) Icônes flottantes
+—————————————————————————————————————————————————————————————————— */
+.topbar i {
+  display: inline-block;
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-4px);
+  }
+}
+
+
+/* ——————————————————————————————————————————————————————————————————
+   4) Hover stylé sur les liens
+—————————————————————————————————————————————————————————————————— */
+.topbar a {
+  position: relative;
+  color: #fff;
+  transition: color 0.3s ease;
+}
+
+.topbar a::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -2px;
+  width: 0;
+  height: 2px;
+  background: #ffeb3b;
+  transition: all 0.3s ease;
+}
+
+.topbar a:hover {
+  color: #ffeb3b;
+}
+
+.topbar a:hover::after {
+  left: 0;
+  width: 100%;
+}
+
+
+/* ——————————————————————————————————————————————————————————————————
+   5) Option : légère ombre portée
+—————————————————————————————————————————————————————————————————— */
+.topbar {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+</style>
+
     </div>
 
     <!-- Navbar principale -->
@@ -68,19 +174,16 @@
             <!-- Contenu collapsible -->
             <div class="collapse navbar-collapse bg-white" id="navbarCollapse">
                 <ul class="navbar-nav mx-auto">
-                    <li class="nav-item"><a href="index.html" class="nav-link active">Accueil</a></li>
-                    <li class="nav-item"><a href="shop.html" class="nav-link">Produits</a></li>
-                    <li class="nav-item"><a href="shop-detail.html" class="nav-link">Détails</a></li>
+                    <li class="nav-item"><a href="{{ route('frontend.index') }}" class="nav-link active">Accueil</a></li>
+                    <li class="nav-item"><a href="{{ route('all-produit')}}" class="nav-link">Produits</a></li>
+                    <li class="nav-item"><a href="{{ route('all-realisations') }}" class="nav-link">realisations</a></li>
                     <li class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
                         <ul class="dropdown-menu bg-secondary rounded-0">
-                            <li><a href="cart.html" class="dropdown-item">Panier</a></li>
-                            <li><a href="checkout.html" class="dropdown-item">Paiement</a></li>
-                            <li><a href="testimonial.html" class="dropdown-item">Témoignages</a></li>
-                            <li><a href="404.html" class="dropdown-item">Erreur 404</a></li>
+                            <li><a href="#" class="dropdown-item">blog</a></li>
                         </ul>
                     </li>
-                    <li class="nav-item"><a href="contact.html" class="nav-link">Contact</a></li>
+                    <li class="nav-item"><a href="#contact" class="nav-link">Contact</a></li>
                 </ul>
 
                 <!-- Section Panier & Connexion pour écrans moyens et grands -->
@@ -101,6 +204,7 @@
                 </div>
             </div>
         </nav>
+        
     </div>
 
     <!-- Offcanvas Panier -->

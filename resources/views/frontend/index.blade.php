@@ -128,6 +128,38 @@
       background-color: #ff7f00;
       transform: rotate(10deg);
     }
+    /* Icône WhatsApp flottante */
+.whatsapp-float {
+  position: fixed;
+  bottom: 6rem;
+  right: 2rem;
+  background-color: #25d366;
+  color: #fff;
+  width: 4.5rem;
+  height: 4.5rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+  cursor: pointer;
+  /* prépare l’animation GSAP, mais pour un fallback CSS */
+  animation: whatsapp-bounce-css 2s infinite;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.whatsapp-float:hover {
+  transform: scale(1.2) rotate(10deg);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+}
+
+/* Fallback CSS bounce si GSAP non chargé */
+@keyframes whatsapp-bounce-css {
+  0%, 100%   { transform: translateY(0); }
+  50%        { transform: translateY(-10px); }
+}
+
   </style>
 
   <!-- Meta Pixel Code -->
@@ -180,23 +212,7 @@ src="https://www.facebook.com/tr?id=29074440538868661&ev=PageView&noscript=1"
 
   <!-- Acceuill -->
   <section class="hero-header position-relative " style="background-image: url('<?php echo asset('home2.png'); ?>')" data-aos="fade-up">
-    <div class="container py-5">
-      <div class="row g-5 align-items-center">
-        <!-- Texte de présentation -->
-        <div class="col-md-12 col-lg-7" data-aos="fade-right" data-aos-delay="200">
-          <span style="font-size: 3em;" class="mb-5  text-info display-2  fw-bold">Vente & Installation d'Équipements Solaires</span>
-          <hr />
-        </div>
-        <!-- Carousel de présentation -->
-        <div class="col-md-12 col-lg-5" style=" text-align: center;" data-aos="fade-left" data-aos-delay="600">
-          <h5 class=" pl-3 mb-3 text-white fw-bold">Votre spécialiste en solutions solaires</h5>
-          <div id="carouselId" class="carousel slide position-relative shadow-lg rounded-4 overflow-hidden" data-bs-ride="carousel">
-            <livewire:front-end-presentation-view />
-          </div>
-        </div>
-      </div>
-    </div>
-    <p class="mb-4 text-white">Basés à Douala, Cameroun, nous vous offrons des solutions d'énergie renouvelable et durable pour vos projets résidentiels et professionnels.</p>
+    <livewire:front-end-acceuil-view />
   </section>
 
   <!-- Section Features -->
@@ -369,89 +385,96 @@ src="https://www.facebook.com/tr?id=29074440538868661&ev=PageView&noscript=1"
   </section>
 
   <!-- Footer -->
-  <footer class="bg-dark text-white-50 footer pt-5 mt-5">
-    <div class="container py-5">
-      <div class="pb-4 mb-4" style="border-bottom: 1px solid rgba(226, 175, 24, 0.5);">
-        <div class="row g-4">
-          <div class="col-lg-3">
-            <a href="#">
-              <h1 class="text-primary mb-0">Solergy Solutions SARL</h1>
-              <p class="text-secondary mb-0">Solutions Solaires à Douala</p>
-            </a>
-          </div>
-          <div class="col-lg-6">
-            <div class="position-relative mx-auto">
-              <input class="form-control border-0 w-100 py-3 px-4 rounded-pill" type="email" placeholder="Votre Email" aria-label="Votre Email">
-              <button type="submit" class="btn btn-primary border-0 py-3 px-4 position-absolute rounded-pill text-white" style="top: 0; right: 0;">S'abonner</button>
-            </div>
-          </div>
-          <div class="col-lg-3">
-            <div class="d-flex justify-content-end pt-3">
-              <a class="btn btn-outline-secondary me-2 btn-md-square rounded-circle" href="#"><i class="fab fa-twitter"></i></a>
-              <a class="btn btn-outline-secondary me-2 btn-md-square rounded-circle" href="#"><i class="fab fa-facebook-f"></i></a>
-              <a class="btn btn-outline-secondary me-2 btn-md-square rounded-circle" href="#"><i class="fab fa-youtube"></i></a>
-              <a class="btn btn-outline-secondary btn-md-square rounded-circle" href="#"><i class="fab fa-linkedin-in"></i></a>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="row g-5">
-        <div class="col-lg-3 col-md-6">
-          <div>
-            <h4 class="text-light mb-3">Pourquoi nous choisir ?</h4>
-            <p class="mb-4">Notre expertise et notre engagement pour une énergie renouvelable de qualité font de nous le partenaire idéal pour vos projets solaires.</p>
-            <a href="#" class="btn border-secondary py-2 px-4 rounded-pill text-primary">En savoir plus</a>
-          </div>
-        </div>
-        <div class="col-lg-3 col-md-6">
-          <div class="d-flex flex-column">
-            <h4 class="text-light mb-3">Infos Boutique</h4>
-            <a class="btn-link" href="#">À propos de nous</a>
-            <a class="btn-link" href="#">Contactez-nous</a>
-            <a class="btn-link" href="#">Politique de confidentialité</a>
-            <a class="btn-link" href="#">Conditions générales</a>
-            <a class="btn-link" href="#">Politique de retour</a>
-            <a class="btn-link" href="#">FAQs</a>
-          </div>
-        </div>
-        <div class="col-lg-3 col-md-6">
-          <div class="d-flex flex-column">
-            <h4 class="text-light mb-3">Mon Compte</h4>
-            <a class="btn-link" href="#">Mon Compte</a>
-            <a class="btn-link" href="#">Détails Boutique</a>
-            <a class="btn-link" href="#">Panier</a>
-            <a class="btn-link" href="#">Liste de souhaits</a>
-            <a class="btn-link" href="#">Historique Commandes</a>
-            <a class="btn-link" href="#">Commandes internationales</a>
-          </div>
-        </div>
-        <div class="col-lg-3 col-md-6">
-          <div>
-            <h4 class="text-light mb-3">Contact</h4>
-            <p>Adresse : En face Collège Bénédicte, Ndockoti, Douala, Cameroun</p>
-            <p>Email : <a href="mailto:solergysolutions@gmail.com" class="text-white">solergysolutions@gmail.com</a></p>
-            <p>Téléphone : +237 6 57 24 89 25</p>
-            <p>Modes de paiement acceptés :</p>
-            <img src="img/payment.png" class="img-fluid" alt="Modes de paiement">
-          </div>
-        </div>
-      </div>
-    </div>
-  </footer>
+<footer class="bg-dark text-light pt-5 mt-5" id="contact">
+  <div class="container">
 
-  <!-- Copyright -->
-  <div class="container-fluid bg-dark py-4">
-    <div class="container">
-      <div class="row">
-        <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
-          <span class="text-light"><i class="fas fa-copyright text-light me-2"></i>Solergy Solutions SARL, Tous droits réservés.</span>
-        </div>
-        <div class="col-md-6 text-center text-md-end">
-          Designed by <a class="border-bottom" href="mailto:anoudemj@gmail.com">anoudemj@gmail.com</a> | Distributed by <a class="border-bottom" href="https://themewagon.com">ThemeWagon</a>
+    <!-- Newsletter & Logo -->
+    <div class="row align-items-center mb-5">
+      <div class="col-md-4 text-center text-md-start mb-4 mb-md-0">
+        <a href="#" class="text-decoration-none">
+          <h2 class="text-warning mb-1">Solergy Solutions SARL</h2>
+          <p class="small">Votre expert en énergie solaire à Douala</p>
+        </a>
+      </div>
+      <div class="col-md-8">
+        <form class="row g-2 justify-content-center justify-content-md-end">
+          <div class="col-auto flex-grow-1">
+            <label for="footer-email" class="visually-hidden">Votre Email</label>
+            <input id="footer-email" type="email" class="form-control rounded-pill" placeholder="Entrez votre email">
+          </div>
+          <div class="col-auto">
+            <button type="submit" class="btn btn-warning rounded-pill px-4">S’abonner</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Liens utiles & Contact -->
+    <div class="row gy-4">
+      <!-- Pourquoi nous choisir -->
+      <div class="col-lg-3 col-md-6">
+        <h5 class="text-warning mb-3">Pourquoi nous choisir ?</h5>
+        <p>Une équipe certifiée, des solutions sur-mesure et un support 24/7 pour vos installations solaires.</p>
+        <a href="#" class="btn btn-outline-light btn-sm rounded-pill mt-2">En savoir plus</a>
+      </div>
+
+      <!-- Produits & Services -->
+      <div class="col-lg-3 col-md-6">
+        <h5 class="text-warning mb-3">Nos offres</h5>
+        <ul class="list-unstyled">
+          <li><a href="#" class="text-light text-decoration-none">Panneaux photovoltaïques</a></li>
+          <li><a href="#" class="text-light text-decoration-none">Batteries de stockage</a></li>
+          <li><a href="#" class="text-light text-decoration-none">Inverters & Regulators</a></li>
+          <li><a href="#" class="text-light text-decoration-none">Entretien & SAV</a></li>
+        </ul>
+      </div>
+
+      <!-- À propos -->
+      <div class="col-lg-3 col-md-6">
+        <h5 class="text-warning mb-3">À propos</h5>
+        <ul class="list-unstyled">
+          <li><a href="#" class="text-light text-decoration-none">Qui sommes-nous ?</a></li>
+          <li><a href="#" class="text-light text-decoration-none">Nos réalisations</a></li>
+          <li><a href="#" class="text-light text-decoration-none">Blog & conseils</a></li>
+          <li><a href="#" class="text-light text-decoration-none">Carrières</a></li>
+        </ul>
+      </div>
+
+      <!-- Contact -->
+      <div class="col-lg-3 col-md-6">
+        <h5 class="text-warning mb-3">Contact</h5>
+        <ul class="list-unstyled small">
+          <li class="mb-2"><i class="fas fa-map-marker-alt me-2"></i>Ndockoti, Douala, Cameroun</li>
+          <li class="mb-2"><i class="fas fa-phone me-2"></i>+237 6 57 24 89 25</li>
+          <li class="mb-2"><i class="fas fa-envelope me-2"></i><a href="mailto:solergysolutions@gmail.com" class="text-light">solergysolutions@gmail.com</a></li>
+        </ul>
+        <div>
+          <a href="#" class="btn btn-outline-light btn-sm rounded-circle me-2"><i class="fab fa-facebook-f"></i></a>
+          <a href="#" class="btn btn-outline-light btn-sm rounded-circle me-2"><i class="fab fa-twitter"></i></a>
+          <a href="#" class="btn btn-outline-light btn-sm rounded-circle me-2"><i class="fab fa-linkedin-in"></i></a>
+          <a href="#" class="btn btn-outline-light btn-sm rounded-circle"><i class="fab fa-whatsapp"></i></a>
         </div>
       </div>
     </div>
+
+    <!-- Bas de page -->
+    <div class="row mt-5 pt-4 border-top border-secondary">
+      <div class="col-md-6 text-center text-md-start mb-2 mb-md-0">
+        <small>&copy; 2025 Solergy Solutions SARL. Tous droits réservés.</small>
+      </div>
+      <div class="col-md-6 text-center text-md-end">
+        <small>Design par <a href="mailto:anoudemj@gmail.com" class="text-warning text-decoration-none">anoudemj@gmail.com</a></small>
+      </div>
+    </div>
+
   </div>
+</footer>
+
+  
+  <!-- Floating WhatsApp Button -->
+  <a href="https://wa.me/237657248925" target="_blank" class="whatsapp-float" aria-label="Contactez-nous sur WhatsApp">
+    <i class="fab fa-whatsapp"></i>
+  </a>
 
   <!-- Back to Top -->
   <a href="#" class="btn btn-primary border-3 border-primary rounded-circle back-to-top"><i class="fa fa-arrow-up"></i></a>
@@ -475,6 +498,38 @@ src="https://www.facebook.com/tr?id=29074440538868661&ev=PageView&noscript=1"
       duration: 800
     });
   </script>
+  <script>
+  // Sélection de l’icône
+  const waBtn = document.querySelector('.whatsapp-float');
+
+  // Bounce vertical infini
+  gsap.to(waBtn, {
+    y: -15,
+    repeat: -1,
+    yoyo: true,
+    ease: "power1.inOut",
+    duration: 0.6
+  });
+
+  // Petite rotation oscillante
+  gsap.to(waBtn, {
+    rotation: 15,
+    repeat: -1,
+    yoyo: true,
+    ease: "power1.inOut",
+    duration: 1.2,
+    delay: 0.3
+  });
+
+  // Survol : pulse rapide
+  waBtn.addEventListener('mouseenter', () => {
+    gsap.to(waBtn, { scale: 1.3, duration: 0.3, ease: "elastic.out(1, 0.5)" });
+  });
+  waBtn.addEventListener('mouseleave', () => {
+    gsap.to(waBtn, { scale: 1, duration: 0.3, ease: "power2.out" });
+  });
+</script>
+
 </body>
 
 </html>
