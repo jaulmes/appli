@@ -35,7 +35,7 @@
         @foreach(['img1', 'img2', 'img3', 'img4'] as $img)
           @if($realisation->$img)
             <div class="col-3">
-              <img src="{{ asset('storage/images/realisations/'.$realisation->$img) }}" 
+              <img src="{{ asset('storage/images/Realisations/'.$realisation->$img) }}" 
                    class="img-fluid cursor-pointer thumbnail-img"
                    data-bs-target="#realisationCarousel"
                    data-bs-slide-to="{{ $loop->index }}"
