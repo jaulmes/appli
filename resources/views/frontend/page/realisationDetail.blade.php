@@ -10,7 +10,7 @@
           @foreach(['img1', 'img2', 'img3', 'img4'] as $img)
             @if($realisation->$img)
               <div class="carousel-item {{ $loop->first ? 'active' : '' }}">
-                <img src="{{ asset('storage/images/realisations/'.$realisation->$img) }}" 
+                <img src="{{ asset('storage/images/Realisations/'.$realisation->$img) }}" 
                      class="d-block w-100 zoom-image" 
                      alt="{{ $realisation->name }}"
                      style="height: 600px; object-fit: cover;">
