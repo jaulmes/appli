@@ -22,7 +22,7 @@
                 @forelse($realisations as $realisation)
                     <tr>
                         <td>
-                            <img src="{{asset('storage/images/realisations/'.$realisation->img1)}}" alt="{{$realisation->titre}}" class="img-circle img-size-32 mr-2">
+                            <img src="{{asset('storage/images/Realisations/'.$realisation->img1)}}" alt="{{$realisation->titre}}" class="img-circle img-size-32 mr-2">
                             {{$realisation->titre}}
                         </td>
                         <td>$13 USD</td>
