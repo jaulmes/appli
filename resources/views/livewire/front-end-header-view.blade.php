@@ -42,7 +42,7 @@
     <div class="container px-0">
         <nav class="navbar navbar-expand-xl navbar-light bg-white shadow-sm">
             <!-- Logo -->
-            <a href="#" class="navbar-brand">
+            <a href="{{ route('frontend.index') }}" class="navbar-brand">
                 <img src="{{ asset('logo.jpg') }}" alt="Logo Solergy Solutions SARL" style="width: 100px; height: 80px;">
             </a>
 
