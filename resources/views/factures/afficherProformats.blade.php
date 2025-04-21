@@ -253,7 +253,7 @@
                 </strong>
               </div>
               <div class="description">
-                <p>Votre fournisseur de solutions solaire</p>
+                <p>Fournisseur de solutions solaire</p>
               </div>
             </div>
         </header>

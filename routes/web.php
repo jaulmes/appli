@@ -51,6 +51,11 @@ Route::get('/welcome', function(){
     //return view('welcome');
 });
 
+Route::get('/test', function(){
+    return view('test');
+    //return view('welcome');
+});
+
 Route::get('frontend', [FrontEndController::class, 'index'])->name('frontend.index');
 Route::get('allPromoProduit', [FrontEndController::class, 'allPromoProduit'])->name('allPromoProduit');
 
@@ -72,6 +77,8 @@ Route::get('detail-service/{id}', [FrontEndController::class, 'detailService'])-
 Route::get('passer-commande', [FrontEndController::class, 'passerCommande'])->name('passer.commande');
 
 Route::post('valider-commande', [FrontEndController::class, 'validerCommande'])->name('valider.commande');
+Route::get('afficher-commande/{id}', [FrontEndController::class, 'afficherFactureComande'])->name('afficher.commande');
+Route::get('telecharger-commande/{id}', [FrontEndController::class, 'telechargerFactureComande'])->name('telecharger.commande');
 
 
 Route::get('api', [App\Http\Controllers\CallMomoApiController::class, 'index']);

@@ -250,7 +250,7 @@
                 </strong>
               </div>
               <div class="description">
-                <p>Votre fournisseur de solutions solaire</p>
+                <p>Fournisseur de solutions solaire</p>
               </div>
             </div>
         </header>
@@ -274,10 +274,10 @@
             <h3 class="client-info-title">Coordonnées du client :</h3>
             <div class="client-details-row">
                 <div class="client-nom">
-                    <p>NOM du client : <strong>{{ $ventes->clients->nom?? $ventes->commandes->clients->nom?? '-'}} </strong> </p>
+                    <p>NOM du client : <strong>{{ $ventes->clients->nom?? $ventes->nomClient?? $ventes->commandes->clients->nom?? '-'}} </strong> </p>
                 </div>
                 <div class="client-contact">
-                    <p>Contacts : <strong> {{$ventes->clients->numero?? $ventes->commandes->clients->numero?? '-'}}</strong></p>
+                    <p>Contacts : <strong> {{$ventes->clients->numero?? $ventes->numeroClient?? $ventes->commandes->clients->numero?? '-'}}</strong></p>
                 </div>
                 <div class="client-adresse">
                     <p>Adresse : <strong>{{$ventes->clients->adresse?? $ventes->commandes->clients->adresse?? '-'}}</strong> </p>

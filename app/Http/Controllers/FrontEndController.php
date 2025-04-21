@@ -11,8 +11,10 @@ use App\Models\Service;
 use App\Models\Transaction;
 use App\Models\User;
 use App\Notifications\NouvelleCommandeNotification;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Facades\Session;
 
 class FrontEndController extends Controller
 {
@@ -111,6 +113,13 @@ class FrontEndController extends Controller
         $commande->client_id = $client->id;
         $commande->montant_total = $montantTotal;
         $commande->status = 0;
+        
+        $commande->save();
+
+        //compter le nombre de commande pour incrementer le numero de la facture
+        $numero =commande::whereDate('created_at', $commande->created_at )->get()->count() + 1;
+        $commande->numero_commande = $client->numero.'_'.$commande->created_at->format('Y').'_'.$commande->created_at->format('m').'_'.$commande->created_at->format('d').'_'.$numero;
+        //reengistrer la commande aves le numero de la facture
         $commande->save();
 
         $transactions = new Transaction();
@@ -136,7 +145,42 @@ class FrontEndController extends Controller
 
         $users = User::all();
         Notification::send($users, new NouvelleCommandeNotification("Nouvelle commande"));
+        Session::forget('cart');
+        return view('frontend.page.commandeValidee', compact('commande'));
+    }
 
+    //afficher la facture de la commande
+    public function afficherFactureComande($id){
+        $commande = commande::find($id);
+        $montantTotal = 0;
+        foreach ($commande->produits as $produit) {
+            $montantTotal += $produit->pivot->price * $produit->pivot->quantity;
+        }
+        $pdf = Pdf::loadView('frontend.page.factureCommande',
+                [
+                    'commandes' =>$commande,
+                    'montantTotal' => $montantTotal,
+                ]
+            );
+
+        return $pdf->stream($commande->numero_facture.'-'.$commande->clients->numero.'.pdf');
+    }
+
+    //telecharger la facture de la commande
+    public function telechargerFactureComande($id){
+        $commande = commande::find($id);
+        $montantTotal = 0;
+        foreach ($commande->produits as $produit) {
+            $montantTotal += $produit->pivot->price * $produit->pivot->quantity;
+        }
+        $pdf = Pdf::loadView('frontend.page.factureCommande',
+                [
+                    'commandes' =>$commande,
+                    'montantTotal' => $montantTotal,
+                ]
+            );
+
+        return $pdf->download($commande->numero_facture.'-'.$commande->clients->numero.'.pdf');
     }
 
 

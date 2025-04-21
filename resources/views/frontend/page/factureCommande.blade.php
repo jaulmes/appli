@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ $factures->numeroFacture }} - {{$installations->numeroClient ?? $installations->clients->numero?? 'FACTURE INSTALLATION'}}</title>
+    <title>{{ $commandes->numero_commande }} - {{$commandes->clients->numero?? 'FACTURE COMMANDE'}}</title>
     
     <style>
         body {
@@ -186,12 +186,14 @@
             margin-top: 20px;
         }
         div.content{
+            position: fixed; 
             background-image: url('logo.jpg');
             background-repeat: no-repeat;
-            background-position: center;
+            background-position: 10em 50px;
             opacity: 0.5;
-            margin-top: -8em;
+            margin-top: -6em;
         }
+
 
         /* Footer Section */
         .invoice-footer {
@@ -218,7 +220,7 @@
         }
 
         .address-footer {
-            font-size: 0.9em;
+            font-size: 0.7em;
             text-align: center;
         }
 
@@ -233,12 +235,7 @@
             margin-bottom: 15px;
             border-bottom: 1px solid #000; /* Solid black line */
         }
-        div.content{
-            background-image: url('logo.jpg');
-            background-repeat: no-repeat;
-            background-position: center;
-            opacity: 0.5;
-        }
+
 
 
     </style>
@@ -257,37 +254,31 @@
               </div>
             </div>
         </header>
-
         <div class="header-details">
             <div class="left">NIU: M092316074072K</div>
             <div class="center">Contacts:(+237) 6 57 24 89 25 – 6 78 64 51 11 – 6 21 30 99 00</div>
             <div class="right">No RCCM: RC/DLA/2023/B/5907</div>
         </div>
-
         <div class="ref-proforma">
-            <div class="ref">REF: {{ $factures->numeroFacture }}</div>
-            <h2 class="proforma-title">FACTURE INSTALLATIONS</h2>
-            <div class="agent-operant">Agent opérant: <strong>{{ $installations->user->name ?? $installations->agentOperant?? '-'}}</strong> </div>
-            <div class="agent-operant" style="margin-top: 1em;">Date: <strong>{{ $installations->created_at->format('d-m-y')}}</strong> </div>
+            <div class="ref">REF: {{ $commandes->numero_commande }}</div>
+            <h2 class="proforma-title">VOTRE COMMANDE</h2>
+            <div class="agent-operant" style="margin-top: 1em;">Date: <strong>{{ $commandes->created_at->format('d-m-Y')}}</strong> </div>
         </div>
-
         <div class="separator"></div>
-
         <section class="client-info">
             <h3 class="client-info-title">Coordonnées du client :</h3>
             <div class="client-details-row">
                 <div class="client-nom">
-                    <p>NOM du client : <strong>{{ $installations->clients->nom?? $installations->commandes->clients->nom?? '-'}} </strong> </p>
+                    <p>NOM du client : <strong>{{ $commandes->clients->nom?? $commandes->clients->nom?? '-'}} </strong> </p>
                 </div>
                 <div class="client-contact">
-                    <p>Contacts : <strong> {{$installations->clients->numero?? $installations->commandes->clients->numero?? '-'}}</strong></p>
+                    <p>Contacts : <strong> {{$commandes->clients->numero?? $commandes->clients->numero?? '-'}}</strong></p>
                 </div>
                 <div class="client-adresse">
-                    <p>Adresse : <strong>{{$installations->clients->adresse?? $installations->commandes->clients->adresse?? '-'}}</strong> </p>
+                    <p>Adresse : <strong>{{$commandes->clients->adresse?? $commandes->clients->adresse?? '-'}}</strong> </p>
                 </div>
             </div>
         </section>
-
         <div class="content">
             <div class="services">
                 <table style=" width: 40em;   border-style: solid; border-color: black;">
@@ -297,9 +288,8 @@
                         <th>P.U.</th>
                         <th>P.Total</th>
                     </tr>
-
                     <!--produits achetes-->
-                    @foreach($installations->produits as $produit)
+                    @foreach($commandes->produits as $produit)
                         <tr>
                             <td>{{$produit->pivot->quantity}}</td>
                             <td>{{$produit->name}}</td>
@@ -309,26 +299,16 @@
                     @endforeach
                     <tr style="font-weight: bold;">
                         <td colspan="3" style="text-align: right;"><strong>Total</strong></td>
-                        <td><strong>{{ $installations->montantTotal }}</strong></td>
+                        <td><strong>{{ $montantTotal }}</strong></td>
                     </tr>
                 </table>
             </div>
-            <div class="mini-footer" style="text-align:center">
-                @if($installations->reduction > 0)
-                    <div class="total"> 
-                        <span style="margin-bottom: 3em; Z-index: 5; background-color:grey; color: black !important"> la reduction sur votre facture est de : <strong>{{ $installations->reduction}} Francs CFA</strong> </span>
-                    </div>
-                @endif
+            <div class="mini-footer" style="text-align:center; margin-left: 5em;">
                 <div class="total"> 
-                    <span style="margin-bottom: 3em; Z-index: 5; background-color:grey; color: black !important"> Net A Payer <strong style="color: #27ae60; background-color: #e9f7ef;"> <u>{{ $netAPayer}} Francs CFA</u> </strong> </span>
+                    <span style="margin-bottom: 3em; Z-index: 5; color: black !important; margin-left: 5em;"> Net A Payer <strong style="color:rgb(255, 255, 255); background-color:rgb(9, 161, 75);   padding: 4px 8px; text-align: center; border-radius: 5px;"> <u>{{ $montantTotal}} Francs CFA</u> </strong> </span>
                 </div>
-                
-                <div style="margin-left: 20em; margin-top: 5em">Signature Vendeur  </div>
-                <div style=" margin-left: -35em">Signature Client</div>
             </div>
         </div>
-
-
     </div>
     <footer class="invoice-footer">
         <div class="footer-details">
