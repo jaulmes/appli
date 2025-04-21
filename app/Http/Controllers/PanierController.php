@@ -231,7 +231,8 @@ class PanierController extends Controller
                     'clients' =>$clients,
                     'numeroFacture'=>$numeroFacture,
                     'netAPayer' => $netAPayer,
-                    'panier' => $panier
+                    'panier' => $panier,
+                    'factures' =>$factures,
                 ]
             );
             
@@ -253,6 +254,7 @@ class PanierController extends Controller
                 $clients = new Client();
                 $clients->nom = $request->input('nom');
                 $clients->numero = $request->input('numero');
+                $clients->save();
             }else{
                 $clients = Client::find($request->client_id);
             }
@@ -366,7 +368,7 @@ class PanierController extends Controller
             $comptes->montant = $comptes->montant + $transactions->montantVerse;
 
             $transactions->save();
-            $clients->save();
+            
             //je relie chaque produit du pqnier a l'installation
             foreach($panier as $produit){
                 $installations->produits()->attach($produit['id'], [
