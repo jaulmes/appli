@@ -3,262 +3,173 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FACTURE PROFORMA</title>
+    <title>{{ $factures->numeroFacture }} - {{$installations->numeroClient ?? $installations->clients->numero}}</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 20px;
-            font-size: 11px; /* Slightly smaller base font */
-            line-height: 1.3;
+        body{
+            margin-left: 0;
         }
-
-        .invoice-container {
-            width: 750px; /* Adjust width to match document width */
-            margin: 0 auto;
-            /* border: 1px solid #ddd;  Optional border for visualization */
-            padding: 25px 30px; /* Adjust padding for document margins */
+        div.title{
+            margin-left: 9em;
         }
-
-      
-
-        .company-info {
+        p.title{
             text-align: center;
-            margin-top: -4em;
-            margin-left: -15em;
+            margin-bottom: -6em;
+            font-size: 45px;
         }
-        .company-info .title{
-          margin-bottom: 3em;
+        div.sous-title{
+            display:flex;
+            flex-direction: row;
+            color: blue;
+            margin-left: 0em;
+            margin-top: -2.5em;
         }
-
-        .description{
-          font-size: 36px;
-            color: #333;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
-            font-weight: bold;
+        div.desc{
+            margin-left: 0em;
+            margin-right: 0em;
         }
-
-        .company-info p span.solergy {
-            font-size: 4.1em; /* Adjusted company name size */
-            color: #90EE90;
-            margin-bottom: 2px; /* Reduced margin */
-            font-weight: bold;
-            letter-spacing: -1px;
-            line-height: 1; /* Tighter line height */
+        div.img{
+            height: 50px;
+            width: 50px;
         }
-
-        .company-info p span.solution {
-            font-size: 2.3em; /* Adjusted company name size */
-            color: #007bff;
-            margin-bottom: 2px; /* Reduced margin */
-            font-weight: bold;
-            letter-spacing: -1px;
-            line-height: 1; /* Tighter line height */
+        div.contact{
+            margin-left: 0em; 
+            margin-top: -2em;
+            font-family: serif;
+            font-size: 12px;
         }
-
-        .company-info p span.sarl {
-            font-size: 1.3em; /* Adjusted company name size */
-            color: #90EE90;
-            margin-bottom: 2px; /* Reduced margin */
-            font-weight: bold;
-            letter-spacing: -1px;
-            line-height: 1; /* Tighter line height */
+        .services {
+            margin-top: 7em;
+            margin-left: 1em;
+            width: 60%;
         }
-
-        .company-info h1 span {
-            color: #90EE90; /* Light green for SOLERGY */
+        .services table {
+            width: 100%;
+            border-collapse: collapse;
         }
-
-        .company-info p {
-            font-size: 1.1em; /* Adjusted slogan size */
-            margin: 0;
-            font-style: italic;
-        }
-
-        /* NIU, Contacts, RCCM */
-        .header-details {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 10px;
-            font-size: 0.9em;
-        }
-        .header-details > div { /* Direct children divs */
-            flex: 1; /* Distribute space evenly */
-        }
-        .header-details .left {
+        .services th, .services td {
+            border: 1px solid #ddd;
+            padding: 10px;
             text-align: left;
         }
-        .header-details .center {
-            text-align: center;
-        }
-        .header-details .right {
-            text-align: right;
-        }
-
-        /* Ref and Facture Proforma */
-        .ref-proforma {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
-        }
-        .ref-proforma .ref {
-            font-weight: bold;
-            font-size: 1em;
-        }
-        .ref-proforma .proforma-title {
-            text-align: center;
-            font-size: 2.3em; /* Adjusted title size */
-            font-weight: bold;
-            letter-spacing: -2px;
-            margin-bottom: 0; /* Remove bottom margin */
-            line-height: 1; /* Tighter line height */
-        }
-
-        /* Agent Operant */
-        .agent-operant {
-            text-align: right;
-            margin-bottom: 20px;
-            font-size: 0.9em;
-        }
-
-        /* Client Information */
-        .client-info {
-            border: 1px solid #ccc;
-            padding: 10px 15px;
-            margin-bottom: 25px;
-        }
-
-        .client-info-title {
-            font-weight: bold;
-            margin-bottom: 8px;
-            font-size: 1em;
-        }
-
-        .client-details-row {
-            display: flex;
-            justify-content: flex-start; /* Align items to the start horizontally */
-            align-items: flex-start; /* Align items to the top vertically */
-            gap: 40px; /* Spacing between client details */
-        }
-
-        .client-details-col { /* Columns for client details */
-            flex: 1; /* Allow columns to take up available space */
-        }
-
-        .client-details-col p {
-            margin: 4px 0;
-            font-size: 0.95em;
-        }
-        .client-details-col p:first-child { /* Style for "NOM du client" etc. labels */
-            font-weight: bold;
-            margin-right: 5px; /* Add space after label */
-        }
-
-        /* Image Placeholder */
-        .image-placeholder {
-            height: 280px; /* Adjust height as needed */
-            border: 1px dashed #ccc;
-            margin-bottom: 25px;
-            text-align: center;
-            line-height: 280px;
-            color: #999;
-            font-size: 1.2em;
-        }
-
-        /* Footer Section */
-        .invoice-footer {
-            text-align: center;
-            font-size: 0.8em;
-            color: #555;
+        .total {
             margin-top: 20px;
         }
-
-        .footer-details {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin-bottom: 8px;
+        div.content{
+            background-image: url('logo.jpg');
+            background-repeat: no-repeat;
+            background-position: center;
+            opacity: 0.5;
         }
-        .footer-details p {
-            margin: 0;
-        }
-
-        .address-footer {
-            font-size: 0.9em;
-        }
-
-
-        /* Dotted Line Separator (if needed) */
-        .dotted-line {
-            border-bottom: 1px dotted #ccc;
-            margin: 10px 0; /* Adjust spacing */
-        }
-         .separator {
-            margin-top: 15px;
-            margin-bottom: 15px;
-            border-bottom: 1px solid #000; /* Solid black line */
+        tr.hearder{
+            background-color: rgb(192,192,192);
+            Z-index: 5;
         }
     </style>
 </head>
 <body>
-    <div class="invoice-container">
-        <header class="invoice-header">
-            <div class="company-info">
-              <div class="title">
-                <p><span class="solergy">SOLERGY</span> <span class="solution">SOLUTIONS</span> <span class="sarl">SARL</span></p>
-              </div>
-              <div class="description">
-                <p>Votre fournisseur de solutions solaire</p>
-              </div>
+    <div class="title">
+       <h1 style=" font-size:xxx-large; margin-bottom: -0.5em">
+            S <img src="{{ public_path('logo.jpg')}}" alt="" style="width: 35px; height: 30px"> LERGY_SOLUTIONS <br>
+       </h1> 
+        <p ><h4 style="margin-left: 11em; margin-top: -12em">SARL</h4></p>
+    </div>
+    <div class="sous-title" style="display:flex; flex-direction:row; margin-bottom: 3em; margin-top: -4.5em">
+        <p>
+            <div class="img1" >
+                <img src="{{public_path('img3.jpg')}}" alt="" style="position: relative; height: 6em">
             </div>
-        </header>
-
-        <div class="header-details">
-            <div class="left">NIU: M092316074072K</div>
-            <div class="center">Contacts:(+237) 6 57 24 89 25 – 6 78 64 51 11 – 6 21 30 99 00</div>
-            <div class="right">No RCCM: RC/DLA/2023/B/5907</div>
-        </div>
-        <div class="separator"></div>
-
-        <div class="ref-proforma">
-            <div class="ref">REF: CA_DLA_MAR_25_2</div>
-            <h2 class="proforma-title">FACTURE PROFORMA</h2>
-        </div>
-
-
-        <div class="agent-operant">Agent opérant: ASSONKENG CABREL</div>
-
-        <section class="client-info">
-            <h3 class="client-info-title">Coordonnées du client :</h3>
-            <div class="client-details-row">
-                <div class="client-details-col">
-                    <p>NOM du client : Mme</p>
+            <div class="desc" style="margin-top: -10em; margin-left: 10em">
+                <h3>
+                    <strong style="font-family: 'Agency FB'; ">
+                        Prestations de services, Installation solaire, <br>
+                        Fourniture du matériel, Electricité bâtiment, <br >
+                        <span style="margin-left: 4em;">
+                            Domotique et systèmes 
+                        </span>
+                    </strong>
+                </h3>
+            </div>
+            <div class="img2" style="margin-left:35em; margin-top: -15em" >
+                <img src="{{public_path('img7.jpg')}}" alt="" style="position: relative; height: 6em">
+            </div>
+        </p>
+    </div>
+    <div class="contact">
+        <p style="margin-top: -0.5em;">
+            <strong >NIU: M092316074072K</strong> <strong style="margin-left: 10em;">facebook : facebook/solergysolutions</strong> <strong style="margin-left: 8em;">Contacts : 6 57 24 89 25</strong>
+        </p>
+        <p style="margin-top: -0.5em;">
+            <strong >Code marchand {{ $installations->compte->nom}} : {{ $installations->compte->numero}}</strong>  <strong style="margin-left: 24em;">Email :solutionssolergy@gmail.com</strong>
+        </p>
+        <div style="margin-top: -1em;">
+            <p >
+                <strong>REF : {{ $factures->numeroFacture }}</strong>  
+                <strong style="margin-left: 38em;">date: {{ $installations->created_at}}</strong>
+            </p>
+            <div style="display: flex;">
+                <div style="margin-bottom: -7em;">
+                    <strong >Agent opérant : {{$installations->user->name}}</strong> <br > 
+                    <strong >TEL : {{$installations->user->numero}}</strong>
                 </div>
-                <div class="client-details-col">
-                    <p>Contacts : 6 98 33 39 95 - 6</p>
-                </div>
-                <div class="client-details-col">
-                    <p>Adresse : BOMONO</p>
+                <div style="margin-left: 47em;">
+                <h3><strong >client : {{$installations->nomClient ?? $installations->clients->nom}}</strong></h3> <br>
+                    <strong >TEL: {{$installations->numeroClient ?? $installations->clients->numero}}</strong>
                 </div>
             </div>
-        </section>
 
-        <!-- Image Placeholder -->
-        <div class="image-placeholder">
-            [Image Placeholder]
         </div>
 
-        <footer class="invoice-footer">
-            <p>SOLERGY SOLUTIONS SARL</p>
-            <div class="footer-details">
-                <p>Site web: solergy-solutions.com</p>
-                <p>Facebook/Solergysolutions</p>
-                <p>COMPTE UBA No: 9011000973;</p>
-                <p>CODE MARCHAND: #150*47*800889#</p>
+    </div>
+    
+    <div style="margin-top: -2em">
+        <p class="title">
+            <u>
+                facture d'installation
+            </u>
+        </p>
+    </div>
+    <div class="content">
+        <div class="services">
+            <table style=" width: 40em;   border-style: solid; border-color: black;">
+                <tr class="hearder">
+                    <th>Qté</th>
+                    <th>Désignation</th>
+                    <th>P.U.</th>
+                    <th>P.Total</th>
+                </tr>
+                @foreach($installations->produits as $produit)
+                    <tr>
+                        <td>{{$produit->pivot->quantity}}</td>
+                        <td>{{$produit->name}}</td>
+                        <td>{{$produit->pivot->price}}</td>
+                        <td>{{$produit->pivot->quantity * $produit->pivot->price}}</td>
+                    </tr>
+                @endforeach
+                <tr >
+                    <td  style="text-align: right;"></td>
+                    <td  style="text-align: left;">installation</td>
+                    <td ></td>
+                    <td  style="text-align: left;">{{$installations->mainOeuvre}}</td>
+                </tr>
+                <tr style="font-weight: bold;">
+                    <td colspan="3" style="text-align: right;"><strong>Total</strong></td>
+                    <td><strong>{{ $installations->montantProduit + $installations->mainOeuvre }}</strong></td>
+                </tr>
+            </table>
+        </div>
+        <div class="footer" style="text-align:center">
+            @if($installations->reduction > 0)
+                <div class="total"> 
+                    <span style="margin-bottom: 3em; Z-index: 5; background-color:grey; color: black !important"> la reduction sur votre facture est de : <strong>{{ $installations->reduction}} Francs CFA</strong> </span>
+                </div>
+            @endif
+            <div class="total"> 
+                <span style="margin-bottom: 3em; Z-index: 5; background-color:grey; color: black !important"> Net A Payer <strong style="background-color: green;"> <u>{{ $installations->NetAPayer}} Francs CFA</u> </strong> </span>
             </div>
-            <p class="address-footer">Situé à douala en face de l'entrée du collège Bénédicte sur l'axe Tradex Ndokoti-total BP cité</p>
-        </footer>
+            
+            <div style="margin-left: 20em; margin-top: 4em">Signature Client </div>
+            <div style=" margin-left: -35em">Signature Vendeur</div>
+        </div>
     </div>
 </body>
 </html>
