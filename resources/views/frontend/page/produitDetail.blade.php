@@ -32,7 +32,7 @@
         </p>
 
         <!-- Description -->
-        <p class="mb-4">{{ $produit->description }}</p>
+        <p class="mb-4">{!! str_replace(';', ';<br>', e($produit->description)) !!}</p>
 
         <!-- Actions -->
         <div class="d-flex gap-3">

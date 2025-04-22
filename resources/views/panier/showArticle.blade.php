@@ -19,7 +19,7 @@
 					<div class="details col-md-6">
 						<h3 class="product-title">{{$produits->name}} <strong class="badge badge-pill badge-info">{{$stock}}</strong></h3>
 
-						<p class="product-description">{{$produits->description}}</p>
+						<p class="product-description">{!! str_replace(';', ';<br>', e($produits->description)) !!}</p>
 						<h4 class="price">current price: <span>{{$produits->getPrice()}}</span></h4>
                         
 						@if($stock ==="disponible")
