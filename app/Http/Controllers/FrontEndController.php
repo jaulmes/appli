@@ -28,7 +28,9 @@ class FrontEndController extends Controller
     }
 
     public function allPromoProduitAdmin(){
-        $produit_promo = Produit::where('status_promo', 1)->get();
+        $produit_promo = Produit::where('status_promo', 1)
+                                    ->orderByRaw('position_promo IS NULL, position_promo ASC')
+                                    ->get();
         return view('frontend.allPromoProduit', compact('produit_promo'));
     }
 

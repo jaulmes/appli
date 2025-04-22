@@ -20,7 +20,7 @@
                         
                     </div>
                     <div class="d-grid px-3 pb-3">
-                        <a href="{{ route('produit.detail', $produit->id) }}" 
+                        <a href="{{ route('produit-detail', $produit->id) }}" 
                            class="btn btn-outline-light rounded-pill transform-down">
                            <span class="hover-text">Voir en détail</span>
                            <i class="fas fa-arrow-right ms-2 hover-icon"></i>

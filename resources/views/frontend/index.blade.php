@@ -51,6 +51,13 @@
   <!-- AOS CSS pour les animations -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
 
+  <!-- GSAP Core -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/Draggable.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollSmoother.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/CustomEase.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/CustomBounce.min.js"></script>
   @livewireStyles
 
   <!-- Structured Data (JSON-LD) pour le SEO -->
@@ -148,6 +155,9 @@
   /* prépare l’animation GSAP, mais pour un fallback CSS */
   animation: whatsapp-bounce-css 2s infinite;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+  overflow: hidden;
+  position: fixed;
 }
 .whatsapp-float:hover {
   transform: scale(1.2) rotate(10deg);
@@ -223,17 +233,24 @@ src="https://www.facebook.com/tr?id=29074440538868661&ev=PageView&noscript=1"
     <livewire:front-end-promo-product>
   </section>
 
+    <!-- Section Services -->
+  <section class="service py-5">
+    <div class="container-fluid">
+      <livewire:front-end-service-view>
+    </div>
+  </section>
+
+  <!-- Section produits -->
+  <section class="service py-5">
+    <div class="container-fluid">
+      <livewire:front-end-nos-produit-view>
+    </div>
+  </section>
+
   <!-- Section Réalisations / Projets -->
   <section class="service py-5">
     <div class="container-fluid">
       <livewire:front-end-realisation-view />
-    </div>
-  </section>
-
-    <!-- Section produits -->
-    <section class="service py-5">
-    <div class="container-fluid">
-      <livewire:front-end-nos-produit-view>
     </div>
   </section>
 
@@ -242,12 +259,7 @@ src="https://www.facebook.com/tr?id=29074440538868661&ev=PageView&noscript=1"
     <livewire:front-end-categori-product-view>
   </section>
 
-  <!-- Section Services -->
-  <section class="service py-5">
-    <div class="container-fluid">
-      <livewire:front-end-service-view>
-    </div>
-  </section>
+
 
   <!-- Garantie -->
   <section class="featurs py-5">
@@ -472,7 +484,7 @@ src="https://www.facebook.com/tr?id=29074440538868661&ev=PageView&noscript=1"
 
   
   <!-- Floating WhatsApp Button -->
-  <a href="https://wa.me/237657248925" target="_blank" class="whatsapp-float" aria-label="Contactez-nous sur WhatsApp">
+  <a href="https://wa.me/237657248925" style="height: 50px; width: 50px" target="_blank" class="whatsapp-float" aria-label="Contactez-nous sur WhatsApp">
     <i class="fab fa-whatsapp"></i>
   </a>
 

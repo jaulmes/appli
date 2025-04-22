@@ -20,6 +20,8 @@ return new class extends Migration
             $table->integer('prix_technicien');
             $table->integer('prix_minimum');
             $table->string('stock');
+            $table->integer('position_catalogue')->nullable();
+            $table->integer('position_promo')->nullable();
             $table->string('fabricant')->nullable();
             $table->string('image_produit')->nullable();
             $table->unsignedBigInteger('categori_id');

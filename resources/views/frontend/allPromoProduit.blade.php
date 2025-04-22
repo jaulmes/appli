@@ -16,8 +16,19 @@
     <div class="card-header border-0 ">
         <h3 class="message">
             @if(session()->has('message'))
-                <div class="alert alert-success">
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
                     {{ session('message') }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            @endif
+            @if(session()->has('error'))
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    {{ session('error') }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                 </div>
             @endif
         </h3>
@@ -46,8 +57,9 @@
             </thead>
             <tbody>
                 @forelse($produit_promo as $produit)
-                    <tr>
+                    <tr :produit="$produit" :key="$produit->id">
                         <td>
+                        {{ $produit->position_promo.'/'.$produit_promo->count() ?? '#_' }}
                             <img src="{{ $produit->getImageUrl() }} " alt="Product 1" class="img-circle img-size-32 mr-2">
                             {{$produit->name}}
                         </td>
@@ -56,9 +68,20 @@
                             {{$produit->prix_promo}}
                         </td>
                         <td>
-                            <a href="#" class="text-muted badge bg-danger">
+                            <span class="text-muted badge bg-danger" type="button" title="Annuler la promo">
                                 annuler la promo
-                            </a>
+                            </span>
+
+                            <!-- Button trigger modal -->
+                            <span type="button" class="badge bg-primary" title="Modifier" 
+                                        data-bs-toggle="modal" data-bs-target="#modifier-{{ $produit->id }}"
+                                         data-bs-target="#modifier">
+                                ✏️
+                            </span>
+
+                            <!-- Modal -->
+                            <livewire:front-end-modal-modifier-detail-promo :produit="$produit" :key="$produit->id"/>
+
                         </td>
                     </tr>
                 @empty

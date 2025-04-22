@@ -1,4 +1,4 @@
-<div>
+<div class="card card-outline card-primary">
     <div class="card-header">
         <h3 class="card-title">Produits en promotion</h3>
         <div class="card-tools">
@@ -8,31 +8,43 @@
         </div>
     </div>
     <!-- /.card-header -->
+
     <div class="card-body p-0">
-        <ul class="products-list product-list-in-card pl-2 pr-2">
+        <ul class="products-list product-list-in-card pl-2 pr-2 mb-0">
             @forelse($produits as $produit)
-                <li class="item">
-                    <div class="product-img">
-                        <img src="{{ $produit->getImageUrl() }}" alt="Product Image" class="img-size-50">
+                <li class="item d-flex align-items-center py-2">
+                    <!-- Position d'affichage -->
+                    <span class="badge badge-info mr-3" title="Position d'affichage">#{{ $produit->position_promo ?? '__' }}</span>
+
+                    <!-- Image produit -->
+                    <div class="product-img ">
+                        <img src="{{ $produit->getImageUrl() }}" alt="Image de {{ $produit->name }}" class="img-size-50 rounded">
                     </div>
-                    <div class="product-info">
-                        <a href="javascript:void(0)" class="product-title">{{$produit->name}}
-                        <span class="badge badge-warning float-right">$1800</span></a>
-                        <span class="product-description">
-                        {{$produit->getDescription()}}
-                        </span>
+
+                    <!-- Informations produit -->
+                    <div class="product-info flex-grow-1">
+                        <a href="javascript:void(0)" class="product-title text-dark font-weight-bold">
+                            {{ $produit->name }}
+                            <span class="badge badge-success float-right">{{ number_format($produit->prix_promo, 0, '', ' ') }} FCFA</span>
+                        </a>
+                        <p class="product-description text-muted mb-0 small">
+                            {{ Str::limit($produit->getDescription(), 60) }}
+                        </p>
                     </div>
                 </li>
             @empty
-                <li class="item cent">
-                    <p> auccun produit en promotion ...<i class="bi bi-exclamation-circle "></i></p>
-                </li> 
+                <li class="item text-center py-3">
+                    <p class="text-muted mb-0">Aucun produit en promotion... <i class="bi bi-exclamation-circle"></i></p>
+                </li>
             @endforelse
-            <!-- /.item -->
         </ul>
     </div>
-        <!-- /.card-body -->
+    <!-- /.card-body -->
+
     <div class="card-footer text-center">
-        <a href="{{ route('frontend.admin.allPromoProduit')}}" wire:navigate class="uppercase">Voir tous les produits en promotion</a>
+        <a href="{{ route('frontend.admin.allPromoProduit') }}" class="text-uppercase font-weight-bold">
+            Voir tous les produits en promotion
+        </a>
     </div>
+    <!-- /.card-footer -->
 </div>

@@ -43,34 +43,29 @@
                             <div class="col-md-6 col-lg-4 col-xl-3 mb-4" 
                                  data-aos="flip-up" 
                                  data-aos-delay="{{ $loop->index * 50 }}">
-                                <div class="card h-100 border-0 rounded-4 shadow-sm hover-3d">
+                                <div class="card h-100 border-0 rounded-4 shadow-sm ">
                                     <!-- Conteneur image avec effet parallaxe -->
-                                    <div class="position-relative overflow-hidden image-zoom-container" 
-                                         style="height: 250px;"
-                                         data-tilt data-tilt-max="8">
-                                        <img src="{{ $produit->getImageUrl() }}" 
-                                             alt="{{ $produit->name }}" 
-                                             class="img-fluid w-100 h-100 object-fit-cover zoom-image">
-                                        
-                                        <!-- Overlay dynamique -->
-                                        <div class="card-img-overlay d-flex flex-column justify-content-between p-3">
-                                            <div class="w-100 d-flex justify-content-end">
-                                                <span class="badge bg-primary rounded-pill px-3 py-2 shadow glow-label">
-                                                    {{ $produit->categori->titre }}
-                                                </span>
+                                    <a href="{{ route('produit-detail', $produit->id) }}" 
+                                        class="card-image-link d-block text-decoration-none position-relative">
+                                        <div class="position-relative overflow-hidden image-zoom-container" 
+                                            style="height: 250px;"
+                                            data-tilt data-tilt-max="8">
+                                            <img src="{{ $produit->getImageUrl() }}" 
+                                                alt="{{ $produit->name }}" 
+                                                class="img-fluid w-100 h-100 object-fit-cover zoom-image">
+                                            
+                                            <!-- Overlay dynamique -->
+                                            <div class="card-img-overlay d-flex flex-column justify-content-between p-3">
+                                                <div class="w-100 d-flex justify-content-end">
+                                                    <span class="badge bg-primary rounded-pill px-3 py-2 shadow glow-label">
+                                                        {{ $produit->categori->titre }}
+                                                    </span>
+                                                </div>
+
                                             </div>
-                                            <div >
-                                                <a href="{{ route('produit-detail', $produit->id) }}">
-                                                    <button class="btn btn-light  shine-hover">
-                                                        Voir en détail <i class="fas fa-arrow-right ms-2"></i>
-                                                    </button>
-                                                </a>
-                                            </div>
+                                            <div class="shine-effect"></div>
                                         </div>
-                                        
-                                        <!-- Effet de brillance -->
-                                        <div class="shine-effect"></div>
-                                    </div>
+                                    </a>
 
                                     <!-- Corps de la carte -->
                                     <div class="card-body p-3 position-relative">
