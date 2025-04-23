@@ -307,9 +307,13 @@
                             <td>{{$produit->pivot->quantity * $produit->pivot->price}}</td>
                         </tr>
                     @endforeach
+                    <tr >
+                        <td colspan="3" style="text-align: center;">Installation</td>
+                        <td><strong>{{ $installations->mainOeuvre }}</strong></td>
+                    </tr>
                     <tr style="font-weight: bold;">
                         <td colspan="3" style="text-align: right;"><strong>Total</strong></td>
-                        <td><strong>{{ $installations->montantTotal }}</strong></td>
+                        <td><strong>{{ $installations->montantProduit + $installations->mainOeuvre }}</strong></td>
                     </tr>
                 </table>
             </div>
@@ -320,11 +324,11 @@
                     </div>
                 @endif
                 <div class="total"> 
-                    <span style="margin-bottom: 3em; Z-index: 5; background-color:grey; color: black !important"> Net A Payer <strong style="color: #27ae60; background-color: #e9f7ef;"> <u>{{ $netAPayer}} Francs CFA</u> </strong> </span>
+                    <span style="margin-bottom: 3em; Z-index: 5; background-color:grey; color: black !important; margin-left: 25em;"> Net A Payer <strong style="color: #27ae60; background-color: #e9f7ef;"> <u>{{ $installations->NetAPayer}} Francs CFA</u> </strong> </span>
                 </div>
                 
-                <div style="margin-left: 20em; margin-top: 5em">Signature Vendeur  </div>
-                <div style=" margin-left: -35em">Signature Client</div>
+                <div style="position: absolute; margin-left: 5em; ">Signature Client   </div>
+                <div style="margin-left: 10em ">Signature Vendeur</div>
             </div>
         </div>
 

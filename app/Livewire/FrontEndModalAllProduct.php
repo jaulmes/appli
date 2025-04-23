@@ -50,11 +50,12 @@ class FrontEndModalAllProduct extends Component
                     $produit->prix_promo = $this->prix_promo[$productId];
                 }
                 $produit->status_promo = 1;
-                if (empty($this->prix_promo[$productId])) {
+                if (empty($produit->prix_promo)) {
                     session()->flash('error', 'Veuillez entrer le prix promo pour activer la promotion');
                     return;
-                }else{
-                    $produit->prix_promo = $this->prix_promo[$productId];
+                }
+                else{
+                    $produit->prix_promo = $produit->prix_promo?? $this->prix_promo[$productId];
                 }
                 
 

@@ -20,8 +20,8 @@
                                 <td>{{$produit->name}}</td>
                                 <td>{{$produit->price}}</td>
                                 <td>{{$produit->prix_promo}}</td>
-                                <td>{{$produit->position_catalogue.'/'.$produits->count()}}</td>
-                                <td>{{$produit->position_promo.'/'.$produit_promo->count()}}</td>
+                                <td>{{$produit->position_catalogue?? '?'.'/'.$produits->count()}}</td>
+                                <td>{{$produit->position_promo?? '?'.'/'.$produit_promo->count()}}</td>
                             </tr>
                         </tbody>
                     </table>

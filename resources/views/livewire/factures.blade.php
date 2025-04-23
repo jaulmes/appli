@@ -68,7 +68,7 @@
                                 </td>
                             @elseif($type == "installations")
                                 <td>{{ $facture->installations->created_at->format('d/m/Y') }}</td>
-                                <td>{{ $facture->installations->nomClient ?? $facture->installations->clients->nom }}</td>
+                                <td>{{ $facture->installations->nomClient ?? $facture->installations->clients->nom?? '-' }}</td>
                                 <td class="text-center">
                                     <a href="{{ route('factures.installations.telecharger', $facture->id) }}" class="btn btn-outline-success btn-sm" title="Télécharger">
                                         <i class="bi bi-download"></i>

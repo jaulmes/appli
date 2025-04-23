@@ -191,7 +191,7 @@
             background-repeat: no-repeat;
             background-position: center;
             opacity: 0.5;
-            margin-top: -6em;
+            margin-top: 6em;
         }
 
 
@@ -287,7 +287,7 @@
 
         <div class="content">
             <div class="services">
-                <table style=" width: 40em;   border-style: solid; border-color: black;">
+                <table style=" width: 40em;   border-style: solid; border-color: black; position:absolute; margin-top:-12em">
                     <tr class="hearder">
                         <th>Qté</th>
                         <th>Désignation</th>
@@ -317,12 +317,10 @@
                     </div>
                 @endif
                 <div class="total"> 
-                    <span style="margin-bottom: 3em; Z-index: 5;  color: black !important"> Net A Payer <strong style="color:rgb(255, 255, 255); background-color:rgb(9, 161, 75);   padding: 4px 8px; text-align: center; border-radius: 5px;"> <u>{{ $netAPayer}} Francs CFA</u> </strong> </span>
+                    <span style="margin-bottom: 3em; Z-index: 5; background-color:grey; color: black !important; margin-left: 20em;"> Net A Payer <strong style="color: #27ae60; background-color: #e9f7ef;"> <u>{{ $netAPayer}} Francs CFA</u> </strong> </span>
                 </div>
-                <div class="signature" style="position: absolute; margin-top:-5em;  margin-left: 9em;">
-                    <div style="margin-left: -15em; margin-top: 5em">Signature Client   </div>
-                    <div style=" margin-left: 20em; position:absolute; margin-top: -2em">Signature Vendeur</div>
-                </div>
+                <div style="position: absolute; margin-left: 5em; ">Signature Client   </div>
+                <div style="margin-left: 10em ">Signature Vendeur</div>
             </div>
         </div>
 
