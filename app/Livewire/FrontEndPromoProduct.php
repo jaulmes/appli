@@ -38,6 +38,12 @@ class FrontEndPromoProduct extends Component
         
         Session::put('frontEndCart', $cart);
         $this->dispatch('ProduitAjoute');
+
+        // Émettre l'événement pour Meta Pixel et recuperer en javascript sur le frontend
+        $this->dispatch('produit-ajoute-panier-promo', [
+            'id' => $produit->id,
+            'prix' => $produit->prix_promo,
+        ]);
     }
 
     public function mount(){

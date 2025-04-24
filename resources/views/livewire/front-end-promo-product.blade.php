@@ -118,140 +118,153 @@
         </div>
     </div>
     <style>
-/* Animations globales */
-.hover-3d {
-    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), 
-                box-shadow 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-}
+        /* Animations globales */
+        .hover-3d {
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), 
+                        box-shadow 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
 
-.hover-3d:hover {
-    transform: translateY(-8px) rotateX(2deg) rotateY(2deg);
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25) !important;
-}
+        .hover-3d:hover {
+            transform: translateY(-8px) rotateX(2deg) rotateY(2deg);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25) !important;
+        }
 
-/* Effet parallaxe */
-[data-tilt] {
-    transform-style: preserve-3d;
-}
+        /* Effet parallaxe */
+        [data-tilt] {
+            transform-style: preserve-3d;
+        }
 
-.zoom-image {
-    transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-}
+        .zoom-image {
+            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
 
-.image-zoom-container:hover .zoom-image {
-    transform: scale(1.15);
-}
+        .image-zoom-container:hover .zoom-image {
+            transform: scale(1.15);
+        }
 
-/* Overlay dynamique */
-.card-img-overlay {
-    background: linear-gradient(180deg, rgba(0,0,0,0) 30%, rgba(0,0,0,0.8) 100%);
-    opacity: 0;
-    transition: opacity 0.4s ease;
-}
+        /* Overlay dynamique */
+        .card-img-overlay {
+            background: linear-gradient(180deg, rgba(0,0,0,0) 30%, rgba(0,0,0,0.8) 100%);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
 
-.card:hover .card-img-overlay {
-    opacity: 1;
-}
+        .card:hover .card-img-overlay {
+            opacity: 1;
+        }
 
-/* Effet de brillance */
-.shine-effect {
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 50%;
-    height: 100%;
-    background: linear-gradient(
-        90deg,
-        rgba(255,255,255,0) 0%,
-        rgba(255,255,255,0.3) 50%,
-        rgba(255,255,255,0) 100%
-    );
-    transform: skewX(-30deg);
-    transition: left 0.8s;
-}
+        /* Effet de brillance */
+        .shine-effect {
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 50%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                rgba(255,255,255,0) 0%,
+                rgba(255,255,255,0.3) 50%,
+                rgba(255,255,255,0) 100%
+            );
+            transform: skewX(-30deg);
+            transition: left 0.8s;
+        }
 
-.image-zoom-container:hover .shine-effect {
-    left: 150%;
-}
+        .image-zoom-container:hover .shine-effect {
+            left: 150%;
+        }
 
-/* Indicateurs de progression */
-.indicator-progress {
-    width: 60px;
-    height: 4px;
-    border-radius: 2px;
-    background: rgba(0,0,0,0.1);
-    border: 0;
-    margin: 0 4px;
-}
+        /* Indicateurs de progression */
+        .indicator-progress {
+            width: 60px;
+            height: 4px;
+            border-radius: 2px;
+            background: rgba(0,0,0,0.1);
+            border: 0;
+            margin: 0 4px;
+        }
 
-.indicator-progress .progress-bar {
-    height: 100%;
-    width: 0;
-    background: #333;
-    transition: width 5s linear;
-}
+        .indicator-progress .progress-bar {
+            height: 100%;
+            width: 0;
+            background: #333;
+            transition: width 5s linear;
+        }
 
-.indicator-progress.active .progress-bar {
-    width: 100%;
-}
+        .indicator-progress.active .progress-bar {
+            width: 100%;
+        }
 
-/* Bouton magnétique */
-.magnetic-button {
-    position: relative;
-    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
+        /* Bouton magnétique */
+        .magnetic-button {
+            position: relative;
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
 
-.magnetic-button:hover {
-    transform: scale(1.05);
-}
+        .magnetic-button:hover {
+            transform: scale(1.05);
+        }
 
-/* Animation prix */
-.bounce {
-    animation: bounce 1s infinite alternate;
-}
+        /* Animation prix */
+        .bounce {
+            animation: bounce 1s infinite alternate;
+        }
 
-@keyframes bounce {
-    from { transform: translateY(0); }
-    to { transform: translateY(-5px); }
-}
+        @keyframes bounce {
+            from { transform: translateY(0); }
+            to { transform: translateY(-5px); }
+        }
 
-.glow-label {
-    animation: glow 2s infinite alternate;
-}
+        .glow-label {
+            animation: glow 2s infinite alternate;
+        }
 
-@keyframes glow {
-    from { filter: drop-shadow(0 0 5px rgba(0,102,255,0.5)); }
-    to { filter: drop-shadow(0 0 15px rgba(0,102,255,0.8)); }
-}
-</style>
+        @keyframes glow {
+            from { filter: drop-shadow(0 0 5px rgba(0,102,255,0.5)); }
+            to { filter: drop-shadow(0 0 15px rgba(0,102,255,0.8)); }
+        }
+    </style>
 
-<script>
-// Initialisation des effets
-document.querySelectorAll('.magnetic-button').forEach(button => {
-    button.addEventListener('click', function() {
-        const loader = this.querySelector('.button-loader');
-        const content = this.querySelector('.button-content');
-        
-        content.classList.add('d-none');
-        loader.classList.remove('d-none');
-        
-        setTimeout(() => {
-            content.classList.remove('d-none');
-            loader.classList.add('d-none');
-        }, 1000);
-    });
-});
+    <script>
+        // Initialisation des effets
+        document.querySelectorAll('.magnetic-button').forEach(button => {
+            button.addEventListener('click', function() {
+                const loader = this.querySelector('.button-loader');
+                const content = this.querySelector('.button-content');
+                
+                content.classList.add('d-none');
+                loader.classList.remove('d-none');
+                
+                setTimeout(() => {
+                    content.classList.remove('d-none');
+                    loader.classList.add('d-none');
+                }, 1000);
+            });
+        });
 
-// Gestion du survol des contrôles
-document.querySelectorAll('.hover-scale-control').forEach(control => {
-    control.addEventListener('mouseenter', () => {
-        control.style.transform = 'scale(1.2)';
-    });
-    
-    control.addEventListener('mouseleave', () => {
-        control.style.transform = 'scale(1)';
-    });
-});
-</script>
+        // Gestion du survol des contrôles
+        document.querySelectorAll('.hover-scale-control').forEach(control => {
+            control.addEventListener('mouseenter', () => {
+                control.style.transform = 'scale(1.2)';
+            });
+            
+            control.addEventListener('mouseleave', () => {
+                control.style.transform = 'scale(1)';
+            });
+        });
+    </script>
+    <script>
+        document.addEventListener('livewire:init', () => {
+            Livewire.on('produit-ajoute-panier-promo', (data) => {
+                fbq('track', 'AddToCart', {
+                    content_ids: [data.id],
+                    content_type: 'product',
+                    value: data.prix,
+                    currency: 'XAF' 
+                });
+                console.log('Produit ajouté au panier:', data);
+            });
+        });
+    </script>
 </div>
 
