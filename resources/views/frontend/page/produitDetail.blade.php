@@ -1,43 +1,61 @@
 @extends('frontend.layout.index')
 
-<!-- 2) Meta Open Graph & product pour Facebook -->
+<!-- Meta Open Graph & product pour Facebook -->
 @section('head')
-    <!-- Open Graph généraux -->
-    <meta property="og:type"        content="product" />
-    <meta property="og:title"       content="{{ $produit->name }}" />
+    <!-- Balises Open Graph obligatoires -->
+    <meta property="og:type" content="product" />
+    <meta property="og:title" content="{{ $produit->name }}" />
     <meta property="og:description" content="{{ Str::limit($produit->description, 100) }}" />
-    <meta property="og:url"         content="{{ url()->current() }}" />
-    <meta property="og:image"       content="{{ $produit->getImageUrl() }}" />
+    <meta property="og:url" content="{{ url()->current() }}" />
+    <meta property="og:image" content="{{ $produit->getImageUrl() }}" />
 
-    <!-- Balises produit recommandées -->
-    <meta property="product:price:amount"   content="{{ $produit->status_promo 
-                                                        ? $produit->prix_promo 
-                                                        : $produit->price }}" />
+    <!-- Balises produit spécifiques (Meta Commerce) -->
+    <meta property="product:brand" content="{{ $produit->fabricant }}" /> <!-- À remplacer par votre marque -->
+    <meta property="product:availability" content="{{ $produit->stock > 0 ? 'in stock' : 'out of stock' }}" />
+    <meta property="product:condition" content="new" />
+    <meta property="product:price:amount" content="{{ $produit->status_promo ? $produit->prix_promo : $produit->price }}" />
     <meta property="product:price:currency" content="XAF" />
+    <meta property="product:retailer_item_id" content="{{ $produit->id }}" />
+    <meta property="product:item_group_id" content="{{ $produit->categori->id }}" />
+    
+    <!-- Optionnel : Catégorie structurée -->
+    <meta property="product:category" content="{{ $produit->categori->titre }}" />
+    
+    <!-- Optionnel : GTIN (code-barres) si disponible -->
+    <!-- <meta property="product:gtin" content="123456789" /> -->
 @endsection
 
 @section('content')
 <div class="container py-5" style="margin-top: 10em;">
-  <form action=" {{route('add-to-cart', $produit->id)}}" method="post">
+  <form action="{{ route('add-to-cart', $produit->id) }}" method="post">
     @csrf
     <div class="row">
-      
         <div class="col-md-6">
           <div class="position-relative overflow-hidden image-zoom-container rounded shadow">
-            <img src="{{ $produit->getImageUrl() }}" alt="{{ $produit->name }}" class="img-fluid w-100 h-100 object-fit-cover transition-all zoom-image">
+            <img src="{{ $produit->getImageUrl() }}" 
+                 alt="{{ $produit->name }}" 
+                 class="img-fluid w-100 h-100 object-fit-cover transition-all zoom-image">
           </div>
         </div>
 
-        <!-- Détails du produit -->
         <div class="col-md-6">
           <h1 class="fw-bold">{{ $produit->name }}</h1>
           
-          <!-- Prix et promotion -->
+          <!-- Prix dynamique avec promotion -->
           <div class="mb-3">
-            <span class="badge bg-success" style="font-size: x-large;"><strong>{{ $produit->getPrice() }}</strong> FCFA</span>
+            @if($produit->status_promo)
+              <del class="text-muted me-2">{{ number_format($produit->price, 0, ',', ' ') }} FCFA</del>
+              <span class="badge bg-danger" style="font-size: x-large;">
+                {{ number_format($produit->prix_promo, 0, ',', ' ') }} FCFA
+              </span>
+            @else
+              <span class="badge bg-success" style="font-size: x-large;">
+                {{ number_format($produit->price, 0, ',', ' ') }} FCFA
+              </span>
+            @endif
           </div>
 
-          <!-- Stock -->
+          <!-- Disponibilité dynamique -->
           <p class="text-muted">
             <strong>Disponibilité :</strong> 
             @if($produit->stock > 0)
@@ -47,43 +65,61 @@
             @endif
           </p>
 
-          <!-- Description -->
-          <p class="mb-4">{!! str_replace(';', ';<br>', e($produit->description)) !!}</p>
+          <!-- Description formatée -->
+          <div class="mb-4 product-description">
+            {!! str_replace(';', ';<br>', e($produit->description)) !!}
+          </div>
 
-          <!-- Actions -->
-          <div class="d-flex gap-3">
-            <button class="btn btn-primary rounded-pill">
+          <!-- Actions d'achat -->
+          <div class="d-flex gap-3 mb-4">
+            <button type="submit" class="btn btn-primary rounded-pill px-4 py-2">
               <i class="fas fa-cart-plus me-2"></i>Ajouter au panier
             </button>
-            <button class="btn btn-outline-dark rounded-pill">
+            <button type="button" class="btn btn-outline-dark rounded-pill px-4 py-2">
               <i class="fas fa-bolt me-2"></i>Achat immédiat
             </button>
           </div>
 
-          <!-- Catégorie -->
-          <div class="mt-4">
-            <span class="badge bg-secondary p-2">Catégorie : {{ $produit->categori->titre }}</span>
+          <!-- Métadonnées structurées -->
+          <div class="mt-4 text-muted small">
+            <div class="mb-2">
+              <i class="fas fa-tag me-2"></i>Référence : {{ $produit->id }}
+            </div>
+            <div>
+              <i class="fas fa-layer-group me-2"></i>Catégorie : {{ $produit->categori->titre }}
+            </div>
           </div>
         </div>
-      <!-- Image du produit -->
-      
     </div>
-  
   </form>
 </div>
 
-  <!-- Styles additionnels -->
-  <style>
+<style>
+  .image-zoom-container {
+    transition: transform 0.3s;
+    overflow: hidden;
+    max-height: 500px; /* Taille augmentée pour mobile */
+  }
+
+  .zoom-image {
+    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    min-height: 300px;
+    object-position: center;
+  }
+
+  .product-description {
+    line-height: 1.6;
+    white-space: pre-line;
+  }
+
+  @media (max-width: 768px) {
+    .container {
+      margin-top: 5em !important;
+    }
+    
     .image-zoom-container {
-      transition: transform 0.3s;
-      overflow: hidden;
-      max-height: 400px;
+      max-height: 300px;
     }
-    .zoom-image {
-      transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-    .image-zoom-container:hover .zoom-image {
-      transform: scale(1.2);
-    }
-  </style>
+  }
+</style>
 @endsection
