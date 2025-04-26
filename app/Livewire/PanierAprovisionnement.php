@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Session;
 
 class PanierAprovisionnement extends Component
 {
-    public $cart, $new_price, $quantity;
+    public $cart, $new_price = [], $quantity = [];
 
     protected $listeners = [
         'ProduitAjoute' => 'updateCart',
@@ -43,7 +43,7 @@ class PanierAprovisionnement extends Component
 
         $item = $this->cart[$produits->id];
     
-        $item['prix_achat'] = $this->new_price;
+        $item['prix_achat'] = $this->new_price[$produits->id];
         $this->cart[$produits->id]['prix_achat'] = $item['prix_achat'];
         Session::put('cart', $this->cart);
         
@@ -69,7 +69,7 @@ class PanierAprovisionnement extends Component
 
     public function modifierQuantite($id){
         $produits = Produit::find($id);
-        $this->cart[$produits->id]['quantity'] = $this->quantity;
+        $this->cart[$produits->id]['quantity'] = $this->quantity[$produits->id];
         Session::put('cart', $this->cart);
         $this->dispatch('quantiteModifier');
     } 

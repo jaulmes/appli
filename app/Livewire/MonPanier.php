@@ -11,9 +11,9 @@ use Livewire\Component;
 class MonPanier extends Component
 {
     public $cartContent = [];
-    public $new_price;
+    public $new_price = [];
     public $cart = [];
-    public $quantity;
+    public $quantity = [];
 
     protected $listeners = ['ProduitAjoute' => 'updateCart',
                             'produitAjoute' => '$refresh',
@@ -46,7 +46,7 @@ class MonPanier extends Component
 
         $item = $this->cart[$produits->id];
     
-        $item['price'] = $this->new_price;
+        $item['price'] = $this->new_price[$produits->id];
         $this->cart[$produits->id]['price'] = $item['price'];
         Session::put('cart', $this->cart);
         
@@ -75,7 +75,7 @@ class MonPanier extends Component
 
     public function modifierQuantite($id){
         $produits = Produit::find($id);
-        $this->cart[$produits->id]['quantity'] = $this->quantity;
+        $this->cart[$produits->id]['quantity'] = $this->quantity[$produits->id];
         Session::put('cart', $this->cart);
         $this->dispatch('quantiteModifier');
     } 

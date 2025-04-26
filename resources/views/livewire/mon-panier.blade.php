@@ -42,7 +42,7 @@
                 </thead>
                 <tbody>
                     @forelse($cart as $produit)
-                        <tr style="font-size: xx-small;">
+                        <tr style="font-size: xx-small;" id="produit-{{ $produit['id'] }}">
                             <td>{{ $produit['name'] }}</td>
                             <td>
                                 <select wire:model="new_price" wire:change="update_prix('{{ $produit['id'] }}')">
@@ -52,11 +52,11 @@
                                     <option value="{{ $produit['prix_minimum'] }}">{{ $produit['prix_minimum'] }} - PM</option>
                                     <option value="{{ $produit['prix_promo'] }}">{{ $produit['prix_promo'] }} - PP</option>
                                 </select>
-                                <input class="mt-1" placeholder="prix manuel..." type="number" wire:model.lazy="new_price" wire:change="update_prix('{{ $produit['id'] }}')" style="width: 70px;">
+                                <input class="mt-1" placeholder="prix manuel..." type="number" wire:model.lazy="new_price.{{$produit['id']}}" wire:change="update_prix('{{ $produit['id'] }}')" style="width: 70px;">
                             </td>
                             <td>
                                 <p style="cursor: pointer;">{{ $produit['quantity'] }}</p>
-                                <input type="number" placeholder="Qte..." style="width: 50px;" wire:model="quantity" value="{{ $produit['quantity'] }}" wire:change="modifierQuantite('{{ $produit['id'] }}')">
+                                <input type="number" placeholder="Qte..." style="width: 50px;" wire:model="quantity.{{$produit['id']}}" value="{{ $produit['quantity'] }}" wire:change="modifierQuantite('{{ $produit['id'] }}')">
                             </td>
                             <td>{{ (int)$produit['price'] * $produit['quantity'] }}</td>
                             <td>

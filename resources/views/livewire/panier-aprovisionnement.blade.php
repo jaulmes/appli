@@ -124,14 +124,14 @@
                         <td>
                             <span>{{ $produit['prix_achat'] }}</span>
                             <input class="mt-1" placeholder="prix manuel..." type="number" 
-                                   wire:model.lazy="new_price" 
+                                   wire:model.lazy="new_price.{{$produit['id']}}" 
                                    wire:change="update_prix('{{ $produit['id'] }}')" 
                                    style="width: 70px;">
                         </td>
                         <td>
                             <p style="cursor: pointer;">{{ $produit['quantity'] }}</p>
                             <input type="number" placeholder="Qte..." style="width: 50px;"  
-                                   wire:model="quantity" 
+                                   wire:model="quantity.{{$produit['id']}}" 
                                    value="{{ $produit['quantity'] }}" 
                                    wire:change="modifierQuantite('{{ $produit['id'] }}')">
                         </td>
