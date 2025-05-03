@@ -204,7 +204,7 @@
                         </span>
                     </button>
                     <!-- Bouton Connexion -->
-                    <a href="#" class="btn btn-primary">Se connecter</a>
+                    <a href="{{url('/login')}}" class="btn btn-primary">Se connecter</a>
                 </div>
             </div>
         </nav>
