@@ -79,6 +79,7 @@ Route::get('passer-commande', [FrontEndController::class, 'passerCommande'])->na
 Route::post('valider-commande', [FrontEndController::class, 'validerCommande'])->name('valider.commande');
 Route::get('afficher-commande/{id}', [FrontEndController::class, 'afficherFactureComande'])->name('afficher.commande');
 Route::get('telecharger-commande/{id}', [FrontEndController::class, 'telechargerFactureComande'])->name('telecharger.commande');
+Route::get('simulateur', [FrontEndController::class, 'simulateur'])->name('simulateur');
 
 
 Route::get('api', [App\Http\Controllers\CallMomoApiController::class, 'index']);

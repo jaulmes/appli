@@ -4,7 +4,7 @@
         <div class="col-md-9">
             <!-- Barre de recherche -->
             <div class="row justify-content-center mb-4">
-                <div class="col-md-20 col-10 row" >
+                <div class="col-md-20 col-10 row" style=" position:fixed; top: 10%; z-index: 1000; left:20%;  padding: 20px; ">
                     <input class="form-control shadow-sm col" 
                            wire:model="query"
                            placeholder="🔍 Rechercher un produit..."

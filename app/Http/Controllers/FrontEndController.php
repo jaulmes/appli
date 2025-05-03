@@ -209,4 +209,8 @@ class FrontEndController extends Controller
         $realisations = Realisation::all();
         return view('frontend.page.allRealisation', compact('realisations'));
     }
+
+    public function simulateur(){
+        return view('frontend.page.simulateur');
+    }
 }

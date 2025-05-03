@@ -154,21 +154,23 @@
 
             <!-- Bouton Burger -->
             <div class="d-flex align-items-center">
-                <!-- Burger visible sur mobile -->
-                <button class="navbar-toggler py-2 px-3 border-0 d-md-none" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
-                    <span class="fa fa-bars text-primary"></span>
-                </button>
-                <!-- Icône du panier pour mobile, positionnée à côté du burger -->
-                <button class="position-relative border-0 bg-transparent ms-2 d-md-none" 
+              <!-- Icône du panier pour mobile, positionnée à côté du burger -->
+              <button class="position-relative border-0 bg-transparent ms-2 d-md-none" 
                         data-bs-toggle="offcanvas" 
                         data-bs-target="#cartOffcanvas" 
                         aria-controls="cartOffcanvas">
-                    <i class="fa fa-shopping-bag fa-lg text-primary"></i>
-                    <span class="position-absolute top-0 start-100 translate-middle bg-danger text-white rounded-circle d-flex align-items-center justify-content-center"
-                          style="height: 16px; min-width: 16px; font-size: 10px;">
-                        {{$qte}}
-                    </span>
-                </button>
+                        
+                  <i class="fa fa-shopping-bag fa-lg "></i>
+                  <span class="position-absolute top-0 start-100 translate-middle bg-danger text-white rounded-circle d-flex align-items-center justify-content-center"
+                        style="height: 16px; min-width: 16px; font-size: 10px;">
+                      {{$qte}}
+                  </span>
+              </button>
+
+              <!-- Burger visible sur mobile -->
+              <button class="navbar-toggler py-2 px-3 border-0 d-md-none" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+                  <span class="fa fa-bars "></span>
+              </button>
             </div>
 
             <!-- Contenu collapsible -->
@@ -184,6 +186,8 @@
                         </ul>
                     </li>
                     <li class="nav-item"><a href="#contact" class="nav-link">Contact</a></li>
+
+                    <li class="nav-item"><a href="{{ route('simulateur')}}" class="nav-link">Simulateur <i class="fas fa-calculator"></i></a></li>
                 </ul>
 
                 <!-- Section Panier & Connexion pour écrans moyens et grands -->
