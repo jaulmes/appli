@@ -37,7 +37,7 @@ use Darryldecode\Cart\Cart;
 |
 */
 
-Route::get('/', function () {
+Route::get('/login', function () {
     return view('auth.login');
 });
 
@@ -56,7 +56,7 @@ Route::get('/test', function(){
     //return view('welcome');
 });
 
-Route::get('frontend', [FrontEndController::class, 'index'])->name('frontend.index');
+Route::get('/', [FrontEndController::class, 'index'])->name('frontend.index');
 Route::get('allPromoProduit', [FrontEndController::class, 'allPromoProduit'])->name('allPromoProduit');
 
 Route::get('all-produit', [FrontEndController::class, 'allProduits'])->name('all-produit');
