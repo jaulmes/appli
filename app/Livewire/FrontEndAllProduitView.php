@@ -12,7 +12,8 @@ class FrontEndAllProduitView extends Component
 
     public function mount()
     {
-        $this->produits = Produit::all();
+        $this->produits = Produit::orderByRaw('position_catalogue IS NULL, position_catalogue ASC')
+                                    ->get();
     }
 
     public function addProductToCartAll($id){

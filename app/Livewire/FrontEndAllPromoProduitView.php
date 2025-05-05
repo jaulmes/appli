@@ -13,7 +13,9 @@ class FrontEndAllPromoProduitView extends Component
 
     public function mount()
     {
-        $this->produits = Produit::where('status_promo', 1)->get();
+        $this->produits = Produit::where('status_promo', 1)
+                                    ->orderByRaw('position_promo IS NULL, position_promo ASC')
+                                    ->get();
     }
 
     public function addToCart($id){

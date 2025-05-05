@@ -60,7 +60,7 @@
       </div>
 
       <h4 class="mb-3">Description du projet</h4>
-      <p class="lead">{{ $realisation->description }}</p>
+      <p class="lead"> {!! str_replace(';', '<br>', e($realisation->description)) !!}</p>
 
       
     </div>

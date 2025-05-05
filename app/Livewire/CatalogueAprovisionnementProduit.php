@@ -21,7 +21,8 @@ class CatalogueAprovisionnementProduit extends Component
         ];
 
     public function mount(){   
-        $this->produits = Produit::all();
+        $this->produits = Produit::orderByRaw('position_catalogue IS NULL, position_catalogue ASC')
+                                ->get();
         $this->categories = Categori::all();
         $this->cart = Session::get('cart', []);
     }

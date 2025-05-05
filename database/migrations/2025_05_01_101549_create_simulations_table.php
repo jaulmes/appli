@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('simulations', function (Blueprint $table) {
             $table->id();
-            $table->string('appareils');
+            $table->longText('appareils');
             $table->string('coeficient_securite');
             $table->string('tension_entre_panneau');
             $table->string('ensoleillement_site');

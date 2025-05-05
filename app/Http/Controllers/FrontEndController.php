@@ -91,6 +91,7 @@ class FrontEndController extends Controller
 
     public function validerCommande( Request $request){
         $cart = session()->get('frontEndCart', []);
+
         if (empty($cart)) {
             return redirect()->back()->with('error', 'Votre panier est vide !');
         }
@@ -139,9 +140,11 @@ class FrontEndController extends Controller
 
         //je relie les produits aux commandes
         foreach ($cart as $item) {
+            $produit = Produit::find($item['id']);
             $commande->produits()->attach($item['id'], [
                 'quantity' => $item['quantity'],
-                'price' => $item['status_promo'] == 0 ? $item['price'] : $item['prix_promo']
+                'price' => $item['status_promo'] == 0 ? $item['price'] : $item['prix_promo'],
+                'status_produit' => $produit->stock >= 0 ? 'en stock' : 'signaler au responsable'
             ]);
         }
 

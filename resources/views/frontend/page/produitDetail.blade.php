@@ -45,7 +45,7 @@
           <div class="mb-3">
             @if($produit->status_promo)
               <del class="text-muted me-2">{{ number_format($produit->price, 0, ',', ' ') }} FCFA</del>
-              <span class="badge bg-danger" style="font-size: x-large;">
+              <span class="badge bg-success" style="font-size: x-large;">
                 {{ number_format($produit->prix_promo, 0, ',', ' ') }} FCFA
               </span>
             @else
@@ -55,36 +55,28 @@
             @endif
           </div>
 
-          <!-- Disponibilité dynamique -->
-          <p class="text-muted">
-            <strong>Disponibilité :</strong> 
-            @if($produit->stock > 0)
-              <span class="text-success">En stock ({{ $produit->stock }} unités)</span>
-            @else
-              <span class="text-danger">Rupture de stock</span>
-            @endif
-          </p>
+
 
           <!-- Description formatée -->
           <div class="mb-4 product-description">
-            {!! str_replace(';', ';<br>', e($produit->description)) !!}
+            {!! str_replace(';', '<br>', e($produit->description)) !!}
           </div>
 
           <!-- Actions d'achat -->
           <div class="d-flex gap-3 mb-4">
-            <button type="submit" class="btn btn-primary rounded-pill px-4 py-2">
-              <i class="fas fa-cart-plus me-2"></i>Ajouter au panier
-            </button>
-            <button type="button" class="btn btn-outline-dark rounded-pill px-4 py-2">
-              <i class="fas fa-bolt me-2"></i>Achat immédiat
-            </button>
+            @if($produit->stock > 0)
+              <button type="submit" class="btn btn-primary rounded-pill px-4 py-2">
+                <i class="fas fa-cart-plus me-2"></i>Ajouter au panier
+              </button>
+            @else
+              <button type="submit" class="btn btn-outline-dark rounded-pill px-4 py-2">
+                <i class="fas fa-bolt me-2"></i>Reserver maintenant
+              </button>
+            @endif
           </div>
 
           <!-- Métadonnées structurées -->
           <div class="mt-4 text-muted small">
-            <div class="mb-2">
-              <i class="fas fa-tag me-2"></i>Référence : {{ $produit->id }}
-            </div>
             <div>
               <i class="fas fa-layer-group me-2"></i>Catégorie : {{ $produit->categori->titre }}
             </div>

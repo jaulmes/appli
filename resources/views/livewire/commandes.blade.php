@@ -39,7 +39,7 @@
                         <td>{{$commande->clients->numero}}</td>
                         <td>
                             @foreach($commande->produits as $produit)
-                                <strong>Nom:</strong> {{$produit->name}} <strong>Qte: </strong></u> {{$produit->pivot->quantity}}<br>
+                                <strong>Nom:</strong> {{$produit->name}} <strong>Qte: </strong> {{$produit->pivot->quantity}} <span class="{{$produit->pivot->status_produit == 'en stock'? 'badge badge-success' : 'badge badge-danger'}}">{{$produit->pivot->status_produit}}</span><br>
                             @endforeach
                         </td>
                         <td>

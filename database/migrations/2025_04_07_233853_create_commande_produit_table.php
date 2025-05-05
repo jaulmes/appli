@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->integer('quantity');
             $table->integer('price');
+            $table->string('status_produit')->nullable();
             $table->unsignedBigInteger('commande_id')->nullable();
             $table->foreign('commande_id')->references('id')
                                     ->on('commandes')

@@ -3,28 +3,27 @@
       <div class="col-md-6 col-lg-4 col-xl-3 mb-4">
         <div class="card h-100 border-0 hover-scale overflow-hidden shadow-sm transition-all">
           <!-- Conteneur image avec effet de zoom -->
-          <div class="position-relative overflow-hidden image-zoom-container" style="height: 250px;">
-            <img src="{{ $produit->getImageUrl() }}"
-                 alt="{{ $produit->name }}"
-                 class="img-fluid w-100 h-100 object-fit-cover transition-all zoom-image">
-            <!-- Overlay interactif -->
-            <div class=" d-flex flex-column justify-content-between opacity-0 hover-opacity-100 bg-dark bg-opacity-25 transition-all">
-              <div class="d-flex justify-content-end">
-                <!-- Vous pouvez ajouter des icônes ou des liens ici si nécessaire -->
-              </div>
-              <div class="d-grid">
-                <a href="{{ route('produit.detail', $produit->id) }}" class="btn btn-outline-light rounded-pill">
-                  Voir en détail
-                </a>
-              </div>
-            </div>
-            <!-- Badge catégorie -->
-            <div class="position-absolute top-0 start-0 m-3 text-white">
-              <span class="badge bg-secondary">
-                {{ $produit->categori->titre }}
-              </span>
-            </div>
-          </div>
+          <a href="{{ route('produit-detail', $produit->id) }}" 
+                                        class="card-image-link d-block text-decoration-none position-relative">
+                                        <div class="position-relative overflow-hidden image-zoom-container" 
+                                            style="height: 250px;"
+                                            data-tilt data-tilt-max="8">
+                                            <img src="{{ $produit->getImageUrl() }}" 
+                                                alt="{{ $produit->name }}" 
+                                                class="img-fluid w-100 h-100 object-fit-cover zoom-image">
+                                            
+                                            <!-- Overlay dynamique -->
+                                            <div class="card-img-overlay d-flex flex-column justify-content-between p-3">
+                                                <div class="w-100 d-flex justify-content-end">
+                                                    <span class="badge bg-primary rounded-pill px-3 py-2 shadow glow-label">
+                                                        {{ $produit->categori->titre }}
+                                                    </span>
+                                                </div>
+
+                                            </div>
+                                            <div class="shine-effect"></div>
+                                        </div>
+                                    </a>
           <!-- Corps de la carte -->
           <div class="card-body p-3">
             <h5 class="fw-bold mb-2 text-truncate">{{ $produit->name }}</h5>
