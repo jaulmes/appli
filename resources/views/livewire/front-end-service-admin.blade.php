@@ -65,7 +65,12 @@
                             </div>
                         </td>
                         <td>
-                            <i class="fas fa-trash" type="button" wire:click="deleteService({{$service->id}})"></i>
+                            <!-- Modal modifier service-->
+                            <div  class="modal fade" id="editService-{{$service->id}}" wire:ignore.self data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                                <livewire:front-end-modal-edit-service-admin :service="$service" />
+                            </div>
+                            <i class="fas fa-edit text-blue" type="button"  data-bs-toggle="modal" data-bs-target="#editService-{{$service->id}}"></i>
+                            <i class="fas fa-trash text-red" type="button" wire:click="deleteService({{$service->id}})"></i>
                         </td>
                     </tr>
                 @empty

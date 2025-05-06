@@ -16,12 +16,11 @@
         <div class="card">
           <livewire:front-end-produit-promo/>
         </div>
-        <!-- /.card -->
 
         <div class="card">
-          <livewire:front-end-realisation-admin/>
+          <livewire:front-end-service-admin/>
         </div>
-        <!-- /.card -->
+
       </div>
       <!-- /.col-md-6 -->
       <div class="col-lg-6">
@@ -29,10 +28,16 @@
           <livewire:front-end-presentation-view-admin/>
         </div>
         <!-- /.card -->
-
         <div class="card">
-          <livewire:front-end-service-admin/>
+          <livewire:front-end-realisation-admin/>
         </div>
+      </div>
+
+      <div class="col-lg-6">
+        <div class="card">
+          <livewire:front-end-annonce-admin/>
+        </div>
+        <!-- /.card -->
       </div>
       <!-- /.col-md-6 -->
     </div>

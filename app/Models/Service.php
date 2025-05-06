@@ -14,4 +14,9 @@ class Service extends Model
         'image',
         'status'
     ];
+
+    public function annonces()
+    {
+        return $this->hasMany(Annonce::class, 'service_id');
+    }
 }

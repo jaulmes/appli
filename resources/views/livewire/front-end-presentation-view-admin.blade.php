@@ -8,10 +8,10 @@
                 </button>
             </a>
         </div>
-        @if (session()->has('message'))
-        <div class="alert alert-success">
-            {{ session('message') }}
-        </div>
+        @if (session()->has('message_presentation'))
+            <div class="alert alert-success">
+                {{ session('message_presentation') }}
+            </div>
         @endif
     </div>
     <div class="card-body table-responsive p-0">
@@ -45,9 +45,12 @@
                             </div>
                         </td>
                         <td>
-                            <button type="button" class="btn btn-danger" wire:click="deletePresentation({{$presentation->id}})">
-                                <i class="bi bi-trash"></i>
-                            </button>
+                            <i type="button" class="bi bi-pencil-square text-blue" data-bs-toggle="modal" data-bs-target="#editPresentation-{{$presentation->id}}"></i>
+                            <!-- Modal -->
+                            <div  class="modal fade" id="editPresentation-{{$presentation->id}}" wire:ignore.self data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                                <livewire:front-end-edit-presentation-admin :presentation="$presentation" />
+                            </div>
+                            <i type="button" class="bi bi-trash text-red" wire:click="deletePresentation({{$presentation->id}})"></i>
                         </td>
                     </tr>
                 @endforeach

@@ -28,6 +28,10 @@ class Produit extends Model
         'image_produit4',
     ];
 
+
+    public function annonces(){
+        return $this->hasMany(Annonce::class, 'produit_id');
+    }
     public function categori(){
         return $this->belongsTo(Categori::class, 'categori_id');
     }

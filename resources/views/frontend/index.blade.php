@@ -291,6 +291,13 @@ src="https://www.facebook.com/tr?id=681776711126337&ev=PageView&noscript=1"
     </div>
   </section>
 
+  <!-- Section annonce -->
+  <section class="service py-5">
+    <div class="container-fluid">
+      <livewire:front-end-annonce-view />
+    </div>
+  </section>
+
   <!-- Section Témoignages -->
   <section class="testimonial py-5">
     <div class="container py-5">

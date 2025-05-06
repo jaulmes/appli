@@ -61,6 +61,32 @@ class FrontEndPresentationViewAdmin extends Component
         return redirect()->route('frontend.admin');
     }
 
+    public function editPresentation($id){
+        $presentation = FrontentPresentation::find($id);
+        $presentation->title = $this->title;
+        $presentation->description = $this->description;
+        $presentation->status = $this->status;
+        if ($file = $this->image) {
+            $fileName = hexdec(uniqid()).'.'.$file->getClientOriginalName();
+            $imagePath = 'public/images/presentations/';
+            /**
+             * Delete an image if exists.
+             */
+            if($presentation->image){
+                Storage::delete($imagePath . $presentation->image);
+            }
+            // Store an image to Storage
+            $file->storeAs($imagePath, $fileName);
+            $presentation->image = $fileName;
+        }
+        else{
+            $presentation->image = '';
+        }
+        $presentation->save();
+        session()->flash('message', 'Presentation Updated Successfully.');
+        $this->dispatch('refreshComponent');
+    }
+
     public function changeStatus($id){
         $presentation = FrontentPresentation::find($id);
 
@@ -84,6 +110,9 @@ class FrontEndPresentationViewAdmin extends Component
         session()->flash('message', 'Presentation supprimée avec succès.');
         $this->dispatch('refreshComponent');
     }
+
+
+
     public function mount(){
         $this->presentations = FrontentPresentation::all();
     }

@@ -7,12 +7,17 @@
                 <i class="fas fa-plus"></i>
             </button>
         </div>
+        @if (session()->has('message_realisation'))
+            <div class="alert alert-success">
+                {{ session('message_realisation') }}
+            </div>
+        @endif
     </div>
     <div class="card-body table-responsive p-0">
         <table class="table table-striped table-valign-middle">
             <thead>
                 <tr>
-                    <th>Presentations</th>
+                    <th>Realisations</th>
                     <th>Descriptions</th>
                     <th>Status</th>
                     <th>Action</th>
@@ -36,7 +41,12 @@
                             </div>
                         </td>
                         <td>
-                            <i class="fas fa-trash" type="button"></i>
+                            <!-- Modal modifier realisation-->
+                            <div  class="modal fade" id="editRealisation-{{$realisation->id}}" wire:ignore.self data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                                <livewire:front-end-edit-realisation-admin :realisation="$realisation" />
+                            </div>
+                            <i class="bi bi-pencil-square text-blue"  type="button" data-bs-toggle="modal" data-bs-target="#editRealisation-{{$realisation->id}}" ></i>
+                            <i class="fas fa-trash text-red" type="button"></i>
                         </td>
                     </tr>
                 @empty
@@ -71,7 +81,7 @@
                             <div class="form-group col">
                                 <label>Status</label>
                                 <select wire:model="status" class="form-control select2bs4 @error('status') is-invalid @enderror" style="width: 100%;">
-                                    <option selected>choisir le status de la presentation</option>
+                                    <option selected>choisir le status de la realisation</option>
                                     <option value="actif">Actif</option>
                                     <option value="inactif">Inactif</option>
                                 </select>

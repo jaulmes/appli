@@ -6,38 +6,35 @@
              data-aos-delay="{{ $loop->index * 50 }}">
             
             <!-- Conteneur image avec effets avancés -->
-            <div class="position-relative overflow-hidden image-zoom-container" 
-                 style="height: 250px;"
-                 data-tilt data-tilt-max="10">
-                <img src="{{ $produit->getImageUrl() }}"
-                     alt="{{ $produit->name }}"
-                     class="img-fluid w-100 h-100 object-fit-cover transition-all zoom-image parallax-image"
-                     data-parallax="hover">
+            <a href="{{ route('produit-detail', $produit->id) }}" 
+                class="card-image-link d-block text-decoration-none position-relative">
+                <div class="position-relative overflow-hidden image-zoom-container" 
+                    style="height: 250px;"
+                    data-tilt data-tilt-max="10">
+                    <img src="{{ $produit->getImageUrl() }}"
+                        alt="{{ $produit->name }}"
+                        class="img-fluid w-100 h-100 object-fit-cover transition-all zoom-image parallax-image"
+                        data-parallax="hover">
 
-                <!-- Overlay interactif amélioré -->
-                <div class="image-overlay d-flex flex-column justify-content-between opacity-0 hover-opacity-100 transition-all">
-                    <div class="d-flex justify-content-end p-3">
-                        
+                    <!-- Overlay interactif amélioré -->
+                    <div class="image-overlay d-flex flex-column justify-content-between opacity-0 hover-opacity-100 transition-all">
+                        <div class="d-flex justify-content-end p-3">
+                            
+                        </div>
+
                     </div>
-                    <div class="d-grid px-3 pb-3">
-                        <a href="{{ route('produit-detail', $produit->id) }}" 
-                           class="btn btn-outline-light rounded-pill transform-down">
-                           <span class="hover-text">Voir en détail</span>
-                           <i class="fas fa-arrow-right ms-2 hover-icon"></i>
-                        </a>
+
+                    <!-- Badge catégorie animé -->
+                    <div class="position-absolute top-0 start-0 m-3">
+                        <span class="badge bg-gradient-primary rounded-pill px-3 py-2 hover-lift">
+                            {{ $produit->categori->titre }}
+                        </span>
                     </div>
-                </div>
 
-                <!-- Badge catégorie animé -->
-                <div class="position-absolute top-0 start-0 m-3">
-                    <span class="badge bg-gradient-primary rounded-pill px-3 py-2 hover-lift">
-                        {{ $produit->categori->titre }}
-                    </span>
+                    <!-- Effet de brillance au survol -->
+                    <div class="shine-effect"></div>
                 </div>
-
-                <!-- Effet de brillance au survol -->
-                <div class="shine-effect"></div>
-            </div>
+            </a>
 
             <!-- Corps de la carte amélioré -->
             <div class="card-body p-3 position-relative">

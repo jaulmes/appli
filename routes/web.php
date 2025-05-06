@@ -95,6 +95,7 @@ Route::middleware('auth')->group(function () {
     //front end admin
     Route::get('/frontend/admin', [FrontEndController::class, 'admin'])->name('frontend.admin');
     Route::get('/frontend/admin/allPromoProduit', [FrontEndController::class, 'allPromoProduitAdmin'])->name('frontend.admin.allPromoProduit');
+    Route::get('frontend/admin/create-annonces', [FrontEndController::class, 'createAnnonce'])->name('annonce.create');
 
     /**
      * Dashboardd
