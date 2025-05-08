@@ -4,9 +4,11 @@ namespace App\Livewire;
 
 use App\Models\Service;
 use Livewire\Component;
+use Livewire\WithFileUploads;
 
 class FrontEndModalEditServiceAdmin extends Component
 {
+    use WithFileUploads;
     public $service, $name, $description, $status, $image;
 
 

@@ -211,8 +211,10 @@ src="https://www.facebook.com/tr?id=681776711126337&ev=PageView&noscript=1"
 
 
   <!-- Section Produits en Promotion -->
-  <section class="fruite py-5">
-    <livewire:front-end-promo-product>
+  <section class="py-2 consumption-card p-4 mb-4">
+    <div class="container-fluid ">
+      <livewire:front-end-promo-product>
+    </div>
   </section>
 
     <!-- Section Services -->

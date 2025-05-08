@@ -1,9 +1,11 @@
-<div class="container py-0">
 
-  {{-- Section Promo --}}
+
   <section aria-labelledby="promo-titre">
     <h2 id="promo-titre" class="display-6 fw-bold gradient-text fs-2 fs-md-1 text-center mb-4">
-      En Promotion
+      <a href="{{ route('allPromoProduit') }}" class="text-decoration-none text-dark">
+        <i class="fas fa-tags me-2"></i>
+        En Promotion
+      </a>
     </h2>
 
     {{-- Fallback pour les bots sans JS --}}
@@ -135,25 +137,22 @@
         Voir toutes les promotions <i class="fas fa-arrow-right ms-2"></i>
       </a>
     </div>
+    {{-- Styles spécifiques (votre fichier CSS principal peut aussi les contenir) --}}
+    <style>
+      .hover-3d:hover { transform: translateY(-8px); }
+      .zoom-image { transition: transform .8s; }
+      .shine-effect { /* votre effet */ }
+    </style>
 
+    {{-- Scripts d’initialisation --}}
+    <script>
+      document.addEventListener('DOMContentLoaded', function(){
+        // Initialisation AOS
+        AOS.init({ duration:800, once:true });
+        // Collapse les indicateurs et répète l’animation au slide
+        let carouselEl = document.getElementById('carouselPromoProduits');
+        carouselEl.addEventListener('slid.bs.carousel', () => AOS.refresh());
+      });
+    </script>
   </section>
 
-  {{-- Styles spécifiques (votre fichier CSS principal peut aussi les contenir) --}}
-  <style>
-    .hover-3d:hover { transform: translateY(-8px); }
-    .zoom-image { transition: transform .8s; }
-    .shine-effect { /* votre effet */ }
-  </style>
-
-  {{-- Scripts d’initialisation --}}
-  <script>
-    document.addEventListener('DOMContentLoaded', function(){
-      // Initialisation AOS
-      AOS.init({ duration:800, once:true });
-      // Collapse les indicateurs et répète l’animation au slide
-      let carouselEl = document.getElementById('carouselPromoProduits');
-      carouselEl.addEventListener('slid.bs.carousel', () => AOS.refresh());
-    });
-  </script>
-
-</div>
