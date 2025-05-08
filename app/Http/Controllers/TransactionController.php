@@ -25,7 +25,7 @@ class TransactionController extends Controller
                            ->whereYear('created_at', Carbon::parse($currentMonth)->year)
                            ->orderBy('created_at', 'desc')
                            ->with('produits')
-                           ->paginate(10);
+                           ->get();
 
 
         

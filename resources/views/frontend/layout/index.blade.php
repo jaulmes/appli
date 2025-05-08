@@ -81,110 +81,90 @@
 
 
           <!-- Footer -->
-<footer class="bg-dark text-light pt-5 mt-5" id="contact">
-  <div class="container">
-
-    <!-- Newsletter & Logo -->
-    <div class="row align-items-center mb-5">
-      <div class="col-md-4 text-center text-md-start mb-4 mb-md-0">
-        <a href="#" class="text-decoration-none">
-          <h2 class="text-warning mb-1">Solergy Solutions SARL</h2>
-          <p class="small">Votre expert en énergie solaire à Douala</p>
-        </a>
-      </div>
-      <div class="col-md-8">
-        <form class="row g-2 justify-content-center justify-content-md-end">
-          <div class="col-auto flex-grow-1">
-            <label for="footer-email" class="visually-hidden">Votre Email</label>
-            <input id="footer-email" type="email" class="form-control rounded-pill" placeholder="Entrez votre email">
-          </div>
-          <div class="col-auto">
-            <button type="submit" class="btn btn-warning rounded-pill px-4">S’abonner</button>
-          </div>
-        </form>
-      </div>
-    </div>
-
-    <!-- Liens utiles & Contact -->
-    <div class="row gy-4">
-      <!-- Pourquoi nous choisir -->
-      <div class="col-lg-3 col-md-6">
-        <h5 class="text-warning mb-3">Pourquoi nous choisir ?</h5>
-        <p>Une équipe certifiée, des solutions sur-mesure et un support 24/7 pour vos installations solaires.</p>
-        <a href="#" class="btn btn-outline-light btn-sm rounded-pill mt-2">En savoir plus</a>
-      </div>
-
-      <!-- Produits & Services -->
-      <div class="col-lg-3 col-md-6">
-        <h5 class="text-warning mb-3">Nos offres</h5>
-        <ul class="list-unstyled">
-          <li><a href="#" class="text-light text-decoration-none">Panneaux photovoltaïques</a></li>
-          <li><a href="#" class="text-light text-decoration-none">Batteries de stockage</a></li>
-          <li><a href="#" class="text-light text-decoration-none">Inverters & Regulators</a></li>
-          <li><a href="#" class="text-light text-decoration-none">Entretien & SAV</a></li>
-        </ul>
-      </div>
-
-      <!-- À propos -->
-      <div class="col-lg-3 col-md-6">
-        <h5 class="text-warning mb-3">À propos</h5>
-        <ul class="list-unstyled">
-          <li><a href="#" class="text-light text-decoration-none">Qui sommes-nous ?</a></li>
-          <li><a href="#" class="text-light text-decoration-none">Nos réalisations</a></li>
-          <li><a href="#" class="text-light text-decoration-none">Blog & conseils</a></li>
-          <li><a href="#" class="text-light text-decoration-none">Carrières</a></li>
-        </ul>
-      </div>
-
-      <!-- Contact -->
-      <div class="col-lg-3 col-md-6">
-        <h5 class="text-warning mb-3">Contact</h5>
-        <ul class="list-unstyled small">
-          <li class="mb-2"><i class="fas fa-map-marker-alt me-2"></i>Ndockoti, Douala, Cameroun</li>
-          <li class="mb-2"><i class="fas fa-phone me-2"></i>+237 6 57 24 89 25</li>
-          <li class="mb-2"><i class="fas fa-envelope me-2"></i><a href="mailto:solergysolutions@gmail.com" class="text-light">solergysolutions@gmail.com</a></li>
-        </ul>
-        <div>
-          <a href="#" class="btn btn-outline-light btn-sm rounded-circle me-2"><i class="fab fa-facebook-f"></i></a>
-          <a href="#" class="btn btn-outline-light btn-sm rounded-circle me-2"><i class="fab fa-twitter"></i></a>
-          <a href="#" class="btn btn-outline-light btn-sm rounded-circle me-2"><i class="fab fa-linkedin-in"></i></a>
-          <a href="#" class="btn btn-outline-light btn-sm rounded-circle"><i class="fab fa-whatsapp"></i></a>
-        </div>
-      </div>
-    </div>
-
-    <!-- Bas de page -->
-    <div class="row mt-5 pt-4 border-top border-secondary">
-      <div class="col-md-6 text-center text-md-start mb-2 mb-md-0">
-        <small>&copy; 2025 Solergy Solutions SARL. Tous droits réservés.</small>
-      </div>
-      <div class="col-md-6 text-center text-md-end">
-        <small>Design par <a href="mailto:anoudemj@gmail.com" class="text-warning text-decoration-none">anoudemj@gmail.com</a></small>
-      </div>
-    </div>
-
-  </div>
-</footer>
-
-        <!-- Copyright Start -->
-        <div class="container-fluid copyright bg-dark py-4">
+          <footer class="bg-dark text-light pt-5 mt-5" id="contact">
             <div class="container">
-                <div class="row">
-                    <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
-                        <span class="text-light"><a href="#"><i class="fas fa-copyright text-light me-2"></i>Your Site Name</a>, All right reserved.</span>
-                    </div>
-                    <div class="col-md-6 my-auto text-center text-md-end text-white">
-                        <!--/*** This template is free as long as you keep the below author’s credit link/attribution link/backlink. ***/-->
-                        <!--/*** If you'd like to use the template without the below author’s credit link/attribution link/backlink, ***/-->
-                        <!--/*** you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". ***/-->
-                        Designed By <a class="border-bottom" href="#">anoudemj@gmail.com</a> Distributed By <a class="border-bottom" href="https://themewagon.com">ThemeWagon</a>
-                    </div>
+
+              <!-- Newsletter & Logo -->
+              <div class="row align-items-center mb-5">
+                <div class="col-md-4 text-center text-md-start mb-4 mb-md-0">
+                  <a href="#" class="text-decoration-none">
+                    <h2 class="text-warning mb-1">Solergy Solutions SARL</h2>
+                    <p class="small">Votre expert en énergie solaire à Douala</p>
+                  </a>
                 </div>
+                <div class="col-md-8">
+                  <form class="row g-2 justify-content-center justify-content-md-end">
+                    <div class="col-auto flex-grow-1">
+                      <label for="footer-email" class="visually-hidden">Votre Email</label>
+                      <input id="footer-email" type="email" class="form-control rounded-pill" placeholder="Entrez votre email">
+                    </div>
+                    <div class="col-auto">
+                      <button type="submit" class="btn btn-warning rounded-pill px-4">S’abonner</button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+
+              <!-- Liens utiles & Contact -->
+              <div class="row gy-4">
+                <!-- Pourquoi nous choisir -->
+                <div class="col-lg-3 col-md-6">
+                  <h5 class="text-warning mb-3">Pourquoi nous choisir ?</h5>
+                  <p>Une équipe certifiée, des solutions sur-mesure et un support 24/7 pour vos installations solaires.</p>
+                  <a href="#" class="btn btn-outline-light btn-sm rounded-pill mt-2">En savoir plus</a>
+                </div>
+
+                <!-- Produits & Services -->
+                <div class="col-lg-3 col-md-6">
+                  <h5 class="text-warning mb-3">Nos offres</h5>
+                  <ul class="list-unstyled">
+                    <li><a href="#" class="text-light text-decoration-none">Panneaux photovoltaïques</a></li>
+                    <li><a href="#" class="text-light text-decoration-none">Batteries de stockage</a></li>
+                    <li><a href="#" class="text-light text-decoration-none">Inverters & Regulators</a></li>
+                    <li><a href="#" class="text-light text-decoration-none">Entretien & SAV</a></li>
+                  </ul>
+                </div>
+
+                <!-- À propos -->
+                <div class="col-lg-3 col-md-6">
+                  <h5 class="text-warning mb-3">À propos</h5>
+                  <ul class="list-unstyled">
+                    <li><a href="#" class="text-light text-decoration-none">Qui sommes-nous ?</a></li>
+                    <li><a href="#" class="text-light text-decoration-none">Nos réalisations</a></li>
+                    <li><a href="#" class="text-light text-decoration-none">Blog & conseils</a></li>
+                    <li><a href="#" class="text-light text-decoration-none">Carrières</a></li>
+                  </ul>
+                </div>
+
+                <!-- Contact -->
+                <div class="col-lg-3 col-md-6">
+                  <h5 class="text-warning mb-3">Contact</h5>
+                  <ul class="list-unstyled small">
+                    <li class="mb-2"><i class="fas fa-map-marker-alt me-2"></i>Ndockoti, Douala, Cameroun</li>
+                    <li class="mb-2"><i class="fas fa-phone me-2"></i>+237 6 57 24 89 25</li>
+                    <li class="mb-2"><i class="fas fa-envelope me-2"></i><a href="mailto:solergysolutions@gmail.com" class="text-light">solergysolutions@gmail.com</a></li>
+                  </ul>
+                  <div>
+                    <a href="#" class="btn btn-outline-light btn-sm rounded-circle me-2"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="btn btn-outline-light btn-sm rounded-circle me-2"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="btn btn-outline-light btn-sm rounded-circle me-2"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="#" class="btn btn-outline-light btn-sm rounded-circle"><i class="fab fa-whatsapp"></i></a>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Bas de page -->
+              <div class="row mt-5 pt-4 border-top border-secondary">
+                <div class="col-md-6 text-center text-md-start mb-2 mb-md-0">
+                  <small>&copy; 2025 Solergy Solutions SARL. Tous droits réservés.</small>
+                </div>
+                <div class="col-md-6 text-center text-md-end">
+                  <small>Design par <a href="mailto:anoudemj@gmail.com" class="text-warning text-decoration-none">anoudemj@gmail.com</a></small>
+                </div>
+              </div>
+
             </div>
-        </div>
-        <!-- Copyright End -->
-
-
+          </footer>
 
         <!-- Back to Top -->
         <a href="#" class="btn btn-primary border-3 border-primary rounded-circle back-to-top"><i class="fa fa-arrow-up"></i></a>   

@@ -1,6 +1,6 @@
-<div class="container py-5">
+<div class="container py-0">
     <div class="tab-class text-center">
-        <div class="row g-4 bg-grey align-items-center mb-5" data-aos="fade-up">
+        <div class="row g-4 bg-grey align-items-center mb-0" data-aos="fade-up">
             <div class="col-lg-4 text-start">
                 <h1 class="display-5 fw-bold gradient-text">Nos Produits</h1>
             </div>

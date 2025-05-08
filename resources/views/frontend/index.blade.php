@@ -136,11 +136,11 @@
       transform: rotate(10deg);
     }
     /* Icône WhatsApp flottante */
-.whatsapp-float {
+.whatsapp-float-orange {
   position: fixed;
   bottom: 6rem;
   right: 2rem;
-  background-color: #25d366;
+  background-color:rgb(181, 78, 9);
   color: #fff;
   width: 4.5rem;
   height: 4.5rem;
@@ -159,7 +159,7 @@
   overflow: hidden;
   position: fixed;
 }
-.whatsapp-float:hover {
+.whatsapp-float-orange:hover {
   transform: scale(1.2) rotate(10deg);
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
 }
@@ -241,8 +241,6 @@ src="https://www.facebook.com/tr?id=681776711126337&ev=PageView&noscript=1"
     <livewire:front-end-categori-product-view>
   </section>
 
-
-
   <!-- Garantie -->
   <section class="featurs py-5">
     <div class="container py-5">
@@ -295,93 +293,6 @@ src="https://www.facebook.com/tr?id=681776711126337&ev=PageView&noscript=1"
   <section class="service py-5">
     <div class="container-fluid">
       <livewire:front-end-annonce-view />
-    </div>
-  </section>
-
-  <!-- Section Témoignages -->
-  <section class="testimonial py-5">
-    <div class="container py-5">
-      <div class="testimonial-header text-center" data-aos="fade-up">
-        <h4 class="text-primary">Témoignages</h4>
-        <h1 class="display-5 mb-5 text-dark">Ce que disent nos clients</h1>
-      </div>
-      <div class="owl-carousel testimonial-carousel" data-aos="fade-up" data-aos-delay="200">
-        <!-- Témoignage 1 -->
-        <div class="testimonial-item bg-light rounded p-4">
-          <div class="position-relative">
-            <i class="fa fa-quote-right fa-2x text-secondary position-absolute" style="bottom: 30px; right: 0;"></i>
-            <div class="mb-4 pb-4 border-bottom border-secondary">
-              <p class="mb-0">"Solergy Solutions SARL a transformé notre manière de consommer l'énergie. L'installation a été rapide et professionnelle."</p>
-            </div>
-            <div class="d-flex align-items-center">
-              <div class="bg-secondary rounded">
-                <img src="img/testimonial-1.jpg" class="img-fluid rounded" style="width: 100px; height: 100px;" alt="Client satisfait">
-              </div>
-              <div class="ms-4">
-                <h4 class="text-dark">Jean Dupont</h4>
-                <p class="mb-1">Directeur Général</p>
-                <div>
-                  <i class="fas fa-star text-primary"></i>
-                  <i class="fas fa-star text-primary"></i>
-                  <i class="fas fa-star text-primary"></i>
-                  <i class="fas fa-star text-primary"></i>
-                  <i class="fas fa-star"></i>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <!-- Témoignage 2 -->
-        <div class="testimonial-item bg-light rounded p-4">
-          <div class="position-relative">
-            <i class="fa fa-quote-right fa-2x text-secondary position-absolute" style="bottom: 30px; right: 0;"></i>
-            <div class="mb-4 pb-4 border-bottom border-secondary">
-              <p class="mb-0">"L'équipe est réactive et l'installation de nos panneaux solaires a été effectuée dans les délais impartis."</p>
-            </div>
-            <div class="d-flex align-items-center">
-              <div class="bg-secondary rounded">
-                <img src="img/testimonial-1.jpg" class="img-fluid rounded" style="width: 100px; height: 100px;" alt="Client satisfait">
-              </div>
-              <div class="ms-4">
-                <h4 class="text-dark">Marie Koffi</h4>
-                <p class="mb-1">Responsable Technique</p>
-                <div>
-                  <i class="fas fa-star text-primary"></i>
-                  <i class="fas fa-star text-primary"></i>
-                  <i class="fas fa-star text-primary"></i>
-                  <i class="fas fa-star text-primary"></i>
-                  <i class="fas fa-star text-primary"></i>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <!-- Témoignage 3 -->
-        <div class="testimonial-item bg-light rounded p-4">
-          <div class="position-relative">
-            <i class="fa fa-quote-right fa-2x text-secondary position-absolute" style="bottom: 30px; right: 0;"></i>
-            <div class="mb-4 pb-4 border-bottom border-secondary">
-              <p class="mb-0">"Nous recommandons vivement Solergy Solutions pour leur expertise et leur professionnalisme dans le domaine solaire."</p>
-            </div>
-            <div class="d-flex align-items-center">
-              <div class="bg-secondary rounded">
-                <img src="img/testimonial-1.jpg" class="img-fluid rounded" style="width: 100px; height: 100px;" alt="Client satisfait">
-              </div>
-              <div class="ms-4">
-                <h4 class="text-dark">Samuel Ngu</h4>
-                <p class="mb-1">Entrepreneur</p>
-                <div>
-                  <i class="fas fa-star text-primary"></i>
-                  <i class="fas fa-star text-primary"></i>
-                  <i class="fas fa-star text-primary"></i>
-                  <i class="fas fa-star text-primary"></i>
-                  <i class="fas fa-star text-primary"></i>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
   </section>
 
@@ -473,9 +384,10 @@ src="https://www.facebook.com/tr?id=681776711126337&ev=PageView&noscript=1"
 
   
   <!-- Floating WhatsApp Button -->
-  <a href="https://wa.me/237657248925" style="height: 50px; width: 50px" target="_blank" class="whatsapp-float" aria-label="Contactez-nous sur WhatsApp">
-    <i class="fab fa-whatsapp"></i>
+  <a href="https://wa.me/237657248925" style="height: 50px; width: 50px; color:#ff7f00" target="_blank" class="whatsapp-float-orange" aria-label="Contactez-nous sur WhatsApp">
+    <i class="bi bi-whatsapp"></i>
   </a>
+  
 
   <!-- Back to Top -->
   <a href="#" class="btn btn-primary border-3 border-primary rounded-circle back-to-top"><i class="fa fa-arrow-up"></i></a>

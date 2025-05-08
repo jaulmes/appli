@@ -121,17 +121,6 @@
                 </table>
             </div>
         </div>
-        <!-- Pied de Tableau -->
-        <div class="card-footer bg-light">
-            <div class="d-flex flex-column flex-md-row justify-content-between align-items-center">
-                <div class="text-muted small mb-2 mb-md-0">
-                    Affichage de {{ $transactions->firstItem() }} à {{ $transactions->lastItem() }} sur {{ $transactions->total() }} résultats
-                </div>
-                <div class="mt-2 mt-md-0">
-                    {{ $transactions->links('pagination::bootstrap-4') }}
-                </div>
-            </div>
-        </div>
     </div>
 </div>
 @endsection

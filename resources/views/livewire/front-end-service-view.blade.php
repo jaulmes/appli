@@ -1,131 +1,135 @@
 <div>
-    <div class="container-fluid py-5 position-relative bg-light overflow-hidden">
-        <div class="bg-shapes-top position-absolute start-0 top-0"></div>
-        <div class="bg-shapes-bottom position-absolute end-0 bottom-0"></div>
+  <div class="container-fluid py-0 position-relative bg-light overflow-hidden">
 
-        <div class="text-center mb-5">
-            <h6 class="text-warning fw-bold mb-2" style="letter-spacing: 2px;">Services</h6>
-            <h2 class="fw-bold display-6 text-uppercase" style="color: #004075;">
-                Decouvrez nos services
-            </h2>
-        </div>
+    {{-- Balises décoratives --}}
+    <div class="bg-shapes-top position-absolute start-0 top-0"></div>
+    <div class="bg-shapes-bottom position-absolute end-0 bottom-0"></div>
 
-        {{-- Liste des réalisations : 4 cartes par ligne --}}
-        <div class="row g-4 justify-content-center">
-            @foreach($services as $service)
-                <div class="col-sm-6 col-md-4 col-lg-3">
-                    <div class="card border-0 shadow-sm h-100 rounded-4 overflow-hidden">
-                        {{-- Image de la réalisation --}}
-                        <div class="card-img-top">
-                            <img 
-                                src="{{ asset('storage/images/services/'.$service->image) }}" 
-                                alt="Image du service"
-                                class="d-block w-100 object-fit-cover"
-                                style="height: 200px;"
-                            >
-                        </div>
-                        {{-- Corps de la carte --}}
-                        <div class="card-body d-flex flex-column justify-content-between">
-                            <h5 class="card-title fw-bold text-truncate" title="{{ $service->name }}">
-                                {{ $service->name }}
-                            </h5>
-                            <p class="card-text text-muted small">
-                                {{-- Exemple de description courte ou lieu d’installation --}}
-                                {{ Str::limit($service->description, 80) }}
-                            </p>
-                            <div class="mt-auto">
-                                <button class="btn btn-primary rounded-pill px-4">
-                                    <a wire:navigate href="{{ route('detail-service', $service->id)}}" class="text-white text-decoration-none">
-                                        En savoir plus
-                                    </a>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            @endforeach
-        </div>
-
-        {{-- Bouton principal en bas de la section --}}
-        <div class="text-center mt-5">
-            <button class="btn btn-warning text-dark rounded-pill px-4 py-2 shadow">
-                Découvrir plus
-            </button>
-        </div>
+    {{-- En-tête section --}}
+    <div class="text-center mb-5" role="banner">
+      <h3 class="text-warning fw-bold mb-2" style="letter-spacing:2px;">Services</h3>
+      <h2 class="fw-bold display-6 text-uppercase" style="color:#004075;" id="services-heading">
+        Découvrez nos services
+      </h2>
     </div>
 
-    {{-- Exemple de styles personnalisés --}}
-    <style>
-        /* Conteneur principal : masquer le débordement horizontal */
-        .overflow-hidden {
-            overflow-x: hidden;
-        }
+    {{-- Fallback pour les bots sans JS --}}
+    <noscript>
+      @foreach($services as $service)
+        <div>
+          <a href="{{ route('detail-service', $service->id) }}">
+            {{ $service->name }}
+          </a>
+        </div>
+      @endforeach
+    </noscript>
 
-        .bg-light {
-            background-color: #f8f9fa !important;
-        }
+    {{-- JSON-LD ItemList --}}
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "ItemList",
+      "itemListElement": [
+        @foreach($services as $index => $s)
+        {
+          "@type": "ListItem",
+          "position": {{ $index + 1 }},
+          "url": "{{ route('detail-service', $s->id) }}",
+          "name": "{{ $s->name }}"
+        }@if(!$loop->last),@endif
+        @endforeach
+      ]
+    }
+    </script>
 
-        /* Formes décoratives */
-        .bg-shapes-top::before,
-        .bg-shapes-bottom::before {
-            content: "";
-            position: absolute;
-            width: 200px;
-            height: 200px;
-            background: radial-gradient(circle at center, #ffa500 0%, #ff7f00 100%);
-            opacity: 0.3;
-            z-index: -1;
-        }
+    {{-- Grille de cartes --}}
+    <div class="row g-4 justify-content-center" aria-labelledby="services-heading">
+      @foreach($services as $service)
+        <div class="col-sm-6 col-md-4 col-lg-3">
+          <div class="card border-0 shadow-sm h-100 rounded-4 overflow-hidden">
 
-        /* Forme en haut à gauche */
-        .bg-shapes-top::before {
-            top: -50px;
-            left: -50px;
-            border-radius: 50%;
-        }
-        .bg-shapes-top {
-            width: 0; 
-            height: 0;
-        }
+            {{-- Image --}}
+            <figure class="mb-0">
+              <img
+                src="{{ asset('storage/images/services/'.$service->image) }}"
+                alt="Photo du service {{ $service->name }}"
+                loading="lazy"
+                class="d-block w-100 object-fit-cover"
+                style="height:200px;"
+              >
+            </figure>
 
-        /* Forme en bas à droite */
-        .bg-shapes-bottom::before {
-            bottom: -50px;
-            right: -50px;
-            border-radius: 50%;
-        }
-        .bg-shapes-bottom {
-            width: 0; 
-            height: 0;
-        }
+            {{-- Contenu --}}
+            <div class="card-body d-flex flex-column">
 
-        /* Ajustement du titre secondaire */
-        h6.text-warning {
-            font-size: 0.9rem;
-            text-transform: uppercase;
-        }
+              <h3 class="h5 card-title fw-bold text-truncate" title="{{ $service->name }}">
+                {{ $service->name }}
+              </h3>
 
-        /* Bouton "En savoir plus" */
-        .btn-primary {
-            background: linear-gradient(135deg, #007bff, #0056b3);
-            border: none;
-        }
-        .btn-primary:hover {
-            background: linear-gradient(135deg, #0056b3, #003f7f);
-        }
+              <p class="card-text text-muted small">
+                {{ Str::limit($service->description, 80) }}
+              </p>
 
-        /* Bouton "Découvrir plus" */
-        .btn-warning {
-            background: linear-gradient(135deg, #ffaf00, #ff7f00);
-            border: none;
-        }
-        .btn-warning:hover {
-            background: linear-gradient(135deg, #ff7f00, #ff5a00);
-        }
+              {{-- Bouton --}}
+              <div class="mt-auto text-center">
+                <a
+                  href="{{ route('detail-service', $service->id) }}"
+                  class="btn btn-primary rounded-pill px-4"
+                  aria-label="En savoir plus sur {{ $service->name }}"
+                >
+                  En savoir plus
+                </a>
+              </div>
 
-        /* Pour assurer un bel affichage de l'image */
-        .object-fit-cover {
-            object-fit: cover;
-        }
-    </style>
+            </div>
+          </div>
+        </div>
+      @endforeach
+    </div>
+
+    {{-- Bouton global --}}
+    <div class="text-center mt-5">
+      <a
+        href="#"
+        class="btn btn-warning text-dark rounded-pill px-4 py-2 shadow"
+        role="button"
+      >
+        Découvrir plus
+      </a>
+    </div>
+
+  </div>
+
+  {{-- Styles personnalisés --}}
+  <style>
+    .overflow-hidden { overflow-x: hidden; }
+    .object-fit-cover { object-fit: cover; }
+    .bg-shapes-top::before,
+    .bg-shapes-bottom::before {
+      content: "";
+      position: absolute;
+      width: 200px; height: 200px;
+      background: radial-gradient(circle, #ffa500 0%, #ff7f00 100%);
+      opacity: .3; z-index: -1;
+      border-radius: 50%;
+    }
+    .bg-shapes-top::before { top: -50px; left: -50px; }
+    .bg-shapes-bottom::before { bottom: -50px; right: -50px; }
+
+    .btn-primary {
+      background: linear-gradient(135deg,#007bff,#0056b3);
+      border: none;
+    }
+    .btn-primary:hover {
+      background: linear-gradient(135deg,#0056b3,#003f7f);
+    }
+    .btn-warning {
+      background: linear-gradient(135deg,#ffaf00,#ff7f00);
+      border: none;
+    }
+    .btn-warning:hover {
+      background: linear-gradient(135deg,#ff7f00,#ff5a00);
+    }
+  </style>
+
 </div>
