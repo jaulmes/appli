@@ -45,7 +45,7 @@
                         <tr style="font-size: xx-small;" id="produit-{{ $produit['id'] }}">
                             <td>{{ $produit['name'] }}</td>
                             <td>
-                                <select wire:model="new_price" wire:change="update_prix('{{ $produit['id'] }}')">
+                                <select wire:model="new_price.{{ $produit['id'] }}" wire:change="update_prix('{{ $produit['id'] }}')">
                                     <option selected value="{{ $produit['price'] }}">{{ $produit['price'] }}</option>
                                     <option value="{{ $produit['prix_catalogue'] }}">{{ $produit['prix_catalogue'] }} - PC</option>
                                     <option value="{{ $produit['prix_technicien'] }}">{{ $produit['prix_technicien'] }} - PT</option>
