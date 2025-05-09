@@ -19,7 +19,7 @@
             <div id="carouselProduits" 
                  class="carousel slide" 
                  data-bs-ride="carousel" 
-                 data-bs-interval="5000"
+                 data-bs-interval="1500"
                  data-bs-touch="true">
                 
                 <!-- Indicateurs améliorés -->

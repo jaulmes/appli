@@ -211,35 +211,35 @@ src="https://www.facebook.com/tr?id=681776711126337&ev=PageView&noscript=1"
 
 
   <!-- Section Produits en Promotion -->
-  <section class="py-2 consumption-card p-4 mb-4">
+  <section class="py-2 consumption-card p-4 mb-4 " style="background-color:rgb(208, 213, 218); margin-top: 2rem; border-radius: 4rem;">
     <div class="container-fluid ">
       <livewire:front-end-promo-product>
     </div>
   </section>
 
     <!-- Section Services -->
-  <section class="service py-5">
+  <section class="service py-5" style=" border-radius: 4rem;">
     <div class="container-fluid">
       <livewire:front-end-service-view>
     </div>
   </section>
 
   <!-- Section produits -->
-  <section class="service py-5">
+  <section class="service py-5" style="background-color:rgb(208, 213, 218); margin-top: 2rem; border-radius: 4rem;">
     <div class="container-fluid">
       <livewire:front-end-nos-produit-view>
     </div>
   </section>
 
   <!-- Section Réalisations / Projets -->
-  <section class="service py-5">
+  <section class="service py-2" style="background-color:rgb(208, 213, 218); margin-top: 2rem; border-radius: 4rem;">
     <div class="container-fluid">
       <livewire:front-end-realisation-view />
     </div>
   </section>
 
   <!-- Section Catégories de Produits -->
-  <section>
+  <section style="background-color:rgb(208, 213, 218); margin-top: 2rem; border-radius: 4rem;">
     <livewire:front-end-categori-product-view>
   </section>
 

@@ -1,14 +1,14 @@
 <div>
-    <div class="container-fluid py-5 position-relative bg-light overflow-hidden">
+    <div class="container-fluid py-2 position-relative  overflow-hidden">
         {{-- Arrière-plan animé --}}
         <div class="bg-shapes-top position-absolute start-0 top-0"></div>
         <div class="bg-shapes-bottom position-absolute end-0 bottom-0"></div>
 
         {{-- Titre de la section --}}
         <div class="text-center mb-5" data-aos="fade-up">
-            <h6 class="text-warning fw-bold mb-2 label-animation" style="letter-spacing: 2px;">RÉALISATIONS</h6>
+            <h6 class="text-warning fw-bold mb-2 label-animation" style="letter-spacing: 2px;">Quelques Réalisations</h6>
             <h2 class="fw-bold display-6 text-uppercase title-animation" style="color: #004075;">
-            Nos Réalisations Solaires : La Preuve par l'Exemple
+            
             </h2>
         </div>
 
@@ -27,7 +27,7 @@
                 <div class="col-sm-6 col-md-4 col-lg-3" data-aos="flip-up" data-aos-delay="{{ $loop->index * 50 }}">
                     <div class="card border-0 shadow-sm h-100 rounded-4 overflow-hidden hover-3d">
                         {{-- Carousel amélioré --}}
-                        <div id="carouselRealisation{{ $realisation->id }}" class="carousel slide" data-bs-ride="carousel">
+                        <div id="carouselRealisation{{ $realisation->id }}" class="carousel slide" data-bs-interval="1000" data-bs-ride="carousel">
                             <div class="carousel-inner">
                                 @foreach($images as $key => $image)
                                     <div class="carousel-item {{ $key == 0 ? 'active' : '' }}">

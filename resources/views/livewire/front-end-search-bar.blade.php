@@ -1,6 +1,6 @@
 <div class="position-relative">
     <!-- Champ de recherche -->
-    <div class="row">
+    <div class="row d-none d-lg-flex">
         <input 
             type="text" 
             wire:model.debounce.100ms="query" 
@@ -13,9 +13,23 @@
         @endif 
     </div>
 
+    <!--champ de recherche mobile-->
+    <div class="row d-lg-none " style="position: absolute; width: 15em; margin-left:-16.5em; margin-top: -1.5em;">
+        <input 
+            type="text" 
+            wire:model.debounce.100ms="query" 
+            class="form-control col rounded-pill shadow-sm " 
+            placeholder="Rechercher un produit, un service…"
+            wire:input="rechercher"
+        >
+        @if($query)
+            <button class="btn btn-danger" wire:click="annuler()" style="width: 2em;">X</button>
+        @endif
+    </div>
+
     <!-- Résultats -->
     @if(!empty($results))
-        <ul class="list-group position-absolute w-100 shadow-sm mt-1" style="z-index: 1000; max-height: 300px; overflow-y: auto; font-size: small;">
+        <ul class="list-group position-absolute w-100 shadow-sm mt-1 " style="z-index: 1000; max-height: 300px; overflow-y: auto; font-size: small;">
             @foreach($results as $type => $items)
                 @if(count($items))
                     <!-- Titre de la catégorie -->
@@ -51,9 +65,9 @@
                 @endif
             @endforeach
         </ul>
-    @elseif(strlen($query) > 2)
-        <ul class="list-group position-absolute w-100 shadow-sm mt-1" style="z-index: 1000;">
-            <li class="list-group-item text-muted">Aucun résultat trouvé.</li>
+    @elseif(empty($results) && $query > 2)
+        <ul class="list-group position-absolute w-100 shadow-sm mt-1 " style="z-index: 1000; max-height: 300px; overflow-y: auto; font-size: small;">
+            <li class="list-group-item text-muted">Aucun résultat trouvé...</li>
         </ul>
     @endif
 </div>

@@ -23,7 +23,6 @@ class MonPanier extends Component
 
     public function updateCart(){
         $this->cart = session()->get('cart', []);
-        // dd($this->cartContent);
     }
 
     //mettre a jour la quantite
@@ -33,7 +32,7 @@ class MonPanier extends Component
         //je recupere le produit dans le panier
         $item = $this->cart[$produits->id];
 
-        $quantity = $item['quantity'] + 1;
+        $quantity = (int)$item['quantity'] + 1;
         $this->cart[$produits->id]['quantity'] = $quantity;
         Session::put('cart', $this->cart);
 
@@ -46,7 +45,7 @@ class MonPanier extends Component
 
         $item = $this->cart[$produits->id];
     
-        $item['price'] = $this->new_price[$produits->id];
+        $item['price'] = (int)$this->new_price[$produits->id];
         $this->cart[$produits->id]['price'] = $item['price'];
         Session::put('cart', $this->cart);
         
@@ -64,7 +63,7 @@ class MonPanier extends Component
         $item = $this->cart[$produits->id];
 
         if($item['quantity'] > 0){
-            $quantity = $item['quantity'] -1;
+            $quantity = (int)$item['quantity'] -1;
             $this->cart[$produits->id]['quantity'] = $quantity;
             Session::put('cart', $this->cart);
     
@@ -75,7 +74,7 @@ class MonPanier extends Component
 
     public function modifierQuantite($id){
         $produits = Produit::find($id);
-        $this->cart[$produits->id]['quantity'] = $this->quantity[$produits->id];
+        $this->cart[$produits->id]['quantity'] = (int)$this->quantity[$produits->id];
         Session::put('cart', $this->cart);
         $this->dispatch('quantiteModifier');
     } 

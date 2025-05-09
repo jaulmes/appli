@@ -1,5 +1,5 @@
 <div>
-  <div class="container-fluid py-0 position-relative bg-light overflow-hidden">
+  <div class="container-fluid  position-relative bg-light overflow-hidden" style=" border-radius: 3rem;">
 
     {{-- Balises décoratives --}}
     <div class="bg-shapes-top position-absolute start-0 top-0"></div>
@@ -46,7 +46,7 @@
     <div class="row g-4 justify-content-center" aria-labelledby="services-heading">
       @foreach($services as $service)
         <div class="col-sm-6 col-md-4 col-lg-3">
-          <div class="card border-0 shadow-sm h-100 rounded-4 overflow-hidden">
+          <div class="card border-0 shadow-sm h-100  rounded-4 overflow-hidden">
 
             {{-- Image --}}
             <figure class="mb-0">

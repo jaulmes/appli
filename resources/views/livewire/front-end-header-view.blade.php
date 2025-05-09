@@ -86,23 +86,10 @@
 
             <!-- Boutons mobiles -->
             <div class="d-flex align-items-center order-lg-3 ms-auto ms-lg-0">
-                <!-- Panier mobile -->
-                <button class="btn btn-link position-relative p-2 me-2 d-lg-none" 
-                        data-bs-toggle="offcanvas" 
-                        data-bs-target="#cartOffcanvas">
-                    <i class="fas fa-shopping-bag text-primary"></i>
-                    @if($qte > 0)
-                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                            {{ $qte }}
-                        </span>
-                    @endif
-                </button>
-                
-                <!-- Connexion mobile -->
-                <a href="{{ route('login') }}"  class="btn btn-sm btn-primary me-2 d-lg-none">
-                    <i class="fas fa-sign-in-alt d-inline d-sm-none"></i>
-                    <span class="d-none d-sm-inline">Connexion</span>
-                </a>
+                <!-- Barre de recherche mobile --> 
+                <div class="d-block d-lg-none mx-auto my-1" style="max-width: 400px;">
+                    <livewire:front-end-search-bar />
+                </div>
 
                 <!-- Burger -->
                 <button class="navbar-toggler border-0 p-2" 
@@ -152,6 +139,12 @@
                         <a href="{{ route('simulateur') }}" 
                            class="nav-link {{ request()->routeIs('simulateur') ? 'active fw-bold' : '' }}">
                             <i class="fas fa-calculator me-1"></i>Simulateur
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <!-- Connexion mobile -->
+                        <a href="{{ route('login') }}" target="_blank" class="btn btn-primary d-block d-lg-none">
+                            <i class="fas fa-sign-in-alt me-1"></i>Connexion
                         </a>
                     </li>
                 </ul>
