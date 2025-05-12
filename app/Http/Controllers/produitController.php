@@ -271,5 +271,11 @@ class produitController extends Controller
         return redirect()->back()->with('message', 'categorie modifiée avec succes!');
     }
 
+    //supprimer une categorie
+    public function delete_categories($id){
+        Categori::where('id', $id)->delete();
+        session()->flash("message", "vous avez supprime cette categorie...");
+        return redirect()->route('produit.categori');
+    }
 
 }

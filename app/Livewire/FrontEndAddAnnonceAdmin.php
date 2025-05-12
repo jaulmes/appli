@@ -13,12 +13,9 @@ class FrontEndAddAnnonceAdmin extends Component
 {
     use WithFileUploads;
 
-    public $annonces;
-    public $image;
-    public $produit_id;
-    public $service_id;
-    public $status;
-    public $produits, $services, $produit_choisi, $service_choisi, $liaison;
+    public $produits, $services, $produit_choisi, 
+            $service_choisi, $liaison, $status, $service_id,
+            $produit_id, $image, $annonces;
 
     public function mount()
     {
@@ -27,18 +24,12 @@ class FrontEndAddAnnonceAdmin extends Component
         $this->services = Service::all();
     }
 
-    public function handle_liaison_check(){
-        if ($this->liaison == 'produit') {
-            $this->liaison = 'produit';
-        } else {
-            $this->liaison = 'service';
-        }
-    }
-
     public function addAnnonce()
     {
+
         $this->validate([
-            'image' => 'required|image|max:2048',
+            'image' => 'required',
+            'status' => 'required',
         ]);
         $annonce = new Annonce();
         if ($file = $this->image) {
@@ -66,6 +57,8 @@ class FrontEndAddAnnonceAdmin extends Component
         $annonce->service_id = $this->service_id;
         $annonce->status = $this->status;
         $annonce->save();
+
+        return redirect()->route('frontend.admin')->with('annonce_sucess', 'Annonce ajoutée avec succès');
     }
     public function render()
     {

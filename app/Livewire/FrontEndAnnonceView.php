@@ -7,11 +7,16 @@ use Livewire\Component;
 
 class FrontEndAnnonceView extends Component
 {
-    public $annonces;
+    public $annonces, $voir_annonce = true;
+
+    public function toggleVoirAnnonce()
+    {
+        $this->voir_annonce = !$this->voir_annonce;
+    }
 
     public function mount()
     {
-        $this->annonces = Annonce::all();
+        $this->annonces = Annonce::where('status', 'actif')->get();
     }
     public function render()
     {

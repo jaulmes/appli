@@ -13,15 +13,15 @@
     <div class="card-header border-0">
         <h3 class="card-title text-center">annonce</h3>
         <div class="card-tools">
-            <a href="{{ route('annonce.create') }}" wire:navigate>
+            <a href="{{ route('annonce.create') }}" >
                 <button type="button" class="btn btn-primary" >
                     Nouvelle annonce
                 </button>
             </a>
         </div>
-        @if (session()->has('message'))
+        @if (session()->has('annonce_sucess'))
         <div class="alert alert-success">
-            {{ session('message') }}
+            {{ session('annonce_sucess') }}
         </div>
         @endif
     </div>
@@ -29,7 +29,7 @@
         <table class="table table-valign-middle">
             <thead>
                 <tr>
-                    <th>titre</th>
+                    <th>Produit/service</th>
                     <th>Status</th>
                     <th>image</th>
                     <th>Action</th>
@@ -39,7 +39,7 @@
                 @foreach($annonces as $annonce)
                     <tr>
                         <td>
-                            {{$annonce->title}}
+                            {{$annonce->produits->name?? $annonce->services->name}}
                         </td>
                         <td>
                             <div class="form-check form-switch">

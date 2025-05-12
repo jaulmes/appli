@@ -1,4 +1,4 @@
-<div class="card shadow-lg border-0 rounded-lg mb-5">
+<div class="card shadow-lg border-0 rounded-lg mb-5" >
 
     {{-- Card header --}}
     <div class="card-header bg-white border-0 py-3">
@@ -7,68 +7,55 @@
         </h5>
     </div>
 
-    <div class="card-body p-4">
-        <div class="row g-4">
-            <div class="form-floating col py-5">
-                <input type="file"
-                    class="form-control @error('image') is-invalid @enderror"
-                    id="image"
-                    wire:model="image"
-                    required>
-                <label for="image">Image<span class="text-danger">*</span></label>
-                <span class="position-absolute top-50 end-0 translate-middle-y pe-3 text-muted">
-                    <i class="fas fa-image"></i>
-                </span>
-            </div>
-            @if($image)
-                <div class="row-md-6">
-                    <img src="{{ $image->temporaryUrl() }}" style="width: 150px; height: 150px" alt="Image Preview" class="img-fluid rounded">
-                </div>
-            @endif
-        </div>
-        <div class="row">
-            <label for="">Liaison de l'annonce </label>
-            <div class="row form-check">
-                <input id="service" class="form-check-input" type="radio" name="flexRadioDefault" wire:model="liaison" wire:change="handle_liaison_check()" value="service" >
-                <label class="form-check-label" for="service">Service</label>
-            </div>
-            <div class="row form-check">
-                <input class="form-check-input" type="radio" id="Produit" name="flexRadioDefault" wire:model="liaison" wire:change="handle_liaison_check()" value="produit" >
-                <label class="form-check-label" for="Produit">Produit</label>
-            </div>
-        </div>
+    <div class="card-body p-4" wire:ignore>
         
-        <div class="row">
-            @if($liaison == 'produit')
-                {{-- Produit avec recherche --}}
-                <div class="col-md-6">
-                    <div class="form-floating">
-                        <label for="produit">Produit</label>
-                        <select id="produit"
+        <div class="row consumption" >
+            <div class="col">
+                <label for="">Liaison de l'annonce </label>
+                <div class="row form-check">
+                    <input id="service" class="form-check-input" type="radio" name="type_annonce"  value="service" >
+                    <label class="form-check-label" for="service">Service</label>
+                </div>
+                <div class="row form-check">
+                    <input class="form-check-input" type="radio" id="Produit" name="type_annonce"  value="produit" >
+                    <label class="form-check-label" for="Produit">Produit</label>
+                </div>
+            </div>
+            
+            <div class="col">
+            <!-- Section pour le produit -->
+                <div class="col-md-6" id="produitSection" style="display: none;">
+                    <div class="form-group">
+
+                        <label >Produit</label>
+                        <select 
+                                id="produit_id"
                                 name="produit_id"
-                                class="form-select select2 @error('produit_id') is-invalid @enderror"
+                                wire:model.defer="produit_id"
+                                class="form-control select "
                                 data-placeholder="Sélectionnez un produit"
                                 required>
-                            <option value="" disabled selected></option>
                             @foreach($produits as $produit)
                             <option value="{{ $produit->id }}" {{ old('produit_id') == $produit->id ? 'selected' : '' }}>
                                 {{ $produit->name }}
                             </option>
                             @endforeach
                         </select>
+                        
                         @error('produit_id')
                             <div class="invalid-feedback">
                             <i class="fas fa-exclamation-circle me-1"></i>{{ $message }}
                             </div>
                         @enderror
                     </div>
-                </div>
-            @elseif($liaison == 'service')
-                {{-- service avec recherche --}}
-                <div class="col-md-6">
+                </div>   
+                <!-- Section pour le service -->
+                <div class="col-md-6" id="serviceSection" style="display: none;">
                     <div class="form-floating">
                         <label for="produit">Service</label>
-                        <select id="service"
+                        <select     
+                                wire:model="service_id"
+                                id="service"
                                 name="service_id"
                                 class="form-select select2 @error('service_id') is-invalid @enderror"
                                 data-placeholder="Sélectionnez un service"
@@ -87,11 +74,30 @@
                         @enderror
                     </div>
                 </div>
+            </div>
+        </div>
+        <div class="row g-4 mt-3 consumption">
+            <div class="form-floating col py-5">
+                <input type="file"
+                    class="form-control @error('image') is-invalid @enderror"
+                    id="image"
+                    wire:model.defer="image"
+                    required>
+                <label for="image">Image<span class="text-danger">*</span></label>
+                <span class="position-absolute top-50 end-0 translate-middle-y pe-3 text-muted">
+                    <i class="fas fa-image"></i>
+                </span>
+            </div>
+            @if($image)
+                <div class="row-md-6">
+                    <img src="{{ $image->temporaryUrl() }}" style="width: 150px; height: 150px" alt="Image Preview" class="img-fluid rounded">
+                </div>
             @endif
         </div>
-        <div class="row mt-3">
+        
+        <div class="row mt-3 consumption">
             <div class="col-md-6">
-                <select name="status" id="status" class="form-select @error('status') is-invalid @enderror" required>
+                <select name="status" wire:model="status" id="status" class="form-select @error('status') is-invalid @enderror" required>
                     <option  selected disabled>Sélectionner le status</option>
                         <option value="actif">actif</option>
                         <option value="desactiver">desactiver</option>
@@ -102,13 +108,47 @@
 
     {{-- Footer du formulaire --}}
     <div class="card-footer bg-light py-3 d-flex justify-content-between border-0">
-        <button type="reset" class="btn btn-outline-secondary rounded-pill px-4">
-            <i class="fas fa-undo me-2"></i>Réinitialiser
-        </button>
         <div>
-            <button type="submit" class="btn btn-primary rounded-pill px-4">
+            <button type="submit" wire:click="addAnnonce()" class="btn btn-primary rounded-pill px-4">
                 <i class="fas fa-save me-2"></i>Enregistrer
             </button>
         </div>
     </div>
+    <style>
+        .consumption {
+            background: #ffffff;
+            border-radius: 1rem;
+            box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+            padding: 1rem;
+        }
+        .consumption:hover {
+            transform: translateY(-5px);
+        }
+    </style>
+    <script src="https://code.jquery.com/jquery-3.7.1.slim.js" integrity="sha256-UgvvN8vBkgO0luPSUl2s8TIlOSYRoGFAX4jlCIm9Adc=" crossorigin="anonymous"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const radios = document.querySelectorAll('input[name="type_annonce"]');
+            const produitSection = document.getElementById('produitSection');
+            const serviceSection = document.getElementById('serviceSection');
+
+            radios.forEach(radio => {
+                radio.addEventListener('change', function () {
+                    if (this.value === 'produit') {
+                        console.log('Produit selected');
+                        produitSection.style.display = 'block';
+                        serviceSection.style.display = 'none';
+                    } else if (this.value === 'service') {
+                        console.log('Service selected');
+                        serviceSection.style.display = 'block';
+                        produitSection.style.display = 'none';
+                    }
+                });
+            });
+        });
+
+    </script>
+
+    
 </div>

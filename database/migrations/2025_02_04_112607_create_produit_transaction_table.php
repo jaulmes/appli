@@ -17,7 +17,9 @@ return new class extends Migration
             $table->unsignedBigInteger('transaction_id')->nullable();
 
             $table->foreign('produit_id')->references('id')
-                                        ->on('produits');
+                                        ->on('produits')
+                                        ->onDelete('cascade')
+                                        ->onUpdate('cascade');
             $table->foreign('transaction_id')->references('id')
                                         ->on('transactions');
 

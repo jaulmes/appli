@@ -27,41 +27,20 @@ class FrontEndAnnonceAdmin extends Component
         $this->services = Service::all();
     }
 
-    public function addAnnonce()
-    {
-        $this->validate([
-            'image' => 'required|image|max:2048',
-        ]);
-        $annonce = new Annonce();
-        if ($file = $this->image) {
-            $fileName = hexdec(uniqid()).'.'.$file->getClientOriginalName();
-            $imagePath = 'public/images/annonces/';
-            /**
-             * Delete an image if exists.
-             */
-            if($annonce->image){
-                Storage::delete($imagePath . $annonce->image);
+    public function changeStatus($id){
+        $annonce = Annonce::find($id);
+        if ($annonce) {
+            if($annonce->status == 'actif'){
+                $annonce->status = 'desactiver';
+            } else {
+                $annonce->status = 'actif';
             }
-            // Store an image to Storage
-            $file->storeAs($imagePath, $fileName);
-            $annonce->image = $fileName;
-        }
-        else{
-            $annonce->image = '';
-        }
-        if ($this->produit_id) {
-            $annonce->produit_id = $this->produit_id;
+            $annonce->save();
+            $this->annonces = Annonce::all();
+            session()->flash('annonce_sucess', 'Annonce status updated successfully.');
         } else {
-            $annonce->produit_id = null;
+            session()->flash('error', 'Annonce not found.');
         }
-        $annonce->produit_id = $this->produit_id;
-        $annonce->service_id = $this->service_id;
-        $annonce->status = $this->status;
-        $annonce->save();
-
-        $this->annonces = Annonce::all();
-        session()->flash('message', 'Annonce added successfully.');
-        return redirect()->back();
     }
 
     public function deleteAnnonce($id)

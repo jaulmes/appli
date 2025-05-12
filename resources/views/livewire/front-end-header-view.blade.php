@@ -69,8 +69,8 @@
             </div>
 
             <!--panier flottant sur pc-->
-            <div class="panier-flottant d-none d-lg-block" style="position:absolute; margin-top:59em; margin-left: 88.5em;">
-                <button class="btn btn-link position-relative p-2 me-2 " 
+            <div class="panier-flottant d-none d-lg-block " style="margin-top:31em; margin-left: 70.5em; position:fixed;">
+                <button class="btn btn-link position-relative p-0 me-2 " 
                         data-bs-toggle="offcanvas" 
                         data-bs-target="#cartOffcanvas"
                         >

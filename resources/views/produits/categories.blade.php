@@ -30,6 +30,13 @@
                             <a href="{{ route('produit.show_categori', $categorie->id) }}" class="btn btn-warning btn-sm">
                                 Modifier
                             </a>
+                            <form action="{{ route('produit.delete_categories', $categorie->id) }}" method="POST" style="display:inline;">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette catégorie ?')">
+                                    Supprimer
+                                </button>
+                            </form>
                         @endcan
                     </td>
                 </tr>

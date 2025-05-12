@@ -142,6 +142,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/produit/store_categori', [produitController::class, 'store_categories'])->name('produit.store_categori');
     Route::put('/produit/edit_categori/{id}', [produitController::class, 'edit_categories'])->name('produit.edit_categori');
     Route::get('/produit/show_categori/{id}', [produitController::class, 'show_categories'])->name('produit.show_categori');
+    Route::delete('/produit/delete_categori/{id}', [produitController::class, 'delete_categories'])->name('produit.delete_categories');
     
     /**
      * fournisseur de produit

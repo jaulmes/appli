@@ -61,10 +61,11 @@ class RecusController extends Controller
         $clients = Client::all();
         $comptes = Compte::all();
         return view('recus.create', 
-                        [
-                            'clients' => $clients,
-                            'comptes' => $comptes
-                        ]);
+                [
+                    'clients' => $clients,
+                    'comptes' => $comptes
+                ]
+            );
     }
 
     public function store(Request $request){
@@ -75,7 +76,18 @@ class RecusController extends Controller
 
         $recus->user_id = Auth::user()->id;
         $recus->compte_id = $request->compte_id;
-        $recus->client_id = $request->client_id;
+        if(!$request->client_id){
+            $clients = new Client();
+            $clients->nom = $request->nom_client;
+            $clients->adresse = $request->adresse_client;
+            $clients->numero = $request->numero_client;
+            $clients->email = $request->email_client;
+            $clients->save();
+            $recus->client_id = $clients->id;
+        }else{
+            $recus->client_id = $request->client_id;
+        }
+        
 
         $montantVerse = $request->montant;
         

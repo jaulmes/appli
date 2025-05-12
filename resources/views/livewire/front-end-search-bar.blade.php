@@ -1,5 +1,5 @@
 <div class="position-relative">
-    <!-- Champ de recherche -->
+    <!-- Champ de recherche sur desktop-->
     <div class="row d-none d-lg-flex">
         <input 
             type="text" 

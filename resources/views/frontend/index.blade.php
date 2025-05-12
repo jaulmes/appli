@@ -292,7 +292,7 @@ src="https://www.facebook.com/tr?id=681776711126337&ev=PageView&noscript=1"
   </section>
 
   <!-- Section annonce -->
-  <section class="service py-5">
+  <section class="annonce">
     <div class="container-fluid">
       <livewire:front-end-annonce-view />
     </div>
@@ -414,36 +414,36 @@ src="https://www.facebook.com/tr?id=681776711126337&ev=PageView&noscript=1"
     });
   </script>
   <script>
-  // Sélection de l’icône
-  const waBtn = document.querySelector('.whatsapp-float');
+    // Sélection de l’icône
+    const waBtn = document.querySelector('.whatsapp-float');
 
-  // Bounce vertical infini
-  gsap.to(waBtn, {
-    y: -15,
-    repeat: -1,
-    yoyo: true,
-    ease: "power1.inOut",
-    duration: 0.6
-  });
+    // Bounce vertical infini
+    gsap.to(waBtn, {
+      y: -15,
+      repeat: -1,
+      yoyo: true,
+      ease: "power1.inOut",
+      duration: 0.6
+    });
 
-  // Petite rotation oscillante
-  gsap.to(waBtn, {
-    rotation: 15,
-    repeat: -1,
-    yoyo: true,
-    ease: "power1.inOut",
-    duration: 1.2,
-    delay: 0.3
-  });
+    // Petite rotation oscillante
+    gsap.to(waBtn, {
+      rotation: 15,
+      repeat: -1,
+      yoyo: true,
+      ease: "power1.inOut",
+      duration: 1.2,
+      delay: 0.3
+    });
 
-  // Survol : pulse rapide
-  waBtn.addEventListener('mouseenter', () => {
-    gsap.to(waBtn, { scale: 1.3, duration: 0.3, ease: "elastic.out(1, 0.5)" });
-  });
-  waBtn.addEventListener('mouseleave', () => {
-    gsap.to(waBtn, { scale: 1, duration: 0.3, ease: "power2.out" });
-  });
-</script>
+    // Survol : pulse rapide
+    waBtn.addEventListener('mouseenter', () => {
+      gsap.to(waBtn, { scale: 1.3, duration: 0.3, ease: "elastic.out(1, 0.5)" });
+    });
+    waBtn.addEventListener('mouseleave', () => {
+      gsap.to(waBtn, { scale: 1, duration: 0.3, ease: "power2.out" });
+    });
+  </script>
 
 </body>
 
