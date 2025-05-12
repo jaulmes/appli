@@ -18,7 +18,7 @@
 
                             
                         </button>
-                        <ul class="dropdown-menu" >
+                        <ul class="dropdown-menu " style="max-height: 300px; overflow-y: auto; ">
                             @foreach($categories as $categorie)
                                 <li><a class="dropdown-item" wire:click="filtreProduit({{$categorie->id}})" >{{$categorie->titre}}</a></li>
                             @endforeach
