@@ -13,10 +13,7 @@
                     >   
                     <div class="dropdown col">
                         <button class="btn btn-primary dropdown-toggle" type="button"  data-bs-toggle="dropdown" >
-
-                                {{$categori}}
-
-                            
+                            {{$categori}}
                         </button>
                         <ul class="dropdown-menu " style="max-height: 300px; overflow-y: auto; ">
                             @foreach($categories as $categorie)

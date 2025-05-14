@@ -83,7 +83,7 @@
                       <div class="card-img-overlay d-flex flex-column justify-content-between p-3">
                           <div class="w-100 d-flex justify-content-end">
                               <span class="badge bg-primary rounded-pill px-3 py-2 shadow glow-label">
-                                  {{ $produit->categori->titre }}
+                                   {{ $produit->name }}
                               </span>
                           </div>
 
@@ -94,7 +94,7 @@
 
                   {{-- Corps de la carte --}}
                   <div class="card-body p-3">
-                    <h3 class="h5 fw-bold text-truncate">{{ $produit->name }}</h3>
+                    <h3 class="h5 fw-bold text-truncate">{{ $produit->categori->titre }}</h3>
                     <div class="d-flex justify-content-between align-items-center border-top pt-3">
                       <div>
                         <span class="badge bg-success  px-3 py-2">

@@ -2,11 +2,13 @@
     <div class="tab-class text-center">
         <div class="row g-4 bg-grey align-items-center mb-0" data-aos="fade-up">
             <div class="col-lg-4 text-start">
-                <h1 class="display-5 fw-bold gradient-text">Nos Produits</h1>
+                <h1 class="display-5 fw-bold gradient-text">
+                    <a href="{{ route('all-produit') }}" style="text-decoration: none;">Nos Produits</a>
+                </h1>
             </div>
             <div class="col-lg-8 text-end">
                 <div class="magnetic-wrap">
-                    <a href="{{ route('all-produit') }}" wire:navigate 
+                    <a href="{{ route('all-produit') }}" 
                        class="btn btn-dark rounded-pill magnetic-btn px-4 py-2 shadow-lg hover-lift">
                         <span class="hover-effect"></span>
                         Voir plus <i class="fas fa-arrow-right ms-2"></i>
@@ -58,7 +60,7 @@
                                             <div class="card-img-overlay d-flex flex-column justify-content-between p-3">
                                                 <div class="w-100 d-flex justify-content-end">
                                                     <span class="badge bg-primary rounded-pill px-3 py-2 shadow glow-label">
-                                                        {{ $produit->categori->titre }}
+                                                        {{ $produit->name }}
                                                     </span>
                                                 </div>
 
@@ -69,7 +71,7 @@
 
                                     <!-- Corps de la carte -->
                                     <div class="card-body p-3 position-relative">
-                                        <h5 class="fw-bold text-truncate hover-lift">{{ $produit->name }}</h5>
+                                        <h5 class="fw-bold text-truncate hover-lift"> {{ $produit->categori->titre }}</h5>
                                         
                                         <div class="d-flex align-items-center justify-content-between border-top pt-3">
                                             <div class="price-animation">
@@ -251,21 +253,7 @@
 </style>
 
 <script>
-// Initialisation des effets
-document.querySelectorAll('.magnetic-button').forEach(button => {
-    button.addEventListener('click', function() {
-        const loader = this.querySelector('.button-loader');
-        const content = this.querySelector('.button-content');
-        
-        content.classList.add('d-none');
-        loader.classList.remove('d-none');
-        
-        setTimeout(() => {
-            content.classList.remove('d-none');
-            loader.classList.add('d-none');
-        }, 1000);
-    });
-});
+
 
 // Gestion du survol des contrôles
 document.querySelectorAll('.hover-scale-control').forEach(control => {

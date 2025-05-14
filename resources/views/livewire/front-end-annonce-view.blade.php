@@ -2,7 +2,7 @@
   class="position-fixed bottom-0 start-0 shadow rounded-3 overflow-hidden d-flex align-items-center mb-3 ms-3 bg-white"
   style="width: 18em; z-index: 1050;"
 >
-    @if($voir_annonce)
+    @if($voir_annonce === true)
         <div class="position-relative w-100">
             <!-- Bouton Fermer -->
             <button type="button"
