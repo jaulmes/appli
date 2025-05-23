@@ -26,6 +26,11 @@ class commande extends Model
         return $this->belongsToMany(Produit::class)
             ->withPivot('quantity', 'price', 'status_produit');
     }
+    public function packs()
+    {
+        return $this->belongsToMany(Pack::class, )
+            ->withPivot('quantity', 'prix');
+    }
     public function transactions()
     {
         return $this->hasOne(Transaction::class);

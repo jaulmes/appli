@@ -23,6 +23,12 @@ class Installation extends Model
         'NetAPayer',
         'dateLimitePaiement'
         ];
+
+    public function packs()
+    {
+        return $this->belongsToMany(Pack::class, 'pack_installation')
+                            ->withPivot('quantity', 'prix');
+    }
         
     public function user()
     {

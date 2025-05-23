@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ $commandes->numero_commande }} - {{$commandes->clients->numero?? 'FACTURE COMMANDE'}}</title>
+    <title>{{ $factures->numeroFacture }} - {{$installations->numeroClient ?? $installations->clients->numero?? 'FACTURE VENTE'}}</title>
     
     <style>
         body {
@@ -14,7 +14,7 @@
       
 
         .company-info .title{
-          margin-bottom: 0em;
+          margin-bottom: 1em;
           font: italic small-caps bold 12px/30px Verdana;
           font-weight: bold;
           margin-top: -2em;
@@ -189,9 +189,9 @@
             position: fixed; 
             background-image: url('logo.jpg');
             background-repeat: no-repeat;
-            background-position: 10em 50px;
+            background-position: center;
             opacity: 0.5;
-            margin-top: -6em;
+            margin-top: 6em;
         }
 
 
@@ -254,74 +254,81 @@
               </div>
             </div>
         </header>
+
         <div class="header-details">
             <div class="left">NIU: M092316074072K</div>
             <div class="center">Contacts:(+237) 6 57 24 89 25 – 6 78 64 51 11 – 6 21 30 99 00</div>
             <div class="right">No RCCM: RC/DLA/2023/B/5907</div>
         </div>
+
         <div class="ref-proforma">
-            <div class="ref">REF: {{ $commandes->numero_commande }}</div>
-            <h2 class="proforma-title">VOTRE COMMANDE</h2>
-            <div class="agent-operant" style="margin-top: 1em;">Date: <strong>{{ $commandes->created_at->format('d-m-Y')}}</strong> </div>
+            <div class="ref">REF: {{ $factures->numeroFacture }}</div>
+            <h2 class="proforma-title">FACTURE INSTALLATION</h2>
+            <div class="agent-operant">Agent opérant: <strong>{{$installations->agentOperant?? $installations->user->name ??  '-'}}</strong> </div>
+            <div class="agent-operant" style="margin-top: 1em;">Date: <strong>{{ $installations->created_at->format('d-m-y')}}</strong> </div>
         </div>
+
         <div class="separator"></div>
+
         <section class="client-info">
             <h3 class="client-info-title">Coordonnées du client :</h3>
             <div class="client-details-row">
                 <div class="client-nom">
-                    <p>NOM du client : <strong>{{ $commandes->clients->nom?? $commandes->clients->nom?? '-'}} </strong> </p>
+                    <p>NOM du client : <strong>{{ $installations->clients->nom??  '-'}} </strong> </p>
                 </div>
                 <div class="client-contact">
-                    <p>Contacts : <strong> {{$commandes->clients->numero?? $commandes->clients->numero?? '-'}}</strong></p>
+                    <p>Contacts : <strong> {{$installations->clients->numero??  '-'}}</strong></p>
                 </div>
                 <div class="client-adresse">
-                    <p>Adresse : <strong>{{$commandes->clients->adresse?? $commandes->clients->adresse?? '-'}}</strong> </p>
+                    <p>Adresse : <strong>{{$installations->clients->adresse??  '-'}}</strong> </p>
                 </div>
             </div>
         </section>
+
         <div class="content">
             <div class="services">
-                <table style=" width: 40em;   border-style: solid; border-color: black;">
+                <table style=" width: 40em;   border-style: solid; border-color: black; position:absolute; margin-top:-12em">
                     <tr class="hearder">
                         <th>Qté</th>
                         <th>Désignation</th>
                         <th>P.U.</th>
                         <th>P.Total</th>
                     </tr>
-                    <!--produits achetes-->
-                    @if(!empty($commandes->produits))
-                        @foreach($commandes->produits as $produit)
-                            <tr>
-                                <td>{{$produit->pivot->quantity}}</td>
-                                <td>{{$produit->name}}</td>
-                                <td>{{$produit->pivot->price}}</td>
-                                <td>{{$produit->pivot->quantity * $produit->pivot->price}}</td>
-                            </tr>
-                        @endforeach
-                    @endif
+
                     <!--packs achetes-->
-                    @if(!empty($commandes->packs))
-                        @foreach($commandes->packs as $pack)
-                            <tr>
-                                <td>{{$pack->pivot->quantity}}</td>
-                                <td>{{$pack->titre}}</td>
-                                <td>{{$pack->pivot->prix}}</td>
-                                <td>{{$pack->pivot->quantity * $pack->pivot->prix}}</td>
-                            </tr>
-                        @endforeach
-                    @endif
+                    @foreach($installations->packs as $pack)
+                        <tr>
+                            <td>{{$pack->pivot->quantity}}</td>
+                            <td>{{$pack->titre}}</td>
+                            <td>{{$pack->pivot->prix}}</td>
+                            <td>{{$pack->pivot->quantity * $pack->pivot->prix}}</td>
+                        </tr>
+                    @endforeach
+                    <tr >
+                        <td colspan="3" style="text-align: center;">Installation</td>
+                        <td>{{$installations->mainOeuvre }}</td>
+                    </tr>
                     <tr style="font-weight: bold;">
                         <td colspan="3" style="text-align: right;"><strong>Total</strong></td>
-                        <td><strong>{{ $montantTotal }}</strong></td>
+                        <td><strong>{{ $installations->montantProduit + $installations->mainOeuvre }}</strong></td>
                     </tr>
                 </table>
             </div>
             <div class="mini-footer" style="text-align:center; margin-left: 5em;">
+                @if($installations->reduction > 0)
+                    <div class="total"> 
+                        <span style="margin-bottom: 3em; Z-index: 5; background-color:grey; color: black !important"> la reduction sur votre facture est de : <strong>{{ $installations->reduction}} Francs CFA</strong> </span>
+                    </div>
+                @endif
                 <div class="total"> 
-                    <span style="font-weight:bold; margin-bottom: 3em; Z-index: 5; color: black !important; margin-left: 22.5em;"> Net A Payer <strong style="color:rgb(255, 255, 255); background-color:rgb(7, 63, 32);   padding: 4px 8px; text-align: center; border-radius: 5px;"> <u>{{ $montantTotal}} F CFA</u> </strong> </span>
+                    <span style="margin-bottom: 3em; Z-index: 5; background-color:grey; color: black !important; margin-left: 20em;"> Net A Payer <strong style="color: #27ae60; background-color: #e9f7ef;"> <u>{{$installations->NetAPayer}} Francs CFA</u> </strong> </span>
                 </div>
+                <div style="position: absolute; margin-left: 5em; ">Signature Client   </div>
+                <div style="margin-left: 10em ">Signature Vendeur</div>
             </div>
         </div>
+
+
     </div>
     <footer class="invoice-footer">
         <div class="footer-details">

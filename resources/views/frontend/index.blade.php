@@ -135,55 +135,81 @@
       background-color: #ff7f00;
       transform: rotate(10deg);
     }
-    /* Icône WhatsApp flottante */
-.whatsapp-float-orange {
-  position: fixed;
-  bottom: 6rem;
-  right: 2rem;
-  background-color:rgb(181, 78, 9);
-  color: #fff;
-  width: 4.5rem;
-  height: 4.5rem;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 2rem;
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
-  z-index: 1000;
-  cursor: pointer;
-  /* prépare l’animation GSAP, mais pour un fallback CSS */
-  animation: whatsapp-bounce-css 2s infinite;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
 
-  overflow: hidden;
-  position: fixed;
-}
-.whatsapp-float-orange:hover {
-  transform: scale(1.2) rotate(10deg);
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
-}
+    /* Nouveau bouton WhatsApp jaune */
+    .whatsapp-float-yellow {
+      position: fixed;
+      bottom: 7.5rem;      /* légèrement au-dessus de l’orange (orange est à 6rem) */
+      right: 2rem;
+      background-color:rgb(230, 183, 44); /* jaune Bootstrap */
+      color: #fff;
+      width: 2.5rem;
+      height: 2.5rem;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+      z-index: 1000;
+      cursor: pointer;
+      animation: whatsapp-bounce-css 2s infinite;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .whatsapp-float-yellow:hover {
+      transform: scale(1.2) rotate(10deg);
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+    }
 
-/* Fallback CSS bounce si GSAP non chargé */
-@keyframes whatsapp-bounce-css {
-  0%, 100%   { transform: translateY(0); }
-  50%        { transform: translateY(-10px); }
-}
+        /* Icône WhatsApp orange */
+    .whatsapp-float-orange {
+      position: fixed;
+      bottom: 4.4rem;
+      right: 2rem;
+      background-color:rgb(236, 100, 10);
+      color: #fff;
+      width: 2.5rem;
+      height: 2.5rem;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+      z-index: 1000;
+      cursor: pointer;
+      /* prépare l’animation GSAP, mais pour un fallback CSS */
+      animation: whatsapp-bounce-css 2s infinite;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+      overflow: hidden;
+      position: fixed;
+    }
+    .whatsapp-float-orange:hover {
+      transform: scale(1.2) rotate(10deg);
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+    }
+
+    /* Fallback CSS bounce si GSAP non chargé */
+    @keyframes whatsapp-bounce-css {
+      0%, 100%   { transform: translateY(0); }
+      50%        { transform: translateY(-10px); }
+    }
 
   </style>
 
 <!-- Meta Pixel Code -->
 <script>
-!function(f,b,e,v,n,t,s)
-{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-n.queue=[];t=b.createElement(e);t.async=!0;
-t.src=v;s=b.getElementsByTagName(e)[0];
-s.parentNode.insertBefore(t,s)}(window, document,'script',
-'https://connect.facebook.net/en_US/fbevents.js');
-fbq('init', '681776711126337');
-fbq('track', 'PageView');
+  !function(f,b,e,v,n,t,s)
+  {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+  n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+  if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+  n.queue=[];t=b.createElement(e);t.async=!0;
+  t.src=v;s=b.getElementsByTagName(e)[0];
+  s.parentNode.insertBefore(t,s)}(window, document,'script',
+  'https://connect.facebook.net/en_US/fbevents.js');
+  fbq('init', '681776711126337');
+  fbq('track', 'PageView');
 </script>
 <noscript><img height="1" width="1" style="display:none"
 src="https://www.facebook.com/tr?id=681776711126337&ev=PageView&noscript=1"
@@ -217,7 +243,15 @@ src="https://www.facebook.com/tr?id=681776711126337&ev=PageView&noscript=1"
     </div>
   </section>
 
-    <!-- Section Services -->
+  <!-- Section Packs -->
+  <section class="py-2" style="background-color:rgb(208, 213, 218); margin-top: 2rem; border-radius: 4rem;">
+    <div class="container-fluid">
+      <livewire:front-end-pack-view />
+    </div>
+  </section>
+  <!-- Section Packs -->
+
+  <!-- Section Services -->
   <section class="service py-5" style=" border-radius: 4rem;">
     <div class="container-fluid">
       <livewire:front-end-service-view>
@@ -384,11 +418,22 @@ src="https://www.facebook.com/tr?id=681776711126337&ev=PageView&noscript=1"
   </div>
 </footer>
 
-  
-  <!-- Floating WhatsApp Button -->
-  <a href="https://wa.me/237657248925" style="height: 50px; width: 50px; color:#ff7f00" target="_blank" class="whatsapp-float-orange" aria-label="Contactez-nous sur WhatsApp">
+  <!-- Floating WhatsApp Button – Jaune -->
+  <a href="https://wa.me/237673938291" 
+     class="whatsapp-float-yellow" 
+     target="_blank" 
+     aria-label="Contactez-nous sur WhatsApp (jaune)">
     <i class="bi bi-whatsapp"></i>
   </a>
+
+  <!-- Floating WhatsApp Button – Orange -->
+  <a href="https://wa.me/237657248925" 
+     class="whatsapp-float-orange" 
+     target="_blank" 
+     aria-label="Contactez-nous sur WhatsApp (orange)">
+    <i class="bi bi-whatsapp"></i>
+  </a>
+
   
 
   <!-- Back to Top -->

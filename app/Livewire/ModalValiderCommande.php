@@ -27,6 +27,7 @@ class ModalValiderCommande extends Component
         $commande = commande::find($this->commandeId);
         $clients = Client::find($commande->client_id);
         $panier = $commande->produits;
+        $panier_pack = $commande->packs;
 
 
         
@@ -40,12 +41,27 @@ class ModalValiderCommande extends Component
 
         $montantTotal = 0;
         $totalAchat = 0;
-        foreach($commande->produits as $produit){
-            $montantTotal += $produit->pivot->price * $produit->pivot->quantity;
-            $totalAchat += $produit->prix_achat * $produit->pivot->quantity;
-            $produit->stock -= $produit->pivot->quantity;
+        //total achat des produit
+        if($commande->produits){
+            foreach($commande->produits as $produit){
+                $montantTotal += $produit->pivot->price * $produit->pivot->quantity;
+                $totalAchat += $produit->prix_achat * $produit->pivot->quantity;
+                $produit->stock -= $produit->pivot->quantity;
 
-            $produit->save();
+                $produit->save();
+            }
+        }
+        //total achat des produits du pack
+        if($commande->packs){
+            foreach($commande->packs as $pack){
+                $montantTotal += $pack->pivot->prix * $pack->pivot->quantity;
+                foreach($pack->produits as $produit){
+                    $totalAchat += $produit->prix_achat * $produit->pivot->quantity;
+                    $produit->stock -= $produit->pivot->quantity;
+
+                    $produit->save();
+                }
+            }
         }
 
         $ventes->montantTotal = $montantTotal;
@@ -71,13 +87,21 @@ class ModalValiderCommande extends Component
         $transaction->commande_id = $commande->id;
         $transaction->save();
 
-        //je relie chaque produit du pqnier a la vente 
+        //je relie chaque produit de la commande a la vente 
         foreach($panier as $produit){
             $ventes->produits()->attach($produit->id, [
                 'quantity' => $produit->pivot->quantity,
                 'price' => $produit->pivot->price,
                 'vente_id'=>$ventes->id
+            ]);
+        }
 
+                //je relie chaque produit de la commande a la vente 
+        foreach($panier_pack as $pack){
+            $ventes->packs()->attach($pack->id, [
+                'quantity' => $pack->pivot->quantity,
+                'price' => $pack->pivot->prix,
+                'vente_id'=>$ventes->id
             ]);
         }
 

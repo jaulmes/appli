@@ -4,31 +4,34 @@ namespace App\Livewire;
 
 use App\Models\Categori;
 use App\Models\Client;
+use App\Models\Pack;
 use App\Models\Produit;
 use Illuminate\Support\Facades\Session;
 use Livewire\Component;
 
 class CatalogueProduit extends Component
 {
-    public $produits = []; //liste des produits
+    public $produits = [], $packs; //liste des produits
     public $categories = [];
     public $query = '';
     public $test = '0';
     public $categori = 'categorie';
     public $cart = [];
 
-    protected $listeners = [
-                            'panierVide' => 'mount',
-                            'prix_change' => 'mount',
-                            'ProduitRetire' => 'mount',
-                            'quantiteModifier' => 'mount'
-                        ];
+    protected $listeners = 
+                [
+                    'panierVide' => 'mount',
+                    'prix_change' => 'mount',
+                    'ProduitRetire' => 'mount',
+                    'quantiteModifier' => 'mount'
+                ];
 
     // //recuperation de tous les produits dans la BD
     public function mount(){   
         
         $this->produits = Produit::orderByRaw('position_catalogue IS NULL, position_catalogue ASC')
                                 ->get();
+        $this->packs = Pack::all();
         $this->categories = Categori::all();
         $this->cart = Session::get('cart', []);
     }

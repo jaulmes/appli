@@ -28,10 +28,15 @@ class Produit extends Model
         'image_produit4',
     ];
 
+    public function pack(){
+        return $this->belongsToMany(Pack::class, 'produit_pack')
+                                        ->withPivot('quantity', 'price');
+    }
 
     public function annonces(){
         return $this->hasMany(Annonce::class, 'produit_id');
     }
+
     public function categori(){
         return $this->belongsTo(Categori::class, 'categori_id');
     }

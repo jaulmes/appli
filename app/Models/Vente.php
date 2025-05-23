@@ -26,6 +26,12 @@ class Vente extends Model
         'agentOperant'
     ] ;
 
+    public function packs()
+    {
+        return $this->belongsToMany(Pack::class, 'pack_vente')
+                            ->withPivot('quantity', 'prix');
+    }
+
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id');

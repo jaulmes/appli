@@ -4,27 +4,31 @@
         <div class="col-md-9">
             <!-- Barre de recherche -->
             <div class="row justify-content-center mb-4">
-                <div class="col-md-20 col-10 row" style="position:fixed; top: 10%; z-index: 1000; left:20%; padding: 20px;">
-                    <input class="form-control shadow-sm col"
+                <div class="col-md-20 col-10 row" style=" position:fixed; top: 10%; z-index: 1000; left:25%;  padding: 20px; width: 50em; " >
+                    <input class="form-control shadow-sm col" 
                            wire:model="query"
                            placeholder="🔍 Rechercher un produit..."
                            wire:input="update_query"
-                           type="search">
-                    
+                           type="search"
+                    >   
                     <div class="dropdown col">
-                        <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown">
-                            {{ $categori }}
+                        <button class="btn btn-primary dropdown-toggle" type="button"  data-bs-toggle="dropdown" >
+
+                                {{$categori?? "Toutes les catégories"}}
+
+                            
                         </button>
-                        <ul class="dropdown-menu" style="max-height: 300px; overflow-y: auto;">
+                        <ul class="dropdown-menu" style="max-height: 300px; overflow-y: auto; " >
                             @foreach($categories as $categorie)
-                                <li><a class="dropdown-item" wire:click="filtreProduit({{ $categorie->id }})">{{ $categorie->titre }}</a></li>
+                                <li><a class="dropdown-item" wire:click="filtreProduit({{$categorie->id}})" >{{$categorie->titre}}</a></li>
                             @endforeach
                         </ul>
-                    </div>
+                    </div> 
                 </div>
+                
             </div>
 
-            <!-- Catalogue -->
+            <!-- Catalogue de produits -->
             <div class="row row-cols-1 row-cols-md-3 g-4">
                 @forelse($produits as $produit)
                     <div class="col" wire:key="produit-{{ $produit->id }}">
@@ -41,32 +45,33 @@
                                 @endif
                             </div>
 
-                            <img src="{{ asset('storage/images/produits/' . $produit->image_produit) }}"
-                                    class="card-img-top img-fluid"
-                                    alt="{{ $produit->name }}"
-                                    style="height: 150px; object-fit: cover;">
+                            <!-- Image produit -->
+                            <img src="{{ asset('storage/images/produits/'.$produit->image_produit) }}" 
+                                 class="card-img-top img-fluid" 
+                                 alt="{{ $produit->name }}" 
+                                 style="height: 150px; object-fit: cover;">
 
-                            <div class="card-body row">
-                                <p class="card-title" title="{{ $produit->name }}">{{ $produit->name }}</p>
+                            <!-- Infos produit -->
+                            <div class="card-body row ">
+                                <p class="card-title " title="{{ $produit->name }}">{{ $produit->name }}</p>
                                 <p class="text-muted small">{{ $produit->getDescription() }}</p>
                                 <p class="fw-bold text-primary">{{ $produit->getPrice() }} XAF</p>
                             </div>
 
+                            <!-- Actions -->
                             <div class="card-footer bg-white border-0 text-center d-flex justify-content-around">
                                 <a href="{{ route('produit.detail', $produit->id) }}" class="btn btn-outline-warning btn-sm">
-                                    👁 Voir
+                                    <i class="bi bi-eye"></i> Voir
                                 </a>
-                                @if($produit->getStock() === "disponible")
-                                    <button class="btn btn-primary btn-sm" wire:click="addToCart('{{ $produit->id }}')">
-                                        🛒 Ajouter
-                                    </button>
-                                @endif
+                                <button class="btn btn-primary btn-sm" wire:click="addToCart('{{ $produit->id }}')">
+                                    <i class="bi bi-cart-plus"></i> Ajouter
+                                </button>                       
                             </div>
                         </div>
                     </div>
                 @empty
                     <div class="card-body text-center">
-                        <p class="fw-bold text-info">Aucun produit trouvé</p>
+                        <p class="fw-bold text-info">Auccun produit trouvé</p>
                     </div>
                 @endforelse
             </div>

@@ -9,6 +9,7 @@ use App\Models\facture;
 use App\Models\Produit;
 use App\Models\Transaction;
 use App\Models\Installation;
+use App\Models\Pack;
 use App\Models\Proformat;
 use App\Models\Vente;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -40,7 +41,7 @@ class PanierController extends Controller
         }
         
         $comptes = Compte::all();
-        $quantite=\Cart::getContent()->count();
+        $quantite = count(session('cart', []));
 
         return view('panier.index', compact('produits', 'quantite', 'comptes'));
     }
@@ -357,7 +358,7 @@ class PanierController extends Controller
             $installations->save();
             //comptabiliser la commission comme une charge
             $charges = new Charge();
-            $charges->titre = "commission pour l'intallation de ". $installations->nomClient. " a ". $installations->agentOperant; 
+            $charges->titre = "commission pour l'intallation de ". $clients->nom. " a ". $installations->agentOperant; 
             $charges->montant = $installations->commission;
             $charges->date = $dateHeure->format('Y/m/d');
 
@@ -570,6 +571,16 @@ class PanierController extends Controller
     //afficher le catalogue des produit pour le proformat
     public function proformat(){
         return view('panier.catalogueProformat');
+    }
+
+    //afficher le catalogue pour les packs
+    public function createPack(){
+        return view('panier.createPack');
+    }
+
+    public function afficherPack(){
+        $packs = Pack::all();
+        return view('panier.afficherPack', compact('packs'));
     }
 
     public function afficheFacture(){

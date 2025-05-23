@@ -33,11 +33,38 @@
                         <p>Boutique</p>
                     </a>
                 </li>
+                <!-- proformat -->
                 <li class="nav-item">
                     <a href="{{ route('panier.proformat') }}" class="nav-link {{ Request::is('panier/proformat*') ? 'active' : '' }}">
                         🛒
                         <p>Faire des proformats</p>
                     </a>
+                </li>
+                <!-- packs produits -->
+                <li class="nav-item has-treeview {{ Request::is('panier/pack*') ? 'menu-open' : '' }}">
+                    <a href="#" class="nav-link {{ Request::is('panier/pack*') ? 'active' : '' }}"> 
+                        📦 
+                        <p>
+                            Pack produit
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview ml-3">
+                        <li class="nav-item">
+                            <a href="{{ route('panier.pack.create') }}" class="nav-link {{ Request::is('panier/pack/create*') ? 'active' : '' }}">
+                                🛒
+                                <p>Creer un pack produit</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('panier.pack.show') }}" class="nav-link {{ Request::is('panier/pack/show*') ? 'active' : '' }}">
+                                🧺
+                                <p>
+                                    Liste des packs Produits
+                                </p>
+                            </a>
+                        </li>
+                    </ul>
                 </li>
 
                 <!-- Dashboard (pour les utilisateurs autorisés) -->
@@ -87,7 +114,6 @@
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>
                                     Reçus
-                                    <span class="badge badge-danger right">New</span>
                                 </p>
                             </a>
                         </li>

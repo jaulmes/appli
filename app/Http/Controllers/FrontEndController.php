@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Categori;
 use App\Models\Client;
 use App\Models\commande;
+use App\Models\Pack;
 use App\Models\Produit;
 use App\Models\Realisation;
 use App\Models\Service;
@@ -85,21 +86,26 @@ class FrontEndController extends Controller
 
     public function passerCommande(){
         $cart = session()->get('frontEndCart', []);
+        $panier_pack = session()->get('parnier_pack', []);
 
-        if (empty($cart)) {
+        if (empty($cart) && empty($panier_pack)) {
             return redirect()->back()->with('error', 'Votre panier est vide !');
         }
-        $montantTotal = array_reduce($cart, function($total, $produit) {
-            $price = $produit['status_promo'] == 0 ? $produit['price'] : $produit['prix_promo'];
-            return $total + ($produit['quantity'] * $price);
-        }, 0);
-        return view('frontend.page.passerCommande', compact('cart', 'montantTotal'));
+        $montantTotal = array_reduce($panier_pack, function($total, $pack) {
+                        $price = $pack['prix'];
+                        return $total + ($pack['quantity'] * $price);
+                        }, 0) + array_reduce($cart, function($total, $produit) {
+                        $price = $produit['status_promo'] == 0 ? $produit['price'] : $produit['prix_promo'];
+                        return $total + ($produit['quantity'] * $price);
+                        }, 0);
+        return view('frontend.page.passerCommande', compact('cart', 'montantTotal', 'panier_pack'));
     }
 
     public function validerCommande( Request $request){
         $cart = session()->get('frontEndCart', []);
+        $panier_pack = session()->get('parnier_pack', []);
 
-        if (empty($cart)) {
+        if (empty($cart) && empty($panier_pack)) {
             return redirect()->back()->with('error', 'Votre panier est vide !');
         }
         $clientEnregistre = Client::where('numero', $request->numero)->first();
@@ -114,10 +120,13 @@ class FrontEndController extends Controller
             $client->save();
         }
 
-        $montantTotal = array_reduce($cart, function($total, $produit) {
-            $price = $produit['status_promo'] == 0 ? $produit['price'] : $produit['prix_promo'];
-            return $total + ($produit['quantity'] * $price);
-        }, 0);
+        $montantTotal = array_reduce($panier_pack, function($total, $pack) {
+                        $price = $pack['prix'];
+                        return $total + ($pack['quantity'] * $price);
+                        }, 0) + array_reduce($cart, function($total, $produit) {
+                        $price = $produit['status_promo'] == 0 ? $produit['price'] : $produit['prix_promo'];
+                        return $total + ($produit['quantity'] * $price);
+                        }, 0);
 
         $commande = new commande();
         $commande->client_id = $client->id;
@@ -146,18 +155,31 @@ class FrontEndController extends Controller
         }
 
         //je relie les produits aux commandes
-        foreach ($cart as $item) {
-            $produit = Produit::find($item['id']);
-            $commande->produits()->attach($item['id'], [
-                'quantity' => $item['quantity'],
-                'price' => $item['status_promo'] == 0 ? $item['price'] : $item['prix_promo'],
-                'status_produit' => $produit->stock >= 0 ? 'en stock' : 'signaler au responsable'
-            ]);
+        if(!empty($cart)){
+            foreach ($cart as $item) {
+                $produit = Produit::find($item['id']);
+                $commande->produits()->attach($item['id'], [
+                    'quantity' => $item['quantity'],
+                    'price' => $item['status_promo'] == 0 ? $item['price'] : $item['prix_promo'],
+                    'status_produit' => $produit->stock >= 0 ? 'en stock' : 'signaler au responsable'
+                ]);
+            }
         }
+        if(!empty($panier_pack)){
+            foreach ($panier_pack as $item) {
+                $pack = Pack::find($item['id']);
+                $commande->packs()->attach($item['id'], [
+                    'quantity' => $item['quantity'],
+                    'prix' => $item['prix'],
+                ]);
+            }
+        }
+
 
         $users = User::all();
         Notification::send($users, new NouvelleCommandeNotification("Nouvelle commande"));
         Session::forget('cart');
+        Session::forget('parnier_pack');
         return view('frontend.page.commandeValidee', compact('commande'));
     }
 
@@ -165,9 +187,17 @@ class FrontEndController extends Controller
     public function afficherFactureComande($id){
         $commande = commande::find($id);
         $montantTotal = 0;
-        foreach ($commande->produits as $produit) {
-            $montantTotal += $produit->pivot->price * $produit->pivot->quantity;
+        if(!empty($commande->produits)){
+            foreach ($commande->produits as $produit) {
+                $montantTotal += $produit->pivot->price * $produit->pivot->quantity;
+            }
         }
+        if(!empty($commande->packs)){
+            foreach ($commande->packs as $pack) {
+                $montantTotal += $pack->pivot->prix * $pack->pivot->quantity;
+            }
+        }
+
         $pdf = Pdf::loadView('frontend.page.factureCommande',
                 [
                     'commandes' =>$commande,
@@ -222,5 +252,38 @@ class FrontEndController extends Controller
 
     public function simulateur(){
         return view('frontend.page.simulateur');
+    }
+
+    public function detailPack($id){
+        $pack = Pack::find($id);
+        return view('frontend.page.packDetail', compact('pack'));
+    }
+
+    public function addPackToCart($packId){
+        $cart = session()->get('parnier_pack', []);
+
+        $packs = Pack::find($packId);
+        $produits = Pack::find($packId)->produits;
+
+        if (isset($cart[$packId])) {
+            $cart[$packId]['quantity']++;
+        } else {
+            $cart[$packId] = [
+                "id" => $packId,
+                "image" => $packs->find($packId)->image,
+                "titre" => $packs->find($packId)->titre,
+                "prix" => $packs->find($packId)->prix,
+                "quantity" => 1,
+                "produits" => $packs->find($packId)->produits,
+            ];
+        }
+
+        $this->dispatch('ajouter_pack_panier');
+        session()->put('parnier_pack', $cart);
+    }
+
+    public function allPack(){
+        $packs = Pack::all();
+        return view('frontend.page.allPack', compact('packs'));
     }
 }

@@ -56,6 +56,10 @@ Route::get('/test', function(){
     //return view('welcome');
 });
 
+Route::match(['get', 'post'], '/vider', function(){
+    session()->forget('parnier_pack');
+});
+
 Route::get('/', [FrontEndController::class, 'index'])->name('frontend.index');
 Route::get('allPromoProduit', [FrontEndController::class, 'allPromoProduit'])->name('allPromoProduit');
 
@@ -75,10 +79,13 @@ Route::get('detail-realisation/{id}', [FrontEndController::class, 'detailRealisa
 Route::get('detail-service/{id}', [FrontEndController::class, 'detailService'])->name('detail-service');
 
 Route::get('passer-commande', [FrontEndController::class, 'passerCommande'])->name('passer.commande');
-
 Route::post('valider-commande', [FrontEndController::class, 'validerCommande'])->name('valider.commande');
 Route::get('afficher-commande/{id}', [FrontEndController::class, 'afficherFactureComande'])->name('afficher.commande');
 Route::get('telecharger-commande/{id}', [FrontEndController::class, 'telechargerFactureComande'])->name('telecharger.commande');
+
+Route::get('detail-pack/{id}', [FrontEndController::class, 'detailPack'])->name('detail-pack');
+Route::get('all-pack', [FrontEndController::class, 'allPack'])->name('all-pack');
+Route::get('add-pack-to-cart/{id}', [FrontEndController::class, 'addPackToCart'])->name('add-pack-to-cart');
 Route::get('simulateur', [FrontEndController::class, 'simulateur'])->name('simulateur');
 
 
@@ -155,8 +162,14 @@ Route::middleware('auth')->group(function () {
      * panier
      */
     
-    //afficher les produits 
+    //catalogue pour les produits
     Route::get('panier/index', [PanierController::class, 'afficheProduit'])->name('panier.index');
+
+    //catalogue pour les pack
+    Route::get('panier/pack/create', [PanierController::class, 'createPack'])->name('panier.pack.create');
+    Route::get('panier/pack/show', [PanierController::class, 'afficherPack'])->name('panier.pack.show');
+
+
 
     //catalogue pour les proformats
     Route::get('panier/proformat', [PanierController::class, 'proformat'])->name('panier.proformat');

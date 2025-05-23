@@ -41,6 +41,31 @@
                             @foreach($commande->produits as $produit)
                                 <strong>Nom:</strong> {{$produit->name}} <strong>Qte: </strong> {{$produit->pivot->quantity}} <span class="{{$produit->pivot->status_produit == 'en stock'? 'badge badge-success' : 'badge badge-danger'}}">{{$produit->pivot->status_produit}}</span><br>
                             @endforeach
+                            @foreach($commande->packs as $pack)
+                                <strong>Nom:</strong> {{$pack->titre}} (pack) <strong>Qte: </strong> {{$pack->pivot->quantity}} 
+                                 @php
+                                    $probleme_stock = false;
+                                @endphp
+
+                                <ul>
+                                    @foreach($pack->produits as $produit)
+                                        @php
+                                            // Quantité totale requise pour ce produit dans le pack
+                                            $qte_totale_requise = $pack->pivot->quantity * $produit->pivot->quantity;
+                                        @endphp
+                                        <li>
+                                            Produit: {{ $produit->name }} 
+
+                                            @if($produit->stock < $qte_totale_requise)
+                                                <span class="text-danger">⚠ signaler au responsable !</span>
+                                                @php $probleme_stock = true; @endphp
+                                            @else
+                                                <span class="text-success"> en Stock</span>
+                                            @endif
+                                        </li>
+                                    @endforeach
+                                </ul>
+                            @endforeach
                         </td>
                         <td>
                             <strong>{{$commande->montant_total}}</strong> <br>

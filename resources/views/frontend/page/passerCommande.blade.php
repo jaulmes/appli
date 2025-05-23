@@ -49,29 +49,49 @@
                     <span class="badge badge-secondary badge-pill">{{ count($cart) }}</span>
                 </h4>
                 <ul class="list-group mb-3 sticky-top">
-                    @foreach($cart as $item)
-                    <li class="list-group-item d-flex justify-content-between lh-condensed">
-                        <div>
-                            <h6 class="my-0">{{ $item['name'] }}</h6>
-                            @if($item['status_promo'] == 0)
-                                <small class="text-muted">
-                                    {{ $item['quantity'] }} x {{ number_format($item['price']) }}
-                                </small>
-                            @else
-                                <small class="text-muted">
-                                    {{ $item['quantity'] }} x {{ number_format($item['prix_promo']) }}
-                                </small>
-                            @endif
-                        </div>
-                        <span class="text-muted">
-                            @if($item['status_promo'] == 0)
-                                {{ number_format($item['quantity'] * $item['price'],0,',',' ') }} FCFA
-                            @else
-                                {{ number_format($item['quantity'] * $item['prix_promo'],0,',',' ') }} FCFA
-                            @endif
-                        </span>
-                    </li>
-                    @endforeach
+                    @if(!empty($cart))
+                        @foreach($cart as $item)
+                            <li class="list-group-item d-flex justify-content-between lh-condensed">
+                                <div>
+                                    <h6 class="my-0">{{ $item['name'] }}</h6>
+                                    @if($item['status_promo'] == 0)
+                                        <small class="text-muted">
+                                            {{ $item['quantity'] }} x {{ number_format($item['price']) }}
+                                        </small>
+                                    @else
+                                        <small class="text-muted">
+                                            {{ $item['quantity'] }} x {{ number_format($item['prix_promo']) }}
+                                        </small>
+                                    @endif
+                                </div>
+                                <span class="text-muted">
+                                    @if($item['status_promo'] == 0)
+                                        {{ number_format($item['quantity'] * $item['price'],0,',',' ') }} FCFA
+                                    @else
+                                        {{ number_format($item['quantity'] * $item['prix_promo'],0,',',' ') }} FCFA
+                                    @endif
+                                </span>
+                            </li>
+                        @endforeach
+                    @endif
+                    @if(!empty($panier_pack))
+                        @foreach($panier_pack as $item)
+                            <li class="list-group-item d-flex justify-content-between lh-condensed">
+                                <div>
+                                    <h6 class="my-0">{{ $item['titre'] }}</h6>
+                                    <small class="text-muted">
+                                        {{ $item['quantity'] }} x {{ number_format($item['prix']) }}
+                                    </small>
+
+                                </div>
+                                <span class="text-muted">
+
+                                    {{ number_format($item['quantity'] * $item['prix'],0,',',' ') }} FCFA
+                                    
+                                </span>
+                            </li>
+                        @endforeach
+                    @endif  
                     <li class="list-group-item d-flex justify-content-between">
                         <span>Total</span>
                         <strong>{{ number_format($montantTotal,0,',',' ') }} FCFA</strong>

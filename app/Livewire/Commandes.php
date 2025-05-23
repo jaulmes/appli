@@ -34,7 +34,7 @@ class Commandes extends Component
     public function mount()
     {
         //$this->nouvelleCommande = commande::where('status', 0)->get();
-        $this->commandes = commande::all();
+        $this->commandes = commande::orderBy('created_at', 'desc')->get();
     }
 
     public function render()

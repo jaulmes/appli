@@ -19,29 +19,49 @@ class FactureController extends Controller
         $ventes = $factures->ventes;
         //dd($factures);
         $netAPayer = $ventes->montantTotal - $ventes->reduction;
-
-        // chrger les donnee sur la facture pour envoyer sur une vue qui sera converti en pdf
-        $pdf = Pdf::loadView('factures.afficherFactureVentes',[
-            'ventes' =>$ventes,
-            'netAPayer' => $netAPayer,
-            'factures' => $factures,
-        ]);
+        
+        if($ventes->packs->count() > 0){
+            // chrger les donnee sur la facture pour avoyer sur une vue qui sera converti en pdf
+            $pdf = Pdf::loadView('factures.afficherFactureVentePacks',[
+                'ventes' =>$ventes,
+                'netAPayer' => $netAPayer,
+                'factures' => $factures,
+            ]);
+        }else{
+            // chrger les donnee sur la facture pour avoyer sur une vue qui sera converti en pdf
+            $pdf = Pdf::loadView('factures.afficherFactureVentes',[
+                'ventes' =>$ventes,
+                'netAPayer' => $netAPayer,
+                'factures' => $factures,
+            ]);
+        }
         
            
         return $pdf->stream($factures->numeroFacture.'.pdf');
     }
+    
 
     public function telechargerFactureVente($id){
         $factures = facture::find($id);
         $ventes = $factures->ventes;
         $netAPayer = $ventes->montantTotal - $ventes->reduction;
 
-        // chrger les donnee sur la facture pour avoyer sur une vue qui sera converti en pdf
-        $pdf = Pdf::loadView('factures.afficherFactureVentes',[
-            'ventes' =>$ventes,
-            'netAPayer' => $netAPayer,
-            'factures' => $factures,
-        ]);
+        if($ventes->packs->count() > 0){
+            // chrger les donnee sur la facture pour avoyer sur une vue qui sera converti en pdf
+            $pdf = Pdf::loadView('factures.afficherFactureVentePacks',[
+                'ventes' =>$ventes,
+                'netAPayer' => $netAPayer,
+                'factures' => $factures,
+            ]);
+        }else{
+            // chrger les donnee sur la facture pour avoyer sur une vue qui sera converti en pdf
+            $pdf = Pdf::loadView('factures.afficherFactureVentes',[
+                'ventes' =>$ventes,
+                'netAPayer' => $netAPayer,
+                'factures' => $factures,
+            ]);
+        }
+
         
            
         return $pdf->download($factures->numeroFacture.'.pdf');
@@ -59,12 +79,23 @@ class FactureController extends Controller
         $installations = $factures->installations;
         $netAPayer = $installations->montantTotal - $installations->reduction;
 
+
+        if($installations->packs->count() > 0){
+        // chrger les donnee sur la facture pour envoyer sur une vue qui sera converti en pdf
+        $pdf = Pdf::loadView('factures.afficherFactureInstallationPacks',[
+            'installations' =>$installations,
+            'netAPayer' => $netAPayer,
+            'factures' => $factures,
+        ]);
+        }else{
         // chrger les donnee sur la facture pour envoyer sur une vue qui sera converti en pdf
         $pdf = Pdf::loadView('factures.afficherFactureInstallations',[
             'installations' =>$installations,
             'netAPayer' => $netAPayer,
             'factures' => $factures,
         ]);
+        }
+
         
            
         return $pdf->stream($factures->numeroFacture.'.pdf');
