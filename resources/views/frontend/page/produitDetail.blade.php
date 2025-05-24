@@ -21,8 +21,12 @@
     <!-- Optionnel : Catégorie structurée -->
     <meta property="product:category" content="{{ $produit->categori->titre }}" />
     
-    <!-- Optionnel : GTIN (code-barres) si disponible -->
-    <!-- <meta property="product:gtin" content="123456789" /> -->
+  <script>
+    fbq('track', 'ViewContent', {
+      content_ids: ['{{ $product->id }}'],
+      content_type: 'product',
+    });
+  </script>                     
 @endsection
 
 @section('content')
