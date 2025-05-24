@@ -23,7 +23,7 @@
     
   <script>
     fbq('track', 'ViewContent', {
-      content_ids: ['{{ $product->id }}'],
+      content_ids: ['{{ $produit->id }}'],
       content_type: 'product',
     });
   </script>                     
