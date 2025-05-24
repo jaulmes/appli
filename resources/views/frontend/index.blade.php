@@ -419,7 +419,7 @@ src="https://www.facebook.com/tr?id=681776711126337&ev=PageView&noscript=1"
 </footer>
 
   <!-- Floating WhatsApp Button – Jaune -->
-  <a href="https://wa.me/237673938291" 
+  <a href="https://wa.me/237678645111" 
      class="whatsapp-float-yellow" 
      target="_blank" 
      aria-label="Contactez-nous sur WhatsApp (jaune)">
