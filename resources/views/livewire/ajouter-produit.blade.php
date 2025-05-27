@@ -40,7 +40,7 @@
                                 <div class="form-floating">
                                     <select wire:model="categori_id" class="form-select @error('categori_id') is-invalid @enderror" 
                                             id="categori_id">
-                                        <option selected disabled>Choisir...</option>
+                                        <option selected >Choisir...</option>
                                         @foreach($categories as $categorie)
                                             <option value="{{ $categorie->id }}">{{ $categorie->titre }}</option>
                                         @endforeach
@@ -126,7 +126,7 @@
                                 <div class="form-floating">
                                     <select wire:model="fournisseur_id" class="form-select @error('fournisseur_id') is-invalid @enderror" 
                                             id="fournisseur_id">
-                                        <option selected disabled>Choisir...</option>
+                                        <option selected >Choisir...</option>
                                         @foreach($fournisseurs as $fournisseur)
                                             <option value="{{ $fournisseur->id }}">{{ $fournisseur->nom }}</option>
                                         @endforeach
@@ -140,7 +140,7 @@
                                 <div class="form-floating">
                                     <select wire:model="compte_id" class="form-select @error('compte_id') is-invalid @enderror" 
                                             id="compte_id">
-                                        <option selected disabled>Choisir...</option>
+                                        <option selected >Choisir...</option>
                                         @foreach($comptes as $compte)
                                             <option value="{{ $compte->id }}">{{ $compte->nom }}</option>
                                         @endforeach
