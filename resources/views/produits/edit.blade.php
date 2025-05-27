@@ -144,7 +144,14 @@
                                         @if($produit->image_produit)
                                             <div class="mt-3">
                                                 <label class="form-label">Image actuelle :</label><br>
-                                                <img src="{{ asset('storage/images/produits/' . $produit->image_produit) }}" alt="Image du produit" class="img-fluid rounded" style="max-width: 150px;">
+                                                @php
+                                                    $imagePath1 = public_path('storage/images/produits/' . $produit->image_produit);
+                                                    $imagePath2 = public_path('images/produits/' . $produit->image_produit);
+                                                    $imageUrl = file_exists($imagePath1)
+                                                                    ? asset('storage/images/produits/' . $produit->image_produit) 
+                                                                    : asset('images/produits/' . $produit->image_produit);
+                                                @endphp
+                                                <img src="{{ $imageUrl }}" alt="Image du produit" class="img-fluid rounded" style="max-width: 150px;">
                                             </div>
                                         @endif
                                     </div>

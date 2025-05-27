@@ -62,23 +62,32 @@ class AjouterProduit extends Component
             ]);
 
             if ($this->image_produit) {
-                $filename = hexdec(uniqid()) . '.' . $this->image_produit->getClientOriginalExtension();
-                $this->image_produit->storeAs('public/images/produits', $filename);
-                $produit->image_produit = $filename;
+            $fileName = hexdec(uniqid()) . '.' . $this->image_produit->getClientOriginalExtension();
+            $destinationPath = 'images/produits';
+
+            if (!file_exists($destinationPath)) {
+                mkdir($destinationPath, 0755, true);
             }
+
+            // Supprime l’ancienne image si elle existe
+            if ($produit->image_produit && file_exists($destinationPath . '/' . $produit->image_produit)) {
+                unlink($destinationPath . '/' . $produit->image_produit);
+            }
+
+            $this->image_produit->storeAs($destinationPath, $fileName, 'real_public');
+
+
+            $produit->image_produit = $fileName;
+        }
+
+        else{
+            $produit->image_produit = $produit->image_produit;
+        }
 
             $produit->save();
 
-            $comptes = Compte::findOrFail($this->compte_id);
             $totalCost = $this->prix_achat * $this->stock;
-
-            if ($comptes->montant < $totalCost) {
-                return session()->flash('error', 'Le solde du compte choisi est insuffisant.');
-            }
-
-            $comptes->montant -= $totalCost;
             
-            $comptes->save();
 
             $dateHeure = now();
 
@@ -88,7 +97,6 @@ class AjouterProduit extends Component
                 'type' => "Nouveau produit",
                 'user_id' => Auth::id(),
                 'prixAchat' => $totalCost,
-                'compte_id' => $comptes->id,
             ]);
             $transaction->save();
 
@@ -110,6 +118,7 @@ class AjouterProduit extends Component
 
         } catch (\Exception $e) {
             DB::rollBack();
+            //dd($e->getMessage());
             session()->flash('error', 'Erreur: ' . $e->getMessage());
         }
     }
