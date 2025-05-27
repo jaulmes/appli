@@ -61,28 +61,11 @@ class AjouterProduit extends Component
                 'fabricant' => $this->fabricant,
             ]);
 
-            //stocker l'image dans le dossier public/images/produits
-if ($this->image_produit) {
-    $filename = hexdec(uniqid()) . '.' . $this->image_produit->getClientOriginalExtension();
-    $path = 'images/produits';
-
-    // Créer le dossier s’il n’existe pas
-    if (!file_exists(public_path($path))) {
-        mkdir(public_path($path), 0755, true);
-    }
-
-    // Supprimer une ancienne image si nécessaire
-    if ($produit->image_produit && file_exists(public_path($path . '/' . $produit->image_produit))) {
-        unlink(public_path($path . '/' . $produit->image_produit));
-    }
-
-    // ⚠️ Utilise storeAs avec le disque 'public'
-    $this->image_produit->storeAs($path, $filename, 'public');
-
-    // Enregistre juste le nom du fichier
-    $produit->image_produit = $filename;
-}
-
+            if ($this->image_produit) {
+                $filename = hexdec(uniqid()) . '.' . $this->image_produit->getClientOriginalExtension();
+                $this->image_produit->storeAs('public/images/produits', $filename);
+                $produit->image_produit = $filename;
+            }
 
             $produit->save();
 

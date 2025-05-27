@@ -103,18 +103,21 @@ class produitController extends Controller
         $produits->fabricant = $request->input('fabricant');
 
         if ($file = $request->file('image_produit')) {
-            $fileName = hexdec(uniqid()).'.'.$file->getClientOriginalName();
-            $path = 'public/images/produits/';
+    $fileName = hexdec(uniqid()) . '.' . $file->getClientOriginalExtension();
+    $destinationPath = public_path('images/produits');
 
-            // Delete an image if exists.
-            if ($produits->image_produit && Storage::exists('public/images/produits/' . $produits->image_produit)) {
-                Storage::delete('public/images/produits' . $produits->image_produit);
-            }
+    if (!file_exists($destinationPath)) {
+        mkdir($destinationPath, 0755, true);
+    }
 
-            // Store an image to Storage
-            $file->storeAs($path, $fileName);
-            $produits->image_produit = $fileName;
-        }
+    // Supprime l’ancienne image si elle existe
+    if ($produits->image_produit && file_exists($destinationPath . '/' . $produits->image_produit)) {
+        unlink($destinationPath . '/' . $produits->image_produit);
+    }
+
+    $file->move($destinationPath, $fileName);
+    $produits->image_produit = $fileName;
+}
 
         else{
             $produits->image_produit = $produits->image_produit;

@@ -110,9 +110,18 @@
                                 <!-- Image -->
                                 <td>
                                     <div class="ratio ratio-1x1" style="width: 60px;">
-                                        <img src="{{ asset('storage/images/produits/'.$produit->image_produit) }}" 
+                                        @php
+                                            $imagePath1 = public_path('images/produits/' . $produit->image_produit);
+                                            $imagePath2 = public_path('storage/images/produits/' . $produit->image_produit);
+
+                                            $imageUrl = file_exists($imagePath1)
+                                                ? asset('images/produits/' . $produit->image_produit)
+                                                : asset('storage/images/produits/' . $produit->image_produit);
+                                        @endphp
+
+                                        <img src="{{ $imageUrl }}" 
                                             class="img-thumbnail" 
-                                            alt="{{ $produit->name }}"
+                                            alt="{{ $produit->name }}" 
                                             loading="lazy">
                                     </div>
                                 </td>
