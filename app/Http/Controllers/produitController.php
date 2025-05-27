@@ -78,6 +78,7 @@ class produitController extends Controller
     //modifier le produit
     public function edit(Request $request, string $id)
     {
+        dd('hello');
         
         $request->validate([
             'prix_achat' => 'required|integer|min:0',
