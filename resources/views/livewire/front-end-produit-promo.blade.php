@@ -18,7 +18,18 @@
 
                     <!-- Image produit -->
                     <div class="product-img ">
-                        <img src="{{ $produit->getImageUrl() }}" alt="Image de {{ $produit->name }}" class="img-size-50 rounded">
+                        @php
+                            $image1 = public_path('images/produits/'. $produit->image_produit);
+                            $image2 = public_path('storage/images/produits/'. $produit->image_produit);
+                            $url = file_exists($image1)? asset('images/produits/'. $produit->image_produit)
+                                                        : asset('storage/images/produits/' . $produit->image_produit);
+
+                        @endphp
+
+                        <img src="{{$url }}"
+                                class="card-img-top img-fluid"
+                                alt="{{ $produit->name }}"
+                                style="height: 50px; object-fit: cover;">
                     </div>
 
                     <!-- Informations produit -->

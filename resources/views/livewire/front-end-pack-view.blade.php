@@ -73,10 +73,17 @@
                         aria-label="Voir détail {{ $pack->titre }}"
                         style="text-decoration: none; ">
                         <div class=" overflow-hidden image-zoom-container" style="height:250px;" data-tilt data-tilt-max="8">
-                            <img src="{{ asset('storage/images/packs/'.$pack->image) }}"
+                            @php
+                                $image1 = public_path('images/packs/'. $pack->image);
+                                $url = file_exists($image1)? asset('images/packs/'. $pack->image)
+                                                            : asset('storage/images/packs/' . $pack->image);
+                            @endphp
+                            <img src="{{$url }}"
                                 alt="Photo de {{ $pack->titre }}"
                                 class="img-fluid w-100 h-100 object-fit-cover zoom-image"
-                                style="height: 50px; padding-top: -3em;"/>
+                                style="height: 50px; padding-top: -3em;"
+                                >
+
 
                             {{-- titre --}}
                             <div class="card-img-overlay d-flex flex-column justify-content-between p-3">

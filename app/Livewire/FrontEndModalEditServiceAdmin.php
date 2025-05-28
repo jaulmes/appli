@@ -30,10 +30,10 @@ class FrontEndModalEditServiceAdmin extends Component
 
             if ($file = $this->image) {
                 $fileName = hexdec(uniqid()).'.'.$file->getClientOriginalName();
-                $imagePath = 'public/images/services/';
+                $imagePath = 'images/services/';
 
-                // Store an image to Storage
-                $file->storeAs($imagePath, $fileName);
+                // Store an image to public
+                $file->storeAs($imagePath, $fileName, 'real_public');
                 $service->image = $fileName;
             }
             else{

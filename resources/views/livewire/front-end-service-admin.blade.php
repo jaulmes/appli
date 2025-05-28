@@ -51,7 +51,17 @@
                 @forelse($services as $service)
                     <tr>
                         <td>
-                            <img src="{{asset('storage/images/services/'.$service->image)}}" alt="{{$service->name}}" class="img-circle img-size-32 mr-2">
+                            @php
+                                $image1 = public_path('images/services/'. $service->image);
+                                $image2 = public_path('storage/images/services/'. $service->image);
+                                $url = file_exists($image1)? asset('images/services/'. $service->image)
+                                                            : asset('storage/images/services/' . $service->image);
+                            @endphp
+
+                            <img src="{{$url }}"
+                                    class="card-img-top img-fluid "
+                                    alt="{{ $service->name }}"
+                                    style="object-fit: cover; height: 50px; width: 50px;">
                             {{$service->name}}
                         </td>
                         <td>{{$service->description}}</td>

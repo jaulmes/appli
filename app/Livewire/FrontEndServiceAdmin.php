@@ -24,10 +24,10 @@ class FrontEndServiceAdmin extends Component
         $services->status = $this->status;
         if ($file = $this->image) {
             $fileName = hexdec(uniqid()).'.'.$file->getClientOriginalName();
-            $imagePath = 'public/images/services/';
+            $imagePath = 'images/services/';
 
             // Store an image to Storage
-            $file->storeAs($imagePath, $fileName);
+            $file->storeAs($imagePath, $fileName, 'real_public');
             $services->image = $fileName;
         }
         else{

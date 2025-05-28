@@ -17,10 +17,17 @@
                 <div class="carousel-inner">
                     @foreach($annonces as $index => $annonce)
                         <div class="carousel-item {{ $index === 0 ? 'active' : '' }}">
-                            <img src="{{ asset('storage/images/annonces/'.$annonce->image) }}"
-                                class="d-block w-100 rounded"
-                                style="height: 150px; object-fit: cover;"
-                                alt="Annonce {{ $index + 1 }}">
+                            @php
+                                $image1 = public_path('images/annonces/'. $annonce->image);
+                                $image2 = public_path('storage/images/annonces/'. $annonce->image);
+                                $url = file_exists($image1)? asset('images/annonces/'. $annonce->image)
+                                                            : asset('storage/images/annonces/' . $annonce->image);
+                            @endphp
+
+                            <img src="{{$url }}"
+                                    class="card-img-top img-fluid w-100"
+                                    alt="{{ $annonce->name }}"
+                                    style="object-fit: cover; height: 150px;">
 
                             <!-- Lien Acheter -->
                             @if($annonce->produit_id)

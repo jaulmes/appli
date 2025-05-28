@@ -41,10 +41,10 @@ class FrontEndRealisationAdmin extends Component
             
             if ($file = $this->img1) {
                 $fileName = hexdec(uniqid()).'.'.$file->getClientOriginalName();
-                $imagePath = 'public/images/Realisations/';
+                $imagePath = 'images/Realisations/';
     
                 // Store an image to Storage
-                $file->storeAs($imagePath, $fileName);
+                $file->storeAs($imagePath, $fileName, 'real_public');
                 $realisations->img1 = $fileName;
             }
             else{
@@ -53,10 +53,10 @@ class FrontEndRealisationAdmin extends Component
     
             if ($file = $this->img2) {
                 $fileName = hexdec(uniqid()).'.'.$file->getClientOriginalName();
-                $imagePath = 'public/images/Realisations/';
+                $imagePath = 'images/Realisations/';
     
                 // Store an image to Storage
-                $file->storeAs($imagePath, $fileName);
+                $file->storeAs($imagePath, $fileName, 'real_public');
                 $realisations->img2 = $fileName;
             }
             else{
@@ -65,10 +65,10 @@ class FrontEndRealisationAdmin extends Component
     
             if ($file = $this->img3) {
                 $fileName = hexdec(uniqid()).'.'.$file->getClientOriginalName();
-                $imagePath = 'public/images/Realisations/';
+                $imagePath = 'images/Realisations/';
     
                 // Store an image to Storage
-                $file->storeAs($imagePath, $fileName);
+                $file->storeAs($imagePath, $fileName, 'real_public');
                 $realisations->img3 = $fileName;
             }
             else{
@@ -77,10 +77,10 @@ class FrontEndRealisationAdmin extends Component
     
             if ($file = $this->img4) {
                 $fileName = hexdec(uniqid()).'.'.$file->getClientOriginalName();
-                $imagePath = 'public/images/Realisations/';
+                $imagePath = 'images/Realisations/';
     
                 // Store an image to Storage
-                $file->storeAs($imagePath, $fileName);
+                $file->storeAs($imagePath, $fileName, 'real_public');
                 $realisations->img4 = $fileName;
             }
             else{
@@ -89,10 +89,10 @@ class FrontEndRealisationAdmin extends Component
     
             if ($file = $this->img5) {
                 $fileName = hexdec(uniqid()).'.'.$file->getClientOriginalName();
-                $imagePath = 'public/images/Realisations/';
+                $imagePath = 'images/Realisations/';
     
                 // Store an image to Storage
-                $file->storeAs($imagePath, $fileName);
+                $file->storeAs($imagePath, $fileName, 'real_public');
                 $realisations->img5 = $fileName;
             }
             else{
@@ -127,7 +127,7 @@ class FrontEndRealisationAdmin extends Component
 
     public function deleteRealisation($id){
         $realisations = Realisation::find($id);
-        $imagePath = 'public/images/Realisations/';
+        $imagePath = 'images/Realisations/';
         if($realisations->image){
             Storage::delete($imagePath . $realisations->image);
         }

@@ -22,13 +22,16 @@ class PackDetail extends Component
             $cart[$packId]['quantity']++;
         } else {
             $cart[$packId] = [
-                "name" => $this->pack->find($packId)->titre,
-                "price" => $this->pack->find($packId)->prix,
+                "id" => $packId,
+                "image" => $this->pack->find($packId)->image,
+                "titre" => $this->pack->find($packId)->titre,
+                "prix" => $this->pack->find($packId)->prix,
                 "quantity" => 1,
-                "produits" => $this->packs->find($packId)->produits,
+                "produits" => $this->pack->find($packId)->produits,
             ];
         }
 
+        $this->dispatch('ajouter_pack_panier');
         session()->put('parnier_pack', $cart);
         session()->flash('success', 'Produit ajouté au panier !');
     }

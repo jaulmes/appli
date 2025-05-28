@@ -32,7 +32,7 @@ class FrontEndEditPresentationAdmin extends Component
         
         if ($this->image) {
             $fileName = hexdec(uniqid()).'.'.$this->image->getClientOriginalName();
-            $imagePath = 'public/images/presentations/';
+            $imagePath = 'images/presentations/';
             /**
              * Delete an image if exists.
              */
@@ -40,7 +40,7 @@ class FrontEndEditPresentationAdmin extends Component
                 Storage::delete($imagePath . $presentation->image);
             }
             // Store an image to Storage
-            $this->image->storeAs($imagePath, $fileName);
+            $this->image->storeAs($imagePath, $fileName, 'real_public');
             $presentation->image = $fileName;
         }
         else{

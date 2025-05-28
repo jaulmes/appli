@@ -11,10 +11,16 @@
                 <div class="position-relative overflow-hidden image-zoom-container" 
                     style="height: 250px;"
                     data-tilt data-tilt-max="10">
-                    <img src="{{ asset('storage/images/packs/'.$pack->image) }}"
-                        alt="{{ $pack->titre }}"
-                        class="img-fluid w-100 h-100 object-fit-cover transition-all zoom-image parallax-image"
-                        data-parallax="hover">
+                    @php
+                        $image1 = public_path('images/packs/'. $pack->image);
+                        $url = file_exists($image1)? asset('images/packs/'. $pack->image)
+                                                    : asset('storage/images/packs/' . $pack->image);
+                    @endphp
+                    <img src="{{$url }}"
+                        alt="Photo de {{ $pack->titre }}"
+                        class="img-fluid w-100 h-100 object-fit-cover zoom-image"
+                        style="height: 50px; padding-top: -3em;"
+                        >
 
                     <!-- Overlay interactif amélioré -->
                     <div class="image-overlay d-flex flex-column justify-content-between opacity-0 hover-opacity-100 transition-all">

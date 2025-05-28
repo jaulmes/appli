@@ -50,13 +50,19 @@
 
             {{-- Image --}}
             <figure class="mb-0">
-              <img
-                src="{{ asset('storage/images/services/'.$service->image) }}"
+              @php
+                  $image1 = public_path('images/services/'. $service->image);
+                  $image2 = public_path('storage/images/services/'. $service->image);
+                  $url = file_exists($image1)? asset('images/services/'. $service->image)
+                                              : asset('storage/images/services/' . $service->image);
+              @endphp
+
+              <img src="{{$url }}"
                 alt="Photo du service {{ $service->name }}"
                 loading="lazy"
                 class="d-block w-100 object-fit-cover"
-                style="height:200px;"
-              >
+                style="height:200px;">
+              
             </figure>
 
             {{-- Contenu --}}

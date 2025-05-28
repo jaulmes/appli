@@ -34,7 +34,7 @@ class FrontEndAddAnnonceAdmin extends Component
         $annonce = new Annonce();
         if ($file = $this->image) {
             $fileName = hexdec(uniqid()).'.'.$file->getClientOriginalName();
-            $imagePath = 'public/images/annonces/';
+            $imagePath = 'images/annonces/';
             /**
              * Delete an image if exists.
              */
@@ -42,7 +42,7 @@ class FrontEndAddAnnonceAdmin extends Component
                 Storage::delete($imagePath . $annonce->image);
             }
             // Store an image to Storage
-            $file->storeAs($imagePath, $fileName);
+            $file->storeAs($imagePath, $fileName, 'real_public');
             $annonce->image = $fileName;
         }
         else{

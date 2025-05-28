@@ -62,27 +62,26 @@ class AjouterProduit extends Component
             ]);
 
             if ($this->image_produit) {
-            $fileName = hexdec(uniqid()) . '.' . $this->image_produit->getClientOriginalExtension();
-            $destinationPath = 'images/produits';
+                $fileName = hexdec(uniqid()) . '.' . $this->image_produit->getClientOriginalExtension();
+                $destinationPath = 'images/produits';
 
-            if (!file_exists($destinationPath)) {
-                mkdir($destinationPath, 0755, true);
+                if (!file_exists($destinationPath)) {
+                    mkdir($destinationPath, 0755, true);
+                }
+
+                // Supprime l’ancienne image si elle existe
+                if ($produit->image_produit && file_exists($destinationPath . '/' . $produit->image_produit)) {
+                    unlink($destinationPath . '/' . $produit->image_produit);
+                }
+
+                $this->image_produit->storeAs($destinationPath, $fileName, 'real_public');
+
+
+                $produit->image_produit = $fileName;
             }
-
-            // Supprime l’ancienne image si elle existe
-            if ($produit->image_produit && file_exists($destinationPath . '/' . $produit->image_produit)) {
-                unlink($destinationPath . '/' . $produit->image_produit);
+            else{
+                $produit->image_produit = $produit->image_produit;
             }
-
-            $this->image_produit->storeAs($destinationPath, $fileName, 'real_public');
-
-
-            $produit->image_produit = $fileName;
-        }
-
-        else{
-            $produit->image_produit = $produit->image_produit;
-        }
 
             $produit->save();
 

@@ -44,9 +44,19 @@
             <tbody>
                 @forelse($produit_promo as $produit)
                     <tr :produit="$produit" :key="$produit->id">
-                        <td>
-                        {{ $produit->position_promo.'/'.$produit_promo->count() ?? '#_' }}
-                            <img src="{{ $produit->getImageUrl() }} " alt="Product 1" class="img-circle img-size-32 mr-2">
+                        <td >
+                            {{ $produit->position_promo.'/'.$produit_promo->count() ?? '#_' }}
+                            @php
+                                $image1 = public_path('images/produits/'. $produit->image_produit);
+                                $image2 = public_path('storage/images/produits/'. $produit->image_produit);
+                                $url = file_exists($image1)? asset('images/produits/'. $produit->image_produit)
+                                                            : asset('storage/images/produits/' . $produit->image_produit);
+                            @endphp
+
+                            <img src="{{$url }}"
+                                    class="card-img-top img-fluid "
+                                    alt="{{ $produit->name }}"
+                                    style="object-fit: cover; height: 50px; width: 50px;">
                             {{$produit->name}}
                         </td>
                         <td>{{$produit->price}}</td>

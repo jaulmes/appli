@@ -36,9 +36,10 @@
     <div class="row">
         <div class="col-md-6">
           <div class="position-relative overflow-hidden image-zoom-container rounded shadow">
-            <img src="{{ $produit->getImageUrl() }}" 
-                 alt="{{ $produit->name }}" 
-                 class="img-fluid w-100 h-100 object-fit-cover transition-all zoom-image">
+            <img src="{{$produit->getImageUrl() }}"
+                  class="card-img-top img-fluid h-100"
+                  alt="{{ $produit->name }}"
+                  style="object-fit: cover;">
           </div>
         </div>
 

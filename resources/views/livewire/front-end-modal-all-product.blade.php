@@ -55,10 +55,18 @@
                                     <td class="ps-3">
                                         <div class="d-flex align-items-center">
                                             <div class="symbol symbol-50px me-3">
-                                                <img src="{{ $produit->getImageUrl() }}" 
-                                                     class="rounded-3" 
-                                                     alt="{{ $produit->name }}"
-                                                     style="width: 40px; height: 40px; object-fit: cover">
+                            @php
+                                $image1 = public_path('images/produits/'. $produit->image_produit);
+                                $image2 = public_path('storage/images/produits/'. $produit->image_produit);
+                                $url = file_exists($image1)? asset('images/produits/'. $produit->image_produit)
+                                                            : asset('storage/images/produits/' . $produit->image_produit);
+
+                            @endphp
+
+                            <img src="{{$url }}"
+                                    class="card-img-top img-fluid h-100"
+                                    alt="{{ $produit->name }}"
+                                    style="object-fit: cover; width: 50px; height: 50px;">
                                             </div>
                                             <span class="fw-medium text-dark">{{ $produit->name }}</span>
                                         </div>

@@ -8,10 +8,18 @@
             @foreach($cart as $key => $item)
                 <li class="list-group-item d-flex justify-content-between align-items-center" >
                     <div class="d-flex align-items-center">
-                        <img src="{{ asset('storage/images/produits/' . $item['image']) }}" 
-                            alt="Image de {{ $item['name'] }}" 
-                            class="img-thumbnail me-2" 
-                            style="width: 50px; height: 50px; object-fit: cover;">
+                            @php
+                                $image1 = public_path('images/produits/'. $item['image']);
+                                $image2 = public_path('storage/images/produits/'. $item['image']);
+                                $url = file_exists($image1)? asset('images/produits/'. $item['image'])
+                                                            : asset('storage/images/produits/' . $item['image']);
+
+                            @endphp
+
+                            <img src="{{$url }}"
+                                    class="card-img-top img-fluid"
+                                    alt="{{ $item['name'] }}"
+                                    style="object-fit: cover; width: 50px; height: 25px;">
                         <div>
                             <strong>{{ $item['name'] }}</strong><br>
                             @if($item['status_promo'] == 0)
@@ -40,10 +48,17 @@
             @foreach($panier_pack as $key => $item)
                 <li class="list-group-item d-flex justify-content-between align-items-center" >
                     <div class="d-flex align-items-center">
-                        <img src="{{ asset('storage/images/packs/' . $item['image']) }}" 
+                        @php
+                            $image1 = public_path('images/packs/'. $item['image']);
+                            $url = file_exists($image1)? asset('images/packs/'. $item['image'])
+                                                        : asset('storage/images/packs/' . $item['image']);
+                        @endphp
+                        <img src="{{$url }}"
                             alt="Image de {{ $item['titre'] }}" 
                             class="img-thumbnail me-2" 
-                            style="width: 50px; height: 50px; object-fit: cover;">
+                            style="width: 50px; height: 50px; object-fit: cover;"
+                            >
+
                         <div>
                             <strong>{{ $item['titre'] }}</strong><br>
                             <small class="text-muted">

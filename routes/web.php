@@ -85,7 +85,7 @@ Route::get('telecharger-commande/{id}', [FrontEndController::class, 'telecharger
 
 Route::get('detail-pack/{id}', [FrontEndController::class, 'detailPack'])->name('detail-pack');
 Route::get('all-pack', [FrontEndController::class, 'allPack'])->name('all-pack');
-Route::get('add-pack-to-cart/{id}', [FrontEndController::class, 'addPackToCart'])->name('add-pack-to-cart');
+Route::post('add-pack-to-cart/{id}', [FrontEndController::class, 'addPackToCart'])->name('add-pack-to-cart');
 Route::get('simulateur', [FrontEndController::class, 'simulateur'])->name('simulateur');
 
 

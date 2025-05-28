@@ -41,7 +41,7 @@ class FrontEndPresentationViewAdmin extends Component
         
         if ($file = $this->image) {
             $fileName = hexdec(uniqid()).'.'.$file->getClientOriginalName();
-            $imagePath = 'public/images/presentations/';
+            $imagePath = 'images/presentations/';
             /**
              * Delete an image if exists.
              */
@@ -49,7 +49,7 @@ class FrontEndPresentationViewAdmin extends Component
                 Storage::delete($imagePath . $presentations->image);
             }
             // Store an image to Storage
-            $file->storeAs($imagePath, $fileName);
+            $file->storeAs($imagePath, $fileName, 'real_public');
             $presentations->image = $fileName;
         }
         else{
@@ -68,7 +68,7 @@ class FrontEndPresentationViewAdmin extends Component
         $presentation->status = $this->status;
         if ($file = $this->image) {
             $fileName = hexdec(uniqid()).'.'.$file->getClientOriginalName();
-            $imagePath = 'public/images/presentations/';
+            $imagePath = 'images/presentations/';
             /**
              * Delete an image if exists.
              */
@@ -76,7 +76,7 @@ class FrontEndPresentationViewAdmin extends Component
                 Storage::delete($imagePath . $presentation->image);
             }
             // Store an image to Storage
-            $file->storeAs($imagePath, $fileName);
+            $file->storeAs($imagePath, $fileName, 'real_public');
             $presentation->image = $fileName;
         }
         else{
@@ -102,10 +102,7 @@ class FrontEndPresentationViewAdmin extends Component
 
     public function deletePresentation($id){
         $presentation = FrontentPresentation::find($id);
-        $imagePath = 'public/images/presentations/';
-        if($presentation->image){
-            Storage::delete($imagePath . $presentation->image);
-        }
+
         $presentation->delete();
         session()->flash('message', 'Presentation supprimée avec succès.');
         $this->dispatch('refreshComponent');

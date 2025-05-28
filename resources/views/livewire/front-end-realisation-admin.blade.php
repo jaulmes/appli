@@ -27,7 +27,16 @@
                 @forelse($realisations as $realisation)
                     <tr>
                         <td>
-                            <img src="{{asset('storage/images/Realisations/'.$realisation->img1)}}" alt="{{$realisation->titre}}" class="img-circle img-size-32 mr-2">
+                            @php
+                                $image1 = public_path('images/Realisations/'. $realisation->img1);
+                                $image2 = public_path('storage/images/Realisations/'. $realisation->img1);
+                                $url = file_exists($image1)? asset('images/Realisations/'. $realisation->img1)
+                                                            : asset('storage/images/Realisations/' . $realisation->img1);
+                            @endphp
+                            <img src="{{$url }}"
+                                class="img-circle img-size-32 mr-2" 
+                                >
+                           
                             {{$realisation->titre}}
                         </td>
                         <td>{!! str_replace(';', ';<br>', e($realisation->description)) !!}</td>

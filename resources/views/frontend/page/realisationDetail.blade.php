@@ -10,10 +10,16 @@
           @foreach(['img1', 'img2', 'img3', 'img4'] as $img)
             @if($realisation->$img)
               <div class="carousel-item {{ $loop->first ? 'active' : '' }}">
-                <img src="{{ asset('storage/images/Realisations/'.$realisation->$img) }}" 
-                     class="d-block w-100 zoom-image" 
+                @php
+                    $image1 = public_path('images/Realisations/'. $realisation->$img);
+                    $url = file_exists($image1)? asset('images/Realisations/'. $realisation->$img)
+                                                : asset('storage/images/Realisations/' . $realisation->$img);
+                @endphp
+                <img src="{{$url }}"
+                    class="d-block w-100 zoom-image" 
                      alt="{{ $realisation->name }}"
-                     style="height: 600px; object-fit: cover;">
+                     style="height: 600px; object-fit: cover;"
+                    >
                 <div class="carousel-overlay"></div>
               </div>
             @endif
@@ -35,12 +41,18 @@
         @foreach(['img1', 'img2', 'img3', 'img4'] as $img)
           @if($realisation->$img)
             <div class="col-3">
-              <img src="{{ asset('storage/images/Realisations/'.$realisation->$img) }}" 
-                   class="img-fluid cursor-pointer thumbnail-img"
-                   data-bs-target="#realisationCarousel"
-                   data-bs-slide-to="{{ $loop->index }}"
-                   style="height: 150px; object-fit: cover;"
-                   alt="Thumbnail">
+              @php
+                  $image1 = public_path('images/Realisations/'. $realisation->$img);
+                  $url = file_exists($image1)? asset('images/Realisations/'. $realisation->$img)
+                                              : asset('storage/images/Realisations/' . $realisation->$img);
+              @endphp
+              <img src="{{$url }}"
+                  class="img-fluid cursor-pointer thumbnail-img"
+                  data-bs-target="#realisationCarousel"
+                  data-bs-slide-to="{{ $loop->index }}"
+                  style="height: 150px; object-fit: cover;"
+                  alt="Thumbnail"
+                >
             </div>
           @endif
         @endforeach
@@ -51,14 +63,6 @@
     <!-- Détails du projet -->
     <div class="col-lg-4">
       <h1 class="fw-bold display-5 mb-4">{{ $realisation->name }}</h1>
-      
-      <div class="project-meta mb-5">
-        <div class="d-flex align-items-center mb-3">
-          <i class="fas fa-calendar-alt me-2 text-primary"></i>
-          <span>{{ $realisation->created_at->format('d/m/Y') }}</span>
-        </div>
-      </div>
-
       <h4 class="mb-3">Description du projet</h4>
       <p class="lead"> {!! str_replace(';', '<br>', e($realisation->description)) !!}</p>
 

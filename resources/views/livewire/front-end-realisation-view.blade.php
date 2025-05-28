@@ -32,12 +32,16 @@
                                 @foreach($images as $key => $image)
                                     <div class="carousel-item {{ $key == 0 ? 'active' : '' }}">
                                         <div class="image-wrapper">
-                                            <img 
-                                                src="{{ asset('storage/images/Realisations/' .$image) }}" 
+                                            @php
+                                                $image1 = public_path('images/Realisations/'. $image);
+                                                $url = file_exists($image1)? asset('images/realisations/'. $image)
+                                                                            : asset('storage/images/realisations/' . $image);
+                                            @endphp
+                                            <img src="{{$url }}"
                                                 alt="Image de la réalisation"
                                                 class="d-block w-100 object-fit-cover zoom-image"
                                                 style="height: 200px;"
-                                            >
+                                                >
                                             <div class="image-overlay"></div>
                                         </div>
                                     </div>

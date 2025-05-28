@@ -52,7 +52,17 @@
                         </td>
                         <td>
                             <div class="mb-3">
-                                <img src="{{ asset('storage/images/annonces/'.$annonce->image)}}" alt="Product 1" class="img-fluid rounded" style="width: 40px; height: 40px;">
+                            @php
+                                $image1 = public_path('images/annonces/'. $annonce->image);
+                                $image2 = public_path('storage/images/annonces/'. $annonce->image);
+                                $url = file_exists($image1)? asset('images/annonces/'. $annonce->image)
+                                                            : asset('storage/images/annonces/' . $annonce->image);
+                            @endphp
+
+                            <img src="{{$url }}"
+                                    class="card-img-top img-fluid "
+                                    alt="{{ $annonce->name }}"
+                                    style="object-fit: cover; height: 50px; width: 50px;">
                             </div>
                         </td>
                         <td>

@@ -54,10 +54,18 @@
                             </div>
 
                             <!-- Image produit -->
-                            <img src="{{ asset('storage/images/produits/'.$produit->image_produit) }}" 
-                                 class="card-img-top img-fluid" 
-                                 alt="{{ $produit->name }}" 
-                                 style="height: 150px; object-fit: cover;">
+                            @php
+                                $image1 = public_path('images/produits/'. $produit->image_produit);
+                                $image2 = public_path('storage/images/produits/'. $produit->image_produit);
+                                $url = file_exists($image1)? asset('images/produits/'. $produit->image_produit)
+                                                            : asset('storage/images/produits/' . $produit->image_produit);
+
+                            @endphp
+
+                            <img src="{{$url }}"
+                                    class="card-img-top img-fluid"
+                                    alt="{{ $produit->name }}"
+                                    style="height: 150px; object-fit: cover;">
 
                             <!-- Infos produit -->
                             <div class="card-body row ">

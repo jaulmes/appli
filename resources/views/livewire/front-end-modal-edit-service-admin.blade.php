@@ -1,7 +1,7 @@
 <div class="modal-dialog">
     <div class="modal-content">
         <div class="modal-header">
-            <h1 class="modal-title fs-5" id="newService">Enregistrer un nouveau service</h1>
+            <h1 class="modal-title fs-5" id="editService">Enregistrer un nouveau service</h1>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
@@ -47,7 +47,17 @@
                             <div class="input-group">
                                 <div class="custom-file">
                                     <p>Image actuelle: </p>
-                                    <img src="{{ asset('storage/images/Services/'. $service->image) }}" alt="Image Preview" class="img-thumbnail" style="width: 100px; height: 100px;">
+                                    @php
+                                        $image1 = public_path('images/services/'. $service->image);
+                                        $image2 = public_path('storage/images/services/'. $service->image);
+                                        $url = file_exists($image1)? asset('images/services/'. $service->image)
+                                                                    : asset('storage/images/services/' . $service->image);
+                                    @endphp
+
+                                    <img src="{{$url }}"
+                                        alt="Photo du service {{ $service->name }}"
+                                        loading="lazy"
+                                        class="img-thumbnail" style="width: 100px; height: 100px;">
                                 </div>
                             </div>
                         </div>

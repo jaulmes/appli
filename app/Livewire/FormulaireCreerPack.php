@@ -31,7 +31,7 @@ class FormulaireCreerPack extends Component
 
         if ($this->image) {
             $fileName = hexdec(uniqid()).'.'.$this->image->getClientOriginalName();
-            $imagePath = 'public/images/packs/';
+            $imagePath = 'images/packs/';
             /**
              * Delete an image if exists.
              */
@@ -39,7 +39,7 @@ class FormulaireCreerPack extends Component
                 Storage::delete($imagePath . $packs->image);
             }
             // Store an image to Storage
-            $this->image->storeAs($imagePath, $fileName);
+            $this->image->storeAs($imagePath, $fileName, 'real_public');
             $packs->image = $fileName;
         }
         else{

@@ -52,9 +52,18 @@
                                         <div class="position-relative overflow-hidden image-zoom-container" 
                                             style="height: 250px;"
                                             data-tilt data-tilt-max="8">
-                                            <img src="{{ $produit->getImageUrl() }}" 
-                                                alt="{{ $produit->name }}" 
-                                                class="img-fluid w-100 h-100 object-fit-cover zoom-image">
+                                                @php
+                                                    $image1 = public_path('images/produits/'. $produit->image_produit);
+                                                    $image2 = public_path('storage/images/produits/'. $produit->image_produit);
+                                                    $url = file_exists($image1)? asset('images/produits/'. $produit->image_produit)
+                                                                                : asset('storage/images/produits/' . $produit->image_produit);
+
+                                                @endphp
+
+                                                <img src="{{$url }}"
+                                                        class="card-img-top img-fluid h-100"
+                                                        alt="{{ $produit->name }}"
+                                                        style="object-fit: cover;">
                                             
                                             <!-- Overlay dynamique -->
                                             <div class="card-img-overlay d-flex flex-column justify-content-between p-3">

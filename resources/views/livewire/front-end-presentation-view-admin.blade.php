@@ -41,7 +41,16 @@
                         </td>
                         <td>
                             <div class="mb-3">
-                                <img src="{{ asset('storage/images/presentations/'.$presentation->image)}}" alt="Product 1" class="img-fluid rounded" style="width: 40px; height: 40px;">
+                                @php
+                                    $image1 = public_path('images/presentations/'. $presentation->image);
+                                    $image2 = public_path('storage/images/presentations/'. $presentation->image);
+                                    $url = file_exists($image1)? asset('images/presentations/'. $presentation->image)
+                                                                : asset('storage/images/presentations/' . $presentation->image);
+                                @endphp
+                                <img src="{{$url }}"
+                                    alt="{{ $presentation->name }}"
+                                    class="img-fluid rounded" 
+                                    style="width: 40px; height: 40px;">
                             </div>
                         </td>
                         <td>

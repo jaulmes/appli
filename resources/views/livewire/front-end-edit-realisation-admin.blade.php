@@ -80,8 +80,17 @@
                     <div class="mt-3">
                         <label class="form-label">Images actuelles :</label><br>
                         @foreach($images as $image)
-                                <p>Image: {{$img++}}</p>
-                            <img src="{{ asset('storage/images/realisations/' . $image) }}" alt="Image du produit" class="img-fluid rounded" style="height: 100px; width: 100px; margin-right: 10px;">
+                            <p>Image: {{$img++}}</p>
+                            @php
+                                $image1 = public_path('images/Realisations/'. $image);
+                                $url = file_exists($image1)? asset('images/realisations/'. $image)
+                                                            : asset('storage/images/realisations/' . $image);
+                            @endphp
+                            <img src="{{$url }}"
+                                class="img-fluid rounded" 
+                                style="height: 100px; width: 100px; margin-right: 10px;"
+                                >
+                           
                         @endforeach
                     </div>
                 @endif

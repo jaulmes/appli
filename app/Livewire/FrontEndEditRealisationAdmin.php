@@ -32,10 +32,10 @@ class FrontEndEditRealisationAdmin extends Component
         
         if ($file = $this->img1) {
             $fileName = hexdec(uniqid()).'.'.$file->getClientOriginalName();
-            $imagePath = 'public/images/Realisations/';
+            $imagePath = 'images/Realisations/';
 
             // Store an image to Storage
-            $file->storeAs($imagePath, $fileName);
+            $file->storeAs($imagePath, $fileName, 'real_public');
             $realisation->img1 = $fileName;
         }
         else{
@@ -44,10 +44,10 @@ class FrontEndEditRealisationAdmin extends Component
 
         if ($file = $this->img2) {
             $fileName = hexdec(uniqid()).'.'.$file->getClientOriginalName();
-            $imagePath = 'public/images/Realisations/';
+            $imagePath = 'images/Realisations/';
 
             // Store an image to Storage
-            $file->storeAs($imagePath, $fileName);
+            $file->storeAs($imagePath, $fileName, 'real_public');
             $realisation->img2 = $fileName;
         }
         else{
@@ -56,10 +56,10 @@ class FrontEndEditRealisationAdmin extends Component
 
         if ($file = $this->img3) {
             $fileName = hexdec(uniqid()).'.'.$file->getClientOriginalName();
-            $imagePath = 'public/images/Realisations/';
+            $imagePath = 'images/Realisations/';
 
             // Store an image to Storage
-            $file->storeAs($imagePath, $fileName);
+            $file->storeAs($imagePath, $fileName, 'real_public');
             $realisation->img3 = $fileName;
         }
         else{
@@ -68,10 +68,10 @@ class FrontEndEditRealisationAdmin extends Component
 
         if ($file = $this->img4) {
             $fileName = hexdec(uniqid()).'.'.$file->getClientOriginalName();
-            $imagePath = 'public/images/Realisations/';
+            $imagePath = 'images/Realisations/';
 
             // Store an image to Storage
-            $file->storeAs($imagePath, $fileName);
+            $file->storeAs($imagePath, $fileName, 'real_public');
             $realisation->img4 = $fileName;
         }
         else{
@@ -80,10 +80,10 @@ class FrontEndEditRealisationAdmin extends Component
 
         if ($file = $this->img5) {
             $fileName = hexdec(uniqid()).'.'.$file->getClientOriginalName();
-            $imagePath = 'public/images/Realisations/';
+            $imagePath = 'images/Realisations/';
 
             // Store an image to Storage
-            $file->storeAs($imagePath, $fileName);
+            $file->storeAs($imagePath, $fileName, 'real_public');
             $realisation->img5 = $fileName;
         }
         else{

@@ -278,8 +278,8 @@ class FrontEndController extends Controller
             ];
         }
 
-        $this->dispatch('ajouter_pack_panier');
         session()->put('parnier_pack', $cart);
+        return redirect()->back();
     }
 
     public function allPack(){

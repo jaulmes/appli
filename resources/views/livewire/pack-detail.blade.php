@@ -6,10 +6,16 @@
     <div class="modal-body">
         <div class="row">
             <div class="col-md-6">
-                <img src="{{ asset('storage/images/packs/'.$pack->image) }}" 
-                     class="card-img-top img-fluid" 
-                     alt="{{ $pack->name }}" 
-                     style="height: 150px; object-fit: cover;">
+                @php
+                    $image1 = public_path('images/packs/'. $pack->image);
+                    $url = file_exists($image1)? asset('images/packs/'. $pack->image)
+                                                : asset('storage/images/packs/' . $pack->image);
+                @endphp
+                <img src="{{$url }}"
+                    alt="Image de la réalisation"
+                    class="d-block w-100 object-fit-cover zoom-image"
+                    style="height: 200px;"
+                    >
                 <p class="text-muted small">{{ $pack->description }}</p>
             </div>
             <div class="col-md-6">

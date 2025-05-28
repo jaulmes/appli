@@ -121,7 +121,11 @@ class Produit extends Model
 
     public function getImageUrl(){
         if($this->image_produit != null){
-            return asset('storage/images/produits/' . $this->image_produit);
+            $image1 = public_path('images/produits/'. $this->image_produit);
+            $image2 = public_path('storage/images/produits/'. $this->image_produit);
+            $url = file_exists($image1)? asset('images/produits/'. $this->image_produit)
+                                        : asset('storage/images/produits/' . $this->image_produit);
+            return $url;
         }else{
             return asset('default-img.png');
         }
