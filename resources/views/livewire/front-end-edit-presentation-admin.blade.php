@@ -41,7 +41,16 @@
                 @if($presentation->image)
                     <div class="mt-3">
                         <label class="form-label">Image actuelle :</label><br>
-                        <img src="{{ asset('storage/images/presentations/' . $presentation->image) }}" alt="Image du produit" class="img-fluid rounded" style="max-width: 150px;">
+                            @php
+                                $image1 = public_path('images/presentations/'. $presentation->image);
+                                $image2 = public_path('storage/images/presentations/'. $presentation->image);
+                                $url = file_exists($image1)? asset('images/presentations/'. $presentation->image)
+                                                            : asset('storage/images/presentations/' . $presentation->image);
+                            @endphp
+                            <img src="{{$url }}"
+                                alt="{{ $presentation->name }}"
+                                class="img-fluid rounded" 
+                                style="max-width: 150px;">
                     </div>
                 @endif
             </div>
