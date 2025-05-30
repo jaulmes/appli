@@ -346,7 +346,7 @@
                             </div>
 
                             <div class="mb-2">
-                            <label for="numero_telephone_simuleur" class="form-label">Téléphone<span style="color: red;">*</span></label>
+                            <label for="numero_telephone_simuleur" class="form-label">Téléphone(whatsapp)<span style="color: red;">*</span></label>
                             <input 
                                 type="tel" 
                                 id="numero_telephone_simuleur" 
@@ -354,19 +354,6 @@
                                 wire:model.defer="numero_telephone_simuleur" 
                                 placeholder="Entrez votre numéro">
                             @error('numero_telephone_simuleur') 
-                                <div class="invalid-feedback">{{ $message }}</div> 
-                            @enderror
-                            </div>
-
-                            <div class="mb-2">
-                            <label for="email_simuleur" class="form-label">Email</label>
-                            <input 
-                                type="email" 
-                                id="email_simuleur" 
-                                class="form-control @error('email_simuleur') is-invalid @enderror" 
-                                wire:model.defer="email_simuleur" 
-                                placeholder="Entrez votre email">
-                            @error('email_simuleur') 
                                 <div class="invalid-feedback">{{ $message }}</div> 
                             @enderror
                             </div>
@@ -413,19 +400,6 @@
                                 wire:model.defer="numero_telephone_client" 
                                 placeholder="Entrez le numéro">
                             @error('numero_telephone_client') 
-                                <div class="invalid-feedback">{{ $message }}</div> 
-                            @enderror
-                            </div>
-
-                            <div class="mb-2">
-                            <label for="email_client" class="form-label">Email</label>
-                            <input 
-                                type="email" 
-                                id="email_client" 
-                                class="form-control @error('email_client') is-invalid @enderror" 
-                                wire:model.defer="email_client" 
-                                placeholder="Entrez l’email">
-                            @error('email_client') 
                                 <div class="invalid-feedback">{{ $message }}</div> 
                             @enderror
                             </div>

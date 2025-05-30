@@ -16,6 +16,7 @@ use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\produitController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RecusController;
+use App\Http\Controllers\SimulationController;
 use App\Http\Controllers\TacheController;
 use App\Http\Controllers\VentesController;
 use App\Http\Controllers\UserController;
@@ -103,6 +104,12 @@ Route::middleware('auth')->group(function () {
     Route::get('/frontend/admin', [FrontEndController::class, 'admin'])->name('frontend.admin');
     Route::get('/frontend/admin/allPromoProduit', [FrontEndController::class, 'allPromoProduitAdmin'])->name('frontend.admin.allPromoProduit');
     Route::get('frontend/admin/create-annonces', [FrontEndController::class, 'createAnnonce'])->name('annonce.create');
+
+    /**
+     * simulation
+     */
+    Route::get('simulation/index', [SimulationController::class, 'index'])->name('simulation-all');
+    Route::get('rapport/simultion/afficher/{id}', [SimulationController::class, 'rapport'])->name('rapport.simulation');
 
     /**
      * Dashboardd

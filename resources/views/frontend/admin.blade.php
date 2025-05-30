@@ -16,29 +16,25 @@
         <div class="card">
           <livewire:front-end-produit-promo/>
         </div>
-
         <div class="card">
           <livewire:front-end-service-admin/>
         </div>
-
+        <div class="card">
+          <livewire:front-end-annonce-admin/>
+        </div>
       </div>
-      <!-- /.col-md-6 -->
       <div class="col-lg-6">
         <div class="card">
           <livewire:front-end-presentation-view-admin/>
         </div>
-        <!-- /.card -->
         <div class="card">
           <livewire:front-end-realisation-admin/>
         </div>
-      </div>
-
-      <div class="col-lg-6">
         <div class="card">
-          <livewire:front-end-annonce-admin/>
+          <livewire:pack-admin/>
         </div>
-        <!-- /.card -->
       </div>
+      
       <!-- /.col-md-6 -->
     </div>
     <!-- /.row -->

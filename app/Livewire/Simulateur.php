@@ -158,24 +158,20 @@ class Simulateur extends Component
         $this->validate([
             'nom_simuleur' => 'required|string|max:255',
             'numero_telephone_simuleur' => 'required|string|max:20',
-            'email_simuleur' => 'email|max:255',
-            'adresse_simuleur' => 'string|max:255',
         ]);
         //message d'erreur des données du client
         $this->validate([
             'nom_simuleur.required' => 'votre nom est obligatoire.',
             'numero_telephone_simuleur.required' => 'Votre numéro de téléphone est obligatoire.',
-            'email_simuleur.email' => 'entrer au format d\'une adresse email: email@gmail.com, monadresse@yahoo.com,...',
 
         ]);
-        //enregistrer le simuleur
+        //enregistrer le simuleur(celui qui simule)
         $simuleur = new Simuleur();
         $simuleur->nom = $this->nom_simuleur;
         $simuleur->numero = $this->numero_telephone_simuleur;
-        $simuleur->email = $this->email_simuleur;
         $simuleur->adresse = $this->adresse_simuleur;
         $simuleur->save();
-        //enregistrer le client
+        //enregistrer le client(le client de celui qui simule)
         if($this->nom_client != null){
             $client = ClientSimuleur::where('nom', $this->nom_client)
                         ->where('numero', $this->numero_telephone_client)
@@ -184,7 +180,6 @@ class Simulateur extends Component
                 $client = new ClientSimuleur();
                 $client->nom = $this->nom_client;
                 $client->numero = $this->numero_telephone_client;
-                $client->email = $this->email_client;
                 $client->adresse = $this->adresse_client;
                 $client->save();
             }
@@ -257,7 +252,7 @@ class Simulateur extends Component
         ]);
         return response()->streamDownload(function () use($pdf) {
             echo  $pdf->output();
-        }, 'report.pdf');
+        }, 'report_simulation_'.$simuleur->nom.'_'.$simuleur->numero.'.pdf');
     }
 
     public function render()

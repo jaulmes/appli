@@ -14,12 +14,10 @@ use App\Models\Proformat;
 use App\Models\Vente;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
-use Darryldecode\Cart\Cart;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
-use PhpOffice\PhpSpreadsheet\Calculation\MathTrig\Sum;
 use Exception;
 
 class PanierController extends Controller
@@ -60,188 +58,175 @@ class PanierController extends Controller
         ]);
     }
 
-
-
-
     public function validerVente(Request $request){
+        //j'enregistre le client lies a la vente
+        if(!$request->client_id){
+            $clients = new Client();
+            $clients->nom = $request->input('nom');
+            $clients->numero = $request->input('numero');
+            $clients->save();
+        }else{
+            $clients = Client::find($request->client_id);
+        }
+
+        $comptes = Compte::find( $request->modePaiement);
+
+        if(!$comptes){
+            return redirect()->back()->with('error', "vous devez
+            choisir le compte pour l'enregistrrement de la vente");
+        }
+        
+        $dateHeure = now();
+
+        $moi = now()->month;
+        $annee = $dateHeure->format('y');
+        $jour = $dateHeure->format('d');
+
+        //enregistrement transaction
+        $transactions = new Transaction();
+        
+        $transactions->date = $dateHeure->format('Y-m-d');
+        $transactions->moi = $moi;
+        $transactions->heure = $dateHeure->format('H:i:s');
+        // if(!$request->client_id){
+        //     $transactions->client_id = $clients->id;
+        // }else{
+        //     $transactions->client_id = $request->client_id;
+        // }
+        $transactions->type = 'Vente';
+        $transactions->compte_id = $comptes->id;
+        $transactions->impot = $request->impot;
+        $transactions->montantVerse = $request->input('montantVerse');
+        $transactions->user_id = Auth::user()->id;
 
 
-            //j'enregistre le client lies a la vente
-            if(!$request->client_id){
-                $clients = new Client();
-                $clients->nom = $request->input('nom');
-                $clients->numero = $request->input('numero');
-                $clients->save();
-            }else{
-                $clients = Client::find($request->client_id);
-            }
+        //recuperer le panier
+        $panier = Session::get('cart', []);
+        
+        $article= [];
+        $prixAchat = 0;
 
-            $comptes = Compte::find( $request->modePaiement);
+        //quantite total
+        $qteTotalProduit = 0;
+        
+        //montant total du panier sans la reduction
+        $montantTotal = 0;
+        foreach($panier as $row) {
+            $sommePrixAchat = $row['prix_achat'] * $row['quantity'];
+            $sommePrixCatalogue = $row['price'] * $row['quantity'];
 
-            if(!$comptes){
-                return redirect()->back()->with('error', "vous devez
-                choisir le compte pour l'enregistrrement de la vente");
-            }
-            
-            $dateHeure = now();
+            $qteTotalProduit = $qteTotalProduit + 1;
 
-            $moi = now()->month;
-            $annee = $dateHeure->format('y');
-            $jour = $dateHeure->format('d');
+            $montantTotal = $montantTotal + $sommePrixCatalogue;
+            $prixAchat = $prixAchat + $sommePrixAchat;
 
-            //enregistrement transaction
-            $transactions = new Transaction();
-            
-            $transactions->date = $dateHeure->format('Y-m-d');
-            $transactions->moi = $moi;
-            $transactions->heure = $dateHeure->format('H:i:s');
-            // if(!$request->client_id){
-            //     $transactions->client_id = $clients->id;
-            // }else{
-            //     $transactions->client_id = $request->client_id;
-            // }
-            $transactions->type = 'Vente';
-            $transactions->compte_id = $comptes->id;
-            $transactions->impot = $request->impot;
-            $transactions->montantVerse = $request->input('montantVerse');
-            $transactions->user_id = Auth::user()->id;
+        }
+        $transactions->prixAchat = $prixAchat;
+        
+        //creation d'une vente
+        $ventes = new Vente();
+        $ventes->dateEncour = now()->format('m-Y');
+        if(!$request->client_id){
+            $ventes->client_id = $clients->id;
+        }else{
+            $ventes->client_id = $request->client_id;
+        }
+        $ventes->reduction = $request->input('reduction');
+        $ventes->agentOperant = $request->input('agentOperant');
+        $ventes->commission = $request->input('commission');
+        $ventes->montantTotal = $montantTotal;
+        $ventes->NetAPayer = $montantTotal - $ventes->reduction;
+        $ventes->montantVerse = $request->input('montantVerse');
+        $ventes->compte_id = $comptes->id;
+        $ventes->impot = $request->input('impot');
+        $ventes->qteTotal = $qteTotalProduit;
+        $ventes->date = date('d-m-Y');
+        $ventes->user_id = Auth::user()->id;
+        if($ventes->NetAPayer > $transactions->montantVerse){
+            $ventes->statut = "non termine";
+            $ventes->dateLimitePaiement = '';
+        }
+        else{
+            $ventes->statut = "termine";
+        }
+        
+        //compter le nombre de vente pour incrementer le numero de la facture
+        $numero =Vente::where('date', $ventes->date )->get()->count() + 1;
+        $name = Auth::user()->name;
+        $numeroFacture = substr($name, 0, 3).'_'.$annee.'_'.$moi.'_'.$jour.'_'.$numero;
+        
+        //dd($panier);
+        $totalPrixAchat = 0;
+        //stocker le total des prix d'achat des produits de la facture
+        foreach($panier as $produit){
+            $articles = Produit::find($produit['id']);
+            $prixAchat = $articles->prix_achat;
+            $totalPrixAchat = $totalPrixAchat + $prixAchat;
+        }
+        $ventes->totalAchat = $totalPrixAchat;
 
+        $ventes->save();
+        if($montantTotal > 50000){
+            $charges = new Charge();
+            $charges->titre = "commission pour l'intallation de ". $ventes->nomClient. " a ". $ventes->agentOperant; 
+            $charges->montant = $ventes->commission;
+            $charges->date = $dateHeure->format('Y/m/d');
+            $charges->save();
+        }
 
-            //recuperer le panier
-            $panier = Session::get('cart', []);
-            
-            $article= [];
-            $prixAchat = 0;
+        //je fais une mise a jour du montant dans les comptes
+        $comptes->montant = $comptes->montant + $transactions->montantVerse - $ventes->commission;
 
-            //quantite total
-            $qteTotalProduit = 0;
-            
-            //montant total du panier sans la reduction
-            $montantTotal = 0;
-            foreach($panier as $row) {
-                $sommePrixAchat = $row['prix_achat'] * $row['quantity'];
-                $sommePrixCatalogue = $row['price'] * $row['quantity'];
+        $comptes->save();
+        $transactions->save();
 
-                $qteTotalProduit = $qteTotalProduit + 1;
+        //je relie chaque produit du panier a la vente 
+        foreach($panier as $produit){
+            $ventes->produits()->attach($produit['id'], [
+                'quantity' => $produit['quantity'],
+                'price' => $produit['price']
 
-                $montantTotal = $montantTotal + $sommePrixCatalogue;
-                $prixAchat = $prixAchat + $sommePrixAchat;
+            ]);
+        }
 
-            }
-            $transactions->prixAchat = $prixAchat;
-            
+        //je relis chaque produit a la transaction
+        foreach ($panier as $item) {
+            $transactions->produits()->attach($item['id'], [
+                'quantity' => $item['quantity'],
+                'price' => $item['price'],
+            ]);
+        }
+        
+        //creer une facture pour enregistrer dans le systeme
+        $factures = new facture();
+        $factures->numeroFacture = $numeroFacture;
+        $factures->vente_id = $ventes->id;
+        $factures->save();
+                
+        // mettre a jour le stock
+        foreach($panier as $item){
+            $articles = Produit::find($item['id']);
+            $articles->stock = $articles->stock - $item['quantity'];
+            $articles->save();
+        }
+        $reduction = $ventes->reduction;
+        //net a payer
+        $netAPayer = $ventes->montantTotal -  $reduction;
 
-            
-            //creation d'une vente
-            $ventes = new Vente();
-            $ventes->dateEncour = now()->format('m-Y');
-            if(!$request->client_id){
-                $ventes->client_id = $clients->id;
-            }else{
-                $ventes->client_id = $request->client_id;
-            }
-            $ventes->reduction = $request->input('reduction');
-            $ventes->agentOperant = $request->input('agentOperant');
-            $ventes->commission = $request->input('commission');
-            $ventes->montantTotal = $montantTotal;
-            $ventes->NetAPayer = $montantTotal - $ventes->reduction;
-            $ventes->montantVerse = $request->input('montantVerse');
-            $ventes->compte_id = $comptes->id;
-            $ventes->impot = $request->input('impot');
-            $ventes->qteTotal = $qteTotalProduit;
-            $ventes->date = date('d-m-Y');
-            $ventes->user_id = Auth::user()->id;
-            if($ventes->NetAPayer > $transactions->montantVerse){
-                $ventes->statut = "non termine";
-                $ventes->dateLimitePaiement = '';
-            }
-            else{
-                $ventes->statut = "termine";
-            }
-            
-            //compter le nombre de vente pour incrementer le numero de la facture
-            $numero =Vente::where('date', $ventes->date )->get()->count() + 1;
-            $name = Auth::user()->name;
-            $numeroFacture = substr($name, 0, 3).'_'.$annee.'_'.$moi.'_'.$jour.'_'.$numero;
-            
-            //dd($panier);
-            $totalPrixAchat = 0;
-            //stocker le total des prix d'achat des produits de la facture
-            foreach($panier as $produit){
-                $articles = Produit::find($produit['id']);
-                $prixAchat = $articles->prix_achat;
-                $totalPrixAchat = $totalPrixAchat + $prixAchat;
-            }
-            $ventes->totalAchat = $totalPrixAchat;
-
-            
-
-            $ventes->save();
-            if($montantTotal > 50000){
-                $charges = new Charge();
-                $charges->titre = "commission pour l'intallation de ". $ventes->nomClient. " a ". $ventes->agentOperant; 
-                $charges->montant = $ventes->commission;
-                $charges->date = $dateHeure->format('Y/m/d');
-                $charges->save();
-            }
-
-            //je fais une mise a jour du montant dans les comptes
-            $comptes->montant = $comptes->montant + $transactions->montantVerse - $ventes->commission;
-
-            $comptes->save();
-            $transactions->save();
-
-            //je relie chaque produit du panier a la vente 
-            foreach($panier as $produit){
-                $ventes->produits()->attach($produit['id'], [
-                    'quantity' => $produit['quantity'],
-                    'price' => $produit['price']
-
-                ]);
-            }
-
-            //je relis chaque produit a la transaction
-            foreach ($panier as $item) {
-                $transactions->produits()->attach($item['id'], [
-                    'quantity' => $item['quantity'],
-                    'price' => $item['price'],
-                ]);
-            }
-            
-            //creer une facture pour enregistrer dans le systeme
-            $factures = new facture();
-            $factures->numeroFacture = $numeroFacture;
-            $factures->vente_id = $ventes->id;
-            $factures->save();
-                    
-            // mettre a jour le stock
-            foreach($panier as $item){
-                $articles = Produit::find($item['id']);
-                $articles->stock = $articles->stock - $item['quantity'];
-                $articles->save();
-            }
-            $reduction = $ventes->reduction;
-            //net a payer
-            $netAPayer = $ventes->montantTotal -  $reduction;
-
-            // chrger les donnee sur la facture pour avoyer sur une vue qui sera converti en pdf
-            $pdf = Pdf::loadView('panier.factures',
-                [
-                    'reduction' => $reduction,
-                    'ventes' =>$ventes,
-                    'clients' =>$clients,
-                    'numeroFacture'=>$numeroFacture,
-                    'netAPayer' => $netAPayer,
-                    'panier' => $panier,
-                    'factures' =>$factures,
-                ]
-            );
-            
-            Session::forget('cart');
-   
-            return $pdf->stream($numeroFacture.'-'.$clients->numero.'.pdf');
-     
-
+        // chrger les donnee sur la facture pour avoyer sur une vue qui sera converti en pdf
+        $pdf = Pdf::loadView('panier.factures',
+            [
+                'reduction' => $reduction,
+                'ventes' =>$ventes,
+                'clients' =>$clients,
+                'numeroFacture'=>$numeroFacture,
+                'netAPayer' => $netAPayer,
+                'panier' => $panier,
+                'factures' =>$factures,
+            ]
+        );
+        Session::forget('cart');
+        return $pdf->stream('Vent_'.$numeroFacture.'-'.$clients->numero.'.pdf');
     }
 
     
@@ -418,7 +403,7 @@ class PanierController extends Controller
                 
             Session::forget('cart');
             Db::commit();   
-            return $pdf->stream($numeroFacture.'-'.$clients->numero.'.pdf');
+            return $pdf->stream('Inst_'.$numeroFacture.'-'.$clients->numero.'.pdf');
         }catch(Exception $e){
             DB::rollBack(); // En cas d'erreur, on annule tout
     
@@ -560,7 +545,7 @@ class PanierController extends Controller
             
             Session::forget('cart');
             Db::commit();   
-            return $pdf->stream($numeroFacture.'-'.$clients->numero.'.pdf');
+            return $pdf->stream('Prof_'.$numeroFacture.'-'.$clients->numero.'.pdf');
         }catch(Exception $e){
             DB::rollBack(); // En cas d'erreur, on annule tout
     

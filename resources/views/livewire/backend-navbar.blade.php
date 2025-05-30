@@ -177,80 +177,86 @@
 
                 <!-- Ventes & Installations -->
                 @can('VOIR_VENTE')
-                @can('VOIR_ACHAT')
-                <li class="nav-item">
-                    <a href="{{ route('ventes.index') }}"  class="nav-link {{ Request::is('ventes/index*') ? 'active' : '' }}">
-                        💰
-                        <p>Ventes</p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="{{ route('installations.index') }}"  class="nav-link {{ Request::is('installations/index*') ? 'active' : '' }}">
-                        🛠️
-                        <p>Installations</p>
-                    </a>
-                </li>
+                    @can('VOIR_ACHAT')
+                    <li class="nav-item">
+                        <a href="{{ route('ventes.index') }}"  class="nav-link {{ Request::is('ventes/index*') ? 'active' : '' }}">
+                            💰
+                            <p>Ventes</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ route('installations.index') }}"  class="nav-link {{ Request::is('installations/index*') ? 'active' : '' }}">
+                            🛠️
+                            <p>Installations</p>
+                        </a>
+                    </li>
 
 
-                <!-- Factures et Reçus -->
-                <li class="nav-item has-treeview {{ Request::is('commandes*') ? 'menu-open' : '' }}">
-                    <a href="#" class="nav-link {{ Request::is('commandes*') ? 'active' : '' }}">
-                        📦
-                        <p>Commandes </p>
-                        <span class="badge badge-danger"> {{ $nombreCommandesNonLue}}</span>
-                        <i class="right fas fa-angle-left"></i>
-                    </a>
-                    <ul class="nav nav-treeview">
-                        @foreach($commandesNonLue as $commande)
-                        <li class="nav-item" >
-                            <a href="{{ route('commandes.detail', $commande->id) }}"
-                                class="nav-link {{ request()->is('commandes/'.$commande->id) ? 'active' : '' }}" >
-                                <i class="fas fa-shopping-cart nav-icon"></i>
-                                <p>
-                                    Commande #{{ $commande->id }}
-                                    <span class="badge badge-danger ml-2">new</span>
-                                </p>
-                            </a>
-                        </li>
-                        @endforeach
-                        <li class="nav-item">
-                            <a href="{{ route('commandes.index') }}"  class="nav-link {{ Request::is('commandes/index*') ? 'active' : '' }}">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Toutes les commandes</p>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-                @endcan
+                    <!-- Factures et Reçus -->
+                    <li class="nav-item has-treeview {{ Request::is('commandes*') ? 'menu-open' : '' }}">
+                        <a href="#" class="nav-link {{ Request::is('commandes*') ? 'active' : '' }}">
+                            📦
+                            <p>Commandes </p>
+                            <span class="badge badge-danger"> {{ $nombreCommandesNonLue}}</span>
+                            <i class="right fas fa-angle-left"></i>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            @foreach($commandesNonLue as $commande)
+                            <li class="nav-item" >
+                                <a href="{{ route('commandes.detail', $commande->id) }}"
+                                    class="nav-link {{ request()->is('commandes/'.$commande->id) ? 'active' : '' }}" >
+                                    <i class="fas fa-shopping-cart nav-icon"></i>
+                                    <p>
+                                        Commande #{{ $commande->id }}
+                                        <span class="badge badge-danger ml-2">new</span>
+                                    </p>
+                                </a>
+                            </li>
+                            @endforeach
+                            <li class="nav-item">
+                                <a href="{{ route('commandes.index') }}"  class="nav-link {{ Request::is('commandes/index*') ? 'active' : '' }}">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Toutes les commandes</p>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    @endcan
                 @endcan
 
                 <!-- Approvisionnement -->
                 @can('VOIR_ACHAT')
-                <li class="nav-item has-treeview {{ Request::is('achats*') ? 'menu-open' : '' }}">
-                    <a href="#" class="nav-link {{ Request::is('achats*') ? 'active' : '' }}">
-                        🚚
-                        <p>
-                            Approvisionnement
-                            <i class="right fas fa-angle-left"></i>
-                        </p>
-                    </a>
-                    <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                            <a href="{{ route('achats.index') }}"  class="nav-link {{ Request::is('achats/index*') ? 'active' : '' }}">
-                                <i class="nav-icon far fa-circle"></i>
-                                <p>Afficher les achats</p>
-                            </a>
-                        </li>
-                        @can('CREER_ACHAT')
-                        <li class="nav-item">
-                            <a href="{{ route('achats.cart') }}" class="nav-link {{ Request::is('achats/cart*') ? 'active' : '' }}">
-                                <i class="nav-icon far fa-circle"></i>
-                                <p>Créer un achat</p>
-                            </a>
-                        </li>
-                        @endcan
-                    </ul>
-                </li>
+                    <li class="nav-item has-treeview {{ Request::is('achats*') ? 'menu-open' : '' }}">
+                        <a href="#" class="nav-link {{ Request::is('achats*') ? 'active' : '' }}">
+                            🚚
+                            <p>
+                                Approvisionnement
+                                <i class="right fas fa-angle-left"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="{{ route('achats.index') }}"  class="nav-link {{ Request::is('achats/index*') ? 'active' : '' }}">
+                                    <i class="nav-icon far fa-circle"></i>
+                                    <p>Afficher les achats</p>
+                                </a>
+                            </li>
+                            @can('CREER_ACHAT')
+                            <li class="nav-item">
+                                <a href="{{ route('achats.cart') }}" class="nav-link {{ Request::is('achats/cart*') ? 'active' : '' }}">
+                                    <i class="nav-icon far fa-circle"></i>
+                                    <p>Créer un achat</p>
+                                </a>
+                            </li>
+                            @endcan
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ route('simulation-all') }}"  class="nav-link {{ Request::is('simulation/index*') ? 'active' : '' }}">
+                            <i class="bi bi-calculator"></i>
+                            <p>Afficher les simulations</p>
+                        </a>
+                    </li>
                 @endcan
 
                 <!-- Journal des transactions -->

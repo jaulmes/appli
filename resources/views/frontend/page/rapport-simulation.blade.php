@@ -53,7 +53,11 @@
         <tr><td class="title" colspan="3">Puissance champ panneaux</td><td>{{ $puissance_champ_panneaux }} W</td></tr>
         <tr><td class="title" colspan="3">Nombre de panneaux ({{ $nombre_watt_panneaux }} W)</td><td>{{ ceil($nombre_panneaux) }}</td></tr>
         <tr><td class="title" colspan="3">Capacité batterie</td><td>{{ $capacite_batterie }} {{ $unite_capacite_batterie }}</td></tr>
-        <tr><td class="title" colspan="3">Nombre de batteries</td><td>{{ ceil($nombre_batteries) }}</td></tr>
+        @if($unite_capacite_batterie == 'Ah')
+            <tr><td class="title" colspan="3">Nombre de batteries ({{$batteri_souhaite}} Ah)</td><td>{{ ceil($nombre_batteries) }}</td></tr>
+        @elseif($unite_capacite_batterie == 'Wh')
+            <tr><td class="title" colspan="3">Nombre de batteries ({{$batteri_souhaite}} Wh)</td><td>{{ ceil($nombre_batteries) }}</td></tr>
+        @endif
         <tr><td class="title" colspan="3">Courant mini contrôleur</td><td>{{ $courant_minimun_controlleur }} A</td></tr>
         <tr><td class="title" colspan="3">Puissance convertisseur</td><td>{{ $puissance_convertisseur }} W</td></tr>
     </table>
