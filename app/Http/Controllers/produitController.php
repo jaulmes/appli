@@ -199,7 +199,7 @@ class produitController extends Controller
 
         if ($file = $request->file('image_categorie')) {
             $fileName = hexdec(uniqid()).'.'.$file->getClientOriginalName();
-            $path = 'public/images/produits/categories';
+            $path = 'images/produits/categories';
             /**
              * Delete an image if exists.
              */
@@ -207,7 +207,7 @@ class produitController extends Controller
                 Storage::delete($path . $categories->image_categorie);
             }
             // Store an image to Storage
-            $file->storeAs($path, $fileName);
+            $file->storeAs($path, $fileName, 'real_public');
             $categories->image_categorie = $fileName;
         }
         else{
@@ -246,7 +246,7 @@ class produitController extends Controller
 
         if ($file = $request->file('image_categorie')) {
             $fileName = hexdec(uniqid()).'.'.$file->getClientOriginalName();
-            $path = 'public/images/produits/categories';
+            $path = 'images/produits/categories';
             /**
              * Delete an image if exists.
              */
@@ -254,7 +254,7 @@ class produitController extends Controller
                 Storage::delete($path . $categories->image_categorie);
             }
             // Store an image to Storage
-            $file->storeAs($path, $fileName);
+            $file->storeAs($path, $fileName, 'real_public');
             $categories->image_categorie = $fileName;
         }
         else{

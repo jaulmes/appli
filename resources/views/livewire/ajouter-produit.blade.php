@@ -135,22 +135,45 @@
                                     @error('fournisseur_id') <div class="invalid-feedback">{{ $message }}</div> @enderror
                                 </div>
                             </div>
-
-                            <div class="col-md-6">
-                                <div class="form-floating">
-                                    <select wire:model="compte_id" class="form-select @error('compte_id') is-invalid @enderror" 
-                                            id="compte_id">
-                                        <option selected >Choisir...</option>
-                                        @foreach($comptes as $compte)
-                                            <option value="{{ $compte->id }}">{{ $compte->nom }}</option>
-                                        @endforeach
-                                    </select>
-                                    <label for="compte_id">Compte</label>
-                                    @error('compte_id') <div class="invalid-feedback">{{ $message }}</div> @enderror
-                                </div>
-                            </div>
                         </div>
 
+                        <div class="mb-4 row" >
+                            <div class="form-floating col">
+                                <select wire:model="compte_principal_id" wire:change="ajouter_compte" class="form-select @error('compte_id') is-invalid @enderror" 
+                                        id="compte_id">
+                                    <option selected >Choisir...</option>
+                                    @foreach($comptes as $compte)
+                                        <option value="{{ $compte->id }}">{{ $compte->nom }} (solde: {{$compte->montant}} XAF)</option>
+                                    @endforeach
+                                </select>
+                                <label for="compte_id">Compte</label>
+                                @error('compte_id') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                            </div>
+                            <!-- Montant à débiter dans ce compte -->
+                            @if($this->ajouter_compte() == true)
+                                <input type="number"
+                                        class="form-control col"
+                                        wire:model="montant_principal"
+                                        placeholder="Montant à prélever">
+                            @endif
+                        </div>
+                        <div class="row mb-3">
+                            @if($this->ajouter_compte() == true)
+                                <div class="text-red ">le solde du compte est insufisant, veuillez choisir un deuxiemme supperieur au montant pour completer</div>
+                                <select wire:model="compte_secondaire_id" class="form-select col @error('compte_id2') is-invalid @enderror" 
+                                        >
+                                    <option selected >Choisir...</option>
+                                    @foreach($comptes as $compte)
+                                        <option value="{{ $compte->id }}">{{ $compte->nom }} (solde: {{$compte->montant}} XAF)</option>
+                                    @endforeach
+                                </select><br>
+                                <input type="number"
+                                    wire:model="montant_secondaire"
+                                    class="form-control col"
+                                    placeholder="Montant à prélever">
+                            @endif                              
+                        </div>
+                        
                         <!-- Description -->
                         <div class="mb-4">
                             <div class="form-floating">

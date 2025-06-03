@@ -12,27 +12,21 @@
 				<div class="wrapper row">
 
 					<div class="preview col-md-6">
-						
-                    <img src="{{asset('storage/images/produits/' .$produits->image_produit)}}" alt="$produits->image_produit" style="height: 400px; width: 500px;">
+						                        @php
+                            $image1 = public_path('images/produits/'. $produits->image_produit);
+                            $url = file_exists($image1)? asset('images/produits/'. $produits->image_produit)
+                                                        : asset('storage/images/produits/' . $produits->image_produit);
+                        @endphp
+                        <img src="{{$url }}"
+                            style="height: 400px; width: 500px;"
+                            >
 						
 					</div>
 					<div class="details col-md-6">
 						<h3 class="product-title">{{$produits->name}} <strong class="badge badge-pill badge-info">{{$stock}}</strong></h3>
 
 						<p class="product-description">{!! str_replace(';', ';<br>', e($produits->description)) !!}</p>
-						<h4 class="price">current price: <span>{{$produits->getPrice()}}</span></h4>
-                        
-						@if($stock ==="disponible")
-							<form action="{{ route('panier.ajouter') }}" method="post">
-								@csrf
-								<div class="action">
-									<input type="hidden" name="id" value="{{$produits->id}}">
-									<input type="hidden" name="name" value="{{$produits->name}}">
-									<input type="hidden" name="price" value="{{$produits->price}}">
-									<button class="add-to-cart btn btn-default" type="submit">Ajouter au panier</button>
-								</div>
-							</form>
-						@endif
+						<h4 class="price">Prix: <span>{{$produits->getPrice()}}</span></h4>
 
 
 					</div>

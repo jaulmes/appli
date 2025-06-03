@@ -324,7 +324,7 @@
                     </div>
                 @endif
                 <div class="total"> 
-                    <span style="margin-bottom: 3em; Z-index: 5; background-color:grey; color: black !important; margin-left: 25em;"> Net A Payer <strong style="color: #27ae60; background-color: #e9f7ef;"> <u>{{ $netAPayer + $proformats->mainOeuvre}} Francs CFA</u> </strong> </span>
+                    <span style="margin-bottom: 3em; Z-index: 5; background-color:grey; color: black !important; margin-left: 25em;"> Net A Payer <strong style="color: #27ae60; background-color: #e9f7ef;"> <u>{{ $proformats->NetAPayer}} Francs CFA</u> </strong> </span>
                 </div>
                 
                 <div style="position: absolute; margin-left: 5em; ">Signature Client   </div>

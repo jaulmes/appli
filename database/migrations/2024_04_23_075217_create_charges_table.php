@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('titre');
             $table->double('montant');
-            $table->string('date');
+            $table->string('date')->nullable();
             $table->timestamps();
         });
     }

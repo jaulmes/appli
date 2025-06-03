@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('charge_details', function (Blueprint $table) {
             $table->id();
-            $table->string('titre');
-            $table->string('detail');
-            $table->string('date');
+            $table->string('titre')->nullable();
+            $table->string('detail')->nullable();
+            $table->string('date')->nullable();
             $table->string('montant');
             $table->string('charge_id');
             $table->timestamps();

@@ -32,12 +32,14 @@
                                 class="d-block w-100 object-fit-cover zoom-image"
                                 style="height: 200px;"
                                 >
+                                
+                            <p class="fw-bold text-primary badge bg-success position-absolute bottom-50 ml-8"> <strong>{{ $pack->prix }} XAF</strong> </p>
 
                             <!-- Infos pack -->
                             <div class="card-body row ">
                                 <p class="card-title " title="{{ $pack->name }}">{{ $pack->titre }}</p>
-                                <p class="text-muted small">{{ $pack->description }}</p>
-                                <p class="fw-bold text-primary">{{ $pack->prix }} XAF</p>
+                                <p class="text-muted small">{{ Str::limit($pack->description, 80, '...') }}</p>
+                                
                             </div>
 
                             <!-- Actions -->

@@ -89,7 +89,7 @@ src="https://www.facebook.com/tr?id=9916049995153025&ev=PageView&noscript=1"
                 <div class="col-md-4 text-center text-md-start mb-4 mb-md-0">
                   <a href="#" class="text-decoration-none">
                     <h2 class="text-warning mb-1">Solergy Solutions SARL</h2>
-                    <p class="small">Votre expert en énergie solaire à Douala</p>
+                    <p class="small">Fournisseur de solutions solaire au cameroun</p>
                   </a>
                 </div>
                 <div class="col-md-8">

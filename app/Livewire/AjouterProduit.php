@@ -22,8 +22,9 @@ class AjouterProduit extends Component
 
     public $name, $description, $categori_id, $prix_achat, $price,
            $prix_minimum, $prix_technicien, $stock, $fabricant,
-           $image_produit, $fournisseur_id, $compte_id, $categories, $fournisseurs
-           , $comptes;
+           $image_produit, $fournisseur_id, $compte_principal_id, 
+           $montant_principal, $compte_secondaire_id, $montant_secondaire,
+           $categories, $fournisseurs, $comptes;
 
     public function rules()
     {
@@ -37,10 +38,19 @@ class AjouterProduit extends Component
             'prix_technicien' => 'required|integer|min:0',
             'stock' => 'required|integer|min:0',
             'fabricant' => 'nullable|string',
-            'compte_id' => 'required|exists:comptes,id',
             'fournisseur_id' => 'required|exists:fournisseurs,id',
             'image_produit' => 'nullable|image|max:2048',
         ];
+    }
+
+    public function ajouter_compte(){
+        $compte = Compte::find($this->compte_principal_id);
+        if($this->stock > 0 && $this->prix_achat * $this->stock > $compte->montant){
+            return true;
+        }else{
+            return false;
+        }
+        
     }
 
     public function store()
@@ -86,7 +96,26 @@ class AjouterProduit extends Component
             $produit->save();
 
             $totalCost = $this->prix_achat * $this->stock;
-            
+            //paiement avec different compte si le compte principal n'est pas suffisant
+            if($this->stock > 0){
+                $compte_principal = Compte::find($this->compte_principal_id);
+                if($this->prix_achat * $this->stock > $compte_principal->montant){
+                    $compte_secondaire = Compte::find($this->compte_secondaire_id);
+                    $produit->comptes()->attach($compte_principal->id, [
+                        'montant' => $this->montant_principal
+                    ]);
+
+                    $produit->comptes()->attach($compte_secondaire->id, [
+                        'montant' => $this->montant_secondaire
+                    ]);
+
+                    $compte_principal->montant =  $compte_principal->montant - $this->montant_principal;
+                    $compte_principal->save();
+                    $compte_secondaire->montant =  $compte_secondaire->montant - $this->montant_secondaire;
+                    $compte_secondaire->save();
+                }
+
+            }
 
             $dateHeure = now();
 

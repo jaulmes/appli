@@ -66,9 +66,13 @@
                             </div>
                         </td>
                         <td>
-                            <button type="button" class="btn btn-danger" wire:click="deleteannonce({{$annonce->id}})">
-                                <i class="bi bi-trash"></i>
-                            </button>
+                            <!-- Modal modifier annonce-->
+                            <div  class="modal fade" id="editAnnonce-{{$annonce->id}}" wire:ignore.self data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                                <livewire:front-end-edit-annonce-admin :annonce="$annonce" />
+                            </div>
+                            <i class="bi bi-pencil-square text-blue"  type="button" data-bs-toggle="modal" data-bs-target="#editAnnonce-{{$annonce->id}}" ></i>
+                            <i class="fas fa-trash text-red" wire:click="deleteAnnonce({{$annonce->id}})" type="button"></i>
+
                         </td>
                     </tr>
                 @endforeach

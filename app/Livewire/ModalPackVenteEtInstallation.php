@@ -96,21 +96,22 @@ class ModalPackVenteEtInstallation extends Component
 
         //mise a jours du compte
         $comptes = Compte::find($this->mode_paiement);
-        if($comptes){
-            $comptes->montant = $comptes->montant + $this->montant_verse;
-            $comptes->save();
-            $ventes->compte_id = $this->mode_paiement;
-        }else{
-            return redirect()->back()->with('error', 'veillez selectionner un compte');
-        }
+
     
         $ventes->agentOperant = $this->agent_operant;
         $ventes->commission = $this->commission;
         if($this->commission){
             $charges = new Charge();
             $charges->titre = "commission pour la vente du pack de ". $client->nom. " a ". $ventes->agentOperant; 
-            $charges->montant = $charges->commission;
+            $charges->montant = $this->commission;
             $charges->save(); 
+            if($comptes){
+                $comptes->montant = $comptes->montant + $this->montant_verse - $this->commission;
+                $comptes->save();
+                $ventes->compte_id = $this->mode_paiement;
+            }else{
+                return redirect()->back()->with('error', 'veillez selectionner un compte');
+            }
         }
         $ventes->montantTotal = $this->panierTotal();
         $ventes->totalAchat = $totalAchat;
@@ -209,14 +210,7 @@ class ModalPackVenteEtInstallation extends Component
         $installations->reduction = $this->reduction;
 
         //mise a jours du compte
-        $comptes = Compte::find($this->mode_paiement);
-        if($comptes){
-            $comptes->montant = $comptes->montant + $this->montant_verse;
-            $comptes->save();
-            $installations->compte_id = $this->mode_paiement;
-        }else{
-            return redirect()->back()->with('error', 'veillez selectionner un compte');
-        }
+        $comptes = Compte::find($this->mode_paiement);  
     
         $installations->mainOeuvre = $this->frais_installation;
         $installations->agentOperant = $this->agent_operant;
@@ -225,7 +219,14 @@ class ModalPackVenteEtInstallation extends Component
         if($this->commission){
             $charges = new Charge();
             $charges->titre = "commission pour la vente du pack de ". $client->nom. " a ". $installations->agentOperant; 
-            $charges->montant = $charges->commission;
+            $charges->montant = $this->commission;
+            if($comptes){
+                $comptes->montant = $comptes->montant + $this->montant_verse - $this->commission;
+                $comptes->save();
+                $installations->compte_id = $this->mode_paiement;
+            }else{
+                return redirect()->back()->with('error', 'veillez selectionner un compte');
+            }
             $charges->save(); 
         }
         $installations->montantProduit = $this->panierTotal();

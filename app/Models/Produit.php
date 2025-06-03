@@ -28,6 +28,11 @@ class Produit extends Model
         'image_produit4',
     ];
 
+    public function comptes(){
+        return $this->belongsToMany(Compte::class,'compte_produit')
+                    ->withPivot('montant');
+    }
+
     public function pack(){
         return $this->belongsToMany(Pack::class, 'produit_pack')
                                         ->withPivot('quantity', 'price');

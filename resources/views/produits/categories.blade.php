@@ -23,7 +23,15 @@
                     <td>{{ $categorie->titre }}</td>
                     <td>{{ $categorie->description }}</td>
                     <td>
-                        <img src="{{ asset('storage/images/produits/categories/' . $categorie->image_categorie) }}" style="max-width: 100px;">
+                        <!-- Image categorie -->
+                        @php
+                            $image1 = public_path('images/produits/categories/'. $categorie->image_categorie);
+                            $url = file_exists($image1)? asset('images/produits/categories/'. $categorie->image_categorie)
+                                                        : asset('storage/images/produits/categories/' . $categorie->image_categorie);
+                        @endphp
+                        <img src="{{$url }}"
+                            style="max-width: 100px;"
+                            >
                     </td>
                     <td>
                         @can('IMPOT')

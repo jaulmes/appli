@@ -15,6 +15,11 @@ class Compte extends Model
         'montant'
     ];
 
+    public function produits(){
+        return $this->belongsToMany(Produit::class, 'compte_produit')
+                    ->withPivot('montant');
+    }
+
     public function achat()
     {
         return $this->hasMany(Achat::class);

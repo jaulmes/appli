@@ -348,11 +348,11 @@ class PanierController extends Controller
             $charges->date = $dateHeure->format('Y/m/d');
 
             $charges->save();
-            $comptes->save();
 
             //je fais une mise a jour du montant dans les comptes
-            $comptes->montant = $comptes->montant + $transactions->montantVerse;
-
+            $comptes->montant = $comptes->montant + $transactions->montantVerse - $installations->commission;
+            $comptes->save();
+            
             $transactions->save();
             
             //je relie chaque produit du pqnier a l'installation
