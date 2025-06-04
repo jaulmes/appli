@@ -34,8 +34,8 @@
                                         <div class="image-wrapper">
                                             @php
                                                 $image1 = public_path('images/Realisations/'. $image);
-                                                $url = file_exists($image1)? asset('images/realisations/'. $image)
-                                                                            : asset('storage/images/realisations/' . $image);
+                                                $url = file_exists($image1)? asset('images/Realisations/'. $image)
+                                                                            : asset('storage/images/Realisations/' . $image);
                                             @endphp
                                             <img src="{{$url }}"
                                                 alt="Image de la réalisation"

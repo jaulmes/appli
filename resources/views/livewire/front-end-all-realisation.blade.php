@@ -16,6 +16,12 @@
                     <div class="carousel-inner">
                         @foreach($images as $key => $image)
                             <div class="carousel-item {{ $key == 0 ? 'active' : '' }}">
+                                @php
+                                    $image1 = public_path('images/Realisations/'. $realisation->img1);
+                                    $image2 = public_path('storage/images/Realisations/'. $realisation->img1);
+                                    $url = file_exists($image1)? asset('images/Realisations/'. $image)
+                                                                : asset('storage/images/Realisations/' . $image);
+                                @endphp
                                 <img 
                                     src="{{ asset('storage/images/Realisations/' .$image) }}" 
                                     alt="Image de la réalisation"
