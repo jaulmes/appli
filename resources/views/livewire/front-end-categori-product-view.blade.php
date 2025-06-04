@@ -6,7 +6,7 @@
         </div>
         <div class="col-md-6 text-md-end">
             <a href="{{ route('all-categorie') }}" wire:navigate class="btn btn-dark rounded-pill">
-                Voir plus
+                Tous voir
             </a>
         </div>
     </div>
@@ -25,7 +25,12 @@
                     <div class="card-body d-flex align-items-center">
                         <!-- Image de la catégorie -->
                         <div class="me-3">
-                            <img src="{{ asset('storage/images/produits/categories/' . $categori->image_categorie) }}" 
+                            @php
+                                $image1 = public_path('images/produits/categories/'. $categori->image_categorie);
+                                $url = file_exists($image1)? asset('images/produits/categories/'. $categori->image_categorie)
+                                                            : asset('storage/images/produits/categories/' . $categori->image_categorie);
+                            @endphp
+                            <img src="{{ $url}}" 
                                 alt="Image de {{ $categori->titre }}" 
                                 class="img-fluid rounded-circle border" 
                                 style="width: 80px; height: 80px; object-fit: cover;" 
