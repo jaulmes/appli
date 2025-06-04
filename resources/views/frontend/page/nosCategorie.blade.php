@@ -8,7 +8,12 @@
         <div class="card h-100 border-0 hover-scale shadow-sm transition-all rounded-4 overflow-hidden">
           <!-- Conteneur image avec effet de zoom et animations d'entrée -->
           <div class="position-relative image-zoom-container animate__animated animate__fadeInUp">
-            <img src="{{ asset('storage/images/produits/categories/' . $categorie->image_categorie) }}"
+            @php
+                $image1 = public_path('images/produits/categories/'. $categorie->image_categorie);
+                $url = file_exists($image1)? asset('images/produits/categories/'. $categorie->image_categorie)
+                                            : asset('storage/images/produits/categories/' . $categorie->image_categorie);
+            @endphp
+            <img src="{{ $url }}"
                  alt="{{ $categorie->titre }}"
                  class="img-fluid w-100 h-100 object-fit-cover zoom-image">
             <!-- Overlay interactif animé -->
