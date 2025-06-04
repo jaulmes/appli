@@ -23,7 +23,7 @@
                                                                 : asset('storage/images/Realisations/' . $image);
                                 @endphp
                                 <img 
-                                    src="{{ asset('storage/images/Realisations/' .$image) }}" 
+                                    src="{{ $url }}" 
                                     alt="Image de la réalisation"
                                     class="d-block w-100 object-fit-cover"
                                     style="height: 200px;"
