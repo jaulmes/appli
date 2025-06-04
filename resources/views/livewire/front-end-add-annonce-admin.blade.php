@@ -32,9 +32,10 @@
                                 id="produit_id"
                                 name="produit_id"
                                 wire:model.defer="produit_id"
-                                class="form-control select "
+                                class="form-control select2  "
                                 data-placeholder="Sélectionnez un produit"
                                 required>
+                            <option  selected>choisir le produit</option>
                             @foreach($produits as $produit)
                             <option value="{{ $produit->id }}" {{ old('produit_id') == $produit->id ? 'selected' : '' }}>
                                 {{ $produit->name }}
@@ -60,7 +61,7 @@
                                 class="form-select select2 @error('service_id') is-invalid @enderror"
                                 data-placeholder="Sélectionnez un service"
                                 required>
-                            <option value="" disabled selected></option>
+                            <option  selected>choisir le service</option>
                             @foreach($services as $service)
                             <option value="{{ $service->id }}" >
                                 {{ $service->name }}
@@ -98,7 +99,7 @@
         <div class="row mt-3 consumption">
             <div class="col-md-6">
                 <select name="status" wire:model="status" id="status" class="form-select @error('status') is-invalid @enderror" required>
-                    <option  selected disabled>Sélectionner le status</option>
+                    <option  selected >Sélectionner le status</option>
                         <option value="actif">actif</option>
                         <option value="desactiver">desactiver</option>
                 </select>
