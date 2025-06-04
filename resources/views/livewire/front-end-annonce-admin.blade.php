@@ -39,7 +39,7 @@
                 @foreach($annonces as $annonce)
                     <tr>
                         <td>
-                            {{$annonce->produits->name?? $annonce->services->name}}
+                            {{$annonce->produits->name?? $annonce->services->name?? '-'}}
                         </td>
                         <td>
                             <div class="form-check form-switch">
