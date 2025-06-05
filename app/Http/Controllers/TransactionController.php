@@ -32,41 +32,8 @@ class TransactionController extends Controller
         return view('transactions.index', compact('transactions', 'currentMonth' ));
     }
     
-    public function bilan(Request $request){
-        
-        //je recupere le moi en cour dans le formulaire
-        $currentMonth = $request->input('month', Carbon::now()->format('Y-m'));
-        
-        //je recuper les ventes du moi en cour
-        $ventes = Vente::whereMonth('created_at', Carbon::parse($currentMonth)->month)
-                        ->whereYear('created_at', Carbon::parse($currentMonth)->year)
-                        ->get();
-                        
-        //je recupere les charge du moi en cour
-        $charges = Charge::whereMonth('created_at', Carbon::parse($currentMonth)->month)
-                        ->whereYear('created_at', Carbon::parse($currentMonth)->year)
-                        ->get();
-                        
-        //je recupere les charge du moi en cour
-        $achats = Achat::whereMonth('created_at', Carbon::parse($currentMonth)->month)
-                        ->whereYear('created_at', Carbon::parse($currentMonth)->year)
-                        ->get();
-
-        //je fais la somme du montant verse par les client(l'argent entrant)
-        $chiffreAffaire = $ventes->sum('montantVerse');
-        
-        //je recupere le montant total des charges du moi en cours
-        $montantCharge = $charges->sum('montant');
-        
-        //je fais la somme des prix d'achats des produits vendus
-        $montantAchat = $ventes->sum('totalAchat');
-        
-        //je fais la somme du prix d'achat des produits achete dans le moi(investissement)
-        $investissement = $achats->sum('total');
-        
-        //j'affiche les benefices sur les ventes
-        $benefices = $ventes->sum('montantVerse') - $ventes->sum('totalAchat') - $ventes->sum('reduction');
-        return view('transactions.bilan', compact('chiffreAffaire', 'montantCharge', 'montantAchat', 'investissement', 'benefices'));
+    public function bilan($moi){
+        return view('transactions.bilan', compact('moi'));
     }
 
     //recuperer 

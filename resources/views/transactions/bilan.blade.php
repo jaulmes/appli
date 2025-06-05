@@ -15,7 +15,7 @@
     <!-- END: Alert -->
     <!-- /.card-header -->
     <div class="card-body">
-        <livewire:bilan-classement-client/>
+        <livewire:bilan-classement-client :moi="$moi"/>
     </div>
 
     

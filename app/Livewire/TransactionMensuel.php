@@ -17,6 +17,7 @@ class TransactionMensuel extends Component
 
     public function getTransactionsProperty()
     {
+        $this->dispatch('transactionsMontUpdated', ['mois' => $this->moisSelectionne]);
         return Transaction::whereYear('created_at', Carbon::parse($this->moisSelectionne)->year)
                           ->whereMonth('created_at', Carbon::parse($this->moisSelectionne)->month)
                           ->latest()

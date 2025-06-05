@@ -2,6 +2,12 @@
     <div class="card-header d-flex flex-column flex-md-row align-items-start align-items-md-center justify-content-between gap-3 row">
         <h3 class="card-title mb-0 col"><strong>Journal des Activités</strong></h3>
         <div class="d-flex flex-wrap gap-2 col">
+            <a href="{{route('transaction.bilan', ['moi' => $moisSelectionne])}}">                
+                <button type="submit" class="btn btn-primary btn-sm">
+                    <i class="fas fa-chart-line me-1"></i>
+                    Afficher le bilan du mois
+                </button>
+            </a>
             <div class="mb-4">
                 <input type="month" wire:change="getTransactionsProperty()" id="mois" wire:model="moisSelectionne" class="form-control">
             </div>

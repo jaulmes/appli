@@ -310,7 +310,8 @@ Route::middleware('auth')->group(function () {
     Route::get('transactions/mesTransactions', [TransactionController::class, 'mesTransactions'])->name('transaction.mesTransactions');
     
     //bilan
-    Route::get('transactions/bilan', [TransactionController::class, 'bilan'])->name('transaction.bilan');
+    //Route::get('transactions/bilan', [TransactionController::class, 'bilan'])->name('transaction.bilan');
+    Route::get('transactions/{moi}', [TransactionController::class, 'bilan'])->name('transaction.bilan');
 
     /**
      * charge
