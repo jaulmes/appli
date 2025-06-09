@@ -20,6 +20,7 @@
                     $totalChiffreAffaire = 0;
                     $totalAchat = 0;
                     $totalVente = 0;
+                    $mainOeuvre = 0;
                 @endphp
 
                 @foreach($produits as $produit)
@@ -27,7 +28,6 @@
                         $nombreVendu = 0;
                         $achatTotal = 0;
                         $venteTotal = 0;
-                        $mainOeuvre =0; 
                     @endphp
 
                     @foreach($produit->ventes as $vente)
@@ -49,6 +49,7 @@
                             $nombreVendu += $qty;
                             $venteTotal += $qty * $price;
                             $achatTotal += $qty * $produit->prix_achat;
+                            $mainOeuvre += $installation->mainOeuvre;
                         @endphp
                     @endforeach
 
@@ -78,8 +79,8 @@
                     <td colspan="3">Totaux</td>
                     <td>{{ number_format($totalAchat, 2) }} FCFA</td>
                     <td>{{ number_format($totalVente, 2) }} FCFA</td>
-                    <td>{{ number_format($totalBenefice, 2) }} FCFA</td>
-                    <td>{{ number_format($totalChiffreAffaire, 2) }} FCFA</td>
+                    <td>{{ number_format($totalBenefice + $mainOeuvre, 2) }} FCFA</td>
+                    <td>{{ number_format($totalChiffreAffaire + $mainOeuvre, 2) }} FCFA</td>
                 </tr>
             </tfoot>
         </table>
