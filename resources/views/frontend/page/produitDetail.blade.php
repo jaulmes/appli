@@ -11,7 +11,6 @@
 
     <!-- Balises produit spécifiques (Meta Commerce) -->
     <meta property="product:brand" content="{{ $produit->fabricant }}" /> <!-- À remplacer par votre marque -->
-    <meta property="product:availability" content="{{ $produit->stock > 0 ? 'in stock' : 'out of stock' }}" />
     <meta property="product:condition" content="new" />
     <meta property="product:price:amount" content="{{ $produit->status_promo ? $produit->prix_promo : $produit->price }}" />
     <meta property="product:price:currency" content="XAF" />

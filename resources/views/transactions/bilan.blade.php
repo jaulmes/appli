@@ -1,31 +1,41 @@
 @extends('dashboard.main')
 
 @section('content')
-                <a href="{{route('transaction.index')}}" style="margin-right: 45em">
-                <button type="button"  class="btn btn-danger">retour</button>
-            </a>
-<div class="card">
-
-    <div class="card-header">
-
-        <h1 class="card-title" style="margin-left:25em">Billan mensuel</h1>
-        
-    </div>
-
-    <!-- END: Alert -->
-    <!-- /.card-header -->
-    <div class="card-body">
-        <livewire:bilan-classement-client :moi="$moi"/>
-    </div>
-
-    
-    <!-- /.card-body -->
+<div class="mb-3">
+    <a href="{{ route('transaction.index') }}" class="btn btn-danger">
+        <i class="fas fa-arrow-left"></i> Retour
+    </a>
 </div>
 
+<div class="card " style="text-align: center; align-items: center;">
+    <div class="card-header badge bg-black">
+        <h4 class="card-title">Bilan Mensuel</h4>
+    </div>
 
+    <div class="card-body">
+        <div class="row">
+            <!-- Classement client -->
+            <div class="col-md-6 mb-3">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <livewire:bilan-classement-client :moi="$moi" />
+                    </div>
+                </div>
+            </div>
 
+            <!-- Classement produit -->
+            <div class="col-md-6 mb-3">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <livewire:bilan-classement-produit :moi="$moi" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 @endsection
 
 @section('javascript')
-
+<!-- Ajoutez ici les scripts nécessaires si besoin -->
 @endsection
