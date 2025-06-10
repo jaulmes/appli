@@ -1,5 +1,5 @@
 <div class="container py-0">
-    <div class="tab-class text-center">
+    <div class="text-center mb-4">
         <div class="row g-4 bg-grey align-items-center mb-0" data-aos="fade-up">
             <div class="col-lg-4 text-start">
                 <h1 class="display-5 fw-bold gradient-text">
@@ -16,284 +16,55 @@
                 </div>
             </div>
         </div>
-        
-        <div class="tab-content">
-            <div id="carouselProduits" 
-                 class="carousel slide" 
-                 data-bs-ride="carousel" 
-                 data-bs-interval="1500"
-                 data-bs-touch="true">
-                
-                <!-- Indicateurs améliorés -->
-                <div class="carousel-indicators">
-                    @foreach($produits->chunk(4) as $chunkIndex => $chunk)
-                    <button type="button" 
-                            data-bs-target="#carouselProduits" 
-                            data-bs-slide-to="{{ $chunkIndex }}"
-                            class="indicator-progress {{ $chunkIndex === 0 ? 'active' : '' }}"
-                            aria-label="Slide {{ $chunkIndex + 1 }}">
-                        <div class="progress-bar"></div>
-                    </button>
-                    @endforeach
-                </div>
+    </div>
 
-                <div class="carousel-inner">
-                    @foreach($produits->chunk(4) as $chunkIndex => $chunk)
-                    <div class="carousel-item @if($chunkIndex === 0) active @endif">
-                        <div class="row justify-content-center g-4">
-                            @foreach($chunk as $produit)
-                            <div class="col-md-6 col-lg-4 col-xl-3 mb-4" 
-                                 data-aos="flip-up" 
-                                 data-aos-delay="{{ $loop->index * 50 }}">
-                                <div class="card h-100 border-0 rounded-4 shadow-sm ">
-                                    <!-- Conteneur image avec effet parallaxe -->
-                                    <a href="{{ route('produit-detail', $produit->id) }}" 
-                                        class="card-image-link d-block text-decoration-none position-relative">
-                                        <div class="position-relative overflow-hidden image-zoom-container" 
-                                            style="height: 250px;"
-                                            data-tilt data-tilt-max="8">
-                                                @php
-                                                    $image1 = public_path('images/produits/'. $produit->image_produit);
-                                                    $image2 = public_path('storage/images/produits/'. $produit->image_produit);
-                                                    $url = file_exists($image1)? asset('images/produits/'. $produit->image_produit)
-                                                                                : asset('storage/images/produits/' . $produit->image_produit);
+    <div class="owl-carousel owl-theme" id="carouselProduits">
+        @foreach($produits as $produit)
+            <div class="item px-2">
+                <div class="card h-100 border-0 rounded-4 shadow-sm">
+                    <a href="{{ route('produit-detail', $produit->id) }}" class="card-image-link d-block text-decoration-none position-relative">
+                        @php
+                            $image1 = public_path('images/produits/'. $produit->image_produit);
+                            $image2 = public_path('storage/images/produits/'. $produit->image_produit);
+                            $url = file_exists($image1) ? asset('images/produits/'. $produit->image_produit)
+                                                       : asset('storage/images/produits/' . $produit->image_produit);
+                        @endphp
 
-                                                @endphp
+                        <img src="{{ $url }}" class="card-img-top img-fluid" alt="{{ $produit->name }}" style="object-fit: cover; height: 250px;">
+                    </a>
 
-                                                <img src="{{$url }}"
-                                                        class="card-img-top img-fluid h-100"
-                                                        alt="{{ $produit->name }}"
-                                                        style="object-fit: cover;">
-                                            
-                                            <!-- Overlay dynamique -->
-                                            <div class="card-img-overlay d-flex flex-column justify-content-between p-3">
-                                                <div class="w-100 d-flex justify-content-end">
-                                                    <span class="badge bg-primary rounded-pill px-3 py-2 shadow glow-label">
-                                                        {{ $produit->name }}
-                                                    </span>
-                                                </div>
-
-                                            </div>
-                                            <div class="shine-effect"></div>
-                                        </div>
-                                    </a>
-
-                                    <!-- Corps de la carte -->
-                                    <div class="card-body p-3 position-relative">
-                                        <h5 class="fw-bold text-truncate hover-lift"> {{ $produit->categori->titre }}</h5>
-                                        
-                                        <div class="d-flex align-items-center justify-content-between border-top pt-3">
-                                            <div class="price-animation">
-                                                <span class="badge bg-success fs-5 px-3 py-2 bounce">
-                                                    <strong>{{ $produit->getPrice() }}</strong>
-                                                </span>
-                                            </div>
-                                            <button class="btn btn-sm btn-primary rounded-pill px-3 shadow-sm magnetic-button" 
-                                                    wire:click="addProductToCart({{$produit->id}})">
-                                                <span class="button-content">
-                                                    <i class="fas fa-cart-plus me-2"></i> Ajouter
-                                                </span>
-                                                <span class="button-loader spinner-border spinner-border-sm d-none"></span>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            @endforeach
+                    <div class="card-body p-3 text-center">
+                        <h5 class="fw-bold">{{ $produit->name }}</h5>
+                        <div class="d-flex justify-content-between align-items-center mt-2">
+                            <span class="badge bg-success fs-6">{{ $produit->getPrice() }}</span>
+                            <button wire:click="addProductToCart({{ $produit->id }})" class="btn btn-sm btn-primary rounded-pill px-3">
+                                <i class="fas fa-cart-plus me-1"></i> Ajouter
+                            </button>
                         </div>
                     </div>
-                    @endforeach
                 </div>
-
-                <!-- Contrôles customisés -->
-                <button class="carousel-control-prev hover-scale-control" 
-                        type="button" 
-                        data-bs-target="#carouselProduits" 
-                        data-bs-slide="prev">
-                    <span class="carousel-control-prev-icon bg-dark rounded-circle p-3 shadow"></span>
-                    <span class="visually-hidden">Précédent</span>
-                </button>
-                <button class="carousel-control-next hover-scale-control" 
-                        type="button" 
-                        data-bs-target="#carouselProduits" 
-                        data-bs-slide="next">
-                    <span class="carousel-control-next-icon bg-dark rounded-circle p-3 shadow"></span>
-                    <span class="visually-hidden">Suivant</span>
-                </button>
             </div>
-        </div>
+        @endforeach
     </div>
-    <style>
-/* Animations globales */
-.hover-3d {
-    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), 
-                box-shadow 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    will-change: transform;
-}
-
-.hover-3d:hover {
-    transform: translateY(-8px) rotateX(2deg) rotateY(2deg);
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25) !important;
-}
-
-/* Effet parallaxe */
-[data-tilt] {
-    transform-style: preserve-3d;
-}
-
-.zoom-image {
-    transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.image-zoom-container:hover .zoom-image {
-    transform: scale(1.15);
-}
-
-/* Overlay dynamique */
-.card-img-overlay {
-    background: linear-gradient(180deg, rgba(0,0,0,0) 30%, rgba(0,0,0,0.8) 100%);
-    opacity: 0;
-    transition: opacity 0.4s ease;
-}
-
-.card:hover .card-img-overlay {
-    opacity: 1;
-}
-
-/* Indicateurs de progression */
-.indicator-progress {
-    width: 60px;
-    height: 4px;
-    border-radius: 2px;
-    background: rgba(0,0,0,0.1);
-    border: 0;
-    margin: 0 4px;
-}
-
-.indicator-progress .progress-bar {
-    height: 100%;
-    width: 0;
-    background: #333;
-    transition: width 5s linear;
-}
-
-.indicator-progress.active .progress-bar {
-    width: 100%;
-}
-
-/* Animation prix */
-.bounce {
-    animation: bounce 1s infinite alternate;
-}
-
-@keyframes bounce {
-    from { transform: translateY(0); }
-    to { transform: translateY(-5px); }
-}
-
-.glow-label {
-    animation: glow 2s infinite alternate;
-}
-
-@keyframes glow {
-    from { filter: drop-shadow(0 0 5px rgba(0,102,255,0.5)); }
-    to { filter: drop-shadow(0 0 15px rgba(0,102,255,0.8)); }
-}
-
-.hover-lift {
-    transition: transform 0.3s ease;
-}
-
-.hover-lift:hover {
-    transform: translateY(-3px);
-}
-</style>
-<style>
-/* Ajoutez ces règles CSS */
-@media (max-width: 768px) {
-    #carouselProduits {
-        overflow-x: auto;
-        scroll-snap-type: x mandatory;
-        -webkit-overflow-scrolling: touch;
-    }
-
-    .carousel-inner {
-        display: flex;
-        flex-wrap: nowrap;
-        transform: none !important;
-    }
-
-    .carousel-item {
-        width: 85vw;
-        flex-shrink: 0;
-        scroll-snap-align: start;
-        padding-right: 15px;
-    }
-
-    .carousel-item .row {
-        flex-wrap: nowrap;
-        overflow-x: visible;
-        margin-left: -12px;
-        margin-right: -12px;
-    }
-
-    .carousel-item .col-md-6 {
-        flex: 0 0 85vw;
-        max-width: 85vw;
-        padding-left: 12px;
-        padding-right: 12px;
-    }
-
-    .carousel-indicators,
-    .carousel-control-prev,
-    .carousel-control-next {
-        display: none !important;
-    }
-
-    /* Conserver les animations sur mobile */
-    .hover-3d:hover {
-        transform: translateY(-5px) rotateX(1deg) rotateY(1deg);
-    }
     
-    .image-zoom-container:hover .zoom-image {
-        transform: scale(1.08);
-    }
-}
-</style>
+    <script>
+        $(document).ready(function(){
+            $('#carouselProduits').owlCarousel({
+                loop: true,
+                margin: 15,
+                nav: true,
+                dots: false,
+                autoplay: true,
+                autoplayTimeout: 3000,
+                autoplayHoverPause: true,
+                responsive:{
+                    0:{ items:1 },
+                    576:{ items:2 },
+                    768:{ items:3 },
+                    992:{ items:4 }
+                }
+            });
+        });
+    </script>
 
-<script>
-
-
-// Gestion du survol des contrôles
-document.querySelectorAll('.hover-scale-control').forEach(control => {
-    control.addEventListener('mouseenter', () => {
-        control.style.transform = 'scale(1.2)';
-    });
-    
-    control.addEventListener('mouseleave', () => {
-        control.style.transform = 'scale(1)';
-    });
-});
-</script>
-
-<!-- Bibliothèques requises -->
-<link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
-<script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.7.2/vanilla-tilt.min.js"></script>
-
-<script>
-// Initialisation
-AOS.init({
-    duration: 800,
-    once: true
-});
-
-VanillaTilt.init(document.querySelectorAll('[data-tilt]'), {
-    max: 8,
-    speed: 400,
-    glare: true,
-    "max-glare": 0.2
-});
-</script>
 </div>
-

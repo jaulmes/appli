@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AchatController;
+use App\Http\Controllers\BonCommandeController;
 use App\Http\Controllers\PanierController;
 use App\Http\Controllers\PrivilageController;
 use App\Http\Controllers\ChargeController;
@@ -130,6 +131,11 @@ Route::middleware('auth')->group(function () {
      * clients
      */
     Route::get('clients/index', [ClientController::class, 'index'])->name('clients.index');
+
+    /**
+     * bon de commande
+     */
+    Route::get('bonCommandes/index', [BonCommandeController::class, 'index'])->name('bonCommandes.index');
     
     
     /**

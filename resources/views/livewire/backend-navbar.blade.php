@@ -40,6 +40,13 @@
                         <p>Faire des proformats</p>
                     </a>
                 </li>
+                <!-- bon de commande -->
+                <li class="nav-item">
+                    <a href="{{ route('bonCommandes.index') }}" class="nav-link {{ Request::is('bonCommandes/index*') ? 'active' : '' }}">
+                        🛒
+                        <p>Bon de Commandes</p>
+                    </a>
+                </li>
                 <!-- packs produits -->
                 <li class="nav-item has-treeview {{ Request::is('panier/pack*') ? 'menu-open' : '' }}">
                     <a href="#" class="nav-link {{ Request::is('panier/pack*') ? 'active' : '' }}"> 

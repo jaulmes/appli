@@ -59,83 +59,62 @@
     </div>
 
     {{-- Slides --}}
-    <div class="carousel-inner">
-      @foreach($produits->chunk(4) as $chunkIndex => $chunk)
-        <div class="carousel-item @if($chunkIndex === 0) active @endif">
-          <div class="row justify-content-center g-4">
-            @foreach($chunk as $produit)
-              <div class="col-md-6 col-lg-4 col-xl-3" data-aos="flip-up" data-aos-delay="{{ $loop->index * 50 }}">
-                <div class="card h-100 border-0 rounded-4 shadow-sm hover-3d">
+    <div class="owl-carousel owl-theme" id="carouselProduits">
+        @foreach($produits as $produit)
+            <div class="item px-2">
+                <div class="card h-100 border-0 rounded-4 shadow-sm">
+                    <a href="{{ route('produit-detail', $produit->id) }}" class="card-image-link d-block text-decoration-none position-relative">
+                        @php
+                            $image1 = public_path('images/produits/'. $produit->image_produit);
+                            $image2 = public_path('storage/images/produits/'. $produit->image_produit);
+                            $url = file_exists($image1) ? asset('images/produits/'. $produit->image_produit)
+                                                       : asset('storage/images/produits/' . $produit->image_produit);
+                        @endphp
 
-                  {{-- Lien produit --}}
-                  <a href="{{ route('produit-detail', $produit->id) }}"
-                      class="d-block  position-relative"
-                      aria-label="Voir détail {{ $produit->name }}"
-                      style="text-decoration: none;">
-                    <div class=" overflow-hidden image-zoom-container" style="height:250px;" data-tilt data-tilt-max="8">
-                            @php
-                                $image1 = public_path('images/produits/'. $produit->image_produit);
-                                $image2 = public_path('storage/images/produits/'. $produit->image_produit);
-                                $url = file_exists($image1)? asset('images/produits/'. $produit->image_produit)
-                                                            : asset('storage/images/produits/' . $produit->image_produit);
+                        <img src="{{ $url }}" class="card-img-top img-fluid" alt="{{ $produit->name }}" style="object-fit: cover; height: 250px;">
+                    </a>
 
-                            @endphp
-
-                            <img src="{{$url }}"
-                                    class="card-img-top img-fluid h-100"
-                                    alt="{{ $produit->name }}"
-                                    style="object-fit: cover;">
-
-                      {{-- Catégorie --}}
-                      <div class="card-img-overlay d-flex flex-column justify-content-between p-3">
-                          <div class="w-100 d-flex justify-content-end">
-                              <span class="badge bg-primary rounded-pill px-3 py-2 shadow glow-label">
-                                   {{ $produit->name }}
-                              </span>
-                          </div>
-
-                      </div>
-
+                    <div class="card-body p-3 text-center">
+                        <h5 class="fw-bold">{{ $produit->name }}</h5>
+                        <div class="d-flex justify-content-between align-items-center mt-2">
+                            <div>
+                              <span class="badge bg-success  px-3 py-2">
+                                {{ $produit->prix_promo }} FCFA
+                              </span><br>
+                              <small class="text-muted ms-1">
+                                <del>{{ $produit->getPrice() }} FCFA</del>
+                              </small>
+                            </div>
+                            <button wire:click="addProductToCart({{ $produit->id }})" class="btn btn-sm btn-primary rounded-pill px-3">
+                                <i class="fas fa-cart-plus me-1"></i> Ajouter
+                            </button>
+                        </div>
                     </div>
-                  </a>
-
-                  {{-- Corps de la carte --}}
-                  <div class="card-body p-3">
-                    <h3 class="h5 fw-bold text-truncate">{{ $produit->categori->titre }}</h3>
-                    <div class="d-flex justify-content-between align-items-center border-top pt-3">
-                      <div>
-                        <span class="badge bg-success  px-3 py-2">
-                          {{ $produit->prix_promo }} FCFA
-                        </span><br>
-                        <small class="text-muted ms-1">
-                          <del>{{ $produit->getPrice() }} FCFA</del>
-                        </small>
-                      </div>
-                      <button class="btn btn-sm btn-primary rounded-pill px-3"
-                              wire:click="addToCart({{ $produit->id }})"
-                              aria-label="Ajouter {{ $produit->name }} au panier">
-                        <i class="fas fa-cart-plus me-1"></i>Ajouter
-                      </button>
-                    </div>
-                  </div>
-
                 </div>
-              </div>
-            @endforeach
-          </div>
-        </div>
-      @endforeach
+            </div>
+        @endforeach
     </div>
+    
+    <script>
+        $(document).ready(function(){
+            $('#carouselProduits').owlCarousel({
+                loop: true,
+                margin: 15,
+                nav: true,
+                dots: false,
+                autoplay: true,
+                autoplayTimeout: 3000,
+                autoplayHoverPause: true,
+                responsive:{
+                    0:{ items:1 },
+                    576:{ items:2 },
+                    768:{ items:3 },
+                    992:{ items:4 }
+                }
+            });
+        });
+    </script>
 
-    {{-- Contrôles --}}
-    <button class="carousel-control-prev" type="button" data-bs-target="#carouselPromoProduits" data-bs-slide="prev">
-      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-      <span class="visually-hidden">Précédent</span>
-    </button>
-    <button class="carousel-control-next" type="button" data-bs-target="#carouselPromoProduits" data-bs-slide="next">
-      <span class="carousel-control-next-icon" aria-hidden="true"></span>
-      <span class="visually-hidden">Suivant</span>
-    </button>
   </div>
 
   {{-- Lien vers toutes les promos --}}
