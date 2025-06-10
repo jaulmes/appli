@@ -59,7 +59,7 @@
     </div>
 
     {{-- Slides --}}
-    <div class="owl-carousel owl-theme" id="carouselProduits">
+    <div class="owl-carousel owl-theme" id="carouselProduitsPromo">
         @foreach($produits as $produit)
             <div class="item px-2">
                 <div class="card h-100 border-0 rounded-4 shadow-sm">
@@ -97,7 +97,7 @@
     
     <script>
         $(document).ready(function(){
-            $('#carouselProduits').owlCarousel({
+            $('#carouselProduitsPromo').owlCarousel({
                 loop: true,
                 margin: 15,
                 nav: true,
