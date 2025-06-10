@@ -2,7 +2,7 @@
     <h6>Classement des meilleurs clients</h6>
 
     <table id="clientsTable" class="table table-bordered table-striped table-responsive">
-        <thead>
+        <thead style="position: sticky; top: 0;">
             <tr>
                 <th>Nom du client</th>
                 <th>Transactions</th>
