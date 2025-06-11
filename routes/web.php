@@ -136,6 +136,8 @@ Route::middleware('auth')->group(function () {
      * bon de commande
      */
     Route::get('bonCommandes/index', [BonCommandeController::class, 'index'])->name('bonCommandes.index');
+    Route::get('bonCommandes/create', [BonCommandeController::class, 'create'])->name('bonCommandes.create');
+    
     
     
     /**

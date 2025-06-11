@@ -47,6 +47,11 @@ class User extends Authenticatable
 
     protected $guard_name = 'web';
 
+    public function bonCommandes()
+    {
+        return $this->hasMany(BonCommande::class);
+    }
+
     //relation avec celui qui a cree la tache
     public function createurTache(){
         return $this->hasMany(Tache::class, 'created_by');

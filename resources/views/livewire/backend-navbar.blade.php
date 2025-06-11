@@ -42,7 +42,7 @@
                 </li>
                 <!-- bon de commande -->
                 <li class="nav-item">
-                    <a href="{{ route('bonCommandes.index') }}" class="nav-link {{ Request::is('bonCommandes/index*') ? 'active' : '' }}">
+                    <a href="{{ route('bonCommandes.index') }}" class="nav-link {{ Request::is('bonCommandes*') ? 'active' : '' }}">
                         🛒
                         <p>Bon de Commandes</p>
                     </a>
