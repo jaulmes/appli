@@ -15,13 +15,13 @@ class Client extends Model
     ] ;
 
     public function recus(){
-        return $this->hasMany(Recu::class);
+        return $this->hasMany(Recu::class, 'client_id');
     }
     public function installations(){
         return $this->hasMany(Installation::class);
     }
     public function ventes(){
-        return $this->hasMany(Vente::class);
+        return $this->hasMany(Vente::class, 'client_id');
     }
     public function proformats(){
         return $this->hasMany(Proformat::class);

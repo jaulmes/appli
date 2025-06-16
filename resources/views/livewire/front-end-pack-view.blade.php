@@ -34,7 +34,7 @@
                     </a>
 
                     <div class="card-body p-3 text-center">
-                        <h5 class="fw-bold">{{ $pack->name }}</h5>
+                        <h5 class="fw-bold">{{ $pack->titre }}</h5>
                         <div class="d-flex justify-content-between align-items-center mt-2">
                             <span class="badge bg-success fs-6">{{ $pack->prix }}</span>
                             <button wire:click="addProductToCart({{ $pack->id }})" class="btn btn-sm btn-primary rounded-pill px-3">

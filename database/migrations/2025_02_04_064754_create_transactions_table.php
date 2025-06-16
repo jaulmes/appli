@@ -78,6 +78,12 @@ return new class extends Migration
                                         ->onUpdate('cascade')
                                         ->onDelete('cascade');
 
+            $table->unsignedBigInteger('bon_commande_id')->nullable();
+            $table->foreign('bon_commande_id')->references('id')
+                                        ->on('bon_commandes')
+                                        ->onUpdate('cascade')
+                                        ->onDelete('cascade');
+
             $table->timestamps();
         });
     }

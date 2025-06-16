@@ -2,13 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\BonCommande;
 use Illuminate\Http\Request;
 
 class BonCommandeController extends Controller
 {
     public function index()
     {
-        return view('bonCommandes.index');
+        $bonCommandes = BonCommande::all();
+        return view('bonCommandes.index', compact('bonCommandes'));
     }
 
     public function create(){

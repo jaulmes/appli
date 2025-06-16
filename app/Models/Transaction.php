@@ -23,6 +23,10 @@ class Transaction extends Model
         'recu_id'
     ];
 
+    public function bonCommandes(){
+        return $this->belongsTo(BonCommande::class, 'bon_commande_id');
+    }
+
     public function ventes(){
         return $this->belongsTo(Vente::class, 'vente_id');
     }

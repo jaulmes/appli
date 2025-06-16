@@ -178,6 +178,7 @@ class PanierController extends Controller
         $comptes->montant = $comptes->montant + $transactions->montantVerse - $ventes->commission;
 
         $comptes->save();
+        $transactions->vente_id = $ventes->id;
         $transactions->save();
 
         //je relie chaque produit du panier a la vente 
@@ -353,6 +354,7 @@ class PanierController extends Controller
             $comptes->montant = $comptes->montant + $transactions->montantVerse - $installations->commission;
             $comptes->save();
             
+            $transactions->installations_id = $installations->id;
             $transactions->save();
             
             //je relie chaque produit du pqnier a l'installation
@@ -500,6 +502,7 @@ class PanierController extends Controller
 
             $proformats->save();
 
+            $transactions->proformat_id = $proformats->id;
             $transactions->save();
             //je relie chaque produit du pqnier a la vente 
             foreach($panier as $produit){
