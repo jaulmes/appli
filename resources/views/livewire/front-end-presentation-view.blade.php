@@ -43,8 +43,14 @@
       @foreach ($presentations as $index => $presentation)
         <div class="carousel-item @if($index === 0) active @endif">
           <!-- Image responsive avec style conditionnel -->
-          <img src="{{ asset('storage/images/presentations/'.$presentation->image) }}" 
-              class="d-block " 
+           @php
+              $image1 = public_path('images/presentations/'. $presentation->image);
+              $image2 = public_path('storage/images/presentations/'. $presentation->image);
+              $url = file_exists($image1)? asset('images/presentations/'. $presentation->image)
+                                          : asset('storage/images/presentations/' . $presentation->image);
+          @endphp
+          <img src="{{$url }}"
+              class="d-block w-100" 
               alt="Image {{ $index + 1 }}"
               style=" border: solid gold 4px; border-radius: 20px; height: 20em; width: 100%;">
         </div>
