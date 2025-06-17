@@ -6,7 +6,16 @@
     <!-- Image du service -->
     <div class="col-md-6">
       <div class="position-relative overflow-hidden image-zoom-container rounded shadow">
-        <img src="{{ asset('storage/images/services/'.$service->image) }}" alt="{{ $service->name }}" class="img-fluid w-100 h-100 object-fit-cover transition-all zoom-image">
+          @php
+              $image1 = public_path('images/services/'. $service->image);
+              $image2 = public_path('storage/images/services/'. $service->image);
+              $url = file_exists($image1)? asset('images/services/'. $service->image)
+                                          : asset('storage/images/services/' . $service->image);
+          @endphp
+          <img src="{{$url }}"
+              alt="{{ $service->name }}"
+              class="img-fluid w-100 h-100 object-fit-cover transition-all zoom-image"
+              >
       </div>
     </div>
 
