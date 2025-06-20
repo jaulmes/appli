@@ -19,9 +19,20 @@ class FrontEndAddAnnonceAdmin extends Component
 
     public function mount()
     {
+        $this->liaison = '';
         $this->annonces = Annonce::all();
         $this->produits = Produit::all();
         $this->services = Service::all();
+    }
+
+    public function handleLiaisonChange()
+    {
+        
+        if ($this->liaison === 'produit') {
+            $this->liaison = 'produit';
+        } else {
+            $this->liaison = 'service';
+        }
     }
 
     public function addAnnonce()
@@ -48,13 +59,11 @@ class FrontEndAddAnnonceAdmin extends Component
         else{
             $annonce->image = '';
         }
-        if ($this->produit_id) {
+        if ($this->liaison === 'produit') {
             $annonce->produit_id = $this->produit_id;
-        } else {
-            $annonce->produit_id = null;
+        } elseif ($this->liaison === 'service') {
+            $annonce->service_id = $this->service_id;
         }
-        $annonce->produit_id = $this->produit_id;
-        $annonce->service_id = $this->service_id;
         $annonce->status = $this->status;
         $annonce->save();
 

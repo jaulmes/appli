@@ -7,74 +7,79 @@
         </h5>
     </div>
 
-    <div class="card-body p-4" wire:ignore>
+    <div class="card-body p-4" >
         
         <div class="row consumption" >
             <div class="col">
-                <label for="">Liaison de l'annonce </label>
+                <label for="">Liaison de l'annonce {{$liaison}} </label>
                 <div class="row form-check">
-                    <input id="service" class="form-check-input" type="radio" name="type_annonce"  value="service" >
+                    <input class="form-check-input" type="radio" id="service" name="liaison" wire:change="handleLiaisonChange()" wire:model="liaison"  value="service" >
                     <label class="form-check-label" for="service">Service</label>
                 </div>
                 <div class="row form-check">
-                    <input class="form-check-input" type="radio" id="Produit" name="type_annonce"  value="produit" >
+                    <input class="form-check-input" type="radio" id="Produit" name="liaison" wire:change="handleLiaisonChange()" wire:model="liaison"  value="produit">
                     <label class="form-check-label" for="Produit">Produit</label>
                 </div>
             </div>
             
             <div class="col">
+                
             <!-- Section pour le produit -->
-                <div class="col-md-6" id="produitSection" style="display: none;">
-                    <div class="form-group">
+                @if($liaison === 'produit')
+                    <div class="col-md-6" >
+                        <div class="form-group">
 
-                        <label >Produit</label>
-                        <select 
+                            <label >Produit</label>
+                            <select 
                                 id="produit_id"
-                                name="produit_id"
-                                wire:model.defer="produit_id"
+                                wire:model="produit_id"
                                 class="form-control select2  "
-                                data-placeholder="Sélectionnez un produit"
-                                required>
-                            <option  selected>choisir le produit</option>
-                            @foreach($produits as $produit)
-                            <option value="{{ $produit->id }}" {{ old('produit_id') == $produit->id ? 'selected' : '' }}>
-                                {{ $produit->name }}
-                            </option>
-                            @endforeach
-                        </select>
-                        
-                        @error('produit_id')
-                            <div class="invalid-feedback">
-                            <i class="fas fa-exclamation-circle me-1"></i>{{ $message }}
-                            </div>
-                        @enderror
+                                >
+                                <option  selected>choisir le produit</option>
+                                @foreach($produits as $produit)
+                                    <option value="{{ $produit->id }}">
+                                        {{ $produit->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            
+                            @error('produit_id')
+                                <div class="invalid-feedback">
+                                <i class="fas fa-exclamation-circle me-1"></i>{{ $message }}
+                                </div>
+                            @enderror
+                        </div>
+                    </div> 
+                @endif  
+                @if($liaison === 'service')
+                    <!-- Section pour le service -->
+                    <div class="col-md-6"  >
+                        <div class="form-floating">
+                            <label for="service">Service</label>
+                            <select     
+                                    wire:model="service_id"
+                                    wire:change="updatedProduitChoisi()"
+                                
+                                    id="service"
+                                    name="service_id"
+                                    class="form-select select2 @error('service_id') is-invalid @enderror"
+                                    data-placeholder="Sélectionnez un service"
+                                    required>
+                                <option  selected>choisir le service</option>
+                                @foreach($services as $service)
+                                <option value="{{ $service->id }}" >
+                                    {{ $service->name }}
+                                </option>
+                                @endforeach
+                            </select>
+                            @error('service_id')
+                                <div class="invalid-feedback">
+                                <i class="fas fa-exclamation-circle me-1"></i>{{ $message }}
+                                </div>
+                            @enderror
+                        </div>
                     </div>
-                </div>   
-                <!-- Section pour le service -->
-                <div class="col-md-6" id="serviceSection" style="display: none;">
-                    <div class="form-floating">
-                        <label for="produit">Service</label>
-                        <select     
-                                wire:model="service_id"
-                                id="service"
-                                name="service_id"
-                                class="form-select select2 @error('service_id') is-invalid @enderror"
-                                data-placeholder="Sélectionnez un service"
-                                required>
-                            <option  selected>choisir le service</option>
-                            @foreach($services as $service)
-                            <option value="{{ $service->id }}" >
-                                {{ $service->name }}
-                            </option>
-                            @endforeach
-                        </select>
-                        @error('service_id')
-                            <div class="invalid-feedback">
-                            <i class="fas fa-exclamation-circle me-1"></i>{{ $message }}
-                            </div>
-                        @enderror
-                    </div>
-                </div>
+                @endif
             </div>
         </div>
         <div class="row g-4 mt-3 consumption">
@@ -100,8 +105,8 @@
             <div class="col-md-6">
                 <select name="status" wire:model="status" id="status" class="form-select @error('status') is-invalid @enderror" required>
                     <option  selected >Sélectionner le status</option>
-                        <option value="actif">actif</option>
-                        <option value="desactiver">desactiver</option>
+                    <option value="actif">actif</option>
+                    <option value="desactiver">desactiver</option>
                 </select>
             </div>
         </div>
@@ -128,28 +133,4 @@
         }
     </style>
     <script src="https://code.jquery.com/jquery-3.7.1.slim.js" integrity="sha256-UgvvN8vBkgO0luPSUl2s8TIlOSYRoGFAX4jlCIm9Adc=" crossorigin="anonymous"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const radios = document.querySelectorAll('input[name="type_annonce"]');
-            const produitSection = document.getElementById('produitSection');
-            const serviceSection = document.getElementById('serviceSection');
-
-            radios.forEach(radio => {
-                radio.addEventListener('change', function () {
-                    if (this.value === 'produit') {
-                        console.log('Produit selected');
-                        produitSection.style.display = 'block';
-                        serviceSection.style.display = 'none';
-                    } else if (this.value === 'service') {
-                        console.log('Service selected');
-                        serviceSection.style.display = 'block';
-                        produitSection.style.display = 'none';
-                    }
-                });
-            });
-        });
-
-    </script>
-
-    
 </div>
