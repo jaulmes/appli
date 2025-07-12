@@ -354,7 +354,7 @@ class PanierController extends Controller
             $comptes->montant = $comptes->montant + $transactions->montantVerse - $installations->commission;
             $comptes->save();
             
-            $transactions->installations_id = $installations->id;
+            $transactions->installation_id = $installations->id;
             $transactions->save();
             
             //je relie chaque produit du pqnier a l'installation
