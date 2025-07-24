@@ -41,12 +41,14 @@
                     </a>
                 </li>
                 <!-- bon de commande -->
-                <li class="nav-item">
-                    <a href="{{ route('bonCommandes.index') }}" class="nav-link {{ Request::is('bonCommandes*') ? 'active' : '' }}">
-                        🛒
-                        <p>Bon de Commandes</p>
-                    </a>
-                </li>
+                @can('VOIR_CHARGE')
+                    <li class="nav-item">
+                        <a href="{{ route('bonCommandes.index') }}" class="nav-link {{ Request::is('bonCommandes*') ? 'active' : '' }}">
+                            🛒
+                            <p>Bon de Commandes</p>
+                        </a>
+                    </li>
+                @endcan
                 <!-- packs produits -->
                 <li class="nav-item has-treeview {{ Request::is('panier/pack*') ? 'menu-open' : '' }}">
                     <a href="#" class="nav-link {{ Request::is('panier/pack*') ? 'active' : '' }}"> 
@@ -83,14 +85,20 @@
                     </a>
                 </li>
                 @endcan
-
-                <!-- Clients -->
+                <!--suivi des clients-->
                 <li class="nav-item">
+                    <a href="{{ route('suivi.client') }}" class="nav-link {{ Request::is('suivi/client*') ? 'active' : '' }}">
+                        👤
+                        <p>suivi des clients</p>
+                    </a>
+                </li>
+                <!-- Clients -->
+                <!-- <li class="nav-item">
                     <a href="{{ route('clients.index') }}"  class="nav-link {{ Request::is('clients/index*') ? 'active' : '' }}">
                         👤
                         <p>Clients</p>
                     </a>
-                </li>
+                </li> -->
 
                 <!-- Tâches -->
                 <li class="nav-item">

@@ -14,6 +14,10 @@ class Client extends Model
         'numero',
     ] ;
 
+    public function suivis(){
+        return $this->hasMany(Suivi::class);
+    }
+    
     public function recus(){
         return $this->hasMany(Recu::class, 'client_id');
     }

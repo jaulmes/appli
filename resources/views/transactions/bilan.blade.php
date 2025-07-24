@@ -13,6 +13,14 @@
     </div>
 
     <div class="card-body">
+        <!-- Classement charge -->
+        <div class="">
+            <div class="card h-100">
+                <div class="card-body">
+                    <livewire:bilan-benefice-reele-mensuel :moi="$moi" />
+                </div>
+            </div>
+        </div>
         <div class="row">
             <!-- Classement client -->
             <div class="col-md-6 mb-3">
@@ -41,7 +49,16 @@
                     </div>
                 </div>
             </div>
+            <!-- Classement charge -->
+            <div class="col-md-6 mb-3">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <livewire:bilan-classement-charge :moi="$moi" />
+                    </div>
+                </div>
+            </div>
         </div>
+        
     </div>
 </div>
 @endsection

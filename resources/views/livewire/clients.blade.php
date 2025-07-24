@@ -41,10 +41,5 @@
                 </tbody>
             </table>
         </div>
-        <div class="card-footer clearfix">
-            <ul class="pagination pagination-sm m-0 float-right">
-                {{ $clients->links('pagination::bootstrap-4')}}
-            </ul>
-        </div>
     </div>
 </div>

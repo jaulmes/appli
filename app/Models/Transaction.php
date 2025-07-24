@@ -20,8 +20,19 @@ class Transaction extends Model
         'montantVerse',
         'user_id',
         'compte_id',
+        'suivi_id',
+        'bon_commande_id',
+        'vente_id',
+        'installation_id',
+        'proformat_id',
+        'charge_id',
+        'chargeDetail_id',
         'recu_id'
     ];
+
+    public function suivis(){
+        return $this->belongsTo(Suivi::class, 'suivi_id');
+    }
 
     public function bonCommandes(){
         return $this->belongsTo(BonCommande::class, 'bon_commande_id');

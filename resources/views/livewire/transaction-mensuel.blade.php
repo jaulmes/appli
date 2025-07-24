@@ -36,8 +36,8 @@
                 <tbody>
                     @foreach($transactions as $transaction)
                         <tr class="align-middle small">
-                            <td>{{$transaction->ventes?->clients?->nom?? $transaction->nomClient ?? $transaction->recus?->clients?->nom ?? $transaction->recus?->ventes?->commandes?->clients?->nom  }}</td>
-                            <td>{{ $transaction->numeroClient ?? $transaction->recus->clients->numero ?? $transaction->recus->ventes->commandes->clients->numero ?? $transaction->ventes->clients->numero?? '-' }}</td>
+                            <td>{{$transaction->clients->nom?? $transaction->suivis->clients->nom?? $transaction->ventes?->clients?->nom?? $transaction->nomClient ?? $transaction->recus?->clients?->nom ?? $transaction->recus?->ventes?->commandes?->clients?->nom  }}</td>
+                            <td>{{$transaction->clients->numero?? $transaction->suivis->clients->numero?? $transaction->numeroClient ?? $transaction->recus->clients->numero ?? $transaction->recus->ventes->commandes->clients->numero ?? $transaction->ventes->clients->numero?? '-' }}</td>
                             <td>
                                 {{ $transaction->user->name ?? $transaction->recus->users->name ?? $transaction->ventes->user->name?? 'Aucun nom' }}
                             </td>

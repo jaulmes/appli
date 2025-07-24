@@ -18,6 +18,7 @@ use App\Http\Controllers\produitController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RecusController;
 use App\Http\Controllers\SimulationController;
+use App\Http\Controllers\SuiviClientController;
 use App\Http\Controllers\TacheController;
 use App\Http\Controllers\VentesController;
 use App\Http\Controllers\UserController;
@@ -137,6 +138,12 @@ Route::middleware('auth')->group(function () {
      */
     Route::get('bonCommandes/index', [BonCommandeController::class, 'index'])->name('bonCommandes.index');
     Route::get('bonCommandes/create', [BonCommandeController::class, 'create'])->name('bonCommandes.create');
+
+    /**
+     * suivi des clients
+     */
+    Route::get('suivi/client/index', [SuiviClientController::class, 'index'])->name('suivi.client');
+    Route::get('suivi/client/show/{id}', [SuiviClientController::class, 'show'])->name('suivi.show');
     
     
     

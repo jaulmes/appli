@@ -47,6 +47,10 @@ class User extends Authenticatable
 
     protected $guard_name = 'web';
 
+    public function suivis(){
+        return $this->hasMany(Suivi::class);
+    }
+
     public function bonCommandes()
     {
         return $this->hasMany(BonCommande::class);

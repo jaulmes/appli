@@ -56,7 +56,10 @@
         </li>
         <livewire:notification-component wire:click="markReadNotification()" />
       </ul>
+      <!--defilement des messages notifications-->
+      
     </nav>
+
     <!-- /.navbar -->
 
     <!-- /.navbar -->
@@ -65,12 +68,14 @@
     <aside class="main-sidebar sidebar-dark-primary elevation-4">
       @include('dashboard.sidebar')
     </aside>
+    
     <!-- /.sidebar -->
 
     <!-- Content Wrapper -->
     <div class="content-wrapper">
       <section class="content">
         <div class="container-fluid">
+              <livewire:notification/>
           @yield('content')
         </div>
       </section>

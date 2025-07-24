@@ -72,6 +72,12 @@ return new class extends Migration
                                         ->onUpdate('cascade')
                                         ->onDelete('cascade');
 
+            $table->unsignedBigInteger('suivi_id')->nullable();
+            $table->foreign('suivi_id')->references('id')
+                                        ->on('suivis')
+                                        ->onUpdate('cascade')
+                                        ->onDelete('cascade');
+
             $table->unsignedBigInteger('commande_id')->nullable();
             $table->foreign('commande_id')->references('id')
                                         ->on('commandes')
