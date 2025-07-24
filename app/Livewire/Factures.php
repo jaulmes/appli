@@ -84,6 +84,7 @@ class Factures extends Component
                 $comptes->save();
                 $produit->save();
             }
+            $ventes->delete();
         }
         elseif($this->type == "installations"){
             $installations = $facture->installations;
@@ -104,6 +105,7 @@ class Factures extends Component
                 $comptes->save();
                 $produit->save();
             }
+            $installations->delete();
         }
 
         $dateHeure = now();
