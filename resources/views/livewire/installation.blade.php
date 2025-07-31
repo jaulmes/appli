@@ -1,34 +1,29 @@
-<div>
-    <div class="card fs-0.2" style="margin-top: 2em">
-        <div class="card-header">
-            <h3 class="card-title "><strong>Liste des installations</strong></h3>
-            <div class="card-tools">
-                <div class="input-group input-group-sm" style="width: 150px;">
-                    <input type="search"  class="form-control float-right" 
-                                placeholder="Search" wire:model="query" wire:input="update_search">
-                    <div class="input-group-append">
-                        <button type="submit" class="btn btn-default">
-                            <i class="fas fa-search"></i>
-                        </button>
-                    </div>
-                </div>
+<div class="container-fluid mt-4">
+    <div class="card shadow-sm border-0">
+        <div class="card-header d-flex justify-content-between align-items-center bg-light">
+            <h4 class="mb-0 fw-bold text-primary">Liste des installations</h4>
+            <div class="input-group input-group-sm w-auto">
+                <input type="search" class="form-control" placeholder="Rechercher..." wire:model="query" wire:input="update_search">
+                <button class="btn btn-outline-secondary" type="button">
+                    <i class="fas fa-search"></i>
+                </button>
             </div>
         </div>
 
-        <div class="card-body table-responsive p-0" style="height: 400px; font-size: x-small;">
-            <table class="table table-head-fixed text-nowrap">
-                <thead>
+        <div class="card-body p-0" style="max-height: 500px; overflow-y: auto;">
+            <table class="table table-hover table-bordered text-nowrap align-middle" style="height: 400px; font-size: x-small;">
+                <thead class="table-primary text-center">
                     <tr>
-                        <th>Nom du client</th>
-                        <th>Numero du client</th>
-                        <th>Autheur</th>
+                        <th>Client</th>
+                        <th>Numéro</th>
+                        <th>Auteur</th>
                         <th>Produits</th>
                         <th>Commission</th>
-                        <th>Montant total des Produits</th>
-                        <th>Reduction</th>
-                        <th>Main d'Oeuvre</th>
-                        <th>Net A Payer</th>
-                        <th>Montant Deja Versé</th>
+                        <th>Total Produits</th>
+                        <th>Réduction</th>
+                        <th>Main d'œuvre</th>
+                        <th>Net à Payer</th>
+                        <th>Versé</th>
                         <th>Reste</th>
                         <th>Date</th>
                         <th>Statut</th>
@@ -38,32 +33,42 @@
                 <tbody id="result">
                     @foreach($installations as $installation)
                     <tr>
-                        <td>{{$installation->nomClient}}</td>
-                        <td>{{$installation->numeroClient}}</td>
-                        <td>{{$installation->user->name}}</td>
+                        <td>{{ $installation->nomClient }}</td>
+                        <td>{{ $installation->numeroClient }}</td>
+                        <td>{{ $installation->user->name }}</td>
                         <td>
                             @foreach($installation->produits as $produit)
-                                <u>Qte</u>: {{$produit->pivot->quantity}}, <u>Titre</u>: {{$produit->name}}, <u>Prix</u>: {{$produit->pivot->price}};</br>
+                                <span class="d-block small">
+                                    <strong>Qte:</strong> {{ $produit->pivot->quantity }},
+                                    <strong>Titre:</strong> {{ $produit->name }},
+                                    <strong>Prix:</strong> {{ number_format($produit->pivot->price, 0, ',', ' ') }} FCFA
+                                </span>
                             @endforeach
                         </td>
-                        <td>{{$installation->commission}}</td>
-                        <td>{{$installation->montantProduit}}</td>
-                        <td>{{$installation->reduction}}</td>
-                        <td>{{$installation->mainOeuvre}}</td>
-                        <td>{{$installation->NetAPayer}}</td>
-                        <td>{{$installation->montantVerse}}</td>
-                        <td>{{$installation->NetAPayer - $installation->montantVerse}}</td>
-                        <td>{{$installation->date}}</td>
-                        <td>{{$installation->statut}}</td>
-                        @if($installation->statut == "non termine")
-                            <td>
-                                <a href="{{ route('installations.voir.ajouterPaiement', $installation->id)}}">
-                                    <button type="button" class="btn btn-primary" >
-                                        Ajouter un paiement
-                                    </button>
-                                </a>
-                            </td>
-                        @endif
+                        <td>{{ number_format($installation->commission, 0, ',', ' ') }} FCFA</td>
+                        <td>{{ number_format($installation->montantProduit, 0, ',', ' ') }} FCFA</td>
+                        <td>{{ number_format($installation->reduction, 0, ',', ' ') }} FCFA</td>
+                        <td>{{ number_format($installation->mainOeuvre, 0, ',', ' ') }} FCFA</td>
+                        <td>{{ number_format($installation->NetAPayer, 0, ',', ' ') }} FCFA</td>
+                        <td>{{ number_format($installation->montantVerse, 0, ',', ' ') }} FCFA</td>
+                        <td class="text-danger fw-bold">
+                            {{ number_format($installation->NetAPayer - $installation->montantVerse, 0, ',', ' ') }} FCFA
+                        </td>
+                        <td>{{ $installation->created_at->format('d/m/Y') }}</td>
+                        <td>
+                            <span class="badge {{ $installation->statut == 'non termine' ? 'bg-warning text-dark' : 'bg-success' }}">
+                                {{ ucfirst($installation->statut) }}
+                            </span>
+                        </td>
+                        <td>
+                            @if($installation->statut == 'non termine')
+                            <a href="{{ route('installations.voir.ajouterPaiement', $installation->id) }}" class="btn btn-sm btn-outline-primary">
+                                <i class="fas fa-plus"></i> Paiement
+                            </a>
+                            @else
+                            <span class="text-muted small">Complété</span>
+                            @endif
+                        </td>
                     </tr>
                     @endforeach
                 </tbody>
