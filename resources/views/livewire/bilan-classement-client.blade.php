@@ -57,7 +57,10 @@
                                                     $totalBenefice += $benefice;
                                                 @endphp
                                                 <tr>
-                                                    <td>Vente</td>
+                                                    <td>
+                                                        Vente <br>
+                                                        <small class="text-muted">{{ $vente->created_at->format('d/m/Y') }}</small>
+                                                    </td>
                                                     <td>{{ $produit->name }}</td>
                                                     <td>{{ $quantite }}</td>
                                                     <td>{{ number_format($achatUnitaire, 2) }}</td>
