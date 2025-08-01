@@ -14,20 +14,20 @@
             <table class="table table-hover table-bordered text-nowrap align-middle" style="height: 400px; font-size: x-small;">
                 <thead class="table-primary text-center">
                     <tr>
-                        <th>Client</th>
-                        <th>Numéro</th>
-                        <th>Auteur</th>
-                        <th>Produits</th>
-                        <th>Commission</th>
-                        <th>Total Produits</th>
-                        <th>Réduction</th>
-                        <th>Main d'œuvre</th>
-                        <th>Net à Payer</th>
-                        <th>Versé</th>
-                        <th>Reste</th>
-                        <th>Date</th>
-                        <th>Statut</th>
-                        <th>Actions</th>
+                        <th style="position: sticky; top: 0; z-index: 10; background-color: #cfe2ff;">Client</th>
+                        <th style="position: sticky; top: 0; z-index: 10; background-color: #cfe2ff;">Numéro</th>
+                        <th style="position: sticky; top: 0; z-index: 10; background-color: #cfe2ff;">Auteur</th>
+                        <th style="position: sticky; top: 0; z-index: 10; background-color: #cfe2ff;">Produits</th>
+                        <th style="position: sticky; top: 0; z-index: 10; background-color: #cfe2ff;">Commission</th>
+                        <th style="position: sticky; top: 0; z-index: 10; background-color: #cfe2ff;">Total Produits</th>
+                        <th style="position: sticky; top: 0; z-index: 10; background-color: #cfe2ff;">Réduction</th>
+                        <th style="position: sticky; top: 0; z-index: 10; background-color: #cfe2ff;">Main d'œuvre</th>
+                        <th style="position: sticky; top: 0; z-index: 10; background-color: #cfe2ff;">Net à Payer</th>
+                        <th style="position: sticky; top: 0; z-index: 10; background-color: #cfe2ff;">Versé</th>
+                        <th style="position: sticky; top: 0; z-index: 10; background-color: #cfe2ff;">Reste</th>
+                        <th style="position: sticky; top: 0; z-index: 10; background-color: #cfe2ff;">Date</th>
+                        <th style="position: sticky; top: 0; z-index: 10; background-color: #cfe2ff;">Statut</th>
+                        <th style="position: sticky; top: 0; z-index: 10; background-color: #cfe2ff;">Actions</th>
                     </tr>
                 </thead>
                 <tbody id="result">
