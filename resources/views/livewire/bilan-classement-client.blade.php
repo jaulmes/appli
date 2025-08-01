@@ -87,7 +87,9 @@
                                                     $totalBenefice += $benefice;
                                                 @endphp
                                                 <tr>
-                                                    <td>Installation</td>
+                                                    <td>
+                                                        Installation<br>
+                                                        <small class="text-muted">{{ $installation->created_at->format('d/m/Y') }}</small></td>
                                                     <td>{{ $produit->name }}</td>
                                                     <td>{{ $quantite }}</td>
                                                     <td>{{ number_format($achatUnitaire, 2) }}</td>
