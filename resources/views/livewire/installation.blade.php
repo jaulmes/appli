@@ -33,7 +33,7 @@
                 <tbody id="result">
                     @foreach($installations as $installation)
                     <tr>
-                        <td>{{ $installation->nomClient }}</td>
+                        <td>{{ $installation->nomClient?? $installation->clients->nom?? 'N/A' }}</td>
                         <td>{{ $installation->numeroClient }}</td>
                         <td>{{ $installation->user->name }}</td>
                         <td>
