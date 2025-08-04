@@ -207,38 +207,38 @@
                     </li>
 
 
-                    <!-- Factures et Reçus -->
-                    <li class="nav-item has-treeview {{ Request::is('commandes*') ? 'menu-open' : '' }}">
-                        <a href="#" class="nav-link {{ Request::is('commandes*') ? 'active' : '' }}">
-                            📦
-                            <p>Commandes </p>
-                            <span class="badge badge-danger"> {{ $nombreCommandesNonLue}}</span>
-                            <i class="right fas fa-angle-left"></i>
-                        </a>
-                        <ul class="nav nav-treeview">
-                            @foreach($commandesNonLue as $commande)
-                            <li class="nav-item" >
-                                <a href="{{ route('commandes.detail', $commande->id) }}"
-                                    class="nav-link {{ request()->is('commandes/'.$commande->id) ? 'active' : '' }}" >
-                                    <i class="fas fa-shopping-cart nav-icon"></i>
-                                    <p>
-                                        Commande #{{ $commande->id }}
-                                        <span class="badge badge-danger ml-2">new</span>
-                                    </p>
-                                </a>
-                            </li>
-                            @endforeach
-                            <li class="nav-item">
-                                <a href="{{ route('commandes.index') }}"  class="nav-link {{ Request::is('commandes/index*') ? 'active' : '' }}">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Toutes les commandes</p>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
+                    
                     @endcan
                 @endcan
-
+                <!-- Factures et Reçus -->
+                <li class="nav-item has-treeview {{ Request::is('commandes*') ? 'menu-open' : '' }}">
+                    <a href="#" class="nav-link {{ Request::is('commandes*') ? 'active' : '' }}">
+                        📦
+                        <p>Commandes </p>
+                        <span class="badge badge-danger"> {{ $nombreCommandesNonLue}}</span>
+                        <i class="right fas fa-angle-left"></i>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        @foreach($commandesNonLue as $commande)
+                        <li class="nav-item" >
+                            <a href="{{ route('commandes.detail', $commande->id) }}"
+                                class="nav-link {{ request()->is('commandes/'.$commande->id) ? 'active' : '' }}" >
+                                <i class="fas fa-shopping-cart nav-icon"></i>
+                                <p>
+                                    Commande #{{ $commande->id }}
+                                    <span class="badge badge-danger ml-2">new</span>
+                                </p>
+                            </a>
+                        </li>
+                        @endforeach
+                        <li class="nav-item">
+                            <a href="{{ route('commandes.index') }}"  class="nav-link {{ Request::is('commandes/index*') ? 'active' : '' }}">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Toutes les commandes</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
                 <!-- Approvisionnement -->
                 @can('VOIR_ACHAT')
                     <li class="nav-item has-treeview {{ Request::is('achats*') ? 'menu-open' : '' }}">
