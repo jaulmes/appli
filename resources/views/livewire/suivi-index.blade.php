@@ -93,9 +93,28 @@
                                         <livewire:suivi-detail :suivi="$suivi" />
 
                                         {{-- Supprimer --}}
-                                        <button class="btn btn-outline-danger btn-sm" wire:click="supprimer({{$suivi->id}})" title="Supprimer">
+                                        <button type="button" data-bs-toggle="modal" data-bs-target="#supprimerSuivi-{{$suivi->id}}" class="btn btn-outline-danger btn-sm"  title="Supprimer">
                                             <i class="fas fa-trash-alt"></i>
                                         </button>
+
+                                        <!-- Modal -->
+                                        <div class="modal fade" id="supprimerSuivi-{{$suivi->id}}" tabindex="-1" aria-labelledby="suiviModalLabel-{{$suivi->id}}" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h1 class="modal-title fs-5" id="suiviModalLabel-{{$suivi->id}}">Attention!!!</h1>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        Etes vous sur de vouloir supprimer ce suivi ?
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                                                        <button type="button" class="btn btn-danger" wire:click="supprimer({{$suivi->id}})">Confirmer la suppression</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </td>
                             </tr>

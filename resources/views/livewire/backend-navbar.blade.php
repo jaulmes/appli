@@ -41,7 +41,7 @@
                     </a>
                 </li>
                 <!-- bon de commande -->
-                @can('VOIR_CHARGE')
+                @can('CREER_PRODUIT')
                     <li class="nav-item">
                         <a href="{{ route('bonCommandes.index') }}" class="nav-link {{ Request::is('bonCommandes*') ? 'active' : '' }}">
                             🛒

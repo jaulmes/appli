@@ -36,8 +36,8 @@
                 <tbody>
                     @foreach($transactions as $transaction)
                         <tr class="align-middle small">
-                            <td>{{$transaction->clients->nom?? $transaction->suivis->clients->nom?? $transaction->ventes?->clients?->nom?? $transaction->nomClient ?? $transaction->recus?->clients?->nom ?? $transaction->recus?->ventes?->commandes?->clients?->nom  }}</td>
-                            <td>{{$transaction->clients->numero?? $transaction->suivis->clients->numero?? $transaction->numeroClient ?? $transaction->recus->clients->numero ?? $transaction->recus->ventes->commandes->clients->numero ?? $transaction->ventes->clients->numero?? '-' }}</td>
+                            <td>{{$transaction->clients->nom?? $transaction->suivis->clients->nom?? $transaction->ventes?->clients?->nom?? $transaction->nomClient ?? $transaction->recus?->clients?->nom ?? $transaction->recus?->ventes?->commandes?->clients?->nom?? $transaction->proformats?->clients->nom  }}</td>
+                            <td>{{$transaction->clients->numero?? $transaction->suivis->clients->numero?? $transaction->numeroClient ?? $transaction->recus->clients->numero ?? $transaction->recus->ventes->commandes->clients->numero ?? $transaction->ventes->clients->numero?? $transaction->proformats?->clients->numero?? '-' }}</td>
                             <td>
                                 {{ $transaction->user->name ?? $transaction->recus->users->name ?? $transaction->ventes->user->name?? 'Aucun nom' }}
                             </td>
@@ -71,13 +71,21 @@
                                     @endif
                                 @else
                                     @if($transaction->ventes)
-                                        @foreach($transaction->ventes->packs as $pack)
+                                        @forelse($transaction->ventes->packs as $pack)
                                             <div class="mb-1">
                                                 <small>
                                                     Qte: {{ $pack->pivot->quantity }} - PU: {{ $pack->pivot->price }} - {{ $pack->titre }}
                                                 </small>
                                             </div>
-                                        @endforeach
+                                        @empty
+                                            @foreach($transaction->ventes->produits as $produit)
+                                                <div class="mb-1">
+                                                    <small>
+                                                        Qte: {{ $produit->pivot->quantity }} - PU: {{ $produit->pivot->price }} - {{ $produit->name }}
+                                                    </small>
+                                                </div>
+                                            @endforeach
+                                        @endforelse
                                     @else
                                         @forelse($transaction->produits as $produit)
                                             <div class="mb-1">
