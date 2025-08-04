@@ -40,7 +40,7 @@ class AddSuivi extends Component
                 $clients->nom = $this->nom_nouveau_client;
                 $clients->email = $this->email_nouveau_client;
                 $clients->numero = $this->numero_nouveau_client;
-                $clients->addresse = $this->adresse_client;
+                $clients->adresse = $this->adresse_client;
                 $clients->save();
             } else {
                 $clients = Client::find($this->client_id);
