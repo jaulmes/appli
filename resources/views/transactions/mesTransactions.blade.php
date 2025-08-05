@@ -30,7 +30,7 @@
                     <div class="card-tools">
                         
                         <div class="input-group input-group-sm" style="width: 150px;">
-                           <form  method="get" action="{{ route('transaction.index') }}">
+                           <form  method="get" action="{{ route('transaction.mesTransactions') }}">
                                 @csrf
                                 <select name="month" id="month" onchange="this.form.submit()" id="transactionMonth">
                                     @for($i = 0; $i < 12; $i++)
