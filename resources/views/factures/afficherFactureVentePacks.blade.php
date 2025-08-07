@@ -296,12 +296,12 @@
                     </tr>
 
                     <!--packs achetes-->
-                    @foreach($ventes->packs as $pack)
+                    @foreach($ventes->produits as $produit)
                         <tr>
-                            <td>{{$pack->pivot->quantity}}</td>
-                            <td>{{$pack->titre}}</td>
-                            <td>{{$pack->pivot->prix}}</td>
-                            <td>{{$pack->pivot->quantity * $pack->pivot->prix}}</td>
+                            <td>{{$produit->pivot->quantity}}</td>
+                            <td>{{$produit->name}}</td>
+                            <td>{{$produit->pivot->price}}</td>
+                            <td>{{$produit->pivot->quantity * $produit->pivot->price}}</td>
                         </tr>
                     @endforeach
                     <tr style="font-weight: bold;">

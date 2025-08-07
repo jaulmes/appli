@@ -27,10 +27,9 @@
                         Installation solaire
                     </label>
                 </div>
-                @if(session('error'))
-                    <div class="alert alert-danger d-flex align-items-center mb-4">
-                        <i class="bi bi-info-circle-fill me-2"></i>
-                        <div>{{ session('error') }}</div>
+                @if(session('error_html'))
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        {!! session('error_html') !!}
                     </div>
                 @endif
             </div>

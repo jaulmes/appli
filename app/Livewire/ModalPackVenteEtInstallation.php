@@ -13,6 +13,7 @@ use App\Models\Transaction;
 use App\Models\Vente;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 
 use function React\Promise\all;
@@ -35,8 +36,8 @@ class ModalPackVenteEtInstallation extends Component
     public function panierTotal(){
         $this->cart = session()->get('parnier_pack', []);
         $total = 0;
-        foreach ($this->cart as $item) {
-            $total += $item['prix'] * $item['quantity'];
+        foreach ($this->cart as $produit) {
+            $total += $produit['price'] * $produit['quantity'];
         }
         return $total;
     }
@@ -62,235 +63,273 @@ class ModalPackVenteEtInstallation extends Component
 
     //enregistrer la vente d'un pack
     public function enregistrer_vente(){
-        $parnier_pack = session()->get('parnier_pack', []);
-        $totalAchat = 0;
+        try {
+            DB::beginTransaction();
+            $parnier_pack = session()->get('parnier_pack', []);
+            $totalAchat = 0;
 
-        //totaliser le prix d'achat des produits
-        foreach($parnier_pack as $item){
-            foreach($item['produits'] as $produit){
-                $totalAchat = $totalAchat + ($produit->prix_achat * $item['quantity']);
+            //totaliser le prix d'achat des produits
+            foreach($parnier_pack as $produit){
+                $totalAchat = $totalAchat + ($produit['prix_achat'] * $produit['quantity']);
             }
-        }
 
-        $ventes = new Vente();
-        if($this->nouveau_client == 'true'){
-            if(!$this->client_id){
-                $client = new Client();
-                $client->nom = $this->nom_client;
-                $client->numero = $this->numero_client;
-                $client->adresse = $this->adresse_client;
-                $client->email = $this->email_client;
-                $client->save();
-                $ventes->client_id = $client->id;
-            }
-        }else{
-            if($this->client_id){
-                $client = Client::find($this->client_id);
-                $ventes->client_id = $this->client_id;
-            }else{
-                return redirect()->back()->with('error', 'veillez selectionner un client');
-            }
-        }
-        $ventes->montantVerse = $this->montant_verse;
-        $ventes->reduction = $this->reduction;
-
-        //mise a jours du compte
-        $comptes = Compte::find($this->mode_paiement);
-
-    
-        $ventes->agentOperant = $this->agent_operant;
-        $ventes->commission = $this->commission;
-        if($this->commission){
-            $charges = new Charge();
-            $charges->titre = "commission pour la vente du pack de ". $client->nom. " a ". $ventes->agentOperant; 
-            $charges->montant = $this->commission;
-            $charges->save(); 
-            if($comptes){
-                $comptes->montant = $comptes->montant + $this->montant_verse - $this->commission;
-                $comptes->save();
-                $ventes->compte_id = $this->mode_paiement;
-            }else{
-                return redirect()->back()->with('error', 'veillez selectionner un compte');
-            }
-        }
-        $ventes->montantTotal = $this->panierTotal();
-        $ventes->totalAchat = $totalAchat;
-        $ventes->netAPayer = $this->panierTotal() - $this->reduction;
-        $ventes->montantVerse = $this->montant_verse;
-        if($ventes->netAPayer > $ventes->montantVerse ){
-            $ventes->statut = 'non termine';
-            $ventes->dateLimitePaiement = $this->dateLimitePaiement;
-        }else{
-            $ventes->statut = 'termine';
-        }
-        $ventes->impot = $this->impot;
-        $ventes->user_id = Auth::user()->id;
-
-        $ventes->save();
-
-        //mise a jour des stock
-        foreach($parnier_pack as $item){
-            foreach($item['produits'] as $produit){
-                $produit_selectionne = Produit::find($produit->id);
-                if($produit_selectionne->stock <= 0){
-                    return redirect()->with('error', 'le stock du produit: '.$produit->name.' est épuisé');
+            $ventes = new Vente();
+            if($this->nouveau_client == 'true'){
+                if(!$this->client_id){
+                    $client = new Client();
+                    $client->nom = $this->nom_client;
+                    $client->numero = $this->numero_client;
+                    $client->adresse = $this->adresse_client;
+                    $client->email = $this->email_client;
+                    $client->save();
+                    $ventes->client_id = $client->id;
                 }
-                if($item['quantity'] > $produit_selectionne->stock){
-                    return redirect()->with('error', 'le stock du produit: '.$produit->name.' est insuffisant');
+            }else{
+                if($this->client_id){
+                    $client = Client::find($this->client_id);
+                    $ventes->client_id = $this->client_id;
+                }else{
+                    return redirect()->back()->with('error_html', 'veillez selectionner un client');
                 }
-                $produit_selectionne->stock = $produit_selectionne->stock - $item['quantity'];
+            }
+            
+            $ventes->montantVerse = $this->montant_verse;
+            $ventes->reduction = $this->reduction;
+
+            //mise a jours du compte
+            $comptes = Compte::find($this->mode_paiement);
+            
+        
+            $ventes->agentOperant = $this->agent_operant;
+            $ventes->commission = $this->commission;
+            if($this->commission > 0){
+                $charges = new Charge();
+                $charges->titre = "commission pour la vente du pack de ". $client->nom. " a ". $ventes->agentOperant; 
+                $charges->montant = $this->commission;
+                $charges->save(); 
+                if($comptes){
+                    $comptes->montant = $comptes->montant + $this->montant_verse - $this->commission;
+                    $comptes->save();
+                    $ventes->compte_id = $this->mode_paiement;
+                }else{
+                    return redirect()->back()->with('error_html', 'veillez selectionner un compte');
+                }
+                
+            }
+            $ventes->montantTotal = $this->panierTotal();
+            $ventes->totalAchat = $totalAchat;
+            $ventes->netAPayer = $this->panierTotal() - $this->reduction;
+            $ventes->montantVerse = $this->montant_verse;
+            if($ventes->netAPayer > $ventes->montantVerse ){
+                $ventes->statut = 'non termine';
+                $ventes->dateLimitePaiement = $this->dateLimitePaiement;
+            }else{
+                $ventes->statut = 'termine';
+            }
+            $ventes->impot = $this->impot;
+            $ventes->user_id = Auth::user()->id;
+
+            //dd($ventes);
+            $ventes->save();
+
+            //mise a jour des stock
+            foreach($parnier_pack as $produit){
+                $produit_selectionne = Produit::find($produit['id']);
+                if ($produit_selectionne->stock <= 0) {
+                    $message = "<div class='d-flex justify-content-between align-items-start'>
+                                    <div>
+                                        Le stock du produit <strong>« {$produit['name']} »</strong> est épuisé.<br> 
+                                        👉<a href='" . route('achats.cart') . "' target='_blank' class='text-decoration-underline text-primary'>
+                                             Cliquez ici pour accéder au catalogue d'achat 
+                                        </a>👈  dans un nouvel onglet.
+                                        <br>Copier le titre du produit et le coller dans la barre de recherche du catalogue d'achat qui a été ouvert dans le nouvel onglet.
+                                    </div>
+                                    <button type='button' class='btn-close ms-3' data-bs-dismiss='alert' aria-label='Close'></button>
+                                </div>";
+                    return redirect()->back()->with('error_html', $message);
+                }
+                if($produit['quantity'] > $produit_selectionne->stock){
+                    return redirect()->with('error_html', 'le stock du produit: '.$produit['name'].' est insuffisant');
+                }
+                $produit_selectionne->stock = $produit_selectionne->stock - $produit['quantity'];
                 $produit_selectionne->save();
+
+                //je relie chaque produit a la vente
+                $ventes->produits()->attach($produit['id'], [
+                    'quantity' => $produit['quantity'],
+                    'price' => $produit['price'],
+                ]); 
             }
 
-            //je relie chaque panier a la vente
-            $ventes->packs()->attach($item['id'], [
-                'quantity' => $item['quantity'],
-                'prix' => $item['prix'],
-            ]); 
+            //j'enregistre dans le journal
+            $transaction = new Transaction();
+            $transaction->vente_id = $ventes->id;
+            $transaction->type = 'vente de pack';
+            $transaction->save();
+
+            //j'enregistre la facture
+            $facture = new facture();
+
+            $facture->vente_id = $ventes->id;
+            $numero = Vente::whereDate('created_at', now())->count() + 1;
+            $numeroFacture = substr($client->nom, 0, 3).'_'.now()->format('y').'_'.now()->format('m').'_'.now()->format('d').'_'.$numero;
+            $facture->numeroFacture = $numeroFacture;
+
+            $facture->save();
+
+            // Générer le PDF de la vente
+            $pdf = Pdf::loadView('factures.afficherFactureVentePacks', [
+                'ventes' => $ventes,
+                'factures' => $facture,
+            ]);
+            $this->reset();
+            DB::commit();
+            
+            return response()->streamDownload(function () use($pdf) {
+                echo  $pdf->output();
+            }, $numeroFacture.'-'.$client->numero.'.pdf');
+            
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->back()->with('error_html', 'Une erreur est survenue lors de l\'enregistrement de la vente : ' . $e->getMessage());
         }
-
-        //j'enregistre dans le journal
-        $transaction = new Transaction();
-        $transaction->vente_id = $ventes->id;
-        $transaction->type = 'vente de pack';
-        $transaction->save();
-
-        //j'enregistre la facture
-        $facture = new facture();
-
-        $facture->vente_id = $ventes->id;
-        $numero = Vente::whereDate('created_at', now())->count() + 1;
-        $numeroFacture = substr($client->nom, 0, 3).'_'.now()->format('y').'_'.now()->format('m').'_'.now()->format('d').'_'.$numero;
-        $facture->numeroFacture = $numeroFacture;
-
-        $facture->save();
-
-        // Générer le PDF de la vente
-        $pdf = Pdf::loadView('factures.afficherFactureVentePacks', [
-            'ventes' => $ventes,
-            'factures' => $facture,
-        ]);
-        $this->reset();
-        return response()->streamDownload(function () use($pdf) {
-            echo  $pdf->output();
-        }, $numeroFacture.'-'.$client->numero.'.pdf');
     }
 
-    public function enregistrer_installation(){
-        $parnier_pack = session()->get('parnier_pack', []);
-        //dd(count($parnier_pack));
-        $totalAchat = 0;
+    public function enregistrer_installation()
+    {
+        try {
+            DB::beginTransaction();
+            $parnier_pack = session()->get('parnier_pack', []);
+            $totalAchat = 0;
 
-        //totaliser le prix d'achat des produits
-        foreach($parnier_pack as $item){
-            foreach($item['produits'] as $produit){
-                $totalAchat = $totalAchat + ($produit->prix_achat * $item['quantity']);
+            // Calcul du total d'achat
+            foreach ($parnier_pack as $produit) {
+                $totalAchat += ($produit['prix_achat'] * $produit['quantity']);
             }
-        }
 
-        $installations = new Installation();
-        if($this->nouveau_client == 'true'){
-            if(!$this->client_id){
-                $client = new Client();
-                $client->nom = $this->nom_client;
-                $client->numero = $this->numero_client;
-                $client->adresse = $this->adresse_client;
-                $client->email = $this->email_client;
-                $client->save();
-                $installations->client_id = $client->id;
-            }
-        }else{
-            if($this->client_id){
-                $client = Client::find($this->client_id);
-                $installations->client_id = $this->client_id;
-            }else{
-                return redirect()->back()->with('error', 'veillez selectionner un client');
-            }
-        }
-        $installations->reduction = $this->reduction;
+            $installations = new Installation();
 
-        //mise a jours du compte
-        $comptes = Compte::find($this->mode_paiement);  
-    
-        $installations->mainOeuvre = $this->frais_installation;
-        $installations->agentOperant = $this->agent_operant;
-        $installations->commission = $this->commission;
-        $installations->qteTotal = count($parnier_pack);
-        if($this->commission){
-            $charges = new Charge();
-            $charges->titre = "commission pour la vente du pack de ". $client->nom. " a ". $installations->agentOperant; 
-            $charges->montant = $this->commission;
-            if($comptes){
-                $comptes->montant = $comptes->montant + $this->montant_verse - $this->commission;
-                $comptes->save();
-                $installations->compte_id = $this->mode_paiement;
-            }else{
-                return redirect()->back()->with('error', 'veillez selectionner un compte');
-            }
-            $charges->save(); 
-        }
-        $installations->montantProduit = $this->panierTotal();
-        $installations->totalAchat = $totalAchat;
-        $installations->netAPayer = $this->panierTotal() - $this->reduction + $this->frais_installation;
-        $installations->montantVerse = $this->montant_verse;
-        if($installations->netAPayer > $installations->montantVerse ){
-            $installations->statut = 'non termine';
-            $installations->dateLimitePaiement = $this->dateLimitePaiement;
-        }else{
-            $installations->statut = 'termine';
-        }
-        $installations->impot = $this->impot;
-        $installations->user_id = Auth::user()->id;
-
-        $installations->save();
-
-        //mise a jour des stock
-        foreach($parnier_pack as $item){
-            foreach($item['produits'] as $produit){
-                $produit_selectionne = Produit::find($produit->id);
-                if($produit_selectionne->stock <= 0){
-                    return redirect()->with('error', 'le stock du produit: '.$produit->name.' est épuisé');
+            // Création ou sélection du client
+            if ($this->nouveau_client == 'true') {
+                if (!$this->client_id) {
+                    $client = new Client();
+                    $client->nom = $this->nom_client;
+                    $client->numero = $this->numero_client;
+                    $client->adresse = $this->adresse_client;
+                    $client->email = $this->email_client;
+                    $client->save();
+                    $installations->client_id = $client->id;
                 }
-                if($item['quantity'] > $produit_selectionne->stock){
-                    return redirect()->with('error', 'le stock du produit: '.$produit->name.' est insuffisant');
+            } else {
+                if ($this->client_id) {
+                    $client = Client::find($this->client_id);
+                    $installations->client_id = $client->id;
+                } else {
+                    return redirect()->back()->with('error_html', 'Veuillez sélectionner un client.');
                 }
-                $produit_selectionne->stock = $produit_selectionne->stock - $item['quantity'];
+            }
+
+            $installations->reduction = $this->reduction;
+            $installations->mainOeuvre = $this->frais_installation;
+            $installations->agentOperant = $this->agent_operant;
+            $installations->commission = $this->commission;
+            $installations->qteTotal = count($parnier_pack);
+
+            // Mise à jour du compte
+            $compte = Compte::find($this->mode_paiement);
+            if ($this->commission > 0) {
+                $charge = new Charge();
+                $charge->titre = "Commission pour l'installation du pack de {$client->nom} par {Auth::user()->name}";
+                $charge->montant = $this->commission;
+                $charge->save();
+
+                if ($compte) {
+                    $compte->montant = $compte->montant + $this->montant_verse - $this->commission;
+                    $compte->save();
+                    $installations->compte_id = $this->mode_paiement;
+                } else {
+                    return redirect()->back()->with('error_html', 'Veuillez sélectionner un compte.');
+                }
+            }
+
+            $installations->montantProduit = $this->panierTotal();
+            $installations->totalAchat = $totalAchat;
+            $installations->netAPayer = $this->panierTotal() - $this->reduction + $this->frais_installation;
+            $installations->montantVerse = $this->montant_verse;
+
+            $installations->statut = $installations->netAPayer > $this->montant_verse ? 'non termine' : 'termine';
+            if ($installations->statut == 'non termine') {
+                $installations->dateLimitePaiement = $this->dateLimitePaiement;
+            }
+
+            $installations->impot = $this->impot;
+            $installations->user_id = Auth::id();
+            $installations->save();
+
+            // Mise à jour des stocks et rattachement des packs
+            foreach ($parnier_pack as $produit) {
+                $produit_selectionne = Produit::find($produit['id']);
+
+                if ($produit_selectionne->stock <= 0) {
+                    $message = "<div class='d-flex justify-content-between align-items-start'>
+                                    <div>
+                                        Le stock du produit <strong>« {$produit['name']} »</strong> est épuisé.<br> 
+                                        👉<a href='" . route('achats.cart') . "' target='_blank' class='text-decoration-underline text-primary'>
+                                            Cliquez ici pour accéder au catalogue d'achat 
+                                        </a>👈  dans un nouvel onglet.
+                                        <br>Copiez le titre du produit et collez-le dans la barre de recherche du catalogue d'achat.
+                                    </div>
+                                    <button type='button' class='btn-close ms-3' data-bs-dismiss='alert' aria-label='Close'></button>
+                                </div>";
+                    return redirect()->back()->with('error_html', $message);
+                }
+
+                if ($produit['quantity'] > $produit_selectionne->stock) {
+                    return redirect()->with('error_html', 'Le stock du produit : ' . $produit->name . ' est insuffisant.');
+                }
+
+                $produit_selectionne->stock -= $produit['quantity'];
                 $produit_selectionne->save();
+                
+
+                $installations->produits()->attach($produit['id'], [
+                    'quantity' => $produit['quantity'],
+                    'price' => $produit['price'],
+                ]);
             }
 
-            //je relie chaque panier a la vente
-            $installations->packs()->attach($item['id'], [
-                'quantity' => $item['quantity'],
-                'prix' => $item['prix'],
-            ]); 
+            // Enregistrement dans le journal
+            $transaction = new Transaction();
+            $transaction->installation_id = $installations->id;
+            $transaction->type = 'installation de pack';
+            $transaction->save();
+
+            // Génération de la facture
+            $facture = new Facture();
+            $facture->installation_id = $installations->id;
+            $numero = Installation::whereDate('created_at', now())->count() + 1;
+            $numeroFacture = substr($client->nom, 0, 3) . '_' . now()->format('y_m_d') . '_' . $numero;
+            $facture->numeroFacture = $numeroFacture;
+            $facture->save();
+
+            // Génération PDF
+            $pdf = Pdf::loadView('factures.afficherFactureInstallationPacks', [
+                'installations' => $installations,
+                'factures' => $facture,
+            ]);
+
+            $this->reset();
+            DB::commit();
+
+            return response()->streamDownload(function () use ($pdf) {
+                echo $pdf->output();
+            }, $numeroFacture . '-' . $client->numero . '.pdf');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->back()->with('error_html', 'Une erreur est survenue lors de l\'enregistrement de l\'installation : ' . $e->getMessage());
         }
-
-        //j'enregistre dans le journal
-        $transaction = new Transaction();
-        $transaction->installation_id = $installations->id;
-        $transaction->type = 'installation de pack';
-        $transaction->save();
-
-        //j'enregistre la facture
-        $facture = new facture();
-
-        $facture->installation_id = $installations->id;
-        $numero = Installation::whereDate('created_at', now())->count() + 1;
-        $numeroFacture = substr($client->nom, 0, 3).'_'.now()->format('y').'_'.now()->format('m').'_'.now()->format('d').'_'.$numero;
-        $facture->numeroFacture = $numeroFacture;
-
-        $facture->save();
-
-        // Générer le PDF de la vente
-        $pdf = Pdf::loadView('factures.afficherFactureInstallationPacks', [
-            'installations' => $installations,
-            'factures' => $facture,
-        ]);
-        $this->reset();
-        return response()->streamDownload(function () use($pdf) {
-            echo  $pdf->output();
-        }, $numeroFacture.'-'.$client->numero.'.pdf');
     }
+
 
     public function mount(){
         $this->clients = Client::all();

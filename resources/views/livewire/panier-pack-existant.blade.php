@@ -27,7 +27,7 @@
                 </div>
             @endif
 
-            <!-- Tableau des packs -->
+            <!-- Tableau des produits -->
             <table class="table table-striped table-hover text-center table-responsive" style="height: 200px; font-size: xx-small;">
                 <thead class="bg-light">
                     <tr>
@@ -39,26 +39,26 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @forelse($cart as $pack)
-                        <tr style="font-size: xx-small;">
-                            <td>{{ $pack['titre'] }}</td>
+                    @forelse($cart as $produit)
+                        <tr style="font-size: xx-small;" wire:key="produit-{{ $produit['id'] }}" id="produit-{{ $produit['id'] }}">
+                            <td>{{ $produit['name'] }}</td>
                             <td>
-                                <span>{{ $pack['prix'] }}</span>
+                                <span>{{ $produit['price'] }}</span>
                                 <input class="mt-1" placeholder="prix manuel..." type="number" 
-                                       wire:model.lazy="new_price" 
-                                       wire:change="update_prix('{{ $pack['id'] }}')" 
+                                       wire:model.lazy="new_price.{{ $produit['id'] }}"
+                                       wire:change="update_prix('{{ $produit['id'] }}')" 
                                        style="width: 70px;">
                             </td>
                             <td>
-                                <p style="cursor: pointer;">{{ $pack['quantity'] }}</p>
+                                <p style="cursor: pointer;">{{ $produit['quantity'] }}</p>
                                 <input type="number" placeholder="Qte..." style="width: 50px;"  
-                                       wire:model="quantity" 
-                                       value="{{ $pack['quantity'] }}" 
-                                       wire:change="modifierQuantite('{{ $pack['id'] }}')">
+                                       wire:model="quantity.{{ $produit['id'] }}"
+                                       value="{{ $produit['quantity'] }}" 
+                                       wire:change="modifierQuantite('{{ $produit['id'] }}')">
                             </td>
-                            <td>{{  (int)$pack['prix'] * $pack['quantity'] }}</td>
+                            <td>{{  (int)$produit['price'] * $produit['quantity'] }}</td>
                             <td>
-                                <button class="btn btn-danger btn-sm" wire:click="retirerPack({{ $pack['id'] }})">
+                                <button class="btn btn-danger btn-sm" wire:click="retirerProduit({{ $produit['id'] }})">
                                     <i class="bi bi-trash"></i>
                                 </button>
                             </td>
@@ -106,7 +106,7 @@
             </div>
         @endif
 
-        <!-- Tableau des packs -->
+        <!-- Tableau des produits -->
         <table class="table table-striped table-hover text-center table-responsive" style="height: 200px; font-size: 8px;">
             <thead class="bg-light">
                 <tr>
@@ -118,27 +118,27 @@
                 </tr>
             </thead>
             <tbody>
-                @forelse($cart as $pack)
+                @forelse($cart as $produit)
                     <tr style="font-size: 8px;">
-                        <td>{{ $pack['titre'] }}</td>
+                        <td>{{ $produit['name'] }}</td>
                         <td>
-                            <span>{{ $pack['prix'] }}</span>
+                            <span>{{ $produit['price'] }}</span>
                             <input class="mt-1" placeholder="prix manuel..." type="number" 
-                                   wire:model.lazy="new_price.{{$pack['id']}}" 
-                                   wire:change="update_prix('{{ $pack['id'] }}')" 
+                                   wire:model.lazy="new_price.{{$produit['id']}}" 
+                                   wire:change="update_prix('{{ $produit['id'] }}')" 
                                    style="width: 70px;">
                         </td>
                         <td>
-                            <p style="cursor: pointer;">{{ $pack['quantity'] }}</p>
+                            <p style="cursor: pointer;">{{ $produit['quantity'] }}</p>
                             <input type="number" min="1"
                                     placeholder="Qte..." style="width: 50px;"  
-                                    wire:model="quantity.{{$pack['id']}}" 
-                                    value="{{ $pack['quantity'] }}" 
-                                    wire:change="modifierQuantite('{{ $pack['id'] }}')">
+                                    wire:model="quantity.{{$produit['id']}}" 
+                                    value="{{ $produit['quantity'] }}" 
+                                    wire:change="modifierQuantite('{{ $produit['id'] }}')">
                         </td>
-                        <td>{{  (int)$pack['prix'] * $pack['quantity'] }}</td>
+                        <td>{{  (int)$produit['price'] * $produit['quantity'] }}</td>
                         <td>
-                            <button class="btn btn-danger btn-sm" wire:click="retirerPack({{ $pack['id'] }})">
+                            <button class="btn btn-danger btn-sm" wire:click="retirerProduit({{ $produit['id'] }})">
                                 <i class="bi bi-trash"></i>
                             </button>
                         </td>
@@ -163,7 +163,7 @@
                 🗑 Vider le panier
             </button>
             <button type="button" class="btn btn-success px-3" style="font-size: 12px;" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                ✅ Creer le pack
+                ✅ Creer le produit
             </button>
         </div>
     </div>

@@ -11,6 +11,9 @@ class PanierPackExistant extends Component
 
     protected $listeners = [
         'ajouter_pack_panier' => 'mount',
+        'produit_retirer_pack' => '$refresh',
+        'prix_modifie' => 'mount',
+        'quantite_modifie' => 'mount'
     ];
 
     public function mount()
@@ -23,22 +26,32 @@ class PanierPackExistant extends Component
     {
         $this->total = 0;
         foreach ($this->cart as $item) {
-            $this->total += $item['prix'] * $item['quantity'];
+            $this->total += $item['price'] * $item['quantity'];
         }
         return $this->total;
     }
-    public function retirerPack($id)
-    {
-        if (isset($this->cart[$id])) {
+    //a retirer
+    // public function retirerPack($id)
+    // {
+    //     if (isset($this->cart[$id])) {
+    //         unset($this->cart[$id]);
+    //         session()->put('parnier_pack', $this->cart);
+    //         $this->calculateTotal();
+    //     }
+    // }
+    public function retirerProduit($id){
+        if(isset($this->cart[$id])){
             unset($this->cart[$id]);
             session()->put('parnier_pack', $this->cart);
             $this->calculateTotal();
         }
+        $this->dispatch('produit_retirer_pack');
+        return redirect()->route('panier.pack.show');
     }
 
     public function update_prix($id){
         if(isset($this->cart[$id])){
-            $this->cart[$id]['prix'] = $this->new_price[$id];
+            $this->cart[$id]['price'] = $this->new_price[$id];
             session()->put('parnier_pack', $this->cart);
             $this->calculateTotal();
         }
@@ -49,6 +62,7 @@ class PanierPackExistant extends Component
     public function modifierQuantite($id)
     {
         if (isset($this->cart[$id])) {
+            //dd($this->cart);
             if ($this->quantity[$id] <= 0) {
                 $this->quantity[$id] = 1;
             }
