@@ -13,7 +13,7 @@ class CataloguePackExistant extends Component
 
     public function addToCart($packId)
     {
-        $cart = session()->get('parnier_pack', []);
+        $cart = session()->get('cart', []);
 
         $produits = Pack::find($packId)->produits;
 
@@ -36,10 +36,10 @@ class CataloguePackExistant extends Component
             } else {
                 $cart[$produitId]['quantity']++;
             }
-            $panier = session()->get('panier_pack', $cart);
+            $panier = session()->get('cart', $cart);
             //dd($panier);
             $this->dispatch('ajouter_pack_panier');
-            session()->put('parnier_pack', $cart);
+            session()->put('cart', $cart);
         }
 
         //dd($cart);

@@ -18,7 +18,7 @@ class PanierPackExistant extends Component
 
     public function mount()
     {
-        $this->cart = session()->get('parnier_pack', []);
+        $this->cart = session()->get('cart', []);
         $this->calculateTotal();
     }
     
@@ -42,7 +42,7 @@ class PanierPackExistant extends Component
     public function retirerProduit($id){
         if(isset($this->cart[$id])){
             unset($this->cart[$id]);
-            session()->put('parnier_pack', $this->cart);
+            session()->put('cart', $this->cart);
             $this->calculateTotal();
         }
         $this->dispatch('produit_retirer_pack');
@@ -52,7 +52,7 @@ class PanierPackExistant extends Component
     public function update_prix($id){
         if(isset($this->cart[$id])){
             $this->cart[$id]['price'] = $this->new_price[$id];
-            session()->put('parnier_pack', $this->cart);
+            session()->put('cart', $this->cart);
             $this->calculateTotal();
         }
 
@@ -67,14 +67,14 @@ class PanierPackExistant extends Component
                 $this->quantity[$id] = 1;
             }
             $this->cart[$id]['quantity'] = $this->quantity[$id];
-            session()->put('parnier_pack', $this->cart);
+            session()->put('cart', $this->cart);
             $this->calculateTotal();
             $this->dispatch('quantite_modifie');
         }
     }
     public function viderPanier()
     {
-        session()->forget('parnier_pack');
+        session()->forget('cart');
         $this->cart = [];
         $this->total = 0;
     }

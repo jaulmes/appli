@@ -34,7 +34,7 @@ class ModalPackVenteEtInstallation extends Component
     ];
 
     public function panierTotal(){
-        $this->cart = session()->get('parnier_pack', []);
+        $this->cart = session()->get('cart', []);
         $total = 0;
         foreach ($this->cart as $produit) {
             $total += $produit['price'] * $produit['quantity'];
@@ -65,7 +65,7 @@ class ModalPackVenteEtInstallation extends Component
     public function enregistrer_vente(){
         try {
             DB::beginTransaction();
-            $parnier_pack = session()->get('parnier_pack', []);
+            $parnier_pack = session()->get('cart', []);
             $totalAchat = 0;
 
             //totaliser le prix d'achat des produits
@@ -199,7 +199,7 @@ class ModalPackVenteEtInstallation extends Component
     {
         try {
             DB::beginTransaction();
-            $parnier_pack = session()->get('parnier_pack', []);
+            $parnier_pack = session()->get('cart', []);
             $totalAchat = 0;
 
             // Calcul du total d'achat
