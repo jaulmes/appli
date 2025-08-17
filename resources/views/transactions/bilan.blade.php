@@ -34,7 +34,7 @@
                     </h5>
                 </div>
                 <div class="card-body">
-                    <livewire:bilan-classement-produit :moi="$moi" />
+                    <livewire:bilan-classement-client :moi="$moi" />
                 </div>
             </div>
         </div>
@@ -64,7 +64,8 @@
                     </h5>
                 </div>
                 <div class="card-body">
-                    <livewire:bilan-classement-client :moi="$moi" />
+                    
+                    <livewire:bilan-classement-produit :moi="$moi" />
                 </div>
             </div>
         </div>
