@@ -58,7 +58,7 @@
                             <label for="service">Service</label>
                             <select     
                                     wire:model="service_id"
-                                    wire:change="updatedProduitChoisi()"
+                                    
                                 
                                     id="service"
                                     name="service_id"
