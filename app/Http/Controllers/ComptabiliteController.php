@@ -100,7 +100,7 @@ class ComptabiliteController extends Controller
         $transactions->date = $dateHeure->format('Y-m-d');
         $transactions->moi = $moi;
         $transactions->heure = $dateHeure->format('H:i:s');
-        $transactions->type = 'transfert';
+        $transactions->type = 'transfert du compte '. $envoyeur->nom .' vers le compte '. $receveur->nom;
         $transactions->impot = $request->impot;
         $transactions->montantVerse = $request->montant;
         $transactions->user_id = Auth::user()->id;

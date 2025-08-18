@@ -101,7 +101,7 @@
                             </td>
                             <td>{{ $transaction->type }}</td>
                             <td>{{ \Carbon\Carbon::parse($transaction->created_at)->format('d/m/Y') }}</td>
-                            <td>{{ $transaction->created_at->format('h:m:s') }}</td>
+                            <td>{{ $transaction->created_at->format('H:i:s') }}</td>
                         </tr>
                     @endforeach
                 </tbody>
