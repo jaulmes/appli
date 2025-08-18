@@ -15,7 +15,8 @@ class Installation extends Component
     public $comptes = [];
 
     public function mount(){
-        $this->installations = ModelsInstallation::all();
+        $this->installations = ModelsInstallation::orderBy('created_at', 'desc')
+                                                   ->get();
         $this->clients = Client::all();
         $this->comptes = Compte::all();
     }
