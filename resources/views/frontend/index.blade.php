@@ -3,25 +3,26 @@
 
   <head>
     <meta charset="utf-8">
-    <title>Solergy Solutions SARL - Vente et Installation d'Équipements Solaires à Douala, Cameroun</title>
+    <title>Solergy Solutions SARL - Vente et Installation d'Équipements Solaires en afrique</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Meta SEO -->
-    <meta name="description" content="Solergy Solutions SARL, fournisseur de solutions solaire, spécialiste de la vente et de l'installation d'équipements solaires au cameroun, Cameroun. Profitez d'une énergie renouvelable et durable pour vos projets résidentiels et professionnels.">
-    <meta name="keywords" content="Solergy Solutions, équipements solaires, Cameroun, installation solaire, vente panneaux solaires, énergie renouvelable, energie solaire, solaire cameroun">
+    <meta name="description" content="Solergy Solutions SARL, fournisseur de solutions solaire, spécialiste de la vente et de l'installation d'équipements solaires en afrique. Profitez d'une énergie renouvelable et durable pour vos projets résidentiels et professionnels.">
+    <meta name="keywords" content="Solergy Solutions, équipements solaires, Cameroun, installation solaire, vente panneaux solaires, énergie renouvelable, energie solaire, solaire cameroun, solutions solaires, batteries solaires, inverters, régulateurs, kits solaires, maintenance solaire, 
+        service après-vente, énergie propre, autoconsommation, solaire photovoltaïque, systèmes solaires, énergie durable">
     <meta name="author" content="Solergy Solutions SARL">
     <link rel="canonical" href="https://www.solergy-solutions.com/">
 
     <!-- Open Graph / Facebook -->
-    <meta property="og:title" content="Solergy Solutions SARL - Fournisseur de solutions solaire au Cameroun">
-    <meta property="og:description" content="Votre spécialiste en solutions solaires, de la vente à l'installation d'équipements solaires au Cameroun.">
+    <meta property="og:title" content="Solergy Solutions SARL - Fournisseur de solutions solaire en afriquen">
+    <meta property="og:description" content="Votre spécialiste en solutions solaires, de la vente à l'installation d'équipements solaires en afrique.">
     <meta property="og:image" content="{{ asset('logo.jpg') }}">
     <meta property="og:url" content="https://www.solergy-solutions.com/">
     <meta property="og:type" content="website">
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Solergy Solutions SARL - Vente et Installation d'Équipements Solaires à Douala, Cameroun">
-    <meta name="twitter:description" content="Découvrez nos solutions solaires innovantes pour vos projets d'énergie renouvelable à Douala.">
+    <meta name="twitter:title" content="Solergy Solutions SARL - Vente et Installation d'Équipements Solaires en afrique, Cameroun">
+    <meta name="twitter:description" content="Découvrez nos solutions solaires innovantes pour vos projets d'énergie renouvelable en afriue.">
     <meta name="twitter:image" content="{{ asset('logo.jpg') }}">
 
     <!-- Google Web Fonts -->
@@ -349,7 +350,7 @@
           <div class="col-md-4 text-center text-md-start mb-4 mb-md-0">
             <a href="#" class="text-decoration-none">
               <h2 class="text-warning mb-1">Solergy Solutions SARL</h2>
-              <p class="small">Fournisseur de solutions solaire au cameroun</p>
+              <p class="small">Fournisseur de solutions solaire en afrique centrale</p>
             </a>
           </div>
           <div class="col-md-8">

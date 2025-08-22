@@ -29,6 +29,7 @@
                         {{-- Carousel amélioré --}}
                         <div id="carouselRealisation{{ $realisation->id }}" class="carousel slide" data-bs-interval="1000" data-bs-ride="carousel">
                             <div class="carousel-inner">
+                                <a href="{{ route('detail-realisation', $realisation->id) }}">
                                 @foreach($images as $key => $image)
                                     <div class="carousel-item {{ $key == 0 ? 'active' : '' }}">
                                         <div class="image-wrapper">
@@ -46,6 +47,7 @@
                                         </div>
                                     </div>
                                 @endforeach
+                                </a>
                             </div>
                             @if(count($images) > 1)
                             <div class="carousel-controls">

@@ -9,7 +9,10 @@
     <div class="text-center mb-5" role="banner">
       <h3 class="text-warning fw-bold mb-2" style="letter-spacing:2px;">Services</h3>
       <h2 class="fw-bold display-6 text-uppercase" style="color:#004075;" id="services-heading">
-        Découvrez nos services
+        <a href="{{ route('nos-services') }}" class="text-decoration-none text-dark">
+          <i class="fas fa-cogs"></i>
+          Découvrez nos services
+        </a>
       </h2>
     </div>
 
@@ -56,12 +59,13 @@
                   $url = file_exists($image1)? asset('images/services/'. $service->image)
                                               : asset('storage/images/services/' . $service->image);
               @endphp
-
-              <img src="{{$url }}"
-                alt="Photo du service {{ $service->name }}"
-                loading="lazy"
-                class="d-block w-100 object-fit-cover"
-                style="height:200px;">
+              <a href="{{ route('detail-service', $service->id) }}">
+                <img src="{{$url }}"
+                  alt="{{ $service->name }}"
+                  loading="lazy"
+                  class="d-block w-100 object-fit-cover"
+                  style="height:200px;">
+              </a>
               
             </figure>
 
