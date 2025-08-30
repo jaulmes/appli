@@ -171,6 +171,9 @@ class PanierController extends Controller
             $charges->titre = "commission pour l'intallation de ". $ventes->nomClient. " a ". $ventes->agentOperant; 
             $charges->montant = $ventes->commission;
             $charges->date = $dateHeure->format('Y/m/d');
+            $comptes->montant = $comptes->montant - $ventes->commission;
+
+            $comptes->save();
             $charges->save();
         }
 
@@ -344,9 +347,16 @@ class PanierController extends Controller
             $installations->save();
             //comptabiliser la commission comme une charge
             $charges = new Charge();
+            $transaction = new Transaction();
             $charges->titre = "commission pour l'intallation de ". $clients->nom. " a ". $installations->agentOperant; 
             $charges->montant = $installations->commission;
             $charges->date = $dateHeure->format('Y/m/d');
+            $comptes->montant = $comptes->montant - $installations->commission;
+            $comptes->save();
+            $transaction->type = 'charge';
+            $transaction->montantVerse = $installations->commission;
+            $transaction->compte_id = $comptes->id;
+            $transaction->user_id = Auth::user()->id;
 
             $charges->save();
 

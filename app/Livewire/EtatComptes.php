@@ -19,57 +19,67 @@ class EtatComptes extends Component
         $this->afficher();
     }
 
-    public function afficher()
-    {
-        $comptes = Compte::all();
-        $resultats = [];
+public function afficher()
+{
+    $comptes = Compte::all();
+    $resultats = [];
 
-        // Conversion du mois sélectionné en date
-        $debutMois = Carbon::parse($this->moisSelectionne . '-01')->startOfMonth();
-        $finMois   = Carbon::parse($this->moisSelectionne . '-01')->endOfMonth();
+    // Conversion du mois sélectionné en date
+    $debutMois = Carbon::parse($this->moisSelectionne . '-01')->startOfMonth();
+    $finMois   = Carbon::parse($this->moisSelectionne . '-01')->endOfMonth();
 
-        foreach ($comptes as $compte) {
-            // Solde avant le mois
-            if ($compte->transactions()->where('created_at', '<', $debutMois)->exists()) {
-                $transactionsAvantMois = $compte->transactions()
-                    ->where('created_at', '<', $debutMois)
-                    ->get(); // récupère une collection
+    foreach ($comptes as $compte) {
+        // ✅ 1. Solde avant le mois (toutes les transactions antérieures)
+        $transactionsAvantMois = $compte->transactions()
+            ->where('created_at', '<', $debutMois)
+            ->get();
 
-                $montantInitial = $transactionsAvantMois->sum(function($t){
-                    $typesPositifs = ['credit', 'ajout_fonds', 'remboursement'];
-                    $typesNegatifs = ['Achat', 'retrait', 'paiement'];
+        $montantInitial = $transactionsAvantMois->sum(function ($t) {
+            $typesPositifs = ['depot', 'recu', 'ajout_fonds', 'remboursement'];
+            $typesNegatifs = ['Achat', 'charge', 'virement', 'BonCommande', 'retrait', 'paiement'];
 
-                    // si type credit -> +montant, si debit -> -montant
-                    return $t->type === 'Achat' ? $t->montant : -$t->montant;
-                });
-                dd($montantInitial);
-            } else {
-                $montantInitial = 0; // Si aucune transaction avant le mois, solde initial est 0
+            if (in_array($t->type, $typesPositifs)) {
+                return $t->montantVerse;
+            } elseif (in_array($t->type, $typesNegatifs)) {
+                return -$t->montantVerse;
             }
-            // $montantInitial = $compte->whereHas('created_at', '<', $debutMois)
-            //                             ->sum('montant');
-            
-            dd($montantInitial, $compte);
+            return 0;
+        });
 
-            // Solde jusqu'à la fin du mois
-            $montantFinal = Transaction::where('compte_id', $compte->id)
-                ->where('created_at', '<=', $finMois)
-                ->sum('montant');
+        // ✅ 2. Solde final (toutes les transactions jusqu’à la fin du mois)
+        $transactionsJusquaFinMois = $compte->transactions()
+            ->where('created_at', '<=', $finMois)
+            ->get();
 
-            $resultats[] = [
-                'compte' => $compte->nom,
-                'mois' => $this->moisSelectionne,
-                'montant_initial' => $montantInitial,
-                'montant_final' => $montantFinal,
-            ];
-        }
+        $montantFinal = $transactionsJusquaFinMois->sum(function ($t) {
+            $typesPositifs = ['depot', 'recu', 'ajout_fonds', 'remboursement'];
+            $typesNegatifs = ['Achat', 'charge', 'virement', 'BonCommande', 'retrait', 'paiement'];
 
-        $this->resultats = $resultats;
+            if (in_array($t->type, $typesPositifs)) {
+                return $t->montantVerse;
+            } elseif (in_array($t->type, $typesNegatifs)) {
+                return -$t->montantVerse;
+            }
+            return 0;
+        });
+
+        // ✅ 3. Résultats
+        $resultats[] = [
+            'compte'          => $compte->nom,
+            'mois'            => $this->moisSelectionne,
+            'montant_initial' => $montantInitial,
+            'montant_final'   => $montantFinal,
+            'variation'       => $montantFinal - $montantInitial, // optionnel
+        ];
     }
+
+    $this->resultats = $resultats;
+}
+
 
     public function render()
     {
-        return view('livewire.etat-compte-mensuel', [
+        return view('livewire.etat-comptes', [
             'resultats' => $this->resultats
         ]);
     }

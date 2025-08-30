@@ -101,20 +101,42 @@ class AjouterProduit extends Component
                 $compte_principal = Compte::find($this->compte_principal_id);
                 if($this->prix_achat * $this->stock > $compte_principal->montant){
                     $compte_secondaire = Compte::find($this->compte_secondaire_id);
+
+                    if($this->prix_achat * $this->stock <= $compte_principal->montant + $compte_secondaire->montant){
+                        $produit->comptes()->attach($compte_principal->id, [
+                            'montant' => $this->montant_principal
+                        ]);
+
+
+                        $produit->comptes()->attach($compte_secondaire->id, [
+                            'montant' => $this->montant_secondaire
+                        ]);
+
+                        //mise a jour des deux comptes selectionnés
+                        $compte_principal->montant =  $compte_principal->montant - $this->montant_principal;
+                        $compte_principal->save();
+                        $compte_secondaire->montant =  $compte_secondaire->montant - $this->montant_secondaire;
+                        $compte_secondaire->save();
+                    }else{
+                        return redirect()->back()->with('error', 'solde insufisant dans les deux comptes, veillez recharger');
+                    }
+                }
+                //liaison avec un seul compte si le montant dans le compte est sufisant pour effectuer l'achat
+                else{
+                    $this->montant_principal = $totalCost;
                     $produit->comptes()->attach($compte_principal->id, [
                         'montant' => $this->montant_principal
                     ]);
-
-                    $produit->comptes()->attach($compte_secondaire->id, [
-                        'montant' => $this->montant_secondaire
-                    ]);
-
                     $compte_principal->montant =  $compte_principal->montant - $this->montant_principal;
                     $compte_principal->save();
-                    $compte_secondaire->montant =  $compte_secondaire->montant - $this->montant_secondaire;
-                    $compte_secondaire->save();
-                }
 
+                    //enregistrement de la transaction principale
+                    $transactionPrincipal = new Transaction();
+                    $transactionPrincipal->type = "achat";
+                    $transactionPrincipal->montantVerse = $this->montant_principal;
+                    $transactionPrincipal->compte_id = $compte_principal->id;
+                    $transactionPrincipal->save();
+                }
             }
 
             $dateHeure = now();
@@ -125,6 +147,7 @@ class AjouterProduit extends Component
                 'type' => "Nouveau produit",
                 'user_id' => Auth::id(),
                 'prixAchat' => $totalCost,
+                'compte_id' => $compte_principal->id,
             ]);
             $transaction->save();
 

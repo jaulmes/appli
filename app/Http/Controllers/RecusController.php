@@ -112,6 +112,7 @@ class RecusController extends Controller
         
         $comptes->montant = $comptes->montant + $recus->montant_recu;
         $comptes->save();
+        $transactions->montantVerse = $recus->montant_recu;
         $transactions->recu_id = $recus->id;
         $transactions->type = "recu";
         $transactions->save();

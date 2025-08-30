@@ -86,12 +86,6 @@ class ComptabiliteController extends Controller
             return redirect()->back()->with('error', 'ATTENTION!! les comptes doivent etre different');
         }
 
-        //soustraire le montant transfere du solde envoyeur
-        $envoyeur->montant = $solde_envoyeur - $montant_tranferer;
-
-        //ajouter le montant transfere dans le solde receveur
-        $receveur->montant = $solde_receveur + $montant_tranferer;
-
         //valider le transfer en tant que transaction
         $dateHeure = now();
         $moi = now()->month;
@@ -104,8 +98,6 @@ class ComptabiliteController extends Controller
         $transactions->impot = $request->impot;
         $transactions->montantVerse = $request->montant;
         $transactions->user_id = Auth::user()->id;
-        
-        
 
         $transactions->save();
         $envoyeur->save();

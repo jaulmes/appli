@@ -55,7 +55,7 @@ class ModalValiderBonCommandes extends Component
 
         $bonCommandes->save();
         $transactions->user_id = Auth::user()->id;
-        $transactions->type = 'Bon de commande';
+        $transactions->type = 'BonCommande';
         $transactions->compte_id = $this->compte_id;
         $transactions->bon_commande_id = $bonCommandes->id;
         foreach($this->cart as $produit){

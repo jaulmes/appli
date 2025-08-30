@@ -47,7 +47,7 @@
                     <div>
                         <tr>
                             <td>{{$ventes->clients->nom?? $ventes->nomClient ?? $ventes->commandes->clients->nom}}</td>
-                            <td>{{$ventes->numeroClient ?? $ventes->commandes->clients->numero}}</td>
+                            <td>{{$ventes->clients->nom?? $ventes->numeroClient ?? $ventes->commandes->clients->numero}}</td>
                             <td>{{$ventes->NetAPayer}}</td>
                             <td>{{$ventes->montantVerse}}</td>
                             <td>{{$ventes->NetAPayer - $ventes->montantVerse}}</td>

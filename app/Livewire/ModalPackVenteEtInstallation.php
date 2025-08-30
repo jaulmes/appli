@@ -111,6 +111,7 @@ class ModalPackVenteEtInstallation extends Component
                     $comptes->montant = $comptes->montant + $this->montant_verse - $this->commission;
                     $comptes->save();
                     $ventes->compte_id = $this->mode_paiement;
+
                 }else{
                     return redirect()->back()->with('error_html', 'veillez selectionner un compte');
                 }
@@ -247,6 +248,12 @@ class ModalPackVenteEtInstallation extends Component
                     $compte->montant = $compte->montant + $this->montant_verse - $this->commission;
                     $compte->save();
                     $installations->compte_id = $this->mode_paiement;
+                    $transactionCharge = new Transaction();
+                    $transactionCharge->type = "charge";
+                    $transactionCharge->montantVerse = $installations->commission;
+                    $transactionCharge->compte_id = $compte->id;
+                    $transactionCharge->user_id = Auth::user()->id;
+                    $transactionCharge->save();
                 } else {
                     return redirect()->back()->with('error_html', 'Veuillez sélectionner un compte.');
                 }
