@@ -36,6 +36,13 @@
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         @endif
+        @if (session()->has('error'))
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <i class="fas fa-exclamation-triangle me-2"></i>
+                {{ session('error') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
 
         <!-- Tableau des factures -->
         <div class="table-responsive">
@@ -53,9 +60,9 @@
                         <tr>
                             <td class="fw-bold">{{ $facture->numeroFacture }}</td>
                             @if($type == "ventes")
-                                <td>{{ $facture->ventes->created_at->format('d/m/Y') }}</td>
+                                <td>{{ $facture->ventes->created_at?->format('d/m/Y') ?? '-' }}</td>
                                 <td style=" text-align: center;">{{ $facture->ventes->clients->nom?? $facture->ventes->nomClient?? $facture->ventes->commandes->clients->nom?? '-' }}</td>
-                                <td class="text-center">
+                                <td class="text-center" id="facture-{{$facture->id}}">
                                     <a href="{{ route('factures.ventes.telecharger', $facture->id) }}" class="btn btn-outline-success btn-sm" title="Télécharger">
                                         <i class="bi bi-download"></i>
                                     </a>
@@ -67,23 +74,23 @@
                                     </a>
                                 </td>
                             @elseif($type == "installations")
-                                <td>{{ $facture->installations->created_at->format('d/m/Y') }}</td>
+                                <td>{{ $facture->installations->created_at?->format('d/m/Y') ?? '-' }}</td>
                                 <td>{{ $facture->installations->nomClient ?? $facture->installations->clients->nom?? '-' }}</td>
-                                <td class="text-center">
+                                <td class="text-center" id="facture-{{$facture->id}}">
                                     <a href="{{ route('factures.installations.telecharger', $facture->id) }}" class="btn btn-outline-success btn-sm" title="Télécharger">
                                         <i class="bi bi-download"></i>
                                     </a>
                                     <a href="{{ route('factures.installations.afficher', $facture->id) }}" target="_blank" class="btn btn-outline-info btn-sm" title="Afficher">
                                         <i class="bi bi-eye"></i>
                                     </a>
-                                    <a href="#" wire:click="supprimerFacture({{$facture->id}})" class="btn btn-outline-danger btn-sm" title="Annuler" onclick="confirm('Voulez-vous supprimer cette facture ?')">
+                                    <a href="#"  wire:click="supprimerFacture({{$facture->id}})" class="btn btn-outline-danger btn-sm" title="Annuler" onclick="confirm('Voulez-vous supprimer cette facture ?')">
                                         <i class="bi bi-trash"></i>
                                     </a>
                                 </td>
                             @elseif($type == "proformat")
-                                <td>{{ $facture->proformats->created_at->format('d/m/Y') }}</td>
+                                <td>{{ $facture->proformats->created_at?->format('d/m/Y') ?? '-' }}</td>
                                 <td>{{ $facture->proformats->clients->nom?? $facture->proformats->nomClient }}</td>
-                                <td class="text-center">
+                                <td class="text-center" id="facture-{{$facture->id}}">
                                     <a href="{{ route('factures.proformats.afficher', $facture->id) }}" target="_blank" class="btn btn-outline-info btn-sm" title="Afficher">
                                         <i class="bi bi-eye"></i>
                                     </a>
@@ -95,4 +102,5 @@
             </table>
         </div>
     </div>
+    <!--message success-->
 </div>

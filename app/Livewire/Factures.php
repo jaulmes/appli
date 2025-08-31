@@ -7,12 +7,16 @@ use App\Models\facture;
 use App\Models\Produit;
 use App\Models\Transaction;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
 use Livewire\WithPagination;
 
 class Factures extends Component
 {
+
+    public $listeners = ['factureSupprimee' => 'refresh',
+                        'factureSupprimee' => 'chargerFacture'];
     public $factures;
     public $type = 'ventes';
 
@@ -59,68 +63,97 @@ class Factures extends Component
     }
 
     //logique pour la supression des factures
-    public function supprimerFacture($id){
+public function supprimerFacture($id)
+{
+    DB::beginTransaction();
+    try {
+        $facture = Facture::findOrFail($id);
+        
+        if ($this->type === "ventes") {
+            $vente = $facture->ventes;
+            $transaction = Transaction::where('vente_id', $vente->id)
+                                        ->with('produits')
+                                        ->first();
+            
+            if (isset($vente)) {
+                $compte = Compte::find($vente->compte_id);
 
-        $facture = facture::find($id);
+                foreach ($vente->produits as $produit) {
+                    $montant_produit = $produit->pivot->price * $produit->pivot->quantity;
 
-        //factures des ventes
-        if($this->type == "ventes")
-        {
-            $ventes = $facture->ventes;
+                    // Mise à jour du compte
+                    if ($compte) {
+                        $compte->montant -= $montant_produit;
+                        $compte->save();
+                    }
 
-            //je recuperes le compte lie a la vente
-            $comptes = Compte::find($ventes->compte_id);
-
-            //recuperation de chaque produits lie a la facture
-            foreach ($ventes->produits as $produit) {
-                //montant de chaque produit et sa quantite
-                $montant_produit = $produit->pivot->price * $produit->pivot->quantity;
-                //mise a jour du compte
-                $comptes->montant = $comptes->montant - $montant_produit;
-
-                //mise a jour du stock
-                $produit->stock = $produit->stock + $produit->pivot->quantity;
-
-                $comptes->save();
-                $produit->save();
+                    // Mise à jour du stock
+                    $produit->stock += $produit->pivot->quantity;
+                    $produit->save();
+                    $transaction->produits()->detach($produit->id);
+                }
+                //$vente->produits()->detach();
+                $facture->delete();
+                $vente->delete();
+                
+            }else{
+                session()->flash("error", "Cette facture de vente n'existe pas.");
+                return;
             }
-            $ventes->delete();
-        }
-        elseif($this->type == "installations"){
-            $installations = $facture->installations;
+        } elseif ($this->type === "installations") {
 
-            //je recuperes le compte lie a la vente
-            $comptes = Compte::find($installations->compte_id);
+            $installation = $facture->installations;
+            $transaction = Transaction::where('installation_id', $installation->id)
+                            ->with('produits')
+                            ->first();
+            
+            if (isset($installation)) {
+                $compte = Compte::find($installation->compte_id);
 
-            //recuperation de chaque produits lie a la facture
-            foreach ($installations->produits as $produit) {
-                //montant de chaque produit et sa quantite
-                $montant_produit = $produit->pivot->price * $produit->pivot->quantity;
-                //mise a jour du compte
-                $comptes->montant = $comptes->montant - $montant_produit;
+                foreach ($installation->produits as $produit) {
+                    $montant_produit = $produit->pivot->price * $produit->pivot->quantity;
 
-                //mise a jour du stock
-                $produit->stock = $produit->stock + $produit->pivot->quantity;
+                    // Mise à jour du compte
+                    if ($compte) {
+                        $compte->montant -= $montant_produit;
+                        $compte->save();
+                    }
 
-                $comptes->save();
-                $produit->save();
+                    // Mise à jour du stock
+                    $produit->stock += $produit->pivot->quantity;
+                    $produit->save();
+                    $transaction->produits()->detach($produit->id);
+
+                }
+                $facture->delete();
+                $installation->delete();
+            }else{
+                session()->flash("error", "Cette facture d'installation n'existe pas.");
+                return;
             }
-            $installations->delete();
         }
 
+        // Historique
         $dateHeure = now();
-        //enregistrer l'historique
-        $transactions = new Transaction();
-        $transactions->date = $dateHeure->format('d/m/y');
-        $transactions->heure = $dateHeure->format('H:i:s');
-        $transactions->type = "supression d'une facture";
-        $transactions->user_id = Auth::user()->id;
-        $transactions->save();
+        $transaction = new Transaction();
+        $transaction->date = $dateHeure->format('d/m/y');
+        $transaction->heure = $dateHeure->format('H:i:s');
+        $transaction->type = "suppression d'une facture";
+        $transaction->user_id = Auth::id();
+        $transaction->save();
 
-        $facture->delete();
-        session()->flash("message", "vous venez de suprimer une facture");
-        $this->chargerFacture();
+        DB::commit();
+        session()->flash("message", "Vous venez de supprimer une facture");
+        //$this->chargerFacture();
+        $this->dispatch('factureSupprimee');
+        return redirect()->route('factures.ventes');
+
+    } catch (\Exception $e) {
+        DB::rollBack();
+        session()->flash("error", "Erreur lors de la suppression de la facture : " . $e->getMessage());
     }
+}
+
 
     public function render()
     {
