@@ -418,6 +418,9 @@
         <div class="row mt-5 pt-4 border-top border-secondary">
           <div class="col-md-6 text-center text-md-start mb-2 mb-md-0">
             <small>&copy; 2025 Solergy Solutions SARL. Tous droits réservés.</small>
+            <a href="{{ route('login') }}" target="_blank" class="fw-bold text-white text-decoration-none">
+                se connecter
+            </a>
           </div>
           <div class="col-md-6 text-center text-md-end">
             <small>Design par <a href="mailto:anoudemj@gmail.com" class="text-warning text-decoration-none">anoudemj@gmail.com</a></small>

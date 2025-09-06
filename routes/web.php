@@ -66,6 +66,8 @@ Route::match(['get', 'post'], '/vider', function(){
 Route::get('/', [FrontEndController::class, 'index'])->name('frontend.index');
 Route::get('allPromoProduit', [FrontEndController::class, 'allPromoProduit'])->name('allPromoProduit');
 
+//a propos de nous
+Route::get('a-propos-de-nous', [FrontEndController::class, 'aproposDeNous'])->name('a-propos-de-nous');
 Route::get('all-produit', [FrontEndController::class, 'allProduits'])->name('all-produit');
 
 Route::get('all-realisations', [FrontEndController::class, 'allRealisations'])->name('all-realisations');

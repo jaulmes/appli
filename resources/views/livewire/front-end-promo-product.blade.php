@@ -37,84 +37,66 @@
   }
   </script>
 
-  {{-- Carrousel Bootstrap --}}
-  <div id="carouselPromoProduits"
-        class="carousel slide"
-        data-bs-ride="carousel"
-        data-bs-interval="1500"
-        data-bs-touch="true"
-        aria-labelledby="promo-titre">
+  {{-- Carrousel avec wire:ignore pour éviter le re-rendu Livewire --}}
+  <div wire:ignore>
+    <div id="carouselPromoProduits"
+          class="carousel slide"
+          data-bs-ride="carousel"
+          data-bs-interval="1500"
+          data-bs-touch="true"
+          aria-labelledby="promo-titre">
 
-    {{-- Indicateurs --}}
-    <div class="carousel-indicators">
-      @foreach($produits->chunk(4) as $chunkIndex => $chunk)
-        <button type="button"
-                data-bs-target="#carouselPromoProduits"
-                data-bs-slide-to="{{ $chunkIndex }}"
-                class="{{ $chunkIndex === 0 ? 'active' : '' }}"
-                aria-label="Slide {{ $chunkIndex + 1 }}">
-          <span class="visually-hidden">Voir slide {{ $chunkIndex + 1 }}</span>
-        </button>
-      @endforeach
-    </div>
-
-    {{-- Slides --}}
-    <div class="owl-carousel owl-theme" id="carouselProduitsPromo">
-        @foreach($produits as $produit)
-            <div class="item px-2">
-                <div class="card h-100 border-0 rounded-4 shadow-sm">
-                    <a href="{{ route('produit-detail', $produit->id) }}" class="card-image-link d-block text-decoration-none position-relative">
-                        @php
-                            $image1 = public_path('images/produits/'. $produit->image_produit);
-                            $image2 = public_path('storage/images/produits/'. $produit->image_produit);
-                            $url = file_exists($image1) ? asset('images/produits/'. $produit->image_produit)
-                                                       : asset('storage/images/produits/' . $produit->image_produit);
-                        @endphp
-
-                        <img src="{{ $url }}" class="card-img-top img-fluid" alt="{{ $produit->name }}" style="object-fit: cover; height: 250px;">
-                    </a>
-
-                    <div class="card-body p-3 text-center">
-                        <h5 class="fw-bold">{{ $produit->name }}</h5>
-                        <div class="d-flex justify-content-between align-items-center mt-2">
-                            <div>
-                              <span class="badge bg-success  px-3 py-2">
-                                {{ $produit->prix_promo }} FCFA
-                              </span><br>
-                              <small class="text-muted ms-1">
-                                <del>{{ $produit->getPrice() }} FCFA</del>
-                              </small>
-                            </div>
-                            <button wire:click="addProductToCart({{ $produit->id }})" class="btn btn-sm btn-primary rounded-pill px-3">
-                                <i class="fas fa-cart-plus me-1"></i> Ajouter
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
+      {{-- Indicateurs --}}
+      <div class="carousel-indicators">
+        @foreach($produits->chunk(4) as $chunkIndex => $chunk)
+          <button type="button"
+                  data-bs-target="#carouselPromoProduits"
+                  data-bs-slide-to="{{ $chunkIndex }}"
+                  class="{{ $chunkIndex === 0 ? 'active' : '' }}"
+                  aria-label="Slide {{ $chunkIndex + 1 }}">
+            <span class="visually-hidden">Voir slide {{ $chunkIndex + 1 }}</span>
+          </button>
         @endforeach
-    </div>
-    
-    <script>
-        $(document).ready(function(){
-            $('#carouselProduitsPromo').owlCarousel({
-                loop: true,
-                margin: 15,
-                nav: true,
-                dots: false,
-                autoplay: true,
-                autoplayTimeout: 1000,
-                autoplayHoverPause: true,
-                responsive:{
-                    0:{ items:1 },
-                    576:{ items:2 },
-                    768:{ items:3 },
-                    992:{ items:4 }
-                }
-            });
-        });
-    </script>
+      </div>
 
+      {{-- Slides --}}
+      <div class="owl-carousel owl-theme" id="carouselProduitsPromo">
+          @foreach($produits as $produit)
+              <div class="item px-2">
+                  <div class="card h-100 border-0 rounded-4 shadow-sm">
+                      <a href="{{ route('produit-detail', $produit->id) }}" class="card-image-link d-block text-decoration-none position-relative">
+                          @php
+                              $image1 = public_path('images/produits/'. $produit->image_produit);
+                              $image2 = public_path('storage/images/produits/'. $produit->image_produit);
+                              $url = file_exists($image1) ? asset('images/produits/'. $produit->image_produit)
+                                                         : asset('storage/images/produits/' . $produit->image_produit);
+                          @endphp
+
+                          <img src="{{ $url }}" class="card-img-top img-fluid" alt="{{ $produit->name }}" style="object-fit: cover; height: 250px;">
+                      </a>
+
+                      <div class="card-body p-3 text-center">
+                          <h5 class="fw-bold">{{ $produit->name }}</h5>
+                          <div class="d-flex justify-content-between align-items-center mt-2">
+                              <div>
+                                <span class="badge bg-success  px-3 py-2">
+                                  {{ $produit->prix_promo }} FCFA
+                                </span><br>
+                                <small class="text-muted ms-1">
+                                  <del>{{ $produit->getPrice() }} FCFA</del>
+                                </small>
+                              </div>
+                              {{-- Remplacer wire:click par onclick pour éviter le re-rendu --}}
+                              <button onclick="addProductToCart({{ $produit->id }})" class="btn btn-sm btn-primary rounded-pill px-3">
+                                  <i class="fas fa-cart-plus me-1"></i> Ajouter
+                              </button>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          @endforeach
+      </div>
+    </div>
   </div>
 
   {{-- Lien vers toutes les promos --}}
@@ -123,25 +105,76 @@
       Voir toutes les promotions <i class="fas fa-arrow-right ms-2"></i>
     </a>
   </div>
-  {{-- Styles spécifiques (votre fichier CSS principal peut aussi les contenir) --}}
+
+  {{-- Styles spécifiques --}}
   <style>
     .hover-3d:hover { transform: translateY(-8px); }
     .zoom-image { transition: transform .8s; }
-
   </style>
 
-  {{-- Scripts d’initialisation --}}
+  {{-- Scripts d'initialisation --}}
   <script>
+    let promoCarouselInitialized = false;
+
+    function initializePromoCarousel() {
+      if (!promoCarouselInitialized) {
+        $('#carouselProduitsPromo').owlCarousel({
+          loop: true,
+          margin: 15,
+          nav: true,
+          dots: false,
+          autoplay: true,
+          autoplayTimeout: 1000,
+          autoplayHoverPause: true,
+          responsive:{
+            0:{ items:1 },
+            576:{ items:2 },
+            768:{ items:3 },
+            992:{ items:4 }
+          }
+        });
+        promoCarouselInitialized = true;
+      }
+    }
+
+    function addProductToCart(productId) {
+      // Appeler la méthode Livewire via JavaScript
+      @this.call('addToCart', productId);
+    }
+
     document.addEventListener('DOMContentLoaded', function(){
       // Initialisation AOS
       AOS.init({ 
         duration:800, 
         once:true 
       });
-      // Collapse les indicateurs et répète l’animation au slide
+      
+      // Initialiser le carousel
+      initializePromoCarousel();
+      
+      // Collapse les indicateurs et répète l'animation au slide
       let carouselEl = document.getElementById('carouselPromoProduits');
-      carouselEl.addEventListener('slid.bs.carousel', () => AOS.refresh());
+      if (carouselEl) {
+        carouselEl.addEventListener('slid.bs.carousel', () => AOS.refresh());
+      }
+    });
+
+    // Réinitialiser après les mises à jour Livewire (si nécessaire)
+    document.addEventListener('livewire:load', function () {
+      initializePromoCarousel();
+    });
+
+    // Pour Livewire v3 (si vous l'utilisez)
+    document.addEventListener('livewire:navigated', function () {
+      setTimeout(() => {
+        initializePromoCarousel();
+      }, 100);
+    });
+
+    // Écouter les événements personnalisés de mise à jour du panier
+    window.addEventListener('cartUpdated', function() {
+      // Optionnel: afficher une notification ou mettre à jour le compteur du panier
+      console.log('Produit ajouté au panier avec succès !');
     });
   </script>
 </section>
-

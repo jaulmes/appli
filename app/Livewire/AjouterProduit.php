@@ -17,7 +17,6 @@ use Livewire\WithFileUploads;
 
 class AjouterProduit extends Component
 {
-
     use WithFileUploads;
 
     public $name, $description, $categori_id, $prix_achat, $price,
@@ -43,14 +42,24 @@ class AjouterProduit extends Component
         ];
     }
 
-    public function ajouter_compte(){
-        $compte = Compte::find($this->compte_principal_id);
-        if($this->stock > 0 && $this->prix_achat * $this->stock > $compte->montant){
-            return true;
-        }else{
+    public function ajouter_compte()
+    {
+        if (!$this->compte_principal_id || $this->stock <= 0) {
             return false;
         }
         
+        $compte = Compte::find($this->compte_principal_id);
+        if (!$compte) {
+            return false;
+        }
+        
+        $totalCost = $this->prix_achat * $this->stock;
+        return $totalCost > $compte->montant;
+    }
+
+    public function afficher_compte()
+    {
+        return $this->stock > 0;
     }
 
     public function store()
@@ -59,6 +68,7 @@ class AjouterProduit extends Component
 
         DB::beginTransaction();
         try {
+            // Création du produit
             $produit = new Produit([
                 'name' => $this->name,
                 'description' => $this->description,
@@ -71,6 +81,7 @@ class AjouterProduit extends Component
                 'fabricant' => $this->fabricant,
             ]);
 
+            // Gestion de l'image
             if ($this->image_produit) {
                 $fileName = hexdec(uniqid()) . '.' . $this->image_produit->getClientOriginalExtension();
                 $destinationPath = 'images/produits';
@@ -79,84 +90,134 @@ class AjouterProduit extends Component
                     mkdir($destinationPath, 0755, true);
                 }
 
-                // Supprime l’ancienne image si elle existe
-                if ($produit->image_produit && file_exists($destinationPath . '/' . $produit->image_produit)) {
-                    unlink($destinationPath . '/' . $produit->image_produit);
-                }
-
                 $this->image_produit->storeAs($destinationPath, $fileName, 'real_public');
-
-
                 $produit->image_produit = $fileName;
-            }
-            else{
-                $produit->image_produit = $produit->image_produit;
             }
 
             $produit->save();
 
             $totalCost = $this->prix_achat * $this->stock;
-            //paiement avec different compte si le compte principal n'est pas suffisant
-            if($this->stock > 0){
-                $compte_principal = Compte::find($this->compte_principal_id);
-                if($this->prix_achat * $this->stock > $compte_principal->montant){
-                    $compte_secondaire = Compte::find($this->compte_secondaire_id);
+            $compte_principal = null;
 
-                    if($this->prix_achat * $this->stock <= $compte_principal->montant + $compte_secondaire->montant){
-                        $produit->comptes()->attach($compte_principal->id, [
-                            'montant' => $this->montant_principal
-                        ]);
-
-
-                        $produit->comptes()->attach($compte_secondaire->id, [
-                            'montant' => $this->montant_secondaire
-                        ]);
-
-                        //mise a jour des deux comptes selectionnés
-                        $compte_principal->montant =  $compte_principal->montant - $this->montant_principal;
-                        $compte_principal->save();
-                        $compte_secondaire->montant =  $compte_secondaire->montant - $this->montant_secondaire;
-                        $compte_secondaire->save();
-                    }else{
-                        return redirect()->back()->with('error', 'solde insufisant dans les deux comptes, veillez recharger');
-                    }
+            // Gestion des comptes et transactions selon le stock
+            if ($this->stock > 0) {
+                // Validation des comptes pour stock > 0
+                if (!$this->compte_principal_id) {
+                    throw new Exception('Un compte principal est requis lorsque le stock est supérieur à 0.');
                 }
-                //liaison avec un seul compte si le montant dans le compte est sufisant pour effectuer l'achat
-                else{
-                    $this->montant_principal = $totalCost;
+
+                $compte_principal = Compte::find($this->compte_principal_id);
+                if (!$compte_principal) {
+                    throw new Exception('Compte principal introuvable.');
+                }
+
+                // Vérification si un second compte est nécessaire
+                if ($totalCost > $compte_principal->montant) {
+                    if (!$this->compte_secondaire_id || !$this->montant_principal || !$this->montant_secondaire) {
+                        throw new Exception('Les informations du compte secondaire sont requises car le solde du compte principal est insuffisant.');
+                    }
+
+                    if ($this->montant_principal + $this->montant_secondaire !== $totalCost) {
+                        throw new Exception('La somme des montants doit égaler le coût total (' . $totalCost . ' FCFA).');
+                    }
+
+                    $compte_secondaire = Compte::find($this->compte_secondaire_id);
+                    if (!$compte_secondaire) {
+                        throw new Exception('Compte secondaire introuvable.');
+                    }
+
+                    // Vérification des soldes
+                    if ($this->montant_principal > $compte_principal->montant) {
+                        throw new Exception('Le montant à prélever du compte principal dépasse son solde.');
+                    }
+
+                    if ($this->montant_secondaire > $compte_secondaire->montant) {
+                        throw new Exception('Le montant à prélever du compte secondaire dépasse son solde.');
+                    }
+
+                    if ($compte_principal->id === $compte_secondaire->id) {
+                        throw new Exception('Les comptes principal et secondaire ne peuvent pas être identiques.');
+                    }
+
+                    // Paiement avec deux comptes
                     $produit->comptes()->attach($compte_principal->id, [
                         'montant' => $this->montant_principal
                     ]);
-                    $compte_principal->montant =  $compte_principal->montant - $this->montant_principal;
+
+                    $produit->comptes()->attach($compte_secondaire->id, [
+                        'montant' => $this->montant_secondaire
+                    ]);
+
+                    // Mise à jour des soldes
+                    $compte_principal->montant -= $this->montant_principal;
+                    $compte_principal->save();
+                    
+                    $compte_secondaire->montant -= $this->montant_secondaire;
+                    $compte_secondaire->save();
+
+                    // Transactions pour les deux comptes
+                    Transaction::create([
+                        'date' => now()->format('d/m/y'),
+                        'heure' => now()->format('H:i:s'),
+                        'type' => "achat",
+                        'user_id' => Auth::id(),
+                        'montantVerse' => $this->montant_principal,
+                        'prixAchat' => $this->montant_principal,
+                        'compte_id' => $compte_principal->id,
+                    ]);
+
+                    Transaction::create([
+                        'date' => now()->format('d/m/y'),
+                        'heure' => now()->format('H:i:s'),
+                        'type' => "achat",
+                        'user_id' => Auth::id(),
+                        'montantVerse' => $this->montant_secondaire,
+                        'prixAchat' => $this->montant_secondaire,
+                        'compte_id' => $compte_secondaire->id,
+                    ]);
+
+                } else {
+                    // Paiement avec un seul compte (solde suffisant)
+                    $produit->comptes()->attach($compte_principal->id, [
+                        'montant' => $totalCost
+                    ]);
+
+                    // Mise à jour du solde
+                    $compte_principal->montant -= $totalCost;
                     $compte_principal->save();
 
-                    //enregistrement de la transaction principale
-                    $transactionPrincipal = new Transaction();
-                    $transactionPrincipal->type = "achat";
-                    $transactionPrincipal->montantVerse = $this->montant_principal;
-                    $transactionPrincipal->compte_id = $compte_principal->id;
-                    $transactionPrincipal->save();
+                    // Transaction pour le compte principal
+                    Transaction::create([
+                        'date' => now()->format('d/m/y'),
+                        'heure' => now()->format('H:i:s'),
+                        'type' => "achat",
+                        'user_id' => Auth::id(),
+                        'montantVerse' => $totalCost,
+                        'prixAchat' => $totalCost,
+                        'compte_id' => $compte_principal->id,
+                    ]);
                 }
             }
 
-            $dateHeure = now();
-
-            $transaction = new Transaction([
-                'date' => $dateHeure->format('d/m/y'),
-                'heure' => $dateHeure->format('H:i:s'),
+            // Transaction générale pour le nouveau produit
+            Transaction::create([
+                'date' => now()->format('d/m/y'),
+                'heure' => now()->format('H:i:s'),
                 'type' => "Nouveau produit",
                 'user_id' => Auth::id(),
                 'prixAchat' => $totalCost,
-                'compte_id' => $compte_principal->id,
+                'compte_id' => $compte_principal ? $compte_principal->id : null,
             ]);
-            $transaction->save();
 
+            // Liaison avec le fournisseur
             $produit->fournisseurs()->attach($this->fournisseur_id, [
                 'price' => $this->prix_achat,
                 'quantity' => $this->stock
             ]);
 
-            $transaction->produits()->attach($produit->id, [
+            // Liaison de la transaction avec le produit
+            $lastTransaction = Transaction::latest()->first();
+            $lastTransaction->produits()->attach($produit->id, [
                 'price' => $this->prix_achat,
                 'quantity' => $this->stock,
                 'name' => $this->name,
@@ -169,7 +230,6 @@ class AjouterProduit extends Component
 
         } catch (\Exception $e) {
             DB::rollBack();
-            //dd($e->getMessage());
             session()->flash('error', 'Erreur: ' . $e->getMessage());
         }
     }

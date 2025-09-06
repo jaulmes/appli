@@ -47,6 +47,10 @@ class FrontEndController extends Controller
         return view('annonces.add', compact('produits', 'services'));
     }
 
+    public function aproposDeNous(){
+        return view('frontend.page.aproposDeNous');
+    }
+
     public function allCategories(){
         $categories = Categori::all();
         return view('frontend.page.nosCategorie', compact('categories'));
