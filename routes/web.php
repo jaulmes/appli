@@ -71,7 +71,7 @@ Route::get('a-propos-de-nous', [FrontEndController::class, 'aproposDeNous'])->na
 Route::get('all-produit', [FrontEndController::class, 'allProduits'])->name('all-produit');
 
 Route::get('all-realisations', [FrontEndController::class, 'allRealisations'])->name('all-realisations');
-Route::get('nos-services', [FrontEndController::class, 'nosServices'])->name('nos-services');
+Route::get('nos-services', [FrontEndController::class, 'allServices'])->name('nos-services');
 
 Route::get('produit-detail/{id}', [FrontEndController::class, 'detailProduit'])->name('produit-detail');
 Route::post('add-to-cart/{id}', [FrontEndController::class, 'addToCart'])->name('add-to-cart');
