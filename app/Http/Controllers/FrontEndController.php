@@ -247,7 +247,7 @@ class FrontEndController extends Controller
 
     public function allServices(){
         $services = Service::all();
-        return view('frontend.page.nosServices', compact('services'));
+        return view('frontend.page.allService', compact('services'));
     }
     public function allRealisations(){
         $realisations = Realisation::all();

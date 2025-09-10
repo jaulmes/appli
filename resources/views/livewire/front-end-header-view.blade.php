@@ -45,7 +45,7 @@
     </div>
 
     <!-- Deuxième barre -->
-    <nav class="bg-secondary text-white">
+    <nav class=" text-white" style="background-color: #41dd63ff;">
         <div class="container-fluid d-flex gap-4 py-2">
             <a href="{{ route('frontend.index') }}" class="fw-bold text-white text-decoration-none">
                 <i class="fas fa-bars me-1"></i> Toutes
@@ -81,7 +81,7 @@
         background-color: #131921 !important; /* style Amazon */
     }
     .bg-secondary {
-        background-color: #232f3e !important; /* barre secondaire Amazon */
+        background-color: #41dd63ff !important; /* barre secondaire Amazon */
     }
     .btn-warning {
         background-color: #febd69;
