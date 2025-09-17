@@ -2,7 +2,7 @@
  <div>
 <header class="fixed-top">
     <!-- Première barre -->
-    <div class="bg-dark text-white py-2">
+    <div class="bg-dark text-white " style="padding-top: 3em; padding-bottom: 0.5em;">
         <div class="container-fluid d-flex align-items-center justify-content-between">
 
             <!-- Logo -->
