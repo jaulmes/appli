@@ -5,6 +5,7 @@ namespace App\Livewire;
 use App\Models\Achat;
 use App\Models\Charge;
 use App\Models\Installation;
+use App\Models\Recu;
 use App\Models\Vente;
 use Carbon\Carbon;
 use Livewire\Component;
@@ -16,7 +17,8 @@ class BilanBeneficeReeleMensuel extends Component
     public $totalInstallation = 0, $totalAchatInstallation = 0, $montantInvesti = 0;
     public $beneficeReele = 0, $beneficeBrute = 0;
 
-    public $charges = [], $ventes = [], $installations = [];
+    public $charges = [], $ventes = [], $installations = [], 
+            $recu = [], $chiffreAffaire = 0;
 
     public function afficher()
     {
@@ -73,6 +75,36 @@ class BilanBeneficeReeleMensuel extends Component
             - ($this->totalAchatVente + $this->totalAchatInstallation);
 
         $this->beneficeReele = $this->beneficeBrute - $this->totalCharge;
+
+        //chiffre d'affaire
+        $montantVente = 0;
+        $this->ventes = Vente::whereYear('created_at', Carbon::parse($this->moisSelectionne)->year)
+                        ->whereMonth('created_at', Carbon::parse($this->moisSelectionne)->month)
+                        ->latest()
+                        ->get();
+        
+        foreach($this->ventes as $vente){
+            $montantVente += $vente->montantVerse;
+        }
+
+        $montantInstallation = 0;
+        $this->installations = Installation::whereYear('created_at', Carbon::parse($this->moisSelectionne)->year)
+                        ->whereMonth('created_at', Carbon::parse($this->moisSelectionne)->month)
+                        ->latest()
+                        ->get();
+        foreach($this->installations as $installation){
+            $montantInstallation += $installation->montantVerse;
+        }
+
+        $montantRecu = 0;
+        $this->recu = Recu::whereYear('created_at', Carbon::parse($this->moisSelectionne)->year)
+                        ->whereMonth('created_at', Carbon::parse($this->moisSelectionne)->month)
+                        ->latest()
+                        ->get();
+        foreach($this->recu as $recus){
+            $montantRecu += $recus->montant_recu;
+        }
+        $this->chiffreAffaire = $montantVente + $montantInstallation + $montantRecu;
     }
 
     public function mount($moi)

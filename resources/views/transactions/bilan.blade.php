@@ -14,11 +14,6 @@
 
     <!-- Section Résumé Financier -->
     <div class="card border-0 shadow-sm mb-4">
-        <div class="card-header bg-dark bg-opacity-10 py-3 border-bottom">
-            <h5 class="card-title mb-0 fw-bold text-dark">
-                <i class="fas fa-chart-line me-2"></i>Résumé Financier
-            </h5>
-        </div>
         <div class="card-body p-0">
             <livewire:bilan-benefice-reele-mensuel :moi="$moi" />
         </div>
