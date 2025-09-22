@@ -92,18 +92,19 @@
     <nav class="text-white" style="background-color: #41dd63ff;">
         <div class="container-fluid">
             <!-- Navigation Desktop -->
-            <div class="d-none d-lg-flex gap-4 py-2">
-                <a href="{{ route('frontend.index') }}" class="fw-bold text-white text-decoration-none">
-                    <i class="fas fa-bars me-1"></i> Toutes
-                </a>
-                <a href="{{ route('all-produit') }}" class="text-white text-decoration-none">Produits</a>
-                <a href="{{ route('all-realisations') }}" class="text-white text-decoration-none">Réalisations</a>
-                <a href="{{ route('allPromoProduit') }}" class="text-white text-decoration-none">Promotions</a>
-                <a href="{{ route('all-pack') }}" class="text-white text-decoration-none">Packs produits</a>
-                <a href="{{ route('nos-services') }}" class="text-white text-decoration-none">Services</a>
-                <a href="{{ route('simulateur') }}" class="text-white text-decoration-none">Simulateur</a>
-                <a href="{{ route('a-propos-de-nous') }}" class="text-white text-decoration-none">Contact</a>
-            </div>
+                    <div class="d-none d-lg-flex justify-content-center gap-4 py-2">
+            <a href="{{ route('frontend.index') }}" class="fw-bold text-white text-decoration-none">
+                <i class="fas fa-bars me-1"></i> Toutes
+            </a>
+            <a href="{{ route('all-produit') }}" class="text-white text-decoration-none">Produits</a>
+            <a href="{{ route('all-realisations') }}" class="text-white text-decoration-none">Réalisations</a>
+            <a href="{{ route('allPromoProduit') }}" class="text-white text-decoration-none">Promotions</a>
+            <a href="{{ route('all-pack') }}" class="text-white text-decoration-none">Packs produits</a>
+            <a href="{{ route('all-categorie') }}" class="text-white text-decoration-none">Categories</a>
+            <a href="{{ route('nos-services') }}" class="text-white text-decoration-none">Services</a>
+            <a href="{{ route('simulateur') }}" class="text-white text-decoration-none">Simulateur</a>
+            <a href="{{ route('a-propos-de-nous') }}" class="text-white text-decoration-none">Contact</a>
+        </div>
             
             <!-- Navigation Mobile (collapse) -->
             <div class="collapse d-lg-none" id="mobileMenu">

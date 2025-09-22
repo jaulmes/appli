@@ -1,145 +1,131 @@
-<div>
-  <div class="container-fluid  position-relative bg-light overflow-hidden" style=" border-radius: 3rem;">
-
-    {{-- Balises décoratives --}}
-    <div class="bg-shapes-top position-absolute start-0 top-0"></div>
-    <div class="bg-shapes-bottom position-absolute end-0 bottom-0"></div>
-
-    {{-- En-tête section --}}
-    <div class="text-center mb-5" role="banner">
-      <h3 class="text-warning fw-bold mb-2" style="letter-spacing:2px;">Services</h3>
-      <h2 class="fw-bold display-6 text-uppercase" style="color:#004075;" id="services-heading">
-        <a href="{{ route('nos-services') }}" class="text-decoration-none text-dark">
-          <i class="fas fa-cogs"></i>
-          Découvrez nos services
-        </a>
-      </h2>
+<div class="container py-0">
+    <div class="text-center mb-4">
+        <div class="row g-4 bg-grey align-items-center mb-0" data-aos="fade-up">
+            <div class="col-lg-4 text-start">
+                <h1 class="display-5 fw-bold gradient-text">
+                    <a href="{{ route('nos-services') }}" style="text-decoration: none;">
+                        <i class="fas fa-cogs me-2"></i> Nos Services
+                    </a>
+                </h1>
+            </div>
+            <div class="col-lg-8 text-end">
+                <div class="magnetic-wrap">
+                    <!-- Bouton CTA -->
+                    <a href="{{ route('nos-services') }}" 
+                       class="btn cta-voir-plus magnetic-btn hover-lift">
+                        <span class="btn-content">
+                            <span class="btn-text">Voir tous les services</span>
+                            <i class="fas fa-arrow-right ms-2 arrow-icon"></i>
+                        </span>
+                        <div class="btn-shine"></div>
+                        <div class="btn-glow"></div>
+                    </a>
+                </div>
+            </div>
+        </div>
     </div>
 
-    {{-- Fallback pour les bots sans JS --}}
+    {{-- Fallback si JS désactivé --}}
     <noscript>
-      @foreach($services as $service)
-        <div>
-          <a href="{{ route('detail-service', $service->id) }}">
-            {{ $service->name }}
-          </a>
-        </div>
-      @endforeach
+        @foreach($services as $service)
+            <div>
+                <a href="{{ route('detail-service', $service->id) }}">
+                    {{ $service->name }}
+                </a>
+            </div>
+        @endforeach
     </noscript>
 
-    {{-- JSON-LD ItemList --}}
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "ItemList",
-      "itemListElement": [
-        @foreach($services as $index => $s)
-        {
-          "@type": "ListItem",
-          "position": {{ $index + 1 }},
-          "url": "{{ route('detail-service', $s->id) }}",
-          "name": "{{ $s->name }}"
-        }@if(!$loop->last),@endif
-        @endforeach
-      ]
-    }
-    </script>
+    {{-- Carrousel Owl --}}
+    <div wire:ignore>
+        <div class="owl-carousel owl-theme" id="carouselServices">
+            @foreach($services as $service)
+                <div class="item px-2">
+                    <div class="card product-card h-100 border-0 rounded-4 shadow-sm">
+                        <a href="{{ route('detail-service', $service->id) }}" 
+                           class="card-image-link d-block text-decoration-none position-relative">
+                            @php
+                                $image1 = public_path('images/services/'. $service->image);
+                                $url = file_exists($image1)
+                                        ? asset('images/services/'. $service->image)
+                                        : asset('storage/images/services/' . $service->image);
+                            @endphp
 
-    {{-- Grille de cartes --}}
-    <div class="row g-4 justify-content-center" aria-labelledby="services-heading">
-      @foreach($services as $service)
-        <div class="col-sm-6 col-md-4 col-lg-3">
-          <div class="card border-0 shadow-sm h-100  rounded-4 overflow-hidden">
+                            <img src="{{ $url }}" class="card-img-top img-fluid product-image" alt="{{ $service->name }}" style="object-fit: cover; height: 250px;">
 
-            {{-- Image --}}
-            <figure class="mb-0">
-              @php
-                  $image1 = public_path('images/services/'. $service->image);
-                  $image2 = public_path('storage/images/services/'. $service->image);
-                  $url = file_exists($image1)? asset('images/services/'. $service->image)
-                                              : asset('storage/images/services/' . $service->image);
-              @endphp
-              <a href="{{ route('detail-service', $service->id) }}">
-                <img src="{{$url }}"
-                  alt="{{ $service->name }}"
-                  loading="lazy"
-                  class="d-block w-100 object-fit-cover"
-                  style="height:200px;">
-              </a>
-              
-            </figure>
+                            <!-- Badge service -->
+                            <div class="product-badge pack-badge">
+                                <i class="fas fa-tools"></i> SERVICE
+                            </div>
 
-            {{-- Contenu --}}
-            <div class="card-body d-flex flex-column">
+                            <!-- Overlay -->
+                            <div class="product-overlay">
+                                <div class="overlay-content">
+                                    <i class="fas fa-eye"></i>
+                                    <span>Voir détails</span>
+                                </div>
+                            </div>
+                        </a>
 
-              <h3 class="h5 card-title fw-bold text-truncate" title="{{ $service->name }}">
-                {{ $service->name }}
-              </h3>
+                        <div class="card-body p-3 text-center">
+                            <h5 class="product-title fw-bold">{{ $service->name }}</h5>
 
-              <p class="card-text text-muted small">
-                {{ Str::limit($service->description, 80) }}
-              </p>
+                            <!-- Description -->
+                            <p class="text-muted small mb-3">{{ Str::limit($service->description, 80) }}</p>
 
-              {{-- Bouton --}}
-              <div class="mt-auto text-center">
-                <a
-                  href="{{ route('detail-service', $service->id) }}"
-                  class="btn btn-primary rounded-pill px-4"
-                  aria-label="En savoir plus sur {{ $service->name }}"
-                >
-                  En savoir plus
-                </a>
-              </div>
-
-            </div>
-          </div>
+                            <!-- CTA -->
+                            <div class="cta-container">
+                                <a href="{{ route('detail-service', $service->id) }}" 
+                                   class="btn cta-add-cart pulse-button">
+                                    <span class="btn-content">
+                                        <i class="fas fa-info-circle"></i>
+                                        <span class="btn-text">En savoir plus</span>
+                                    </span>
+                                    <div class="btn-ripple"></div>
+                                    <div class="success-check">
+                                        <i class="fas fa-check"></i>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            @endforeach
         </div>
-      @endforeach
     </div>
 
-    {{-- Bouton global --}}
-    <div class="text-center mt-5">
-      <a
-        href="#"
-        class="btn btn-warning text-dark rounded-pill px-4 py-2 shadow"
-        role="button"
-      >
-        Découvrir plus
-      </a>
-    </div>
+    <script>
+    let servicesCarouselInitialized = false;
 
-  </div>
+    function initializeServicesCarousel() {
+        if (!servicesCarouselInitialized) {
+            $('#carouselServices').owlCarousel({
+                loop: true,
+                margin: 15,
+                nav: true,
+                dots: false,
+                autoplay: true,
+                autoplayTimeout: 4000,
+                autoplayHoverPause: true,
+                responsive:{
+                    0:{ items:1 },
+                    576:{ items:2 },
+                    768:{ items:3 },
+                    992:{ items:4 }
+                }
+            }).on('translated.owl.carousel', function() {
+                AOS.refresh();
+            });
+            servicesCarouselInitialized = true;
+        }
+    }
 
-  {{-- Styles personnalisés --}}
-  <style>
-    .overflow-hidden { overflow-x: hidden; }
-    .object-fit-cover { object-fit: cover; }
-    .bg-shapes-top::before,
-    .bg-shapes-bottom::before {
-      content: "";
-      position: absolute;
-      width: 200px; height: 200px;
-      background: radial-gradient(circle, #ffa500 0%, #ff7f00 100%);
-      opacity: .3; z-index: -1;
-      border-radius: 50%;
-    }
-    .bg-shapes-top::before { top: -50px; left: -50px; }
-    .bg-shapes-bottom::before { bottom: -50px; right: -50px; }
+    document.addEventListener('DOMContentLoaded', function(){
+        AOS.init({ duration:800, once:true });
+        initializeServicesCarousel();
+    });
 
-    .btn-primary {
-      background: linear-gradient(135deg,#007bff,#0056b3);
-      border: none;
-    }
-    .btn-primary:hover {
-      background: linear-gradient(135deg,#0056b3,#003f7f);
-    }
-    .btn-warning {
-      background: linear-gradient(135deg,#ffaf00,#ff7f00);
-      border: none;
-    }
-    .btn-warning:hover {
-      background: linear-gradient(135deg,#ff7f00,#ff5a00);
-    }
-  </style>
-
+    document.addEventListener('livewire:load', initializeServicesCarousel);
+    document.addEventListener('livewire:navigated', () => setTimeout(initializeServicesCarousel, 100));
+    </script>
 </div>
