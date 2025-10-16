@@ -42,6 +42,10 @@ class Transaction extends Model
         return $this->belongsTo(Vente::class, 'vente_id');
     }
 
+    public function achats(){
+        return $this->belongsTo(Achat::class, 'achat_id');
+    }
+    
     public function installations(){
         return $this->belongsTo(Installation::class, 'installation_id');
     }

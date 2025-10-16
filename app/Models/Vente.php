@@ -62,7 +62,7 @@ class Vente extends Model
     }
 
     public function transactions(){
-        return $this->hasOne(Vente::class);
+        return $this->hasOne(Transaction::class);
     }
 
     public function commandes(){

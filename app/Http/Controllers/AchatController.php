@@ -18,7 +18,8 @@ use Illuminate\Support\Facades\Session;
 class AchatController extends Controller
 {
     public function index(){
-        $achats = Achat::all();
+        $achats = Achat::orderBy('created_at', 'desc')
+                        ->get();
         $comptes = Compte::all();
         return view('achats.index', compact('achats', 'comptes'));
     }
@@ -137,12 +138,14 @@ class AchatController extends Controller
             );
         }
 
+        $achats->save();
+        $transactions->achat_id = $achats->id;
         $comptes->montant = $comptes->montant - $achats->montantVerse;
         
         $transactions->save();
         
         $comptes->save();
-        $achats->save();
+        
         //je relie chaque produit du panier a l'achat
         foreach($panier as $produit){
             $achats->produits()->attach($produit['id'], [

@@ -161,7 +161,25 @@ class produitController extends Controller
      */
     public function destroy(string $id)
     {
-        Produit::where('id', $id)->delete();
+        $produit = Produit::with('comptes')->find( $id);
+
+        $comptes = $produit->comptes;
+        foreach($comptes as $compte){
+            $compte->montant -= $compte->pivot->montant;
+        }
+        $produit->comptes()->detach();
+        //supprimer l'image du produit
+        if($produit->image_produit){
+            $imagePath1 = public_path('images/produits/' . $produit->image_produit);
+            $imagePath2 = public_path('storage/images/produits/' . $produit->image_produit);
+            if (file_exists($imagePath1)) {
+                unlink($imagePath1);
+            } elseif (file_exists($imagePath2)) {
+                unlink($imagePath2);
+            }
+        }
+        $produit->delete();
+        
         session()->flash("message", "vous avez supprime ce produit...");
         return redirect()->route('produit.index');
     }

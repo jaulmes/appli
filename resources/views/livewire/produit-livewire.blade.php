@@ -7,20 +7,13 @@
             </h3>
             
             <div class="mt-3 mt-md-0 d-flex gap-2">
-                <a href="{{route('produit.import')}}" class="btn btn-light">
-                    <i class="fas fa-file-import me-2"></i>Importer
+                <a href="{{route('produit.ajouter')}}" class="btn btn-light">
+                    <i class="fas fa-file-import me-2"></i>ajouter un produit
                 </a>
             </div>
         </div>
 
-        <!-- Alert Modernisé -->
-        @if (session()->has('message'))
-        <div class="alert alert-success alert-dismissible fade show m-4" role="alert">
-            <i class="fas fa-check-circle me-2"></i>
-            {{ session('message') }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-        @endif
+
 
         <!-- Barre de recherche améliorée -->
         <div class="card-body pt-4">
@@ -68,7 +61,7 @@
                                 <!-- Catégorie -->
                                 <td>
                                     <span class="badge bg-primary bg-opacity-10 text-primary">
-                                        {{$produit->categori->titre}}
+                                        {{$produit->categori->titre?? "non defini"}}
                                     </span>
                                 </td>
                                 
@@ -185,4 +178,28 @@
             </div>
         </div>
     </div>
+    <!-- Toast container (en bas à droite) -->
+    <div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 1100">
+        @if (session()->has('message'))
+            <div class="toast align-items-center text-bg-success border-0 show" role="alert" aria-live="assertive" aria-atomic="true" 
+                data-bs-delay="10000"> <!-- durée : 10s -->
+                <div class="d-flex">
+                    <div class="toast-body">
+                        <i class="fas fa-check-circle me-2"></i> {{ session('message') }}
+                    </div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+            </div>
+        @endif
+    </div>
+
+    <!-- Script pour activer automatiquement le toast -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const toastElList = [].slice.call(document.querySelectorAll('.toast'))
+            toastElList.map(function (toastEl) {
+                new bootstrap.Toast(toastEl).show()
+            })
+        });
+    </script>
 </div>

@@ -25,6 +25,13 @@ class Achat extends Model
     //     return $this->belongsToMany(Produit::class);
     // }
 
+    public function transactions(){
+        return $this->hasOne(Transaction::class);
+    }
+    public function achatsPaiements()
+    {
+        return $this->hasMany(AchatPaiement::class);
+    }
     public function user()
     {
         return $this->belongsTo(User::class);

@@ -13,7 +13,19 @@ class ModalValiderAprovisionnement extends Component
                             'ProduitAjoute' => 'updateCart'];
 
     public function updateCart(){
-        $this->produitPanier = \Cart::getContent();
+        $this->produitPanier = session()->get('cart', []);
+    }
+
+    public function panierTotal(){
+        $total = 0;
+        foreach($this->produitPanier as $item){
+            $total += (int)$item['prix_achat'] * $item['quantity'];
+        }
+        return $total;
+    }
+
+    public function mount(){
+        $this->produitPanier = session()->get('cart', []);
     }
     public function render()
     {

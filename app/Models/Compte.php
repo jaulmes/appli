@@ -15,6 +15,10 @@ class Compte extends Model
         'montant'
     ];
 
+        public function achatsPaiements()
+    {
+        return $this->hasMany(AchatPaiement::class);
+    }
     public function transactions()
     {
         return $this->hasMany(Transaction::class);

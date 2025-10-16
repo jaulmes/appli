@@ -47,6 +47,11 @@ class User extends Authenticatable
 
     protected $guard_name = 'web';
 
+    public function achatsPaiements()
+    {
+        return $this->hasMany(AchatPaiement::class);
+    }
+    
     public function suivis(){
         return $this->hasMany(Suivi::class);
     }

@@ -6,6 +6,7 @@ use App\Models\Achat;
 use App\Models\Charge;
 use App\Models\Installation;
 use App\Models\Recu;
+use App\Models\Transaction;
 use App\Models\Vente;
 use Carbon\Carbon;
 use Livewire\Component;
@@ -70,6 +71,13 @@ class BilanBeneficeReeleMensuel extends Component
 
         $this->montantInvesti = $achats->sum('total');
 
+        //produit ajoute avec une quantite > 0
+        $produit_achat = Transaction::whereYear('created_at', $date->year)
+            ->whereMonth('created_at', $date->month)
+            ->where('type', 'achat')
+            ->get();
+
+        $this->montantInvesti += $produit_achat->sum('montantVerse');
         // Calcul bénéfices
         $this->beneficeBrute = ($this->totalVente + $this->totalInstallation)
             - ($this->totalAchatVente + $this->totalAchatInstallation);
