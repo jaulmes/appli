@@ -12,6 +12,7 @@ class productImage extends Model
         'produit_id',
         'path',
         'is_gif',
+        
     ];
 
     public function produit()
