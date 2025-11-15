@@ -43,6 +43,11 @@
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         @endif
+        @if (session('success'))
+            <div class="alert alert-success">
+                {!! session('success') !!}
+            </div>
+        @endif
 
         <!-- Tableau des factures -->
         <div class="table-responsive">
@@ -66,6 +71,9 @@
                                     <a href="{{ route('factures.ventes.telecharger', $facture->id) }}" class="btn btn-outline-success btn-sm" title="Télécharger">
                                         <i class="bi bi-download"></i>
                                     </a>
+                                    <a href="#" wire:click="exploiterFacture({{$facture->id}})" class="btn btn-outline-dark btn-sm" title="Exploiter">
+                                        <i class="bi bi-arrow-counterclockwise"></i>
+                                    </a>
                                     <a href="{{ route('factures.ventes.afficher', $facture->id) }}" target="_blank" class="btn btn-outline-info btn-sm" title="Afficher">
                                         <i class="bi bi-eye"></i>
                                     </a>
@@ -80,6 +88,9 @@
                                     <a href="{{ route('factures.installations.telecharger', $facture->id) }}" class="btn btn-outline-success btn-sm" title="Télécharger">
                                         <i class="bi bi-download"></i>
                                     </a>
+                                    <a href="#" wire:click="exploiterFacture({{$facture->id}})" class="btn btn-outline-dark btn-sm" title="Exploiter">
+                                        <i class="bi bi-arrow-counterclockwise"></i>
+                                    </a>
                                     <a href="{{ route('factures.installations.afficher', $facture->id) }}" target="_blank" class="btn btn-outline-info btn-sm" title="Afficher">
                                         <i class="bi bi-eye"></i>
                                     </a>
@@ -93,6 +104,9 @@
                                 <td class="text-center" id="facture-{{$facture->id}}">
                                     <a href="{{ route('factures.proformats.afficher', $facture->id) }}" target="_blank" class="btn btn-outline-info btn-sm" title="Afficher">
                                         <i class="bi bi-eye"></i>
+                                    </a>
+                                    <a href="#" wire:click="exploiterFacture({{$facture->id}})" class="btn btn-outline-dark btn-sm" title="Exploiter">
+                                        <i class="bi bi-arrow-counterclockwise"></i>
                                     </a>
                                 </td>
                             @endif
