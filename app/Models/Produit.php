@@ -22,11 +22,12 @@ class Produit extends Model
         'image_produit',
         'prix_promo',
         'status_promo',
-        'image_promo',
-        'image_produit2',
-        'image_produit3',
-        'image_produit4',
     ];
+
+    public function images()
+    {
+        return $this->hasMany(ProductImage::class);
+    }
 
     public function comptes(){
         return $this->belongsToMany(Compte::class,'compte_produit')

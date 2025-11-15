@@ -1,203 +1,342 @@
-<div class="row justify-content-center">
-    @foreach($produits as $produit)
-    <div class="col-md-6 col-lg-4 col-xl-3 mb-4" wire:key="product-{{ $produit->id }}">
-        <div class="card h-100 border-0 hover-scale overflow-hidden shadow-sm transition-all position-relative" 
-             data-aos="fade-up"
-             data-aos-delay="{{ $loop->index * 50 }}">
-            
-            <!-- Conteneur image avec effets avancés -->
-            <a href="{{ route('produit-detail', $produit->id) }}" 
-                class="card-image-link d-block text-decoration-none position-relative">
-                <div class="position-relative overflow-hidden image-zoom-container" 
-                    style="height: 250px;"
-                    data-tilt data-tilt-max="10">
-                    <img src="{{ $produit->getImageUrl() }}"
-                        alt="{{ $produit->name }}"
-                        class="img-fluid w-100 h-100 object-fit-cover transition-all zoom-image parallax-image"
-                        data-parallax="hover">
-
-                    <!-- Overlay interactif amélioré -->
-                    <div class="image-overlay d-flex flex-column justify-content-between opacity-0 hover-opacity-100 transition-all">
-                        <div class="d-flex justify-content-end p-3">
-                            
-                        </div>
-
-                    </div>
-
-                    <!-- Badge catégorie animé -->
-                    <div class="position-absolute top-0 start-0 m-3">
-                        <span class="badge bg-gradient-primary rounded-pill px-3 py-2 hover-lift">
-                            {{ $produit->categori->titre }}
+<div>
+    <div>
+        <div class="row g-4">
+            @forelse($produits as $produit)
+            <div class="col-lg-3 col-md-4 col-sm-6">
+                <div class="card h-100 border-0 shadow-sm hover-scale transition-all position-relative">
+                    <!-- Badge promo -->
+                    @if($produit->status_promo)
+                    <div class="position-absolute top-0 start-0 m-3" style="z-index: 10;">
+                        <span class="badge bg-danger px-3 py-2 rounded-pill shadow-sm animate-pulse">
+                            <i class="fas fa-fire me-1"></i>
+                            PROMO
                         </span>
                     </div>
+                    @endif
 
-                    <!-- Effet de brillance au survol -->
-                    <div class="shine-effect"></div>
+                    
+
+            <!-- Image avec zoom -->
+            <a href="{{ route('produit-detail', $produit->id) }}" class="text-decoration-none">
+                <div class="image-zoom-container position-relative" style="height: 280px; overflow: hidden;">
+                    <img src="{{ $this->getPriorityImage($produit) }}"
+                        class="card-img-top zoom-image w-100 h-100"
+                        alt="{{ $produit->name }}"
+                        style="object-fit: cover;"
+                        loading="lazy">
+
+                    <!-- Overlay sombre au hover -->
+                    <div class="card-img-overlay d-flex align-items-center justify-content-center opacity-0 hover-opacity-100 transition-all">
+                        <span class="btn btn-light btn-lg rounded-circle shadow">
+                            <i class="fas fa-eye"></i>
+                        </span>
+                    </div>
                 </div>
             </a>
 
-            <!-- Corps de la carte amélioré -->
-            <div class="card-body p-3 position-relative">
-                <!-- Animation de fond -->
-                <div class="card-glow"></div>
-
-                <h5 class="fw-bold mb-2 text-truncate hover-lift">
-                    {{ $produit->name }}
+            <!-- Corps de la carte -->
+            <div class="card-body d-flex flex-column">
+                <!-- Nom du produit -->
+                <h5 class="card-title fw-bold mb-3" style="min-height: 50px;">
+                    <a href="{{ route('produit-detail', $produit->id) }}"
+                        class="text-dark text-decoration-none hover-primary">
+                        {{ Str::limit($produit->name, 50) }}
+                    </a>
                 </h5>
 
-                <!-- Prix avec animation -->
-                <div class="d-flex align-items-center justify-content-between border-top pt-3 price-container">
-                    <div class="price-display">
-                        <p class="mb-0 price-text">
-                            <small class="text-muted">{{ $produit->getPrice() }}</small>
-                        </p>
+                <!-- Prix -->
+                <div class="mb-3">
+                    @if($produit->status_promo)
+                    <div class="d-flex align-items-center gap-2">
+                        <del class="text-muted small">{{ number_format($produit->price, 0, ',', ' ') }} FCFA</del>
+                        <span class="badge bg-success fs-5 px-3 py-2">
+                            {{ number_format($produit->prix_promo, 0, ',', ' ') }} FCFA
+                        </span>
                     </div>
+                    @else
+                    <span class="badge bg-success fs-5 px-3 py-2">
+                        {{ number_format($produit->price, 0, ',', ' ') }} FCFA
+                    </span>
+                    @endif
                 </div>
 
-                <!-- Bouton ajouter avec effet magnétique -->
-                <div class="mt-3 position-relative magnetic-container">
-                    <button class="btn btn-sm btn-primary rounded-pill magnetic-button" 
-                            wire:click="addProductToCartAll({{ $produit->id }})"
-                            >
-                        <span class="button-content">
-                            <i class="fas fa-cart-plus me-2"></i>Ajouter
-                        </span>
-                        <span class="button-loader spinner-border spinner-border-sm d-none"></span>
+
+                <!-- Boutons d'action -->
+                <div class="mt-auto d-flex gap-2">
+                    @if($produit->stock > 0)
+                    <button wire:click="addProductToCartAll({{ $produit->id }})"
+                        class="btn btn-primary flex-grow-1 rounded-pill shadow-sm btn-add-cart">
+                        <i class="fas fa-cart-plus me-2"></i>
+                        Ajouter
                     </button>
-                    <div class="magnetic-ripple"></div>
+                    @else
+                    <button wire:click="addProductToCartAll({{ $produit->id }})"
+                        class="btn btn-warning flex-grow-1 rounded-pill shadow-sm btn-reserve">
+                        <i class="fas fa-bolt me-2"></i>
+                        Réserver
+                    </button>
+                    @endif
+
+                    <a href="{{ route('produit-detail', $produit->id) }}"
+                        class="btn btn-outline-secondary rounded-circle shadow-sm btn-view">
+                        <i class="fas fa-eye"></i>
+                    </a>
                 </div>
+
+                <!-- Indicateur d'images multiples -->
+                @if($produit->images && $produit->images->count() > 1)
+                <div class="mt-2 text-center">
+                    <small class="text-muted">
+                        <i class="fas fa-images me-1"></i>
+                        {{ $produit->images->count() }} photos
+                    </small>
+                </div>
+                @endif
             </div>
         </div>
     </div>
-    @endforeach
+    @empty
+    <div class="col-12">
+        <div class="alert alert-info text-center py-5 rounded-3 shadow-sm">
+            <i class="fas fa-box-open fs-1 mb-3 d-block"></i>
+            <h4>Aucun produit disponible</h4>
+            <p class="mb-0 text-muted">Revenez plus tard pour découvrir nos nouveautés !</p>
+        </div>
+    </div>
+    @endforelse
+</div>
 
-    <style>
-/* Animations principales */
-.hover-scale {
-    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), 
-                box-shadow 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    will-change: transform;
-}
+<!-- Indication de chargement -->
+<div wire:loading class="text-center py-5">
+    <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Chargement...</span>
+    </div>
+    <p class="mt-3 text-muted">Chargement des produits...</p>
+</div>
+<style>
+    /* === ANIMATIONS === */
+    .animate-pulse {
+        animation: pulse 2s ease-in-out infinite;
+    }
 
-.hover-scale:hover {
-    transform: translateY(-8px) rotateX(2deg) rotateY(2deg);
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25) !important;
-}
+    @keyframes pulse {
 
-/* Effet parallaxe image */
-.parallax-image {
-    transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1), 
-                filter 0.4s ease;
-    transform-origin: center;
-}
+        0%,
+        100% {
+            transform: scale(1);
+        }
 
-.parallax-image:hover {
-    transform: scale(1.15) rotateZ(0.5deg);
-    filter: brightness(1.05);
-}
+        50% {
+            transform: scale(1.05);
+        }
+    }
 
-/* Overlay image */
-.image-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(180deg, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.6) 100%);
-}
+    .animate-badge {
+        animation: badgeWiggle 3s ease-in-out infinite;
+    }
 
-/* Effet de brillance */
-.shine-effect {
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 50%;
-    height: 100%;
-    background: linear-gradient(
-        90deg,
-        rgba(255,255,255,0) 0%,
-        rgba(255,255,255,0.3) 50%,
-        rgba(255,255,255,0) 100%
-    );
-    transform: skewX(-30deg);
-    transition: left 0.8s;
-}
+    @keyframes badgeWiggle {
 
-.image-zoom-container:hover .shine-effect {
-    left: 150%;
-}
+        0%,
+        100% {
+            transform: rotate(0deg);
+        }
 
-/* Animation bouton */
-.transform-down {
-    transform: translateY(20px);
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-}
+        25% {
+            transform: rotate(-5deg);
+        }
 
-.image-zoom-container:hover .transform-down {
-    transform: translateY(0);
-}
+        75% {
+            transform: rotate(5deg);
+        }
+    }
 
-/* Effet magnétique */
-.magnetic-button {
-    position: relative;
-    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    overflow: hidden;
-}
+    /* === HOVER EFFECTS === */
+    .hover-primary:hover {
+        color: #667eea !important;
+        transition: color 0.3s ease;
+    }
 
-.magnetic-container:hover .magnetic-button {
-    transform: scale(1.05);
-}
+    .hover-scale {
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
 
-.magnetic-ripple {
-    position: absolute;
-    border-radius: 50%;
-    background: rgba(255,255,255,0.2);
-    transform: scale(0);
-    pointer-events: none;
-}
+    .hover-scale:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.12) !important;
+    }
 
-/* Animation prix */
-.price-text {
-    transition: transform 0.3s ease;
-}
+    /* === IMAGE ZOOM === */
+    .image-zoom-container {
+        transition: transform 0.3s;
+        overflow: hidden;
+        background: #f8f9fa;
+    }
 
-.price-container:hover .price-text {
-    transform: translateY(-3px);
-}
+    .zoom-image {
+        transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    }
 
-/* Glow effect */
-.card-glow {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: radial-gradient(circle at var(--x) var(--y), 
-        rgba(0,102,255,0.1) 0%, 
-        transparent 70%);
-    pointer-events: none;
-    opacity: 0;
-    transition: opacity 0.3s;
-}
+    .image-zoom-container:hover .zoom-image {
+        transform: scale(1.15);
+    }
 
-.card:hover .card-glow {
-    opacity: 1;
-}
+    /* === OVERLAY === */
+    .card-img-overlay {
+        background: linear-gradient(180deg, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0.2) 50%);
+        z-index: 2;
+    }
+
+    .hover-opacity-100:hover {
+        opacity: 1 !important;
+    }
+
+    .transition-all {
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* === BOUTONS === */
+    .btn-add-cart {
+        background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+        border: none;
+        transition: all 0.3s ease;
+    }
+
+    .btn-add-cart:hover {
+        background: linear-gradient(135deg, #20c997 0%, #17a2b8 100%);
+        transform: scale(1.05);
+        box-shadow: 0 8px 20px rgba(40, 167, 69, 0.3) !important;
+    }
+
+    .btn-add-cart:active {
+        transform: scale(0.95);
+    }
+
+    .btn-reserve {
+        background: linear-gradient(135deg, #fd7e14 0%, #dc3545 100%);
+        border: none;
+        color: white;
+        transition: all 0.3s ease;
+    }
+
+    .btn-reserve:hover {
+        background: linear-gradient(135deg, #dc3545 0%, #e83e8c 100%);
+        transform: scale(1.05);
+        box-shadow: 0 8px 20px rgba(220, 53, 69, 0.3) !important;
+        color: white;
+    }
+
+    .btn-view {
+        transition: all 0.3s ease;
+    }
+
+    .btn-view:hover {
+        background: #667eea;
+        color: white;
+        border-color: #667eea;
+        transform: scale(1.1);
+    }
+
+    /* === CARTES === */
+    .card {
+        border-radius: 15px !important;
+        overflow: hidden;
+    }
+
+    .card-body {
+        padding: 1.25rem;
+    }
+
+    /* === BADGES === */
+    .badge {
+        font-weight: 600;
+        letter-spacing: 0.5px;
+    }
+
+    /* === RESPONSIVE === */
+    @media (max-width: 768px) {
+        .image-zoom-container {
+            height: 200px !important;
+        }
+
+        .card-title {
+            font-size: 1rem;
+            min-height: 40px !important;
+        }
+
+        .btn-add-cart,
+        .btn-reserve {
+            font-size: 0.875rem;
+            padding: 0.5rem 1rem;
+        }
+    }
+
+    @media (max-width: 576px) {
+        .col-sm-6 {
+            flex: 0 0 100%;
+            max-width: 100%;
+        }
+    }
+
+    /* === ANIMATION D'ENTRÉE === */
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .card {
+        animation: fadeInUp 0.5s ease-out;
+    }
+
+    /* Délai progressif pour l'animation */
+    .col-lg-3:nth-child(1) .card {
+        animation-delay: 0.1s;
+    }
+
+    .col-lg-3:nth-child(2) .card {
+        animation-delay: 0.2s;
+    }
+
+    .col-lg-3:nth-child(3) .card {
+        animation-delay: 0.3s;
+    }
+
+    .col-lg-3:nth-child(4) .card {
+        animation-delay: 0.4s;
+    }
 </style>
 
 <script>
-// Effet de suivi de souris
-document.querySelectorAll('.card').forEach(card => {
-    card.addEventListener('mousemove', (e) => {
-        const rect = card.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
-        card.style.setProperty('--x', `${x}px`);
-        card.style.setProperty('--y', `${y}px`);
+    // Toast de notification après ajout au panier
+    window.addEventListener('ProduitAjoute', event => {
+        // Créer un toast Bootstrap ou une notification
+        const toast = document.createElement('div');
+        toast.className = 'position-fixed bottom-0 end-0 p-3';
+        toast.style.zIndex = '11';
+        toast.innerHTML = `
+                <div class="toast show" role="alert">
+                    <div class="toast-header bg-success text-white">
+                        <i class="fas fa-check-circle me-2"></i>
+                        <strong class="me-auto">Succès</strong>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast"></button>
+                    </div>
+                    <div class="toast-body">
+                        Produit ajouté au panier avec succès !
+                    </div>
+                </div>
+            `;
+        document.body.appendChild(toast);
+
+        setTimeout(() => {
+            toast.remove();
+        }, 3000);
     });
-});
-
-
 </script>
 </div>
-

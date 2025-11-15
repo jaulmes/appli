@@ -71,81 +71,232 @@ class produitController extends Controller
     public function show(string $id){
         $produit = Produit::find($id);
         $categories = Categori::all();
+        $fournisseurs = Fournisseur::all();
+        $comptes = Compte::all();
         
-        return view('produits.edit', compact('produit', 'categories'));
+        return view('produits.edit', compact('produit', 'categories', 'fournisseurs' ,'comptes'));
     }
 
     //modifier le produit
-    public function edit(Request $request, string $id)
-    {
-        
-        $request->validate([
-            'prix_achat' => 'required|integer|min:0',
-            'price' => 'required|integer|min:0',
-            'prix_minimum' => 'required|integer|min:0',
-            'prix_technicien' => 'required|integer|min:0',
-            'categori_id' => 'required',
-            'stock' => 'required|integer|min:0'
+public function edit(Request $request, string $id)
+{
+    $request->validate([
+        'name' => 'required|string|max:255',
+        'description' => 'nullable|string',
+        'categori_id' => 'required',
+        'prix_achat' => 'required|integer|min:0',
+        'price' => 'required|integer|min:0',
+        'prix_minimum' => 'required|integer|min:0',
+        'prix_technicien' => 'required|integer|min:0',
+        'stock' => 'required|integer|min:0',
+        'fabricant' => 'nullable|string',
+        'images.*' => 'nullable|mimes:jpg,jpeg,png,gif|max:2048',
+        'fournisseur_id' => 'nullable|exists:fournisseurs,id',
+        'compte_principal_id' => 'nullable|exists:comptes,id',
+        'compte_secondaire_id' => 'nullable|exists:comptes,id',
+        'montant_principal' => 'nullable|integer|min:0',
+        'montant_secondaire' => 'nullable|integer|min:0',
+        'deleted_images' => 'nullable|string',
+        'delete_old_single_image' => 'nullable|boolean',
+    ]);
 
+    DB::beginTransaction();
+    try {
+        $produit = Produit::findOrFail($id);
+        $ancienStock = $produit->stock;
+        $nouveauStock = $request->stock;
+        $diffStock = $nouveauStock - $ancienStock;
+
+        // Mise à jour des informations de base
+        $produit->name = $request->name;
+        $produit->description = $request->description;
+        $produit->categori_id = $request->categori_id;
+        $produit->prix_achat = $request->prix_achat;
+        $produit->price = $request->price;
+        $produit->prix_technicien = $request->prix_technicien;
+        $produit->prix_minimum = $request->prix_minimum;
+        $produit->stock = $request->stock;
+        $produit->fabricant = $request->fabricant;
+
+        // ========================================
+        // GESTION DU STOCK ET DES COMPTES
+        // ========================================
+        
+        if ($diffStock > 0) {
+            $coutAjout = $request->prix_achat * $diffStock;
+
+            if (!$request->compte_principal_id) {
+                throw new Exception('Un compte principal est requis pour augmenter le stock.');
+            }
+
+            $compte_principal = Compte::find($request->compte_principal_id);
+            if (!$compte_principal) {
+                throw new Exception('Compte principal introuvable.');
+            }
+
+            if ($coutAjout > $compte_principal->montant) {
+                if (!$request->compte_secondaire_id || !$request->montant_principal || !$request->montant_secondaire) {
+                    throw new Exception('Les informations du compte secondaire sont requises car le solde du compte principal est insuffisant.');
+                }
+
+                if ($request->montant_principal + $request->montant_secondaire !== $coutAjout) {
+                    throw new Exception('La somme des montants doit égaler le coût de l\'ajout (' . $coutAjout . ' FCFA).');
+                }
+
+                $compte_secondaire = Compte::find($request->compte_secondaire_id);
+                if (!$compte_secondaire) {
+                    throw new Exception('Compte secondaire introuvable.');
+                }
+
+                if ($request->montant_principal > $compte_principal->montant) {
+                    throw new Exception('Le montant à prélever du compte principal dépasse son solde.');
+                }
+
+                if ($request->montant_secondaire > $compte_secondaire->montant) {
+                    throw new Exception('Le montant à prélever du compte secondaire dépasse son solde.');
+                }
+
+                if ($compte_principal->id === $compte_secondaire->id) {
+                    throw new Exception('Les comptes principal et secondaire ne peuvent pas être identiques.');
+                }
+
+                $produit->comptes()->attach($compte_principal->id, [
+                    'montant' => $request->montant_principal
+                ]);
+
+                $produit->comptes()->attach($compte_secondaire->id, [
+                    'montant' => $request->montant_secondaire
+                ]);
+
+                $compte_principal->montant -= $request->montant_principal;
+                $compte_principal->save();
+                
+                $compte_secondaire->montant -= $request->montant_secondaire;
+                $compte_secondaire->save();
+
+                Transaction::create([
+                    'date' => now()->format('d/m/y'),
+                    'heure' => now()->format('H:i:s'),
+                    'type' => "ajout stock",
+                    'user_id' => Auth::id(),
+                    'montantVerse' => $request->montant_principal,
+                    'prixAchat' => $request->montant_principal,
+                    'compte_id' => $compte_principal->id,
+                ]);
+
+                Transaction::create([
+                    'date' => now()->format('d/m/y'),
+                    'heure' => now()->format('H:i:s'),
+                    'type' => "ajout stock",
+                    'user_id' => Auth::id(),
+                    'montantVerse' => $request->montant_secondaire,
+                    'prixAchat' => $request->montant_secondaire,
+                    'compte_id' => $compte_secondaire->id,
+                ]);
+
+            } else {
+                $produit->comptes()->attach($compte_principal->id, [
+                    'montant' => $coutAjout
+                ]);
+
+                $compte_principal->montant -= $coutAjout;
+                $compte_principal->save();
+
+                Transaction::create([
+                    'date' => now()->format('d/m/y'),
+                    'heure' => now()->format('H:i:s'),
+                    'type' => "ajout stock",
+                    'user_id' => Auth::id(),
+                    'montantVerse' => $coutAjout,
+                    'prixAchat' => $coutAjout,
+                    'compte_id' => $compte_principal->id,
+                ]);
+            }
+        }
+
+        // ========================================
+        // GESTION DE LA SUPPRESSION DES IMAGES
+        // ========================================
+        
+        // Supprimer l'ancienne image unique si demandé
+        if ($request->delete_old_single_image == '1' && $produit->image_produit) {
+            $oldImagePath = public_path('images/produits/' . $produit->image_produit);
+            if (file_exists($oldImagePath)) {
+                unlink($oldImagePath);
+            }
+            $produit->image_produit = null;
+        }
+
+        // Supprimer les images multiples sélectionnées
+        if ($request->deleted_images) {
+            $deletedImageIds = explode(',', $request->deleted_images);
+            
+            foreach ($deletedImageIds as $imageId) {
+                $image = $produit->images()->find($imageId);
+                if ($image) {
+                    $imagePath = public_path('images/produits/' . $image->path);
+                    if (file_exists($imagePath)) {
+                        unlink($imagePath);
+                    }
+                    $image->delete();
+                }
+            }
+        }
+
+        // ========================================
+        // AJOUT DE NOUVELLES IMAGES
+        // ========================================
+        
+        if ($request->hasFile('images')) {
+            // Ajouter les nouvelles images (sans supprimer les anciennes restantes)
+            foreach ($request->file('images') as $image) {
+                $fileName = hexdec(uniqid()) . '.' . $image->getClientOriginalExtension();
+                $destinationPath = 'images/produits';
+
+                if (!file_exists(public_path($destinationPath))) {
+                    mkdir(public_path($destinationPath), 0755, true);
+                }
+
+                $image->storeAs($destinationPath, $fileName, 'real_public');
+
+                $produit->images()->create([
+                    'path' => $fileName,
+                    'is_gif' => strtolower($image->getClientOriginalExtension()) === 'gif',
+                ]);
+            }
+        }
+
+        // Mise à jour du fournisseur si fourni
+        if ($request->fournisseur_id) {
+            $produit->fournisseurs()->sync([
+                $request->fournisseur_id => [
+                    'price' => $request->prix_achat,
+                    'quantity' => $request->stock
+                ]
+            ]);
+        }
+
+        // Transaction de modification
+        Transaction::create([
+            'date' => now()->format('d/m/y'),
+            'heure' => now()->format('H:i:s'),
+            'type' => "modification produit",
+            'user_id' => Auth::id(),
+            'prixAchat' => $request->prix_achat * $request->stock,
+            'compte_id' => $request->compte_principal_id ?? null,
         ]);
-        
-        
-        $produits = Produit::find($id);
-        
-        $produits->name = $request->input('name');
-        $produits->description = $request->input('description');
-        $produits->categori_id = $request->input('categori_id');
-        $produits->prix_achat = $request->input('prix_achat');
-        $produits->price = $request->input('price');
-        $produits->prix_technicien = $request->input('prix_technicien');
-        $produits->prix_minimum = $request->input('prix_minimum');
-        $produits->stock = $request->input('stock');
-        $produits->fabricant = $request->input('fabricant');
 
-        if ($file = $request->file('image_produit')) {
-            $fileName = hexdec(uniqid()) . '.' . $file->getClientOriginalExtension();
-            $destinationPath = public_path('images/produits');
+        $produit->save();
 
-            if (!file_exists($destinationPath)) {
-                mkdir($destinationPath, 0755, true);
-            }
+        DB::commit();
 
-            // Supprime l’ancienne image si elle existe
-            if ($produits->image_produit && file_exists($destinationPath . '/' . $produits->image_produit)) {
-                unlink($destinationPath . '/' . $produits->image_produit);
-            }
+        return redirect()->route('produit.index')->with('message', 'Produit modifié avec succès !');
 
-            $file->move($destinationPath, $fileName);
-            $produits->image_produit = $fileName;
-        }
-
-        else{
-            $produits->image_produit = $produits->image_produit;
-        }
-        
-        $dateHeure = now();
-        
-        //enregistrer l'historique
-        $transactions = new Transaction();
-        $transactions->date = $dateHeure->format('d/m/y');
-        $transactions->heure = $dateHeure->format('H:i:s');
-        $transactions->type = "modification d'un produit";
-        $transactions->impot = $request->impot;
-        $transactions->user_id = Auth::user()->id;
-        
-        if($produits->stock == 0){
-            $transactions->prixAchat = $produits->prix_achat;
-        }
-        else{
-            $transactions->prixAchat = $produits->prix_achat * $produits->stock;
-        }
-        
-        $transactions->save();
-
-        $produits->save();
-        return redirect::route('produit.index')->with('message', ' produit modifie avec succes!');
-        
+    } catch (\Exception $e) {
+        DB::rollBack();
+        return redirect()->back()->with('error', 'Erreur : ' . $e->getMessage())->withInput();
     }
+}
 
 
     /**

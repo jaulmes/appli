@@ -23,7 +23,7 @@ class AjouterProduit extends Component
            $prix_minimum, $prix_technicien, $stock, $fabricant,
            $image_produit, $fournisseur_id, $compte_principal_id, 
            $montant_principal, $compte_secondaire_id, $montant_secondaire,
-           $categories, $fournisseurs, $comptes;
+           $categories, $fournisseurs, $comptes, $images = [];
 
     public function rules()
     {
@@ -38,7 +38,7 @@ class AjouterProduit extends Component
             'stock' => 'required|integer|min:0',
             'fabricant' => 'nullable|string',
             'fournisseur_id' => 'required|exists:fournisseurs,id',
-            'image_produit' => 'nullable|image|max:2048',
+            'images.*' => 'nullable|mimes:jpg,jpeg,png,gif|max:2048'
         ];
     }
 
@@ -81,18 +81,6 @@ class AjouterProduit extends Component
                 'fabricant' => $this->fabricant,
             ]);
 
-            // Gestion de l'image
-            if ($this->image_produit) {
-                $fileName = hexdec(uniqid()) . '.' . $this->image_produit->getClientOriginalExtension();
-                $destinationPath = 'images/produits';
-
-                if (!file_exists($destinationPath)) {
-                    mkdir($destinationPath, 0755, true);
-                }
-
-                $this->image_produit->storeAs($destinationPath, $fileName, 'real_public');
-                $produit->image_produit = $fileName;
-            }
 
             $produit->save();
 
@@ -222,6 +210,24 @@ class AjouterProduit extends Component
                 'quantity' => $this->stock,
                 'name' => $this->name,
             ]);
+
+            if (!empty($this->images)) {
+                foreach ($this->images as $image) {
+                    $fileName = hexdec(uniqid()) . '.' . $image->getClientOriginalExtension();
+                    $destinationPath = 'images/produits';
+
+                    if (!file_exists(public_path($destinationPath))) {
+                        mkdir(public_path($destinationPath), 0755, true);
+                    }
+
+                    $image->storeAs($destinationPath, $fileName, 'real_public');
+
+                    $produit->images()->create([
+                        'path' => $fileName,
+                        'is_gif' => strtolower($image->getClientOriginalExtension()) === 'gif',
+                    ]);
+                }
+            }
 
             DB::commit();
 

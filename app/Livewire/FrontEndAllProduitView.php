@@ -8,26 +8,77 @@ use Livewire\Component;
 
 class FrontEndAllProduitView extends Component
 {
-    public $produits;
+        public $produits;
 
     public function mount()
     {
-        $this->produits = Produit::orderByRaw('position_catalogue IS NULL, position_catalogue ASC')
+        $this->produits = Produit::with(['images', 'categori'])
+                                    ->orderByRaw('position_catalogue IS NULL, position_catalogue ASC')
                                     ->get();
     }
 
-    public function addProductToCartAll($id){
+    // Méthode helper pour obtenir l'image prioritaire (GIF d'abord)
+    public function getPriorityImage($produit)
+    {
+        // Nouvelle logique : plusieurs images
+        if ($produit->images && $produit->images->count() > 0) {
+            // Chercher un GIF en priorité
+            $gifImage = $produit->images->firstWhere('is_gif', true);
+            
+            if ($gifImage) {
+                return asset('images/produits/' . $gifImage->path);
+            }
+            
+            // Sinon, prendre la première image
+            return asset('images/produits/' . $produit->images->first()->path);
+        }
+        
+        // Ancienne logique : image unique
+        if ($produit->image_produit) {
+            $oldPath1 = public_path('storage/images/produits/' . $produit->image_produit);
+            $oldPath2 = public_path('images/produits/' . $produit->image_produit);
+            
+            if (file_exists($oldPath1)) {
+                return asset('storage/images/produits/' . $produit->image_produit);
+            } elseif (file_exists($oldPath2)) {
+                return asset('images/produits/' . $produit->image_produit);
+            }
+        }
+        
+        // Image par défaut
+        return asset('images/default-product.png');
+    }
+
+    // Vérifier si l'image affichée est un GIF
+    public function isDisplayedImageGif($produit)
+    {
+        // Nouvelle logique
+        if ($produit->images && $produit->images->count() > 0) {
+            $gifImage = $produit->images->firstWhere('is_gif', true);
+            return $gifImage !== null;
+        }
+        
+        // Ancienne logique
+        if ($produit->image_produit) {
+            return strtolower(pathinfo($produit->image_produit, PATHINFO_EXTENSION)) === 'gif';
+        }
+        
+        return false;
+    }
+
+    public function addProductToCartAll($id)
+    {
         $produit = Produit::where('id', $id)->first();
         $cart = session()->get('frontEndCart', []);
 
         if(isset($cart[$produit->id])){
             $cart[$produit->id]['quantity'] += 1;
-        }else{
+        } else {
             $cart[$produit->id] = [
                 'quantity' => 1,
                 'id' => $produit->id,
                 'name' => $produit->name,
-                'image' => $produit->image_produit,
+                'image' => $this->getPriorityImage($produit), // Utiliser l'image prioritaire
                 'price' => $produit->price,
                 'prix_catalogue' => $produit->price,
                 'prix_promo' => $produit->prix_promo,

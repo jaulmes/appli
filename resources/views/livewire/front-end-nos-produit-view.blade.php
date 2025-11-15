@@ -3,12 +3,13 @@
         <div class="row g-4 bg-grey align-items-center mb-0" data-aos="fade-up">
             <div class="col-lg-4 text-start">
                 <h1 class="display-5 fw-bold gradient-text">
-                    <a href="{{ route('all-produit') }}" style="text-decoration: none;">Nos Produits</a>
+                    <a href="{{ route('all-produit') }}" style="text-decoration: none;">
+                        <i class="fas fa-box-open me-2"></i>Nos Produits
+                    </a>
                 </h1>
             </div>
             <div class="col-lg-8 text-end">
                 <div class="magnetic-wrap">
-                    <!-- Bouton "Voir plus" amélioré -->
                     <a href="{{ route('all-produit') }}" 
                        class="btn cta-voir-plus magnetic-btn hover-lift">
                         <span class="btn-content">
@@ -23,51 +24,74 @@
         </div>
     </div>
 
-    {{-- Utiliser wire:ignore pour empêcher Livewire de re-rendre cette section --}}
+    {{-- Carrousel Owl --}}
     <div wire:ignore>
         <div class="owl-carousel owl-theme" id="carouselProduits">
             @foreach($produits as $produit)
                 <div class="item px-2">
-                    <div class="card product-card h-100 border-0 rounded-4 shadow-sm">
-                        <a href="{{ route('produit-detail', $produit->id) }}" class="card-image-link d-block text-decoration-none position-relative">
-                            @php
-                                $image1 = public_path('images/produits/'. $produit->image_produit);
-                                $image2 = public_path('storage/images/produits/'. $produit->image_produit);
-                                $url = file_exists($image1) ? asset('images/produits/'. $produit->image_produit)
-                                                           : asset('storage/images/produits/' . $produit->image_produit);
-                            @endphp
+                    <div class="card product-card h-100 border-0 rounded-4 shadow-sm hover-lift-card">
+                        <a href="{{ route('produit-detail', $produit->id) }}" 
+                           class="card-image-link d-block text-decoration-none position-relative">
+                            
+                            {{-- Image avec priorité GIF --}}
+                            <div class="image-wrapper position-relative">
+                                <img src="{{ $this->getPriorityImage($produit) }}" 
+                                     class="card-img-top img-fluid product-image" 
+                                     alt="{{ $produit->name }}" 
+                                     style="object-fit: cover; height: 250px;">
+                                
+                                {{-- Badge GIF --}}
+                                @if($this->isDisplayedImageGif($produit))
+                                    <div class="gif-badge position-absolute">
+                                        <i class="fas fa-film me-1"></i>
+                                        <span>GIF</span>
+                                    </div>
+                                @endif
 
-                            <img src="{{ $url }}" class="card-img-top img-fluid product-image" alt="{{ $produit->name }}" style="object-fit: cover; height: 250px;">
-                            
-                            <!-- Badge de promotion ou nouveau produit -->
-                            @if($produit->status_promo)
-                                <div class="product-badge promo-badge">
-                                    <i class="fas fa-fire"></i> PROMO
-                                </div>
-                            @else
-                                <div class="product-badge new-badge">
-                                    <i class="fas fa-star"></i> NOUVEAU
-                                </div>
-                            @endif
-                            
-                            <!-- Overlay avec effet hover -->
-                            <div class="product-overlay">
-                                <div class="overlay-content">
-                                    <i class="fas fa-eye"></i>
-                                    <span>Voir détails</span>
+                                {{-- Badge Promotion ou Nouveau --}}
+                                @if($produit->status_promo)
+                                    <div class="product-badge promo-badge">
+                                        <i class="fas fa-fire"></i> PROMO
+                                        <div class="badge-discount">
+                                            -{{ round((($produit->price - $produit->prix_promo) / $produit->price) * 100) }}%
+                                        </div>
+                                    </div>
+                                @else
+                                    <div class="product-badge new-badge">
+                                        <i class="fas fa-star"></i> NOUVEAU
+                                    </div>
+                                @endif
+                                
+                                {{-- Compteur photos --}}
+                                @if($this->getImageCount($produit) > 1)
+                                    <div class="photos-badge position-absolute">
+                                        <i class="fas fa-images me-1"></i>
+                                        {{ $this->getImageCount($produit) }}
+                                    </div>
+                                @endif
+
+                                {{-- Overlay hover --}}
+                                <div class="product-overlay">
+                                    <div class="overlay-content">
+                                        <i class="fas fa-eye mb-2"></i>
+                                        <span class="d-block">Voir détails</span>
+                                    </div>
                                 </div>
                             </div>
                         </a>
 
                         <div class="card-body p-3 text-center">
-                            <h5 class="product-title fw-bold">{{ $produit->name }}</h5>
+
+                            {{-- Titre --}}
+                            <h5 class="product-title fw-bold mb-3">{{ Str::limit($produit->name, 45) }}</h5>
                             
-                            <!-- Prix avec animation -->
+                            {{-- Prix avec animation --}}
                             <div class="price-container mb-3">
                                 @if($produit->status_promo)
                                     <span class="price-original">{{ number_format($produit->price, 0, ',', ' ') }} FCFA</span>
                                     <span class="price-promo animate-price">{{ number_format($produit->prix_promo, 0, ',', ' ') }} FCFA</span>
-                                    <div class="savings-badge">
+                                    <div class="savings-badge mt-2">
+                                        <i class="fas fa-piggy-bank me-1"></i>
                                         Économisez {{ number_format($produit->price - $produit->prix_promo, 0, ',', ' ') }} FCFA!
                                     </div>
                                 @else
@@ -75,34 +99,35 @@
                                 @endif
                             </div>
                             
-                            <!-- Stock indicator -->
-                            <div class="stock-indicator mb-2">
-                                @if($produit->stock > 10)
-                                    <span class="stock-good">
-                                        <i class="fas fa-check-circle"></i> En stock
-                                    </span>
-                                @else
-                                    <span class="stock-limited">
-                                        <i class="fas fa-exclamation-triangle"></i> Stock limité 
-                                    </span>
-                                @endif
-                            </div>
                             
-                            <!-- Bouton d'achat amélioré -->
+                            
+                            {{-- Bouton d'achat --}}
                             <div class="cta-container">
-                                <button onclick="addProduitToCart({{ $produit->id }})" 
-                                        class="btn cta-add-cart pulse-button">
-                                    <span class="btn-content">
-                                        <i class="fas fa-cart-plus cart-icon"></i>
-                                        <span class="btn-text">Ajouter au panier</span>
-                                    </span>
-                                    <div class="btn-ripple"></div>
-                                    <div class="success-check">
-                                        <i class="fas fa-check"></i>
-                                    </div>
-                                </button>
-                               
-
+                                @if($produit->stock > 0)
+                                    <button onclick="addProduitToCart({{ $produit->id }})" 
+                                            class="btn cta-add-cart pulse-button w-100">
+                                        <span class="btn-content">
+                                            <i class="fas fa-cart-plus cart-icon"></i>
+                                            <span class="btn-text">Ajouter au panier</span>
+                                        </span>
+                                        <div class="btn-ripple"></div>
+                                        <div class="success-check">
+                                            <i class="fas fa-check"></i>
+                                        </div>
+                                    </button>
+                                @else
+                                    <button onclick="addProduitToCart({{ $produit->id }})" 
+                                            class="btn cta-notify w-100">
+                                        <span class="btn-content">
+                                            <i class="fas fa-bell bell-icon"></i>
+                                            <span class="btn-text">Reserver</span>
+                                        </span>
+                                        <div class="btn-ripple"></div>
+                                        <div class="success-check">
+                                            <i class="fas fa-check"></i>
+                                        </div>
+                                    </button>
+                                @endif
                             </div>
                         </div>
                     </div>
@@ -110,315 +135,220 @@
             @endforeach
         </div>
     </div>
-    
-    <script>
-        let produitsCarouselInitialized = false;
-
-        function initializeProduitsCarousel() {
-            if (!produitsCarouselInitialized) {
-                $('#carouselProduits').owlCarousel({
-                    loop: true,
-                    margin: 15,
-                    nav: true,
-                    dots: false,
-                    autoplay: true,
-                    autoplayTimeout: 3000, // Augmenté pour une meilleure UX
-                    autoplayHoverPause: true,
-                    responsive:{
-                        0:{ items:1 },
-                        576:{ items:2 },
-                        768:{ items:3 },
-                        992:{ items:4 }
-                    }
-                });
-                produitsCarouselInitialized = true;
-            }
-        }
-
-        function addProduitToCart(productId) {
-            const button = event.target.closest('.cta-add-cart');
-            
-            // Animation de chargement
-            button.classList.add('loading');
-            
-            // Appeler la méthode Livewire
-            @this.call('addProductToCart', productId).then(() => {
-                // Animation de succès
-                button.classList.remove('loading');
-                button.classList.add('success');
-                
-                // Retirer l'état de succès après 2 secondes
-                setTimeout(() => {
-                    button.classList.remove('success');
-                }, 2000);
-            }).catch(() => {
-                button.classList.remove('loading');
-                button.classList.add('error');
-                
-                setTimeout(() => {
-                    button.classList.remove('error');
-                }, 2000);
-            });
-        }
-
-        function toggleFavorite(productId) {
-            const button = event.target.closest('.btn-favorite');
-            const icon = button.querySelector('.heart-icon');
-            
-            button.classList.toggle('active');
-            
-            if (button.classList.contains('active')) {
-                icon.classList.remove('far');
-                icon.classList.add('fas');
-                button.style.color = '#e74c3c';
-            } else {
-                icon.classList.remove('fas');
-                icon.classList.add('far');
-                button.style.color = '';
-            }
-            
-            // Ici vous pouvez ajouter l'appel AJAX pour sauvegarder en favoris
-        }
-
-        function notifyWhenAvailable(productId) {
-            // Logique pour s'inscrire aux notifications
-            alert('Vous serez averti dès que ce produit sera disponible !');
-        }
-
-        // Initialiser au chargement de la page
-        $(document).ready(function(){
-            initializeProduitsCarousel();
-        });
-
-        // Réinitialiser après les mises à jour Livewire
-        document.addEventListener('livewire:load', function () {
-            initializeProduitsCarousel();
-        });
-
-        document.addEventListener('livewire:navigated', function () {
-            setTimeout(() => {
-                initializeProduitsCarousel();
-            }, 100);
-        });
-
-        // Écouter les événements de mise à jour du panier
-        window.addEventListener('product-added-to-cart', function(event) {
-            console.log('Produit ajouté au panier:', event.detail.message);
-            
-            // Notification toast
-            if (typeof toastr !== 'undefined') {
-                toastr.success(event.detail.message);
-            }
-            
-            updateCartCounter();
-        });
-    </script>
     <style>
-/* === STYLES POUR LES CTA AMÉLIORÉS === */
-
-/* Bouton "Voir plus" amélioré */
-.cta-voir-plus {
-    position: relative;
-    background: linear-gradient(135deg, #2ecc71 0%, #3498db 100%);
-    border: none;
-    border-radius: 50px;
-    padding: 15px 30px;
-    color: white;
-    font-weight: 600;
-    text-decoration: none;
-    overflow: hidden;
+/* === CARTES PRODUITS === */
+.hover-lift-card {
     transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    box-shadow: 0 10px 30px rgba(46, 204, 113, 0.3);
-    animation: gentlePulse 3s ease-in-out infinite;
 }
 
-.cta-voir-plus:hover {
-    transform: translateY(-3px) scale(1.05);
-    box-shadow: 0 20px 40px rgba(46, 204, 113, 0.4);
-    color: white;
-}
-
-.cta-voir-plus .arrow-icon {
-    transition: transform 0.3s ease;
-}
-
-.cta-voir-plus:hover .arrow-icon {
-    transform: translateX(5px);
-    animation: arrowBounce 0.6s ease-in-out;
-}
-
-@keyframes gentlePulse {
-    0%, 100% { 
-        transform: scale(1);
-        box-shadow: 0 10px 30px rgba(46, 204, 113, 0.3);
-    }
-    50% { 
-        transform: scale(1.02);
-        box-shadow: 0 15px 35px rgba(46, 204, 113, 0.4);
-    }
-}
-
-@keyframes arrowBounce {
-    0%, 100% { transform: translateX(5px) scale(1); }
-    50% { transform: translateX(8px) scale(1.1); }
-}
-
-/* Card produit améliorée */
-.product-card {
-    transition: all 0.3s ease;
-    cursor: pointer;
-    position: relative;
-    overflow: hidden;
-}
-
-.product-card:hover {
-    transform: translateY(-8px);
+.hover-lift-card:hover {
+    transform: translateY(-10px) scale(1.02);
     box-shadow: 0 20px 40px rgba(0,0,0,0.15) !important;
 }
 
+.image-wrapper {
+    overflow: hidden;
+    border-radius: 15px 15px 0 0;
+    background: #f8f9fa;
+}
+
 .product-image {
-    transition: transform 0.5s ease;
+    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.product-card:hover .product-image {
-    transform: scale(1.1);
+.card-image-link:hover .product-image {
+    transform: scale(1.15) rotate(2deg);
 }
 
-/* Badge produit */
-.product-badge {
-    position: absolute;
-    top: 12px;
-    right: 12px;
-    z-index: 10;
-    padding: 5px 12px;
+/* === BADGES === */
+.gif-badge {
+    top: 10px;
+    right: 10px;
+    background: linear-gradient(135deg, #ffc107 0%, #ff9800 100%);
+    color: white;
+    padding: 6px 12px;
     border-radius: 20px;
     font-size: 11px;
     font-weight: 700;
+    z-index: 4;
+    animation: gifBounce 2s ease-in-out infinite;
+    box-shadow: 0 4px 15px rgba(255, 193, 7, 0.5);
+}
+
+@keyframes gifBounce {
+    0%, 100% { transform: scale(1) rotate(0deg); }
+    50% { transform: scale(1.1) rotate(-5deg); }
+}
+
+.product-badge {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    z-index: 3;
+    padding: 8px 15px;
+    border-radius: 25px;
+    font-size: 12px;
+    font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.5px;
-    animation: badgePulse 2s ease-in-out infinite;
+    animation: badgeFloat 3s ease-in-out infinite;
 }
 
 .promo-badge {
-    background: linear-gradient(135deg, #f1c40f, #f39c12);
+    background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
     color: white;
-    box-shadow: 0 4px 15px rgba(241, 196, 15, 0.4);
+    box-shadow: 0 5px 20px rgba(220, 53, 69, 0.5);
 }
 
 .new-badge {
-    background: linear-gradient(135deg, #2ecc71, #27ae60);
+    background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
     color: white;
-    box-shadow: 0 4px 15px rgba(46, 204, 113, 0.4);
+    box-shadow: 0 5px 20px rgba(40, 167, 69, 0.5);
 }
 
-@keyframes badgePulse {
-    0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.05); }
+@keyframes badgeFloat {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
 }
 
-/* Overlay produit */
+.badge-discount {
+    background: rgba(255, 255, 255, 0.3);
+    padding: 2px 6px;
+    border-radius: 10px;
+    font-size: 10px;
+    margin-left: 5px;
+    display: inline-block;
+}
+
+.photos-badge {
+    bottom: 10px;
+    left: 10px;
+    background: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(10px);
+    color: white;
+    padding: 5px 12px;
+    border-radius: 15px;
+    font-size: 11px;
+    font-weight: 600;
+    z-index: 3;
+}
+
+.category-badge {
+    font-size: 11px;
+    font-weight: 600;
+    padding: 5px 12px;
+    border-radius: 15px;
+    transition: all 0.3s ease;
+}
+
+.category-badge:hover {
+    transform: scale(1.05);
+}
+
+/* === OVERLAY === */
 .product-overlay {
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(0,0,0,0.7);
+    background: linear-gradient(180deg, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.5) 100%);
     display: flex;
     align-items: center;
     justify-content: center;
     opacity: 0;
-    transition: opacity 0.3s ease;
+    transition: opacity 0.4s ease;
+    z-index: 2;
 }
 
-.product-card:hover .product-overlay {
+.card-image-link:hover .product-overlay {
     opacity: 1;
 }
 
 .overlay-content {
     text-align: center;
     color: white;
-    transform: translateY(20px);
-    transition: transform 0.3s ease;
+    transform: translateY(20px) scale(0.9);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-.product-card:hover .overlay-content {
-    transform: translateY(0);
+.card-image-link:hover .overlay-content {
+    transform: translateY(0) scale(1);
 }
 
 .overlay-content i {
-    font-size: 2rem;
-    margin-bottom: 8px;
-    display: block;
+    font-size: 2.5rem;
+    animation: eyePulse 2s ease-in-out infinite;
 }
 
-/* Titre produit */
+@keyframes eyePulse {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.1); opacity: 0.8; }
+}
+
+/* === TITRE === */
 .product-title {
     color: #2c3e50;
-    margin-bottom: 15px;
+    font-size: 1.05rem;
     transition: color 0.3s ease;
-    font-size: 1.1rem;
+    line-height: 1.4;
+    min-height: 45px;
 }
 
 .product-card:hover .product-title {
-    color: #2ecc71;
+    color: #667eea;
 }
 
-/* Container prix */
+/* === PRIX === */
 .price-container {
     position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
 }
 
 .price-original {
     text-decoration: line-through;
     color: #95a5a6;
-    font-size: 0.9rem;
-    display: block;
+    font-size: 14px;
 }
 
 .price-promo {
-    color: #f39c12;
+    background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+    color: white;
     font-weight: 700;
     font-size: 1.3rem;
-    display: block;
-    animation: priceGlow 2s ease-in-out infinite;
+    padding: 8px 20px;
+    border-radius: 25px;
+    display: inline-block;
+    box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
 }
 
 .price-normal {
-    color: #2ecc71;
+    color: #667eea;
     font-weight: 700;
-    font-size: 1.2rem;
+    font-size: 1.25rem;
 }
 
 .animate-price {
-    animation: priceScale 0.5s ease-out;
+    animation: priceAppear 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-@keyframes priceGlow {
-    0%, 100% { 
-        color: #f39c12;
-        text-shadow: none;
-    }
-    50% { 
-        color: #e67e22;
-        text-shadow: 0 0 10px rgba(243, 156, 18, 0.5);
-    }
-}
-
-@keyframes priceScale {
-    0% { transform: scale(0.8); opacity: 0; }
+@keyframes priceAppear {
+    0% { transform: scale(0.5); opacity: 0; }
     100% { transform: scale(1); opacity: 1; }
 }
 
 .savings-badge {
-    background: linear-gradient(135deg, #2ecc71, #27ae60);
+    background: linear-gradient(135deg, #17a2b8 0%, #138496 100%);
     color: white;
-    padding: 2px 8px;
-    border-radius: 12px;
-    font-size: 0.75rem;
+    padding: 5px 12px;
+    border-radius: 15px;
+    font-size: 12px;
     font-weight: 600;
-    margin-top: 5px;
     display: inline-block;
+    box-shadow: 0 3px 10px rgba(23, 162, 184, 0.3);
     animation: savingsPulse 2s ease-in-out infinite;
 }
 
@@ -427,182 +357,193 @@
     50% { transform: scale(1.05); }
 }
 
-/* Indicateur stock */
+/* === STOCK === */
 .stock-indicator {
     font-size: 0.85rem;
-    font-weight: 600;
 }
 
-.stock-good { color: #2ecc71; }
-.stock-limited { color: #f39c12; animation: stockAlert 1.5s ease-in-out infinite; }
-.stock-out { color: #e74c3c; }
+.stock-limited {
+    animation: stockBlink 1.5s ease-in-out infinite;
+}
 
-@keyframes stockAlert {
+@keyframes stockBlink {
     0%, 100% { opacity: 1; }
     50% { opacity: 0.7; }
 }
 
-/* Container CTA */
-.cta-container {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 10px;
-}
-
-/* Bouton ajouter au panier */
+/* === BOUTONS CTA === */
 .cta-add-cart {
     position: relative;
-    background: linear-gradient(135deg, #3498db, #2980b9);
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     border: none;
-    border-radius: 25px;
-    padding: 12px 20px;
+    border-radius: 30px;
+    padding: 14px 25px;
     color: white;
     font-weight: 600;
-    font-size: 0.9rem;
+    font-size: 15px;
     overflow: hidden;
-    transition: all 0.3s ease;
-    flex: 1;
+    transition: all 0.4s ease;
     animation: buttonBreathe 3s ease-in-out infinite;
 }
 
 .cta-add-cart:hover {
-    background: linear-gradient(135deg, #2980b9, #2ecc71);
-    transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(52, 152, 219, 0.3);
+    background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+    transform: scale(1.05);
+    box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
     color: white;
 }
 
-.cta-add-cart .cart-icon {
-    transition: transform 0.3s ease;
-}
-
-.cta-add-cart:hover .cart-icon {
-    transform: scale(1.2) rotate(-10deg);
-}
-
-/* États du bouton */
-.cta-add-cart.loading {
-    background: linear-gradient(135deg, #95a5a6, #7f8c8d);
-    pointer-events: none;
-}
-
-.cta-add-cart.loading .btn-text::after {
-    content: "...";
-    animation: loadingDots 1s infinite;
-}
-
-.cta-add-cart.success {
-    background: linear-gradient(135deg, #2ecc71, #27ae60);
-}
-
-.cta-add-cart.success .success-check {
-    opacity: 1;
-    transform: scale(1);
-}
-
-.cta-add-cart.error {
-    background: linear-gradient(135deg, #f39c12, #e67e22);
-    animation: shake 0.5s ease-in-out;
+.pulse-button {
+    animation: buttonBreathe 3s ease-in-out infinite;
 }
 
 @keyframes buttonBreathe {
     0%, 100% { 
-        transform: scale(1);
-        box-shadow: 0 4px 15px rgba(52, 152, 219, 0.2);
+        box-shadow: 0 5px 20px rgba(102, 126, 234, 0.3);
     }
     50% { 
-        transform: scale(1.02);
-        box-shadow: 0 6px 20px rgba(52, 152, 219, 0.3);
+        box-shadow: 0 8px 30px rgba(102, 126, 234, 0.5);
     }
 }
 
-@keyframes loadingDots {
-    0%, 20% { content: "."; }
-    40% { content: ".."; }
-    60%, 100% { content: "..."; }
+.btn-content {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
 }
 
-@keyframes shake {
-    0%, 100% { transform: translateX(0); }
-    25% { transform: translateX(-5px); }
-    75% { transform: translateX(5px); }
+.cart-icon {
+    transition: transform 0.3s ease;
 }
 
-/* Icône de succès */
+.cta-add-cart:hover .cart-icon {
+    animation: cartJump 0.6s ease;
+}
+
+@keyframes cartJump {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-5px) rotate(-10deg); }
+}
+
+/* === ÉTATS DU BOUTON === */
+.btn-ripple {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.5);
+    transform: translate(-50%, -50%);
+    z-index: 1;
+}
+
+.cta-add-cart.loading .btn-ripple {
+    animation: rippleExpand 0.6s ease-out;
+}
+
+@keyframes rippleExpand {
+    0% { width: 0; height: 0; opacity: 1; }
+    100% { width: 250px; height: 250px; opacity: 0; }
+}
+
 .success-check {
     position: absolute;
     top: 50%;
-    right: 15px;
-    transform: translateY(-50%) scale(0);
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    font-size: 1.5rem;
+    color: white;
+    z-index: 3;
     opacity: 0;
-    transition: all 0.3s ease;
-    font-size: 1.2rem;
 }
 
-/* Bouton notification */
+.cta-add-cart.success {
+    background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+}
+
+.cta-add-cart.success .success-check {
+    animation: checkPop 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+@keyframes checkPop {
+    0% { transform: translate(-50%, -50%) scale(0); opacity: 0; }
+    50% { transform: translate(-50%, -50%) scale(1.3); opacity: 1; }
+    100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+}
+
+.cta-add-cart.success .btn-content {
+    opacity: 0;
+}
+
+/* === BOUTON NOTIFIER === */
 .cta-notify {
-    background: linear-gradient(135deg, #f39c12, #e67e22);
+    background: linear-gradient(135deg, #fd7e14 0%, #dc3545 100%);
     border: none;
-    border-radius: 25px;
-    padding: 12px 20px;
+    border-radius: 30px;
+    padding: 14px 25px;
     color: white;
     font-weight: 600;
-    font-size: 0.9rem;
-    flex: 1;
+    font-size: 15px;
     transition: all 0.3s ease;
 }
 
 .cta-notify:hover {
-    background: linear-gradient(135deg, #e67e22, #f1c40f);
+    background: linear-gradient(135deg, #dc3545 0%, #e83e8c 100%);
+    transform: scale(1.05);
+    box-shadow: 0 10px 30px rgba(220, 53, 69, 0.4);
     color: white;
 }
 
-.cta-notify .bell-icon {
+.bell-icon {
     animation: bellRing 2s ease-in-out infinite;
 }
 
 @keyframes bellRing {
     0%, 100% { transform: rotate(0deg); }
-    25% { transform: rotate(-10deg); }
-    75% { transform: rotate(10deg); }
+    10%, 30% { transform: rotate(-15deg); }
+    20%, 40% { transform: rotate(15deg); }
 }
 
-/* Bouton favori */
-.btn-favorite {
-    background: white;
-    border: 2px solid #ecf0f1;
-    border-radius: 50%;
-    width: 45px;
-    height: 45px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #bdc3c7;
-    transition: all 0.3s ease;
-}
-
-.btn-favorite:hover {
-    border-color: #f39c12;
-    color: #f39c12;
-    transform: scale(1.1);
-}
-
-.btn-favorite.active {
-    background: #f39c12;
-    border-color: #f39c12;
+/* === BOUTON VOIR PLUS === */
+.cta-voir-plus {
+    position: relative;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border: none;
+    border-radius: 50px;
+    padding: 15px 35px;
     color: white;
-    animation: heartBeat 1s ease-in-out;
+    font-weight: 600;
+    text-decoration: none;
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+    animation: gentlePulse 3s ease-in-out infinite;
+    display: inline-block;
 }
 
-@keyframes heartBeat {
+.cta-voir-plus:hover {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 15px 40px rgba(102, 126, 234, 0.4);
+    color: white;
+}
+
+.arrow-icon {
+    transition: transform 0.3s ease;
+}
+
+.cta-voir-plus:hover .arrow-icon {
+    transform: translateX(8px);
+}
+
+@keyframes gentlePulse {
     0%, 100% { transform: scale(1); }
-    25% { transform: scale(1.1); }
-    50% { transform: scale(1.2); }
-    75% { transform: scale(1.1); }
+    50% { transform: scale(1.02); }
 }
 
-/* Effet de brillance général */
 .btn-shine {
     position: absolute;
     top: 0;
@@ -611,85 +552,191 @@
     height: 100%;
     background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
     transition: left 0.6s;
+    z-index: 1;
 }
 
-.cta-voir-plus:hover .btn-shine,
-.cta-notify:hover .btn-shine {
+.cta-voir-plus:hover .btn-shine {
     left: 100%;
 }
 
-/* Effet de lueur */
-.btn-glow {
-    position: absolute;
-    top: -2px;
-    left: -2px;
-    right: -2px;
-    bottom: -2px;
-    border-radius: 50px;
-    background: linear-gradient(45deg, #2ecc71, #3498db, #2ecc71, #3498db);
-    background-size: 400% 400%;
-    opacity: 0;
-    z-index: -1;
-    animation: glowMove 4s ease-in-out infinite;
-}
-
-@keyframes glowMove {
-    0%, 100% { 
-        opacity: 0;
-        background-position: 0% 50%;
-    }
-    25% { 
-        opacity: 0.3;
-        background-position: 100% 50%;
-    }
-    75% { 
-        opacity: 0.1;
-        background-position: 0% 50%;
-    }
-}
-
-/* Responsive */
+/* === RESPONSIVE === */
 @media (max-width: 768px) {
+    .product-image {
+        height: 200px !important;
+    }
+    
+    .product-title {
+        font-size: 0.95rem;
+        min-height: 40px;
+    }
+    
+    .price-promo {
+        font-size: 1.1rem;
+        padding: 6px 15px;
+    }
+    
+    .cta-add-cart, .cta-notify {
+        padding: 12px 20px;
+        font-size: 14px;
+    }
+    
     .cta-voir-plus {
-        padding: 12px 24px;
-        font-size: 0.9rem;
-    }
-    
-    .cta-add-cart,
-    .cta-notify {
-        padding: 10px 15px;
-        font-size: 0.8rem;
-    }
-    
-    .btn-favorite {
-        width: 40px;
-        height: 40px;
-    }
-    
-    .product-badge {
-        font-size: 10px;
-        padding: 4px 8px;
-    }
-}
-
-/* Animation d'entrée pour les cartes */
-.product-card {
-    animation: fadeInUp 0.6s ease-out forwards;
-    opacity: 0;
-    transform: translateY(30px);
-}
-
-.product-card:nth-child(1) { animation-delay: 0.1s; }
-.product-card:nth-child(2) { animation-delay: 0.2s; }
-.product-card:nth-child(3) { animation-delay: 0.3s; }
-.product-card:nth-child(4) { animation-delay: 0.4s; }
-
-@keyframes fadeInUp {
-    to {
-        opacity: 1;
-        transform: translateY(0);
+        padding: 12px 25px;
+        font-size: 14px;
     }
 }
 </style>
+
+<script>
+    let produitsCarouselInitialized = false;
+
+    function initializeProduitsCarousel() {
+        if (!produitsCarouselInitialized) {
+            $('#carouselProduits').owlCarousel({
+                loop: true,
+                margin: 15,
+                nav: true,
+                dots: false,
+                autoplay: true,
+                autoplayTimeout: 3500,
+                autoplayHoverPause: true,
+                navText: [
+                    '<i class="fas fa-chevron-left"></i>',
+                    '<i class="fas fa-chevron-right"></i>'
+                ],
+                responsive:{
+                    0:{ items:1 },
+                    576:{ items:2 },
+                    768:{ items:3 },
+                    992:{ items:4 }
+                }
+            }).on('translated.owl.carousel', function() {
+                if (typeof AOS !== 'undefined') {
+                    AOS.refresh();
+                }
+            });
+            produitsCarouselInitialized = true;
+        }
+    }
+
+    function addProduitToCart(productId) {
+        const button = event.target.closest('.cta-add-cart');
+        button.classList.add('loading');
+        
+        @this.call('addProductToCart', productId).then(() => {
+            button.classList.remove('loading');
+            button.classList.add('success');
+            
+            showToast('Produit ajouté au panier avec succès !', 'success');
+            
+            setTimeout(() => button.classList.remove('success'), 2000);
+        }).catch(() => {
+            button.classList.remove('loading');
+            showToast('Erreur lors de l\'ajout au panier', 'error');
+        });
+    }
+
+    function notifyWhenAvailable(productId) {
+        showToast('Vous serez averti dès que ce produit sera disponible !', 'info');
+        // Ici vous pouvez ajouter l'appel pour enregistrer la notification
+    }
+
+    function showToast(message, type = 'success') {
+        const icons = {
+            success: 'check-circle',
+            error: 'times-circle',
+            info: 'info-circle'
+        };
+        
+        const colors = {
+            success: 'linear-gradient(135deg, #28a745, #20c997)',
+            error: 'linear-gradient(135deg, #dc3545, #c82333)',
+            info: 'linear-gradient(135deg, #17a2b8, #138496)'
+        };
+        
+        const toast = document.createElement('div');
+        toast.style.cssText = `
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: ${colors[type]};
+            color: white;
+            padding: 15px 25px;
+            border-radius: 50px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            z-index: 9999;
+            animation: slideInRight 0.5s ease;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        `;
+        toast.innerHTML = `<i class="fas fa-${icons[type]}"></i>${message}`;
+        document.body.appendChild(toast);
+        
+        setTimeout(() => {
+            toast.style.animation = 'slideOutRight 0.5s ease';
+            setTimeout(() => toast.remove(), 500);
+        }, 3000);
+    }
+
+    $(document).ready(initializeProduitsCarousel);
+    document.addEventListener('livewire:load', initializeProduitsCarousel);
+    document.addEventListener('livewire:navigated', () => setTimeout(initializeProduitsCarousel, 100));
+
+    // Écouter l'événement de produit ajouté
+    window.addEventListener('ProduitAjoute', () => {
+        showToast('Produit ajouté au panier !', 'success');
+    });
+
+    // Animations CSS personnalisées
+    const style = document.createElement('style');
+    style.textContent = `
+        @keyframes slideInRight {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideOutRight {
+            from {
+                transform: translateX(0);
+                opacity: 1;
+            }
+            to {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+        }
+    `;
+    document.head.appendChild(style);
+</script>
+<script>
+    $(document).ready(function(){
+        $('#carouselProduits').owlCarousel({
+            loop: true,               // boucle infinie
+            margin: 15,               // marge entre les éléments
+            nav: false,               // pas de boutons précédent/suivant
+            dots: false,              // cacher les points
+            autoplay: true,           // défilement automatique
+            autoplayTimeout: 2500,    // chaque 2.5 secondes
+            autoplayHoverPause: true, // pause quand la souris passe dessus
+            autoplaySpeed: 800,       // vitesse de transition
+            responsive:{
+                0:{ items: 1.2 },     // mobile : 1 produit visible + défilement fluide
+                480:{ items: 1.5 },
+                768:{ items: 2.5 },   // tablette
+                1024:{ items: 3.5 },  // desktop
+                1280:{ items: 4 }     // grands écrans
+            }
+        });
+    });
+</script>
+
 </div>
 

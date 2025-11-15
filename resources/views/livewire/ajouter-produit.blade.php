@@ -251,21 +251,20 @@
 
                         <!-- Upload d'image -->
                         <div class="mb-4">
-                            <label class="form-label">Image du produit</label>
-                            <div class="file-upload-input">
-                                <input wire:model="image_produit" type="file" class="form-control" 
-                                       id="inputGroupFile02" accept="image/*">
-                                @error('image_produit') <div class="text-danger small mt-1">{{ $message }}</div> @enderror
-                                
-                                @if ($image_produit)
-                                    <div class="mt-3 text-center">
-                                        <img src="{{ $image_produit->temporaryUrl() }}" 
-                                             class="img-thumbnail preview-image" 
-                                             alt="Prévisualisation"
-                                             style="max-height: 200px;">
-                                    </div>
-                                @endif
-                            </div>
+                            <label class="form-label">Images du produit (y compris .gif)</label>
+                            <input wire:model="images" type="file" class="form-control" accept="image/*" multiple>
+
+                            @error('images.*') <div class="text-danger small mt-1">{{ $message }}</div> @enderror
+
+                            @if ($images)
+                                <div class="mt-3 d-flex flex-wrap gap-3">
+                                    @foreach ($images as $img)
+                                        <div class="text-center">
+                                            <img src="{{ $img->temporaryUrl() }}" class="img-thumbnail preview-image" alt="Prévisualisation" style="max-height: 150px;">
+                                        </div>
+                                    @endforeach
+                                </div>
+                            @endif
                         </div>
 
                         <!-- Bouton de soumission -->
