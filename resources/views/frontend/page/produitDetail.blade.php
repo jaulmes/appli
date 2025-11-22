@@ -145,22 +145,7 @@
                         @endif
                     </div>
                     
-                    <!-- Badge stock -->
-                    <div class="col-auto">
-                        @if($produit->stock > 5)
-                            <span class="badge bg-success px-3 py-2">
-                                <i class="fas fa-check-circle me-1"></i>En stock ({{ $produit->stock }})
-                            </span>
-                        @elseif($produit->stock > 0)
-                            <span class="badge bg-warning px-3 py-2">
-                                <i class="fas fa-exclamation-triangle me-1"></i>Stock limité ({{ $produit->stock }})
-                            </span>
-                        @else
-                            <span class="badge bg-danger px-3 py-2">
-                                <i class="fas fa-times-circle me-1"></i>Rupture de stock
-                            </span>
-                        @endif
-                    </div>
+                    
                 </div>
 
                 <!-- Description formatée -->
