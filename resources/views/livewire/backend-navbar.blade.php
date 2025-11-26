@@ -93,12 +93,12 @@
                     </a>
                 </li>
                 <!-- Clients -->
-                <!-- <li class="nav-item">
+                <li class="nav-item">
                     <a href="{{ route('clients.index') }}"  class="nav-link {{ Request::is('clients/index*') ? 'active' : '' }}">
                         👤
                         <p>Clients</p>
                     </a>
-                </li> -->
+                </li>
 
                 <!-- Tâches -->
                 <li class="nav-item">
