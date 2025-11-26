@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use App\Models\Achat;
 use App\Models\Charge;
+use App\Models\Compte;
 use App\Models\Installation;
 use App\Models\Recu;
 use App\Models\Transaction;
@@ -19,7 +20,7 @@ class BilanBeneficeReeleMensuel extends Component
     public $beneficeReele = 0, $beneficeBrute = 0;
 
     public $charges = [], $ventes = [], $installations = [], 
-            $recu = [], $chiffreAffaire = 0;
+            $recu = [], $chiffreAffaire = 0, $etatCompteMensuel = [];
 
     public function afficher()
     {
@@ -113,6 +114,32 @@ class BilanBeneficeReeleMensuel extends Component
             $montantRecu += $recus->montant_recu;
         }
         $this->chiffreAffaire = $montantVente + $montantInstallation + $montantRecu;
+
+        //etat des comptes mensuelle
+        // Date pour trouver le solde de début (Fin du mois d'avant)
+        $dateCarbon = Carbon::parse($this->moisSelectionne);
+
+        $startBalanceDate = $dateCarbon->copy()->subMonth()->endOfMonth()->toDateString(); // 2025-10-31
+        $endBalanceDate   = $dateCarbon->copy()->endOfMonth()->toDateString(); // 2025-11-30
+
+        $comptes = Compte::all();
+
+        foreach ($comptes as $compte) {
+            $etatCompte = $compte->soldeCompteMensuels()
+                ->where('date_capture', $this->moisSelectionne.'-01')
+                ->first();
+
+            if ($etatCompte) {
+                //solde fin(solde courant du compte si la fin du moi n'est pas encore enregistrée)
+                $soldeFin = $etatCompte->solde_fin ?? $compte->montant;
+                $this->etatCompteMensuel[] = [
+                    'name'      => $compte->nom,
+                    'solde_debut' => $etatCompte->solde_debut,
+                    'solde_fin'   => $soldeFin,
+                    'variation'   => $soldeFin - $etatCompte->solde_debut,
+                ];
+            }
+        }
     }
 
     public function mount($moi)

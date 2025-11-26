@@ -15,7 +15,12 @@ class Compte extends Model
         'montant'
     ];
 
-        public function achatsPaiements()
+    public function soldeCompteMensuels()
+    {
+        return $this->hasMany(SoldeCompteMensuel::class);
+    }
+
+    public function achatsPaiements()
     {
         return $this->hasMany(AchatPaiement::class);
     }

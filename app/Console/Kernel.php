@@ -14,6 +14,7 @@ class Kernel extends ConsoleKernel
     {
         // Exécute la commande de rappels toutes les minutes
         $schedule->command('rappels:rendezvous')->everyMinute();
+        $schedule->command('rapport:mensuel')->monthlyOn(1, '00:01');
     }
 
     /**
