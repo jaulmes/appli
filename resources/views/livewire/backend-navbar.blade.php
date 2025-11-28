@@ -1,7 +1,7 @@
 <div>
     <!-- Logo et nom de l'application -->
     <a href="#" class="brand-link">
-        <img src="../logo.jpg" alt="Solergy Solutions" class="brand-image img-circle elevation-3" style="opacity: .8">
+        <img src="../logo.jpg" class="brand-image img-circle elevation-3" style="opacity: .8">
         <span class="brand-text font-weight-light">Solergy Solutions</span>
     </a>
 

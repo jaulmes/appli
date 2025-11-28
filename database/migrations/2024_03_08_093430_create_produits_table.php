@@ -23,6 +23,7 @@ return new class extends Migration
             $table->integer('position_catalogue')->nullable();
             $table->integer('position_promo')->nullable();
             $table->string('fabricant')->nullable();
+            $table->boolean('is_website_visible')->default(true);
             $table->string('image_produit')->nullable();
             $table->unsignedBigInteger('categori_id');
             $table->foreign('categori_id')->

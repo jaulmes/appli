@@ -1,43 +1,43 @@
 <div>
-  <div class="card-header border-0 d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-3">
-      <h1 class="card-title m-0">Gestion des services</h1>
-      
-      <button style="margin-left: 8em;" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#newService">
-          <i class="fas fa-plus me-1"></i> Nouveau
-      </button>
-  </div>
+    <div class="card-header border-0 d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-3">
+        <h1 class="card-title m-0">Gestion des services</h1>
+        
+        <button style="margin-left: 8em;" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#newService">
+            <i class="fas fa-plus me-1"></i> Nouveau
+        </button>
+    </div>
 
-  <!-- Alerts -->
-  <div class="mt-3">
-      @if (session()->has('successServices'))
-          <div class="alert alert-success alert-dismissible fade show" role="alert">
-              {{ session('successServices') }}
-              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fermer"></button>
-          </div>
-      @endif
+    <!-- Alerts -->
+    <div class="mt-3">
+        @if (session()->has('successServices'))
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                {{ session('successServices') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fermer"></button>
+            </div>
+        @endif
 
-      @if (session()->has('errorServices'))
-          <div class="alert alert-danger alert-dismissible fade show" role="alert">
-              {{ session('errorServices') }}
-              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fermer"></button>
-          </div>
-      @endif
+        @if (session()->has('errorServices'))
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                {{ session('errorServices') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fermer"></button>
+            </div>
+        @endif
 
-      @if (session()->has('deleteServices'))
-          <div class="alert alert-danger alert-dismissible fade show" role="alert">
-              {{ session('deleteServices') }}
-              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fermer"></button>
-          </div>
-      @endif
-      @if (session()->has('updateStatusServices'))
-          <div class="alert alert-danger alert-dismissible fade show" role="alert">
-              {{ session('updateStatusServices') }}
-              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fermer"></button>
-          </div>
-      @endif
-  </div>
+        @if (session()->has('deleteServices'))
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                {{ session('deleteServices') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fermer"></button>
+            </div>
+        @endif
+        @if (session()->has('updateStatusServices'))
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                {{ session('updateStatusServices') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fermer"></button>
+            </div>
+        @endif
+    </div>
 
-    <div class="card-body table-responsive p-0">
+    <div class="card-body table-responsive p-0" style="max-height: 500px; overflow-y: auto;">
         <table class="table table-striped table-valign-middle">
             <thead>
                 <tr>

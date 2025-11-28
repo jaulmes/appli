@@ -7,7 +7,7 @@
             </div>
         @endif
     </div>
-    <div class="card-body table-responsive p-0">
+    <div class="card-body table-responsive p-0" style="max-height: 500px; overflow-y: auto;">
         <table class="table table-striped table-valign-middle">
             <thead>
                 <tr>
